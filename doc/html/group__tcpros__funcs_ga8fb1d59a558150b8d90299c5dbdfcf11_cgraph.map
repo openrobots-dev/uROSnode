@@ -1,0 +1,7 @@
+<map id="urosTcpRosExpect" name="urosTcpRosExpect">
+<area shape="rect" id="node3" href="$group__conn__funcs.html#gaee11d892e258d71b827dc8d691ab8ac7" title="Checks if pointing to a valid connection object." alt="" coords="471,5,569,33"/>
+<area shape="rect" id="node7" href="$group__conn__funcs.html#gaf57e00f8dfcad939c94754753df0952f" title="Receives some data." alt="" coords="165,30,259,58"/>
+<area shape="rect" id="node12" href="$group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a" title="Text of an error code." alt="" coords="168,81,256,109"/>
+<area shape="rect" id="node5" href="$group__conn__lld__funcs.html#ga1ad3ede6bbb4025fe6da8b7e811852d6" title="Checks if pointing to a valid connection object." alt="" coords="619,5,741,33"/>
+<area shape="rect" id="node9" href="$group__conn__lld__funcs.html#ga03cba840df63ce6dd6f6c2e4b5dde8e9" title="Receives some data." alt="" coords="307,30,421,58"/>
+</map>

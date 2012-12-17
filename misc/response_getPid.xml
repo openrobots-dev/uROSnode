@@ -1,0 +1,18 @@
+HTTP/1.0 200 OK
+Server: BaseHTTP/0.3 Python/2.7.3
+Date: Fri, 12 Oct 2012 07:33:51 GMT
+Content-type: text/xml
+Content-length: 230
+
+<?xml version='1.0'?>
+<methodResponse>
+<params>
+<param>
+<value><array><data>
+<value><int>1</int></value>
+<value><string></string></value>
+<value><int>1701</int></value>
+</data></array></value>
+</param>
+</params>
+</methodResponse>

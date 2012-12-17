@@ -1,0 +1,4 @@
+<map id="urosConnAccept" name="urosConnAccept">
+<area shape="rect" id="node3" href="$group__conn__lld__funcs.html#ga541544b64e4f9fe49ce9a1079f3421db" title="Accepts an incoming connection." alt="" coords="155,5,280,33"/>
+<area shape="rect" id="node5" href="$group__conn__funcs.html#gaee11d892e258d71b827dc8d691ab8ac7" title="Checks if pointing to a valid connection object." alt="" coords="329,5,428,33"/>
+</map>

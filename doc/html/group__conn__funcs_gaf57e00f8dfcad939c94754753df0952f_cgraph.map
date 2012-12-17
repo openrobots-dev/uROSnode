@@ -1,0 +1,4 @@
+<map id="urosConnRecv" name="urosConnRecv">
+<area shape="rect" id="node3" href="$group__conn__lld__funcs.html#ga03cba840df63ce6dd6f6c2e4b5dde8e9" title="Receives some data." alt="" coords="147,5,261,33"/>
+<area shape="rect" id="node5" href="$group__conn__funcs.html#gaee11d892e258d71b827dc8d691ab8ac7" title="Checks if pointing to a valid connection object." alt="" coords="311,5,409,33"/>
+</map>

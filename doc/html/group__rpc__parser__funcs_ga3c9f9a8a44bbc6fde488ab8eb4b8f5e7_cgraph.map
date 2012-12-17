@@ -1,0 +1,6 @@
+<map id="urosRpcParserParamValueInt" name="urosRpcParserParamValueInt">
+<area shape="rect" id="node3" href="$group__rpc__parser__funcs.html#ga5f2306619872273541102d07180a6ac4" title="Reads a decimal signed integer (int32)." alt="" coords="220,55,337,83"/>
+<area shape="rect" id="node5" href="$group__rpc__parser__funcs.html#ga123432b847b829546ac86277f652d9ef" title="Expects the parser to be pointing to a token." alt="" coords="388,5,537,33"/>
+<area shape="rect" id="node7" href="$group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a" title="Text of an error code." alt="" coords="419,55,507,83"/>
+<area shape="rect" id="node9" href="$group__rpc__parser__funcs.html#ga305e5eb5fce3144691bfaa77858f7193" title="Reads a decimal unsigned integer (uint32)." alt="" coords="400,106,525,134"/>
+</map>

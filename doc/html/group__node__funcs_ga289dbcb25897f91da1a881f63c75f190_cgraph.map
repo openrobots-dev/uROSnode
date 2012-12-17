@@ -1,0 +1,13 @@
+<map id="urosNodeFindNewPublishers" name="urosNodeFindNewPublishers">
+<area shape="rect" id="node3" href="$group__base__funcs.html#gae5808c2f0aeb0a570ae545f7468acdce" title="Adds a node to the list." alt="" coords="229,5,307,33"/>
+<area shape="rect" id="node5" href="$group__base__funcs.html#ga23589c831c48304c37d6244e30210bfc" title="Checks if pointing to a valid list object." alt="" coords="388,30,479,58"/>
+<area shape="rect" id="node8" href="$group__threading__funcs.html#ga1db2c55616b4b1264d778c1ae5f25a83" title="Locks a mutex." alt="" coords="221,106,315,134"/>
+<area shape="rect" id="node12" href="$group__threading__funcs.html#ga35dba778a18d8708fcf957da4e5110b3" title="Unlocks a mutex." alt="" coords="216,157,320,185"/>
+<area shape="rect" id="node16" href="$group__base__funcs.html#ga78efe29ebd12a2c10a0b101b5c982612" title="Compares two string objects." alt="" coords="221,207,315,235"/>
+<area shape="rect" id="node20" href="$group__base__funcs.html#ga683b6cffc3b9aa9d349d61e12a87a7bb" title="Checks if a string is not empty." alt="" coords="375,258,492,286"/>
+<area shape="rect" id="node22" href="$group__conn__funcs.html#ga2620f709a43b802a0037220fc85ff5f1" title="Resolves an URI to a connection address." alt="" coords="221,309,315,337"/>
+<area shape="rect" id="node10" href="$group__threading__lld__funcs.html#ga3d1782a58820716535c2b1328999d882" title="Locks a mutex." alt="" coords="375,106,492,134"/>
+<area shape="rect" id="node14" href="$group__threading__lld__funcs.html#gab2a24cbd59df48ebad27e5d7c32fc416" title="Unlocks a mutex." alt="" coords="368,157,499,185"/>
+<area shape="rect" id="node18" href="$group__base__funcs.html#gab56136abf86b735834072883da8e1e52" title="Checks if pointing to a valid string object." alt="" coords="383,207,484,235"/>
+<area shape="rect" id="node25" href="$group__conn__funcs.html#gac33a0b5f9084d080ffef74416d41abce" title="Resolves an hostname to an IP address." alt="" coords="376,309,491,337"/>
+</map>

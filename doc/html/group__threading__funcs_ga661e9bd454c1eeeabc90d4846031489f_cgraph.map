@@ -1,0 +1,13 @@
+<map id="urosThreadPoolJoinAll" name="urosThreadPoolJoinAll">
+<area shape="rect" id="node3" href="$group__threading__funcs.html#ga41671e7fb2edd6a4233a6bc7cb01d9cf" title="Broadcast condvar signal." alt="" coords="185,5,319,33"/>
+<area shape="rect" id="node7" href="$group__threading__funcs.html#gac41b7ff0ff65ddf278270d5c37c647f6" title="Waits for a condvar signal." alt="" coords="199,55,305,83"/>
+<area shape="rect" id="node11" href="$group__threading__funcs.html#ga1db2c55616b4b1264d778c1ae5f25a83" title="Locks a mutex." alt="" coords="205,106,299,134"/>
+<area shape="rect" id="node15" href="$group__threading__funcs.html#ga35dba778a18d8708fcf957da4e5110b3" title="Unlocks a mutex." alt="" coords="200,157,304,185"/>
+<area shape="rect" id="node19" href="$group__threading__funcs.html#ga0d51472a699f6790707980c71370af4d" title="Joins a thread." alt="" coords="204,207,300,235"/>
+<area shape="rect" id="node5" href="$group__threading__lld__funcs.html#ga1389d27e9f5788d0e332f81e6931e119" title="Broadcast condvar signal." alt="" coords="369,5,524,33"/>
+<area shape="rect" id="node9" href="$group__threading__lld__funcs.html#gaba27bbec5b129ecdd3e56da3d2147807" title="Waits for a condvar signal." alt="" coords="383,55,511,83"/>
+<area shape="rect" id="node13" href="$group__threading__lld__funcs.html#ga3d1782a58820716535c2b1328999d882" title="Locks a mutex." alt="" coords="388,106,505,134"/>
+<area shape="rect" id="node17" href="$group__threading__lld__funcs.html#gab2a24cbd59df48ebad27e5d7c32fc416" title="Unlocks a mutex." alt="" coords="381,157,512,185"/>
+<area shape="rect" id="node21" href="$group__threading__lld__funcs.html#gaeaab2d00b0344136eb1c84e877446ec2" title="Joins a thread." alt="" coords="388,207,505,235"/>
+<area shape="rect" id="node23" href="$group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a" title="Text of an error code." alt="" coords="403,258,491,286"/>
+</map>

@@ -1,0 +1,103 @@
+/*
+Copyright (c) 2012, Politecnico di Milano. All rights reserved.
+
+Andrea Zoppi <texzk@email.it>
+Martino Migliavacca <martino.migliavacca@gmail.com>
+
+http://airlab.elet.polimi.it/
+http://www.openrobots.com/
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+/** @page pag_info General info
+
+@section sec_info_intro Introduction
+
+<b>uROSnode</b> is a middleware targeted to embedded systems which need to
+communicate with <a href="http://www.ros.org">ROS</a>, in a lightweight and
+fast way. It is developed in pure ANSI C, which makes it easily portable
+and optimizable by almost all the embedded system compilers.
+
+TODO
+
+
+@section sec_info_pkg Package structure
+
+@subsection Folders
+The structure of the source package folders is the following:
+- <b>/</b>: Root folder, which contains Makefile sources to be included for your
+  platform
+- @b demos: This folder contains some usage examples, developed for different
+  target platform
+  - demo-xxx ...
+- @b doc: Documentation stuff
+  - @b doxygen: Resources for Doxygen generation
+    - @b dot: Graphviz <tt>.dot</tt> files
+    - @b dox: Doxygen <tt>.dox</tt> text-only files
+    - @b img: Images to be included in the documentation
+  - @b html: HTML user manual
+- @b include: Header files
+- @b misc: Miscellaneous stuff, for experimental purposes
+- @b src: Source code files
+  - @b lld: Low-level drivers
+    - driver-xxx ...
+- @b template: Template files
+  - @b include: Template header files
+  - @b src: Template source files
+    - @b lld: Template low-level driver files
+
+@subsection Modules
+The software is written in a modular fashion. Their logical subdivision is the
+following, based on the abbreviated names:
+- @b urosBase: Basic data types and features (e.g. memory management)
+- @b urosConn: Connectivity features, platform-indipendent
+- @b urosNode: Node related stuff
+- @b urosRpc*: XMLRPC related stuff
+  - @b urosRpcCall: XMLRPC call functions and data types
+  - @b urosRpcParser: XMLRPC parser for incoming streams
+  - @b urosRpcSlave: ROS XMLRPC Slave API management
+  - @b urosRpcStreamer: XMLRPC writer for outgoing streams
+- @b urosTcpRps: TCPROS data types and management
+- @b urosThreading: Multithreading features, platform-independent
+
+Additionally, some modules need low-level bindings to platform-dependent
+libraries, or callbacks for the project application:
+- @b uros_lld_base: Platform-dependent memory management features
+- @b uros_lld_conn: Bindings to the chosen low-level connectivity library
+- @b uros_lld_node: Node configuration load/save to non-volatile memory
+- @b uros_lld_threading: Bindings to the multithreading features of the chosen
+  operating system
+- @b urosUser: User callbacks, application-dependent.
+  
+TODO
+
+
+@section sec_info_usage Integration with user software
+
+TODO
+
+
+@section sec_info_lld Low-level drivers
+
+TODO
+
+*/

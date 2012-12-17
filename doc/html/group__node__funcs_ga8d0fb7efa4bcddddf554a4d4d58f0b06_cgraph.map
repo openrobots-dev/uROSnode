@@ -1,0 +1,13 @@
+<map id="urosNodeSubscribeTopicSZ" name="urosNodeSubscribeTopicSZ">
+<area shape="rect" id="node3" href="$group__node__funcs.html#ga28263c8607d14c52bb11450febe0624c" title="urosNodeSubscribeTopic" alt="" coords="212,207,353,235"/>
+<area shape="rect" id="node26" href="$group__base__funcs.html#ga45818844e48c6458a4ab88820a0ef6c1" title="The string object points to a memory chunk." alt="" coords="228,258,337,286"/>
+<area shape="rect" id="node5" href="$group__base__funcs.html#ga683b6cffc3b9aa9d349d61e12a87a7bb" title="Checks if a string is not empty." alt="" coords="631,55,748,83"/>
+<area shape="rect" id="node7" href="$group__base__funcs.html#ga55350c72a8397fbdd9b9bc4f7f68735f" title="Gets the message type descriptor with the requested name." alt="" coords="425,5,559,33"/>
+<area shape="rect" id="node10" href="$group__threading__funcs.html#ga1db2c55616b4b1264d778c1ae5f25a83" title="Locks a mutex." alt="" coords="643,233,736,261"/>
+<area shape="rect" id="node12" href="$group__base__funcs.html#gaf3be0d7e379f41fd664bf2d6356fe84f" title="Gets the list node referencing a topic with the requested name." alt="" coords="419,157,565,185"/>
+<area shape="rect" id="node14" href="$group__threading__funcs.html#ga35dba778a18d8708fcf957da4e5110b3" title="Unlocks a mutex." alt="" coords="440,207,544,235"/>
+<area shape="rect" id="node16" href="$group__base__funcs.html#gaeed2817c2f87f5f953f48e44f83a2d5a" title="Initializes a topic descriptor." alt="" coords="436,258,548,286"/>
+<area shape="rect" id="node18" href="$group__base__funcs.html#gaa06fbc7230d27fd97612c38c7c40d500" title="Clones a string object." alt="" coords="443,309,541,337"/>
+<area shape="rect" id="node20" href="$group__node__funcs.html#ga9a15140cb500fbbcf29fce16ad31a573" title="Subscribes to a topic by its descriptor." alt="" coords="403,106,581,134"/>
+<area shape="rect" id="node24" href="$group__base__funcs.html#ga4d08e89758fa879909cd58df47bf4d94" title="Deallocates a topic descriptor." alt="" coords="443,410,541,438"/>
+</map>

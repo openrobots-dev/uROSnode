@@ -1,0 +1,13 @@
+<map id="urosRpcStreamerParam" name="urosRpcStreamerParam">
+<area shape="rect" id="node3" href="$group__rpc__streamer__funcs.html#gafe71bc375dec3fd51f77fa0ee8ded6f8" title="Writes the value of an &lt;array&gt; XMLRPC parameter." alt="" coords="199,40,364,84"/>
+<area shape="rect" id="node5" href="$group__rpc__streamer__funcs.html#gab1cd5404dd19988fe6acd6501086e2bb" title="Writes a simple opening tag for a non&#45;empty XML element." alt="" coords="419,48,589,76"/>
+<area shape="rect" id="node10" href="$group__rpc__streamer__funcs.html#ga60979c6527f404735ee95565c60ff183" title="Writes the closing tag for a non&#45;empty XML element." alt="" coords="419,107,589,135"/>
+<area shape="rect" id="node13" href="$group__rpc__streamer__funcs.html#gaee1886e8f118e7a016fac4f2c95bb3e3" title="Writes the value of a &lt;base64&gt; XMLRPC parameter." alt="" coords="199,157,364,201"/>
+<area shape="rect" id="node15" href="$group__rpc__streamer__funcs.html#ga6acd5369869b2947b7c9a27fc5ce27db" title="Writes the value of a &lt;boolean&gt; XMLRPC parameter." alt="" coords="199,224,364,268"/>
+<area shape="rect" id="node20" href="$group__rpc__streamer__funcs.html#ga03b8a774ddc9281a131bd5e9c3db761f" title="Writes the value of a &lt;double&gt; XMLRPC parameter." alt="" coords="199,291,364,335"/>
+<area shape="rect" id="node24" href="$group__rpc__streamer__funcs.html#ga0495b21bf4441b150796580c3e81deed" title="Writes the value of an &lt;i4&gt; XMLRPC parameter." alt="" coords="192,357,371,385"/>
+<area shape="rect" id="node26" href="$group__rpc__streamer__funcs.html#ga1620403eab7a820fefc149ed162650bf" title="Writes the value of a &lt;string&gt; XMLRPC parameter." alt="" coords="421,371,587,415"/>
+<area shape="rect" id="node29" href="$group__rpc__streamer__funcs.html#ga6edfe806ee3b0e458a2c7a0120d250ee" title="Writes the value of a &lt;struct&gt; XMLRPC parameter." alt="" coords="199,459,364,503"/>
+<area shape="rect" id="node7" href="$group__rpc__streamer__funcs.html#ga9db04b4c11ce2a33673b0dfc6d3145ef" title="Writes some data." alt="" coords="639,236,769,264"/>
+<area shape="rect" id="node17" href="$group__rpc__streamer__funcs.html#ga360cb17ce01bd18af2a6eb919ad40300" title="Writes a decimal unsigned integer (uint32)." alt="" coords="435,236,573,264"/>
+</map>

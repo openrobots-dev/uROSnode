@@ -1,0 +1,11 @@
+<map id="urosTcpRosRecvString" name="urosTcpRosRecvString">
+<area shape="rect" id="node3" href="$group__base__funcs.html#gaca31660467115b07820c90fd9f282d67" title="Allocates a memory block." alt="" coords="212,5,276,33"/>
+<area shape="rect" id="node7" href="$group__base__funcs.html#ga09d885f53087047696beb347b4b9a220" title="Cleans a string object." alt="" coords="195,55,293,83"/>
+<area shape="rect" id="node11" href="$group__base__funcs.html#gae4c3b93a55591bdc3f0f57d7b437b9dc" title="Initializes a string object." alt="" coords="187,106,301,134"/>
+<area shape="rect" id="node13" href="$group__tcpros__funcs.html#ga74f24303701aaee160150572ea7ff3a4" title="Reads some data from the incoming TCPROS stream." alt="" coords="192,157,296,185"/>
+<area shape="rect" id="node5" href="$group__base__lld__funcs.html#ga398bc5ae7ad32d8f360986b5dd5f7f92" title="Allocates a memory block." alt="" coords="357,5,443,33"/>
+<area shape="rect" id="node9" href="$group__base__funcs.html#gabf008f1631293a018e1d7be3ffbb5b51" title="Deallocates a memory block." alt="" coords="367,55,433,83"/>
+<area shape="rect" id="node15" href="$group__conn__funcs.html#gaee11d892e258d71b827dc8d691ab8ac7" title="Checks if pointing to a valid connection object." alt="" coords="351,106,449,134"/>
+<area shape="rect" id="node17" href="$group__conn__funcs.html#gaf57e00f8dfcad939c94754753df0952f" title="Receives some data." alt="" coords="353,157,447,185"/>
+<area shape="rect" id="node19" href="$group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a" title="Text of an error code." alt="" coords="356,207,444,235"/>
+</map>

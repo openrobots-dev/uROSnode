@@ -1,0 +1,4 @@
+<map id="urosConnShutdown" name="urosConnShutdown">
+<area shape="rect" id="node3" href="$group__conn__lld__funcs.html#ga13dbe34a5e3e705b916f19daa350e9ac" title="Terminates soem ends of a full&#45;duplex channel." alt="" coords="172,5,311,33"/>
+<area shape="rect" id="node5" href="$group__conn__funcs.html#gaee11d892e258d71b827dc8d691ab8ac7" title="Checks if pointing to a valid connection object." alt="" coords="361,5,460,33"/>
+</map>

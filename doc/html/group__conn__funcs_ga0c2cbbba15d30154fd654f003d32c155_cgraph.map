@@ -1,0 +1,4 @@
+<map id="urosConnSetRecvTimeout" name="urosConnSetRecvTimeout">
+<area shape="rect" id="node3" href="$group__conn__lld__funcs.html#ga9e7f2eb971c069af53ab965b29c80daa" title="Sets the receiver timeout." alt="" coords="203,5,365,33"/>
+<area shape="rect" id="node5" href="$group__conn__funcs.html#gaee11d892e258d71b827dc8d691ab8ac7" title="Checks if pointing to a valid connection object." alt="" coords="415,5,513,33"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="urosRpcSlaveConnectToPublishers" name="urosRpcSlaveConnectToPublishers">
+<area shape="rect" id="node3" href="$group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a" title="Text of an error code." alt="" coords="280,5,368,33"/>
+<area shape="rect" id="node5" href="$group__base__funcs.html#gaa06fbc7230d27fd97612c38c7c40d500" title="Clones a string object." alt="" coords="275,55,373,83"/>
+<area shape="rect" id="node9" href="$group__base__funcs.html#ga683b6cffc3b9aa9d349d61e12a87a7bb" title="Checks if a string is not empty." alt="" coords="265,106,383,134"/>
+<area shape="rect" id="node11" href="$group__threading__funcs.html#gaeea85ae8f249cff2e9541a5aad289f9c" title="Starts a worker thread." alt="" coords="245,157,403,185"/>
+<area shape="rect" id="node21" href="$group__tcpros__funcs.html#gadead49ee66691a69d903cad58010a2ab" title="Deletes topic subscription parameters." alt="" coords="247,233,401,261"/>
+<area shape="rect" id="node7" href="$group__base__funcs.html#gaca31660467115b07820c90fd9f282d67" title="Allocates a memory block." alt="" coords="476,30,540,58"/>
+<area shape="rect" id="node13" href="$group__threading__funcs.html#ga1db2c55616b4b1264d778c1ae5f25a83" title="Locks a mutex." alt="" coords="461,81,555,109"/>
+<area shape="rect" id="node15" href="$group__threading__funcs.html#gac41b7ff0ff65ddf278270d5c37c647f6" title="Waits for a condvar signal." alt="" coords="455,131,561,159"/>
+<area shape="rect" id="node17" href="$group__threading__funcs.html#ga35dba778a18d8708fcf957da4e5110b3" title="Unlocks a mutex." alt="" coords="456,182,560,210"/>
+<area shape="rect" id="node19" href="$group__threading__funcs.html#gab5d4fcbed1f9cc5b5beca8e43425863e" title="Single condvar signal." alt="" coords="451,233,565,261"/>
+<area shape="rect" id="node23" href="$group__base__funcs.html#ga09d885f53087047696beb347b4b9a220" title="Cleans a string object." alt="" coords="459,283,557,311"/>
+</map>

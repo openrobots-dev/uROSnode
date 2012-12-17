@@ -1,0 +1,4 @@
+<map id="urosConnSend" name="urosConnSend">
+<area shape="rect" id="node3" href="$group__conn__lld__funcs.html#ga576fa7bea8b0a0596bdcc82d7455feaa" title="Sends some data." alt="" coords="149,5,267,33"/>
+<area shape="rect" id="node5" href="$group__conn__funcs.html#gaee11d892e258d71b827dc8d691ab8ac7" title="Checks if pointing to a valid connection object." alt="" coords="316,5,415,33"/>
+</map>

@@ -1,0 +1,6 @@
+*~
+*.tmp
+*.bak
+*.old
+*.o
+.directory

@@ -1,0 +1,7 @@
+<map id="Base" name="Base">
+<area shape="rect" id="node1" href="$group__base__types.html" title="Data types" alt="" coords="121,5,193,33"/>
+<area shape="rect" id="node2" href="$group__base__funcs.html" title="Functions" alt="" coords="124,55,191,83"/>
+<area shape="rect" id="node4" href="$group__base__lld__funcs.html" title="Low&#45;level functions" alt="" coords="101,106,213,134"/>
+<area shape="rect" id="node5" href="$group__base__macros.html" title="Macros" alt="" coords="129,157,185,185"/>
+<area shape="rect" id="node6" href="$group__base__config.html" title="Configuration" alt="" coords="115,207,200,235"/>
+</map>

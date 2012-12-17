@@ -1,0 +1,9 @@
+<map id="urosRpcParserHttpRequest" name="urosRpcParserHttpRequest">
+<area shape="rect" id="node3" href="$group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a" title="Text of an error code." alt="" coords="588,151,676,179"/>
+<area shape="rect" id="node5" href="$group__rpc__parser__funcs.html#ga4ea5d7606832903417fe32794494ca84" title="Expects the parser to be pointing to a token." alt="" coords="228,34,353,62"/>
+<area shape="rect" id="node10" href="$group__rpc__parser__funcs.html#ga8062a7d32f90cf43dbc3482a4b6b1a5f" title="Expects the parser to be pointing to a token." alt="" coords="208,85,373,129"/>
+<area shape="rect" id="node13" href="$group__rpc__parser__funcs.html#ga123432b847b829546ac86277f652d9ef" title="Expects the parser to be pointing to a token." alt="" coords="216,151,365,179"/>
+<area shape="rect" id="node16" href="$group__rpc__parser__funcs.html#gab2dff25f63404e49583ee282e4a1fd43" title="Expects the parser to find a token, and skips it." alt="" coords="223,253,359,281"/>
+<area shape="rect" id="node20" href="$group__rpc__parser__funcs.html#ga305e5eb5fce3144691bfaa77858f7193" title="Reads a decimal unsigned integer (uint32)." alt="" coords="228,202,353,230"/>
+<area shape="rect" id="node7" href="$group__rpc__parser__funcs.html#ga580190002d7a17e33ed4e2262fee3ed9" title="Refills the parsing buffer." alt="" coords="421,151,539,179"/>
+</map>

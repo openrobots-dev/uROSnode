@@ -1,0 +1,4 @@
+<map id="urosConnGetTcpNoDelay" name="urosConnGetTcpNoDelay">
+<area shape="rect" id="node3" href="$group__conn__lld__funcs.html#ga7231996946389f6c3c142acac63e6ece" title="Gets the Nagle algorithm state." alt="" coords="200,5,360,33"/>
+<area shape="rect" id="node5" href="$group__conn__funcs.html#gaee11d892e258d71b827dc8d691ab8ac7" title="Checks if pointing to a valid connection object." alt="" coords="409,5,508,33"/>
+</map>

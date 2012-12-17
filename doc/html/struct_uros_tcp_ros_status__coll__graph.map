@@ -1,0 +1,8 @@
+<map id="UrosTcpRosStatus" name="UrosTcpRosStatus">
+<area shape="rect" id="node2" href="$struct_uros_string.html" title="String object." alt="" coords="5,6,77,103"/>
+<area shape="rect" id="node10" href="$struct_uros_topic.html" title="Topic descriptor." alt="" coords="121,451,191,549"/>
+<area shape="rect" id="node12" href="$struct_uros_msg_type.html" title="Message type descriptor." alt="" coords="96,225,184,338"/>
+<area shape="rect" id="node4" href="$struct_uros_conn.html" title="Connection information record." alt="" coords="316,443,388,557"/>
+<area shape="rect" id="node6" href="$struct_uros_addr.html" title="Full address record (IP + port)." alt="" coords="333,241,400,322"/>
+<area shape="rect" id="node8" href="$structuros__topicflags__t.html" title="Topic and service flags." alt="" coords="208,201,309,362"/>
+</map>

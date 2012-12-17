@@ -1,0 +1,13 @@
+<map id="urosInit" name="urosInit">
+<area shape="rect" id="node3" href="$group__base__lld__funcs.html#gad0bd1fc403fb332ab6d11c0b03385d26" title="Initializes the low&#45;level system." alt="" coords="145,5,223,33"/>
+<area shape="rect" id="node5" href="$group__base__funcs.html#ga44e0ce54ba23fc5f0d5d505356867837" title="Initializes a list object." alt="" coords="325,106,427,134"/>
+<area shape="rect" id="node7" href="$group__node__funcs.html#ga8f2c7d165f0aad82b9ee3a45204bfa1b" title="Loads node configuration." alt="" coords="123,55,245,83"/>
+<area shape="rect" id="node11" href="$group__node__funcs.html#gaf5abd468ab3b1e1d8623df84b88df5d2" title="Initializes a node object." alt="" coords="128,157,240,185"/>
+<area shape="rect" id="node23" href="$group__threading__funcs.html#gab8d616e0bb75660a28be2c7189058626" title="Creates all the thread pool threads." alt="" coords="113,207,255,235"/>
+<area shape="rect" id="node25" href="$group__user__funcs.html#gab5778df7c281f76d2a0e348e9e7da7b7" title="Creates the listener threads." alt="" coords="113,258,255,286"/>
+<area shape="rect" id="node9" href="$group__node__lld__funcs.html#gad3a33ab5be14d00f215f0e21cc3bacb7" title="Loads node configuration." alt="" coords="305,55,447,83"/>
+<area shape="rect" id="node14" href="$group__threading__funcs.html#ga37994e1b40b726a446c246de9ab8af6e" title="Initializes a mutex." alt="" coords="497,207,612,235"/>
+<area shape="rect" id="node16" href="$group__user__funcs.html#ga1de2142a2a02aaf5113c029b2968b144" title="Initializes and allocates memory pools." alt="" coords="307,309,445,337"/>
+<area shape="rect" id="node18" href="$group__threading__funcs.html#gaf5bcef4a97d45aeb65b10c8c6d2c3ee0" title="Initializes a thread pool." alt="" coords="305,157,447,185"/>
+<area shape="rect" id="node21" href="$group__tcpros__funcs.html#ga49843d8a86d3164a3c318b7afa456332" title="TCPROS Client worker thread." alt="" coords="305,207,447,235"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="Connectivity" name="Connectivity">
+<area shape="rect" id="node1" href="$group__conn__macros.html" title="Macros" alt="" coords="161,5,217,33"/>
+<area shape="rect" id="node2" href="$group__conn__config.html" title="Configuration" alt="" coords="147,55,232,83"/>
+<area shape="rect" id="node3" href="$group__conn__types.html" title="Data types" alt="" coords="153,106,225,134"/>
+<area shape="rect" id="node4" href="$group__conn__lld__funcs.html" title="Low&#45;level functions" alt="" coords="133,157,245,185"/>
+<area shape="rect" id="node5" href="$group__conn__funcs.html" title="Functions" alt="" coords="156,207,223,235"/>
+</map>

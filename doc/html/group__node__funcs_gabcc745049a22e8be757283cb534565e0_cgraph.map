@@ -1,0 +1,13 @@
+<map id="urosNodePublishService" name="urosNodePublishService">
+<area shape="rect" id="node3" href="$group__base__funcs.html#ga13754ff12d667881c4d8db5c3fa9922c" title="Gets the service type descriptor with the requested name." alt="" coords="215,141,345,169"/>
+<area shape="rect" id="node5" href="$group__base__funcs.html#ga683b6cffc3b9aa9d349d61e12a87a7bb" title="Checks if a string is not empty." alt="" coords="439,40,556,68"/>
+<area shape="rect" id="node11" href="$group__threading__funcs.html#ga1db2c55616b4b1264d778c1ae5f25a83" title="Locks a mutex." alt="" coords="451,91,544,119"/>
+<area shape="rect" id="node13" href="$group__threading__funcs.html#ga35dba778a18d8708fcf957da4e5110b3" title="Unlocks a mutex." alt="" coords="228,243,332,271"/>
+<area shape="rect" id="node15" href="$group__node__funcs.html#ga23dd94be8d8eca304c09aa91fa6a7107" title="Publishes a service by its descriptor." alt="" coords="193,40,367,68"/>
+<area shape="rect" id="node19" href="$group__base__funcs.html#gaa06fbc7230d27fd97612c38c7c40d500" title="Clones a string object." alt="" coords="231,293,329,321"/>
+<area shape="rect" id="node22" href="$group__base__funcs.html#ga4d08e89758fa879909cd58df47bf4d94" title="Deallocates a topic descriptor." alt="" coords="231,344,329,372"/>
+<area shape="rect" id="node24" href="$group__base__funcs.html#gaf3be0d7e379f41fd664bf2d6356fe84f" title="Gets the list node referencing a topic with the requested name." alt="" coords="207,192,353,220"/>
+<area shape="rect" id="node27" href="$group__base__funcs.html#gaeed2817c2f87f5f953f48e44f83a2d5a" title="Initializes a topic descriptor." alt="" coords="224,395,336,423"/>
+<area shape="rect" id="node7" href="$group__base__funcs.html#gaf2fb34900da45a0b6d5c5205c318c2f1" title="First matching node occurrence of the list." alt="" coords="457,192,537,220"/>
+<area shape="rect" id="node9" href="$group__base__funcs.html#ga8a0d5762a24d4b78743863b329e475f1" title="Checks if the list node links to a message type with the requested name." alt="" coords="417,141,577,169"/>
+</map>
