@@ -1640,6 +1640,7 @@ uros_err_t urosRpcParserParamValueArray(UrosRpcParser *pp,
 
   paramp->class = UROS_RPCP_ARRAY;
   paramp->value.listp = urosNew(UrosRpcParamList);
+  if (paramp->value.listp == NULL) { return pp->err = UROS_ERR_NOMEM; }
   urosRpcParamListObjectInit(paramp->value.listp);
 
   /* Parse the data array.*/
@@ -1648,6 +1649,7 @@ uros_err_t urosRpcParserParamValueArray(UrosRpcParser *pp,
   while (UROS_TRUE) {
     UrosRpcParamNode *nodep;
     nodep = urosNew(UrosRpcParamNode);
+    if (nodep == NULL) { pp->err = UROS_ERR_NOMEM; goto _error; }
     urosRpcParamNodeObjectInit(nodep, UROS_RPCP__LENGTH);
     urosRpcParamListAppendNode(paramp->value.listp, nodep);
     urosRpcParserSkipWs(pp); _CHKOK
@@ -1956,6 +1958,7 @@ uros_err_t urosRpcParserMethodResponse(UrosRpcParser *pp,
   *resp->statusMsgp = str2.value.string;
 #endif
   resp->valuep = urosNew(UrosRpcParam);
+  if (resp->valuep == NULL) { pp->err = UROS_ERR_NOMEM; goto _error; }
   *resp->valuep = any3;
 
   return pp->err = UROS_OK;

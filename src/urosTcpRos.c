@@ -251,10 +251,9 @@ uros_err_t uros_tcpros_recvheader(UrosTcpRosStatus *tcpstp,
   if (!thisisclient) {
     urosAssert(tcpstp->topicp == NULL);
     typep = urosNew(UrosMsgType);
-    if (typep == NULL) { return tcpstp->err = UROS_ERR_NOMEM; }
     topicp = urosNew(UrosTopic);
-    if (topicp == NULL) {
-      urosFree(typep);
+    if (typep == NULL || topicp == NULL) {
+      urosFree(typep); urosFree(topicp);
       return tcpstp->err = UROS_ERR_NOMEM;
     }
     urosMsgTypeObjectInit(typep);
@@ -469,6 +468,7 @@ uros_err_t uros_tcpserver_processtopicheader(UrosTcpRosStatus *tcpstp) {
 
   /* Add this connection to the active publisher connections list.*/
   tcpnodep = urosNew(UrosListNode);
+  if (tcpnodep == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
   tcpnodep->datap = tcpstp;
   tcpnodep->nextp = NULL;
   urosMutexLock(&urosNode.status.pubTcpListLock);
@@ -526,6 +526,7 @@ uros_err_t uros_tcpserver_processserviceheader(UrosTcpRosStatus *tcpstp) {
 
   /* Add this connection to the active publisher connections list.*/
   tcpnodep = urosNew(UrosListNode);
+  if (tcpnodep == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
   tcpnodep->datap = tcpstp;
   tcpnodep->nextp = NULL;
   urosMutexLock(&urosNode.status.pubTcpListLock);
@@ -652,7 +653,7 @@ uros_err_t uros_tcpros_resolvepublisher(const uros_tcpcliargs_t *parp,
   if (response.code != UROS_RPCC_SUCCESS) { _ERR };
   urosError(response.valuep->class != UROS_RPCP_ARRAY, _ERR,
             ("Response calue class is %d, expecting %d (UROS_RPCP_ARRAY)\n",
-             response.valuep->class, UROS_RPCP_ARRAY));
+             (int)response.valuep->class, (int)UROS_RPCP_ARRAY));
   parlistp = response.valuep->value.listp;
   urosAssert(parlistp != NULL);
   if (parlistp->length != 3) { _ERR }
@@ -662,13 +663,13 @@ uros_err_t uros_tcpros_resolvepublisher(const uros_tcpcliargs_t *parp,
   int3 = &nodep->param;
   urosError(str1->class != UROS_RPCP_STRING, _ERR,
             ("Response calue class is %d, expecting %d (UROS_RPCP_STRING)\n",
-             str1->class, UROS_RPCP_STRING));
+             (int)str1->class, (int)UROS_RPCP_STRING));
   urosError(str2->class != UROS_RPCP_STRING, _ERR,
             ("Response calue class is %d, expecting %d (UROS_RPCP_STRING)\n",
-             str2->class, UROS_RPCP_STRING));
+             (int)str2->class, (int)UROS_RPCP_STRING));
   urosError(int3->class != UROS_RPCP_INT, _ERR,
             ("Response calue class is %d, expecting %d (UROS_RPCP_INT)\n",
-             int3->class, UROS_RPCP_INT));
+             (int)int3->class, (int)UROS_RPCP_INT));
   if (0 != urosStringCmp(&tcprosnode.param.value.string,
                          &str1->value.string)) { _ERR }
   err = urosHostnameToIp(&str2->value.string, &pubaddrp->ip);
@@ -1218,6 +1219,7 @@ uros_err_t urosTcpRosListenerThread(void *data) {
 
     /* Accept the incoming connection.*/
     spawnedp = urosNew(UrosConn);
+    urosAssert(spawnedp != NULL);
     urosConnObjectInit(spawnedp);
     err = urosConnAccept(&conn, spawnedp);
     urosAssert(err == UROS_OK);
@@ -1265,6 +1267,7 @@ uros_err_t urosTcpRosServerThread(UrosConn *csp) {
   urosAssert(csp != NULL);
 
   tcpstp = urosNew(UrosTcpRosStatus);
+  if (tcpstp == NULL) { return UROS_ERR_NOMEM; }
   urosTpcRosStatusObjectInit(tcpstp, csp);
 
   /* Receive the connection header.*/

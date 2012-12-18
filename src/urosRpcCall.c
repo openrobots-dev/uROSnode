@@ -126,6 +126,7 @@ uros_err_t uros_rpcpcall_buildctx(uros_rpcpcallctx_t *ctxp,
 
   /* Initialize the streamer.*/
   bufp = (char*)urosAlloc(UROS_MTU_SIZE);
+  if (bufp == NULL) { return ctxp->x.err = UROS_ERR_NOMEM; }
   urosRpcStreamerObjectInit(&ctxp->x.streamer, &ctxp->conn,
                             bufp, UROS_MTU_SIZE);
 
@@ -156,6 +157,7 @@ uros_err_t uros_rpccall_waitresponsestart(uros_rpcpcallctx_t *ctxp) {
 
   /* Initialize the parser.*/
   rdbufp = (char*)urosAlloc(UROS_RPCPARSER_RDBUFLEN);
+  if (rdbufp == NULL) { return ctxp->x.err = UROS_ERR_NOMEM; }
   urosRpcParserObjectInit(&ctxp->x.parser, &ctxp->conn,
                           rdbufp, UROS_RPCPARSER_RDBUFLEN);
 

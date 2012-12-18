@@ -36,6 +36,8 @@ var uros_tcp_ros_8c =
     [ "servicefield", "uros_tcp_ros_8c.html#a4c010ec4b9f7200b0c8252b30008c356", null ],
     [ "md5field", "uros_tcp_ros_8c.html#a412891f394bf3723af660b0e284fbe3f", null ],
     [ "typefield", "uros_tcp_ros_8c.html#ab0e0258edf67615cdb476bac3d85fa15", null ],
+    [ "reqtypefield", "uros_tcp_ros_8c.html#a689413a56ac9e8a4d59961177e2ccdb7", null ],
+    [ "restypefield", "uros_tcp_ros_8c.html#afda2ba895b9e3d4cc19815105fbaf9fa", null ],
     [ "persistentfield", "uros_tcp_ros_8c.html#aad7b14e3ce69be46aeb5ead29f8d1e2d", null ],
     [ "latchingfield", "uros_tcp_ros_8c.html#af6d787e2f051f9bc168d7cf56ab5c3cc", null ],
     [ "tcpnodelayfield", "uros_tcp_ros_8c.html#af805899a365cf0c8a3920649fe1fdff4", null ],

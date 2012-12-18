@@ -308,6 +308,7 @@ uros_err_t uros_rpcslave_receive_params(UrosRpcParser *pp,
 
   /* str caller_id always as first parameter.*/
   str1 = urosNew(UrosRpcParamNode);
+  if (str1 == NULL) { return UROS_ERR_NOMEM; }
   urosRpcParamNodeObjectInit(str1, UROS_RPCP_STRING);
   urosRpcParamListAppendNode(parlistp, str1);
   uros_rpcslave_receive_parambyclass(pp, &str1->param); _CHKOK
@@ -325,6 +326,10 @@ uros_err_t uros_rpcslave_receive_params(UrosRpcParser *pp,
   case UROS_RPCSM_PARAM_UPDATE: {
     UrosRpcParamNode *str2 = urosNew(UrosRpcParamNode);
     UrosRpcParamNode *any3 = urosNew(UrosRpcParamNode);
+    if (str2 == NULL || any3 == NULL) {
+      urosFree(str2); urosFree(any3);
+      pp->err = UROS_ERR_NOMEM; goto _error;
+    }
     urosRpcParamNodeObjectInit(str2, UROS_RPCP_STRING);
     urosRpcParamNodeObjectInit(any3, UROS_RPCP__LENGTH);
     urosRpcParamListAppendNode(parlistp, str2);
@@ -345,6 +350,10 @@ uros_err_t uros_rpcslave_receive_params(UrosRpcParser *pp,
   case UROS_RPCSM_REQUEST_TOPIC: {
     UrosRpcParamNode *str2 = urosNew(UrosRpcParamNode);
     UrosRpcParamNode *array3 = urosNew(UrosRpcParamNode);
+    if (str2 == NULL || array3 == NULL) {
+      urosFree(str2); urosFree(array3);
+      pp->err = UROS_ERR_NOMEM; goto _error;
+    }
     urosRpcParamNodeObjectInit(str2, UROS_RPCP_STRING);
     urosRpcParamNodeObjectInit(array3, UROS_RPCP_ARRAY);
     urosRpcParamListAppendNode(parlistp, str2);
@@ -358,6 +367,7 @@ uros_err_t uros_rpcslave_receive_params(UrosRpcParser *pp,
   }
   case UROS_RPCSM_SHUTDOWN: {
     UrosRpcParamNode *str2 = urosNew(UrosRpcParamNode);
+    if (str2 == NULL) { pp->err = UROS_ERR_NOMEM; goto _error; }
     urosRpcParamNodeObjectInit(str2, UROS_RPCP_STRING);
     urosRpcParamListAppendNode(parlistp, str2);
 
@@ -1033,9 +1043,8 @@ uros_err_t urosRpcSlaveConnectToPublishers(const UrosString *topicp,
 
   /* Connect to each publisher.*/
   for (nodep = addrlstp->headp; nodep != NULL; nodep = nodep->nextp) {
-    uros_tcpcliargs_t *parp;
-
-    parp = urosNew(uros_tcpcliargs_t);
+    uros_tcpcliargs_t *parp = urosNew(uros_tcpcliargs_t);
+    if (parp == NULL) { return UROS_ERR_NOMEM; }
     parp->topicName = urosStringClone(topicp);
     parp->remoteAddr = *(const UrosAddr *)nodep->datap;
 

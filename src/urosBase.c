@@ -506,6 +506,7 @@ UrosString urosStringClone(const UrosString *strp) {
     clone.length = strp->length;
     if (clone.length > 0) {
       clone.datap = (char*)urosAlloc(clone.length);
+      urosAssert(clone.datap != NULL);
       memcpy(clone.datap, strp->datap, clone.length);
     } else {
       clone.datap = NULL;
@@ -567,6 +568,7 @@ UrosString urosStringCloneZ(const char *szp) {
     clone.length = strlen(szp);
     if (clone.length > 0) {
       clone.datap = (char*)urosAlloc(clone.length);
+      urosAssert(clone.datap != NULL);
       memcpy(clone.datap, szp, clone.length);
     } else {
       clone.datap = NULL;
@@ -825,11 +827,13 @@ void urosRegisterStaticMsgType(const UrosString *namep,
   urosAssert(urosStringNotEmpty(md5sump));
 
   typep = urosNew(UrosMsgType);
+  urosAssert(typep != NULL);
   typep->name = *namep;
   typep->desc = *descp;
   typep->md5str = *md5sump;
 
   nodep = urosNew(UrosListNode);
+  urosAssert(nodep != NULL);
   urosListNodeObjectInit(nodep);
   nodep->datap = typep;
   urosListAdd(&urosMsgTypeList, nodep);
@@ -868,11 +872,13 @@ void urosRegisterStaticMsgTypeSZ(const char *namep,
   urosAssert(md5sump[0] != 0);
 
   typep = urosNew(UrosMsgType);
+  urosAssert(typep != NULL);
   typep->name = urosStringAssignZ(namep);
   typep->desc = urosStringAssignZ(descp);
   typep->md5str = urosStringAssignZ(md5sump);
 
   nodep = urosNew(UrosListNode);
+  urosAssert(nodep != NULL);
   urosListNodeObjectInit(nodep);
   nodep->datap = typep;
   urosListAdd(&urosMsgTypeList, nodep);
@@ -977,11 +983,13 @@ void urosRegisterStaticSrvType(const UrosString *namep,
   urosAssert(urosStringNotEmpty(md5sump));
 
   typep = urosNew(UrosMsgType);
+  urosAssert(typep != NULL);
   typep->name = *namep;
   typep->desc = *descp;
   typep->md5str = *md5sump;
 
   nodep = urosNew(UrosListNode);
+  urosAssert(nodep != NULL);
   urosListNodeObjectInit(nodep);
   nodep->datap = typep;
   urosListAdd(&urosSrvTypeList, nodep);
@@ -1020,11 +1028,13 @@ void urosRegisterStaticSrvTypeSZ(const char *namep,
   urosAssert(md5sump[0] != 0);
 
   typep = urosNew(UrosMsgType);
+  urosAssert(typep != NULL);
   typep->name = urosStringAssignZ(namep);
   typep->desc = urosStringAssignZ(descp);
   typep->md5str = urosStringAssignZ(md5sump);
 
   nodep = urosNew(UrosListNode);
+  urosAssert(nodep != NULL);
   urosListNodeObjectInit(nodep);
   nodep->datap = typep;
   urosListAdd(&urosSrvTypeList, nodep);

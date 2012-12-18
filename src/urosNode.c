@@ -327,6 +327,7 @@ uros_err_t urosNodePublishTopicByDesc(UrosTopic *topicp) {
 
   /* Add to the published topics list.*/
   nodep = urosNew(UrosListNode);
+  if (nodep == NULL) { err = UROS_ERR_NOMEM; goto _finally; }
   urosListNodeObjectInit(nodep);
   nodep->datap = (void*)topicp;
   urosListAdd(&urosNode.status.pubTopicList, nodep);
@@ -558,6 +559,7 @@ uros_err_t urosNodeSubscribeTopicByDesc(UrosTopic *topicp) {
 
   /* Add to the subscribed topics list.*/
   nodep = urosNew(UrosListNode);
+  if (nodep == NULL) { err = UROS_ERR_NOMEM; goto _finally; }
   urosListNodeObjectInit(nodep);
   nodep->datap = (void*)topicp;
   urosListAdd(&urosNode.status.subTopicList, nodep);
@@ -775,6 +777,7 @@ uros_err_t urosNodePublishServiceByDesc(const UrosTopic *servicep) {
 
   /* Add to the published topics list.*/
   nodep = urosNew(UrosListNode);
+  if (nodep == NULL) { err = UROS_ERR_NOMEM; goto _finally; }
   urosListNodeObjectInit(nodep);
   nodep->datap = (void*)servicep;
   urosListAdd(&urosNode.status.pubServiceList, nodep);
@@ -971,6 +974,7 @@ uros_err_t urosNodeSubscribeParamByDesc(const UrosTopic *paramp) {
 
   /* Add to the subscribed topics list.*/
   nodep = urosNew(UrosListNode);
+  if (nodep == NULL) { err = UROS_ERR_NOMEM; goto _finally; }
   urosListNodeObjectInit(nodep);
   nodep->datap = (void*)paramp;
   urosListAdd(&urosNode.status.subParamList, nodep);
@@ -1116,9 +1120,21 @@ uros_err_t urosNodeFindNewPublishers(const UrosString *topicnamep,
       }
     }
     if (tcpfoundp == NULL) {
+      UrosAddr *addrp;
+      UrosListNode *nodep;
+
       /* New publisher.*/
-      UrosAddr *addrp = urosNew(UrosAddr);
-      UrosListNode *nodep = urosNew(UrosListNode);
+      addrp = urosNew(UrosAddr);
+      if (addrp == NULL) {
+        urosMutexUnlock(&urosNode.status.subTcpListLock);
+        return UROS_ERR_NOMEM;
+      }
+      nodep = urosNew(UrosListNode);
+      if (nodep == NULL) {
+        urosFree(addrp);
+        urosMutexUnlock(&urosNode.status.subTcpListLock);
+        return UROS_ERR_NOMEM;
+      }
       *addrp = pubaddr;
       nodep->datap = addrp;
       nodep->nextp = NULL;
