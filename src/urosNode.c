@@ -159,7 +159,7 @@ void urosNodeConfigLoadDefaults(UrosNodeConfig *cfgp) {
   cfgp->xmlrpcAddr.ip.dword = UROS_XMLRPC_LISTENER_IP;
   cfgp->xmlrpcAddr.port = UROS_XMLRPC_LISTENER_PORT;
   cfgp->xmlrpcUri = urosStringCloneZ(
-    "rosrpc://"UROS_XMLRPC_LISTENER_IP_SZ
+    "http://"UROS_XMLRPC_LISTENER_IP_SZ
     ":"UROS_STRINGIFY2(UROS_XMLRPC_LISTENER_PORT));
   cfgp->tcprosAddr.ip.dword = UROS_TCPROS_LISTENER_IP;
   cfgp->tcprosAddr.port = UROS_TCPROS_LISTENER_PORT;
@@ -169,7 +169,7 @@ void urosNodeConfigLoadDefaults(UrosNodeConfig *cfgp) {
   cfgp->masterAddr.ip.dword = UROS_XMLRPC_MASTER_IP;
   cfgp->masterAddr.port = UROS_XMLRPC_MASTER_PORT;
   cfgp->masterUri = urosStringCloneZ(
-    "rosrpc://"UROS_XMLRPC_MASTER_IP_SZ
+    "http://"UROS_XMLRPC_MASTER_IP_SZ
     ":"UROS_STRINGIFY2(UROS_XMLRPC_MASTER_PORT));
 }
 
@@ -687,6 +687,7 @@ uros_err_t urosNodePublishService(const UrosString *namep,
   servicep->name = urosStringClone(namep);
   servicep->typep = statictypep;
   servicep->procf = procf;
+  servicep->flags.service = UROS_TRUE;
 
   /* Try to register the topic.*/
   err = urosNodePublishServiceByDesc(servicep);
