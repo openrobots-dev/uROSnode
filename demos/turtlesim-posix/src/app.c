@@ -5,6 +5,10 @@
  *      Author: texzk
  */
 
+/*===========================================================================*/
+/* HEADER FILES                                                              */
+/*===========================================================================*/
+
 #include <urosBase.h>
 #include <urosUser.h>
 #include <urosNode.h>
@@ -17,6 +21,10 @@
 #define min(a,b)    (((a) <= (b)) ? (a) : (b))
 #define max(a,b)    (((a) >= (b)) ? (a) : (b))
 
+/*===========================================================================*/
+/* GLOBAL VARIABLES                                                          */
+/*===========================================================================*/
+
 fifo_t rosoutQueue;
 
 turtle_t turtles[MAX_TURTLES];
@@ -25,6 +33,12 @@ UrosThreadPool turtlesThreadPool;
 UrosMemPool turtlesMemPool;
 static uint8_t turtlesThreadStacks[MAX_TURTLES]
                                   [sizeof(void*) + TURTLE_THREAD_STKSIZE];
+
+/*===========================================================================*/
+/* GLOBAL FUNCTIONS                                                          */
+/*===========================================================================*/
+
+/*~~~ FIFO MESSAGE QUEUE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 void fifo_init(fifo_t *queuep, unsigned length) {
 
@@ -72,6 +86,7 @@ void *fifo_dequeue(fifo_t *queuep) {
   return msgp;
 }
 
+/*~~~ ROSOUT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 void rosout_post(UrosString *strp, uros_bool_t costant, uint8_t level,
                  const char *fileszp, int line, const char *funcp) {
@@ -107,6 +122,8 @@ void rosout_fetch(struct msg__rosgraph_msgs__Log **msgpp) {
 
   *msgpp = (struct msg__rosgraph_msgs__Log *)fifo_dequeue(&rosoutQueue);
 }
+
+/*~~~ APPLICATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /* Sets its own paramaters.*/
 void app_set_params(void) {
@@ -190,11 +207,7 @@ void app_initialize(void) {
 
 }
 
-void app_background_service(void) {
-
-  /* Sleep forever.*/
-  do { urosThreadSleepSec(1); } while (UROS_TRUE);
-}
+/*~~~ TURTLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 void turtle_init_pools(void) {
 
@@ -496,6 +509,50 @@ void turtle_kill(turtle_t *turtlep) {
   urosStringClean(&turtlep->telrelService);
   turtlep->status = TURTLE_DEAD;
   urosMutexUnlock(&turtlep->lock);
+}
+
+turtle_t *turtle_refbyname(const UrosString *name) {
+
+  turtle_t *turtlep;
+  unsigned i;
+
+  urosAssert(urosStringNotEmpty(name));
+
+  /* Find the turtle by its name.*/
+  for (turtlep = turtles, i = 0; i < MAX_TURTLES; ++turtlep, ++i) {
+    urosMutexLock(&turtlep->lock);
+    if (0 == urosStringCmp(name, &turtlep->name)) {
+      ++turtlep->refCnt;
+      urosMutexUnlock(&turtlep->lock);
+      return turtlep;
+    }
+    urosMutexUnlock(&turtlep->lock);
+  }
+  return NULL;
+}
+
+turtle_t *turtle_refbypath(const UrosString *topicName) {
+
+  turtle_t *turtlep;
+  unsigned i;
+
+  urosAssert(urosStringNotEmpty(topicName));
+  urosAssert(topicName->datap[0] == '/');
+
+  /* Find the turtle by its topic/service path.*/
+  for (turtlep = turtles, i = 0; i < MAX_TURTLES; ++turtlep, ++i) {
+    urosMutexLock(&turtlep->lock);
+    if (topicName->length >= 1 + turtlep->name.length + 1 &&
+        topicName->datap[1 + turtlep->name.length] == '/' &&
+        0 == memcmp(topicName->datap + 1, turtlep->name.datap,
+                    turtlep->name.length)) {
+      ++turtlep->refCnt;
+      urosMutexUnlock(&turtlep->lock);
+      return turtlep;
+    }
+    urosMutexUnlock(&turtlep->lock);
+  }
+  return NULL;
 }
 
 void turtle_unref(turtle_t *turtlep) {

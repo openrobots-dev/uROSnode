@@ -53,60 +53,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define max(a,b)    (((a) >= (b)) ? (a) : (b))
 
 /*============================================================================*/
-/* LOCAL FUNCTIONS                                                            */
-/*============================================================================*/
-
-static unsigned get_turtleid_by_name(const UrosString *name) {
-
-  unsigned id = MAX_TURTLES;
-  size_t i;
-
-  urosAssert(urosStringNotEmpty(name));
-
-  /* Find the turtle name.*/
-  for (i = 0; i < MAX_TURTLES; ++i) {
-    urosMutexLock(&turtles[i].lock);
-    if (0 == urosStringCmp(name, &turtles[i].name)) {
-      id = i;
-      ++turtles[i].refCnt;
-      urosMutexUnlock(&turtles[i].lock);
-      break;
-    }
-    urosMutexUnlock(&turtles[i].lock);
-  }
-
-  urosAssert(id != MAX_TURTLES);
-  return id;
-}
-
-static unsigned get_turtleid_by_path(const UrosString *topicName) {
-
-  unsigned id = MAX_TURTLES;
-  size_t i;
-
-  urosAssert(urosStringNotEmpty(topicName));
-  urosAssert(topicName->datap[0] == '/');
-
-  /* Find the turtle name.*/
-  for (i = 0; i < MAX_TURTLES; ++i) {
-    urosMutexLock(&turtles[i].lock);
-    if (topicName->length >= 1 + turtles[i].name.length + 1 &&
-        topicName->datap[1 + turtles[i].name.length] == '/' &&
-        0 == memcmp(topicName->datap + 1, turtles[i].name.datap,
-                    turtles[i].name.length)) {
-      id = i;
-      ++turtles[i].refCnt;
-      urosMutexUnlock(&turtles[i].lock);
-      break;
-    }
-    urosMutexUnlock(&turtles[i].lock);
-  }
-
-  urosAssert(id != MAX_TURTLES);
-  return id;
-}
-
-/*============================================================================*/
 /* PUBLISHED TOPIC FUNCTIONS                                                  */
 /*============================================================================*/
 
@@ -193,7 +139,8 @@ uros_err_t pub_tpc__turtleX__pose(UrosTcpRosStatus *tcpstp) {
   urosAssert(urosConnIsValid(tcpstp->csp));
 
   /* Get the turtle slot.*/
-  turtlep = &turtles[get_turtleid_by_path(&tcpstp->topicp->name)];
+  turtlep = turtle_refbypath(&tcpstp->topicp->name);
+  if (turtlep == NULL) { return UROS_ERR_BADPARAM; }
 
   /* Message allocation and initialization.*/
   msgp = urosNew(struct msg__turtlesim__Pose);
@@ -209,7 +156,11 @@ uros_err_t pub_tpc__turtleX__pose(UrosTcpRosStatus *tcpstp) {
       urosMutexUnlock(&turtlep->lock);
       break;
     }
-    *msgp = turtlep->pose;
+    msgp->x = turtlep->pose.x;
+    msgp->y = turtlep->pose.y;
+    msgp->theta = turtlep->pose.theta;
+    msgp->linear_velocity = turtlep->pose.linear_velocity;
+    msgp->angular_velocity = turtlep->pose.angular_velocity;
     urosMutexUnlock(&turtlep->lock);
 
     /* Send the message.*/
@@ -263,13 +214,14 @@ uros_err_t sub_tpc__turtleX__command_velocity(UrosTcpRosStatus *tcpstp) {
   uint32_t length;
   turtle_t *turtlep;
 
-  /* Get the turtle slot.*/
-  turtlep = &turtles[get_turtleid_by_path(&tcpstp->topicp->name)];
-
   urosAssert(tcpstp != NULL);
   urosAssert(tcpstp->topicp != NULL);
   urosAssert(!tcpstp->topicp->flags.service);
   urosAssert(urosConnIsValid(tcpstp->csp));
+
+  /* Get the turtle slot.*/
+  turtlep = turtle_refbypath(&tcpstp->topicp->name);
+  if (turtlep == NULL) { return UROS_ERR_BADPARAM; }
 
   urosMutexLock(&turtlep->lock);
   if (turtlep->status != TURTLE_ALIVE) {
@@ -461,7 +413,8 @@ uros_err_t pub_srv__kill(UrosTcpRosStatus *tcpstp) {
     urosStringClean(&tcpstp->errstr);
     okByte = 1;
 
-    turtlep = &turtles[get_turtleid_by_name(&inmsgp->name)];
+    turtlep = turtle_refbypath(&inmsgp->name);
+    if (turtlep == NULL) { return UROS_ERR_BADPARAM; }
     turtle_unref(turtlep);
     turtle_kill(turtlep);
 
@@ -619,7 +572,8 @@ uros_err_t pub_srv__turtleX__set_pen(UrosTcpRosStatus *tcpstp) {
   urosAssert(urosConnIsValid(tcpstp->csp));
 
   /* Get the turtle slot.*/
-  turtlep = &turtles[get_turtleid_by_path(&tcpstp->topicp->name)];
+  turtlep = turtle_refbypath(&tcpstp->topicp->name);
+  if (turtlep == NULL) { return UROS_ERR_BADPARAM; }
 
   /* Service messages allocation and initialization.*/
   inmsgp = urosNew(struct in_srv__turtlesim__SetPen);
@@ -713,8 +667,9 @@ uros_err_t pub_srv__turtleX__teleport_absolute(UrosTcpRosStatus *tcpstp) {
   urosAssert(urosConnIsValid(tcpstp->csp));
 
   /* Get the turtle slot.*/
-  turtlep = &turtles[get_turtleid_by_path(&tcpstp->topicp->name)];
-  posep = &turtlep->pose;
+  turtlep = turtle_refbypath(&tcpstp->topicp->name);
+  if (turtlep == NULL) { return UROS_ERR_BADPARAM; }
+  posep = (struct msg__turtlesim__Pose *)&turtlep->pose;
 
   /* Service messages allocation and initialization.*/
   inmsgp = urosNew(struct in_srv__turtlesim__TeleportAbsolute);
@@ -817,8 +772,8 @@ uros_err_t pub_srv__turtleX__teleport_relative(UrosTcpRosStatus *tcpstp) {
   urosAssert(urosConnIsValid(tcpstp->csp));
 
   /* Get the turtle slot.*/
-  turtlep = &turtles[get_turtleid_by_path(&tcpstp->topicp->name)];
-  posep = &turtlep->pose;
+  turtlep = turtle_refbypath(&tcpstp->topicp->name);
+  posep = (struct msg__turtlesim__Pose *)&turtlep->pose;
 
   /* Service messages allocation and initialization.*/
   inmsgp = urosNew(struct in_srv__turtlesim__TeleportRelative);

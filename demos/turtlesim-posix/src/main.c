@@ -5,6 +5,10 @@
  *      Author: texzk
  */
 
+/*===========================================================================*/
+/* HEADER FILES                                                              */
+/*===========================================================================*/
+
 #include <stdio.h>
 #include "app.h"
 
@@ -19,7 +23,10 @@ int main (int argc, char *argv[]) {
   app_initialize();
 
   /* Enter the background service loop.*/
-  app_background_service();
+  for (;;) {
+    /* Nothing to do.*/
+    urosThreadSleepSec(1);
+  }
 
   return 0;
 }
