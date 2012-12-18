@@ -1023,6 +1023,7 @@ uros_err_t urosTcpRosRecvString(UrosTcpRosStatus *tcpstp,
   if (tcpstp->err != UROS_OK) { return tcpstp->err; }
 
   /* Read the string data.*/
+  strp->length = (size_t)length;
   strp->datap = (char*)urosAlloc(strp->length);
   if (strp->datap == NULL) {
     strp->length = 0;

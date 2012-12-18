@@ -463,28 +463,28 @@ void turtle_kill(turtle_t *turtlep) {
   err = urosNodeUnpublishTopic(&turtlep->poseTopic);
   urosError(err != UROS_OK, UROS_NOP,
             ("Error %s while unpublishing topic [%.*s]\n",
-             UROS_STRARG(&turtlep->poseTopic)));
+             urosErrorText(err), UROS_STRARG(&turtlep->poseTopic)));
 
-  err = urosNodeUnpublishTopic(&turtlep->velTopic);
+  err = urosNodeUnsubscribeTopic(&turtlep->velTopic);
   urosError(err != UROS_OK, UROS_NOP,
-            ("Error %s while unpublishing topic [%.*s]\n",
-             UROS_STRARG(&turtlep->velTopic)));
+            ("Error %s while unsubscribing topic [%.*s]\n",
+             urosErrorText(err), UROS_STRARG(&turtlep->velTopic)));
 
   /* Unpublish its services.*/
   err = urosNodeUnpublishService(&turtlep->setpenService);
   urosError(err != UROS_OK, UROS_NOP,
             ("Error %s while unpublishing service [%.*s]\n",
-             UROS_STRARG(&turtlep->setpenService)));
+             urosErrorText(err), UROS_STRARG(&turtlep->setpenService)));
 
   err = urosNodeUnpublishService(&turtlep->telabsService);
   urosError(err != UROS_OK, UROS_NOP,
             ("Error %s while unpublishing service [%.*s]\n",
-             UROS_STRARG(&turtlep->telabsService)));
+             urosErrorText(err), UROS_STRARG(&turtlep->telabsService)));
 
   err = urosNodeUnpublishService(&turtlep->telrelService);
   urosError(err != UROS_OK, UROS_NOP,
             ("Error %s while unpublishing service [%.*s]\n",
-             UROS_STRARG(&turtlep->telrelService)));
+             urosErrorText(err), UROS_STRARG(&turtlep->telrelService)));
 
   /* Cleanup fields.*/
   urosMutexLock(&turtlep->lock);

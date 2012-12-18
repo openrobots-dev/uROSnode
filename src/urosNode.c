@@ -414,6 +414,7 @@ uros_err_t urosNodeUnpublishTopic(const UrosString *namep) {
     /* No TCPROS connections, just free the descriptor immediately.*/
     urosListNodeDelete(topicnodep, (uros_delete_f)urosTopicDelete);
   }
+  urosMutexUnlock(&urosNode.status.pubTcpListLock);
 
 _finally:
   urosMutexUnlock(&urosNode.status.pubTopicListLock);
@@ -647,6 +648,7 @@ uros_err_t urosNodeUnsubscribeTopic(const UrosString *namep) {
     /* No TCPROS connections, just free the descriptor immediately.*/
     urosListNodeDelete(topicnodep, (uros_delete_f)urosTopicDelete);
   }
+  urosMutexUnlock(&urosNode.status.subTcpListLock);
 
 _finally:
   urosMutexUnlock(&urosNode.status.subTopicListLock);
@@ -835,7 +837,7 @@ uros_err_t urosNodeUnpublishService(const UrosString *namep) {
     &urosNode.config.masterAddr,
     &urosNode.config.nodeName,
     namep,
-    &urosNode.config.xmlrpcUri,
+    &urosNode.config.tcprosUri,
     &res
   );
   urosError(err != UROS_OK, UROS_NOP,
@@ -866,6 +868,7 @@ uros_err_t urosNodeUnpublishService(const UrosString *namep) {
     /* No TCPROS connections, just free the descriptor immediately.*/
     urosListNodeDelete(servicenodep, (uros_delete_f)urosTopicDelete);
   }
+  urosMutexUnlock(&urosNode.status.pubTcpListLock);
 
 _finally:
   urosMutexUnlock(&urosNode.status.pubServiceListLock);

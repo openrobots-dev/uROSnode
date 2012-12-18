@@ -767,7 +767,7 @@ void urosThreadSleepSec(uint32_t sec) {
  * @brief   Sleeps for some milliseconds.
  * @details Puts the thread in sleep state for the provided amount of time.
  *
- * @param[in] sec
+ * @param[in] msec
  *          Number of milliseconds to sleep.
  */
 void urosThreadSleepMsec(uint32_t msec) {
@@ -779,7 +779,7 @@ void urosThreadSleepMsec(uint32_t msec) {
  * @brief   Sleeps for some microseconds.
  * @details Puts the thread in sleep state for the provided amount of time.
  *
- * @param[in] sec
+ * @param[in] usec
  *          Number of microseconds to sleep.
  */
 void urosThreadSleepUsec(uint32_t usec) {

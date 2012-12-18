@@ -5,3 +5,5 @@ uROSnode is a middleware targeted to embedded systems which need to communicate 
 
 Please refer to [the documentation](./doc/html/index.html) for more information.
 
+(An unsynchronized [copy of the documentation](https://dl.dropbox.com/u/2771793/uros/doc/html/index.html) is available).
+
