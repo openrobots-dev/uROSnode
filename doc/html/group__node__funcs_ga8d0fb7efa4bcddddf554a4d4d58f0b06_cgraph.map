@@ -1,5 +1,5 @@
 <map id="urosNodeSubscribeTopicSZ" name="urosNodeSubscribeTopicSZ">
-<area shape="rect" id="node3" href="$group__node__funcs.html#ga28263c8607d14c52bb11450febe0624c" title="urosNodeSubscribeTopic" alt="" coords="212,207,353,235"/>
+<area shape="rect" id="node3" href="$group__node__funcs.html#ga28263c8607d14c52bb11450febe0624c" title="Subscribes to a topic." alt="" coords="212,207,353,235"/>
 <area shape="rect" id="node26" href="$group__base__funcs.html#ga45818844e48c6458a4ab88820a0ef6c1" title="The string object points to a memory chunk." alt="" coords="228,258,337,286"/>
 <area shape="rect" id="node5" href="$group__base__funcs.html#ga683b6cffc3b9aa9d349d61e12a87a7bb" title="Checks if a string is not empty." alt="" coords="631,55,748,83"/>
 <area shape="rect" id="node7" href="$group__base__funcs.html#ga55350c72a8397fbdd9b9bc4f7f68735f" title="Gets the message type descriptor with the requested name." alt="" coords="425,5,559,33"/>

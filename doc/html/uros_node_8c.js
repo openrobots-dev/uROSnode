@@ -18,7 +18,6 @@ var uros_node_8c =
     [ "urosNodeUnpublishService", "uros_node_8c.html#ga3c583fe282e14b2a1a8decfdbbdbe971", null ],
     [ "urosNodeSubscribeParam", "uros_node_8c.html#ga57066b1bc73c5654171f34af5d19456d", null ],
     [ "urosNodeSubscribeParamSZ", "uros_node_8c.html#gaef9ef455659c6ba731a3d6f9556a07bc", null ],
-    [ "urosNodeSubscribeParamByDesc", "uros_node_8c.html#ga2eed510f72ca4194a3a1b44d31761e1d", null ],
     [ "urosNodeUnsubscribeParam", "uros_node_8c.html#ga0ec4ef27932603646162bef8bf15c16c", null ],
     [ "urosNodeFindNewPublishers", "uros_node_8c.html#ga289dbcb25897f91da1a881f63c75f190", null ],
     [ "urosNode", "uros_node_8c.html#a87ebbeb87be6c83d31d42c096913a711", null ]

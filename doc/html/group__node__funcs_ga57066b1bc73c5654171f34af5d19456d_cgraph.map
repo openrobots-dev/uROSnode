@@ -1,13 +1,13 @@
 <map id="urosNodeSubscribeParam" name="urosNodeSubscribeParam">
-<area shape="rect" id="node3" href="$group__threading__funcs.html#ga1db2c55616b4b1264d778c1ae5f25a83" title="Locks a mutex." alt="" coords="465,55,559,83"/>
-<area shape="rect" id="node7" href="$group__threading__funcs.html#ga35dba778a18d8708fcf957da4e5110b3" title="Unlocks a mutex." alt="" coords="243,5,347,33"/>
-<area shape="rect" id="node11" href="$group__node__funcs.html#ga2eed510f72ca4194a3a1b44d31761e1d" title="Subscribes to a parameter by its descriptor." alt="" coords="203,106,387,134"/>
-<area shape="rect" id="node13" href="$group__base__funcs.html#ga683b6cffc3b9aa9d349d61e12a87a7bb" title="Checks if a string is not empty." alt="" coords="453,157,571,185"/>
-<area shape="rect" id="node18" href="$group__base__funcs.html#gaa06fbc7230d27fd97612c38c7c40d500" title="Clones a string object." alt="" coords="245,207,344,235"/>
-<area shape="rect" id="node21" href="$group__base__funcs.html#ga4d08e89758fa879909cd58df47bf4d94" title="Deallocates a topic descriptor." alt="" coords="245,258,344,286"/>
-<area shape="rect" id="node23" href="$group__base__funcs.html#gaf3be0d7e379f41fd664bf2d6356fe84f" title="Gets the list node referencing a topic with the requested name." alt="" coords="221,309,368,337"/>
-<area shape="rect" id="node25" href="$group__base__funcs.html#gaeed2817c2f87f5f953f48e44f83a2d5a" title="Initializes a topic descriptor." alt="" coords="239,359,351,387"/>
-<area shape="rect" id="node5" href="$group__threading__lld__funcs.html#ga3d1782a58820716535c2b1328999d882" title="Locks a mutex." alt="" coords="639,55,756,83"/>
-<area shape="rect" id="node9" href="$group__threading__lld__funcs.html#gab2a24cbd59df48ebad27e5d7c32fc416" title="Unlocks a mutex." alt="" coords="447,5,577,33"/>
-<area shape="rect" id="node15" href="$group__rpc__funcs.html#ga3aa421f7a9011427fb23add0d0bd80c8" title="Initializes a XMLRPC response." alt="" coords="435,106,589,134"/>
+<area shape="rect" id="node3" href="$group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a" title="Text of an error code." alt="" coords="239,5,327,33"/>
+<area shape="rect" id="node5" href="$group__base__funcs.html#gabf008f1631293a018e1d7be3ffbb5b51" title="Deallocates a memory block." alt="" coords="455,106,521,134"/>
+<area shape="rect" id="node9" href="$group__threading__funcs.html#ga1db2c55616b4b1264d778c1ae5f25a83" title="Locks a mutex." alt="" coords="236,309,329,337"/>
+<area shape="rect" id="node11" href="$group__threading__funcs.html#ga35dba778a18d8708fcf957da4e5110b3" title="Unlocks a mutex." alt="" coords="231,359,335,387"/>
+<area shape="rect" id="node13" href="$group__rpc__call__funcs.html#gaca4c310214b0589aa7b0ca106cda8ba7" title="Retrieve parameter value from server and subscribe to updates to that param." alt="" coords="204,157,361,185"/>
+<area shape="rect" id="node15" href="$group__base__funcs.html#ga683b6cffc3b9aa9d349d61e12a87a7bb" title="Checks if a string is not empty." alt="" coords="429,170,547,198"/>
+<area shape="rect" id="node17" href="$group__rpc__funcs.html#ga3aa421f7a9011427fb23add0d0bd80c8" title="Initializes a XMLRPC response." alt="" coords="411,246,565,274"/>
+<area shape="rect" id="node21" href="$group__base__funcs.html#gaa06fbc7230d27fd97612c38c7c40d500" title="Clones a string object." alt="" coords="233,410,332,438"/>
+<area shape="rect" id="node23" href="$group__base__funcs.html#ga2771682c759ab7046892c3e3ae41f3f8" title="Deallocates a string object." alt="" coords="232,106,333,134"/>
+<area shape="rect" id="node26" href="$group__base__funcs.html#ga314096aed1e7830b1b8ca08ca2cbb05a" title="Gets the list node referencing the referenced string." alt="" coords="208,461,357,489"/>
+<area shape="rect" id="node7" href="$group__base__lld__funcs.html#ga2862473343e5349c85bc008b9e5b51ed" title="Deallocates a memory block." alt="" coords="615,106,697,134"/>
 </map>

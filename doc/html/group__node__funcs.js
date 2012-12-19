@@ -18,7 +18,6 @@ var group__node__funcs =
     [ "urosNodeUnpublishService", "group__node__funcs.html#ga3c583fe282e14b2a1a8decfdbbdbe971", null ],
     [ "urosNodeSubscribeParam", "group__node__funcs.html#ga57066b1bc73c5654171f34af5d19456d", null ],
     [ "urosNodeSubscribeParamSZ", "group__node__funcs.html#gaef9ef455659c6ba731a3d6f9556a07bc", null ],
-    [ "urosNodeSubscribeParamByDesc", "group__node__funcs.html#ga2eed510f72ca4194a3a1b44d31761e1d", null ],
     [ "urosNodeUnsubscribeParam", "group__node__funcs.html#ga0ec4ef27932603646162bef8bf15c16c", null ],
     [ "urosNodeFindNewPublishers", "group__node__funcs.html#ga289dbcb25897f91da1a881f63c75f190", null ]
 ];

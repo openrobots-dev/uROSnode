@@ -712,7 +712,7 @@ Here is the call graph for this function:</div>
 
 <p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l00974">974</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
 
-<p>References <a class="el" href="struct_uros_tcp_ros_status.html#a51f9d90d6d5466e85a8e70ef34acd3c3">UrosTcpRosStatus::csp</a>, <a class="el" href="struct_uros_tcp_ros_status.html#af23a918cf2c1d7a3e3eb63fc28d34255">UrosTcpRosStatus::err</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca2aa45ad0fcc039cef995b754c97f63ce">UROS_OK</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, <a class="el" href="group__conn__funcs.html#gaee11d892e258d71b827dc8d691ab8ac7">urosConnIsValid()</a>, <a class="el" href="group__conn__funcs.html#gaf57e00f8dfcad939c94754753df0952f">urosConnRecv()</a>, <a class="el" href="group__base__macros.html#gae2617103c16f3e9d923d712289011471">urosError</a>, and <a class="el" href="group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a">urosErrorText()</a>.</p>
+<p>References <a class="el" href="struct_uros_tcp_ros_status.html#a51f9d90d6d5466e85a8e70ef34acd3c3">UrosTcpRosStatus::csp</a>, <a class="el" href="struct_uros_tcp_ros_status.html#af23a918cf2c1d7a3e3eb63fc28d34255">UrosTcpRosStatus::err</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca80a8979a995f7f9ef18727b88358725e">UROS_ERR_EOF</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca2aa45ad0fcc039cef995b754c97f63ce">UROS_OK</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, <a class="el" href="group__conn__funcs.html#gaee11d892e258d71b827dc8d691ab8ac7">urosConnIsValid()</a>, <a class="el" href="group__conn__funcs.html#gaf57e00f8dfcad939c94754753df0952f">urosConnRecv()</a>, <a class="el" href="group__base__macros.html#gae2617103c16f3e9d923d712289011471">urosError</a>, and <a class="el" href="group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a">urosErrorText()</a>.</p>
 
 <p>Referenced by <a class="el" href="group__tcpros__funcs.html#ga2778f2bb23319fdef87c510fc4508d12">urosTcpRosRecvString()</a>.</p>
 
@@ -761,7 +761,7 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Error code. </dd></dl>
 
-<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01010">1010</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
+<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01020">1020</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
 
 <p>References <a class="el" href="struct_uros_string.html#af400c70d8d855a509e3c8bf7312f65de">UrosString::datap</a>, <a class="el" href="struct_uros_tcp_ros_status.html#af23a918cf2c1d7a3e3eb63fc28d34255">UrosTcpRosStatus::err</a>, <a class="el" href="struct_uros_string.html#ab401588ed4bd01f81686bc7ce5edde91">UrosString::length</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6cad6877461eb507108e0b2d8d26608252c">UROS_ERR_NOMEM</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca2aa45ad0fcc039cef995b754c97f63ce">UROS_OK</a>, <a class="el" href="group__base__funcs.html#gaca31660467115b07820c90fd9f282d67">urosAlloc()</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, <a class="el" href="group__base__funcs.html#ga09d885f53087047696beb347b4b9a220">urosStringClean()</a>, <a class="el" href="group__base__funcs.html#gae4c3b93a55591bdc3f0f57d7b437b9dc">urosStringObjectInit()</a>, <a class="el" href="group__tcpros__funcs.html#ga74f24303701aaee160150572ea7ff3a4">urosTcpRosRecv()</a>, and <a class="el" href="group__tcpros__macros.html#gab46591d449daea00833d5e341ccd518b">urosTcpRosRecvRaw</a>.</p>
 
@@ -817,11 +817,11 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Error code. </dd></dl>
 
-<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01052">1052</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
+<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01063">1063</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
 
 <p>References <a class="el" href="struct_uros_tcp_ros_status.html#a51f9d90d6d5466e85a8e70ef34acd3c3">UrosTcpRosStatus::csp</a>, <a class="el" href="struct_uros_tcp_ros_status.html#af23a918cf2c1d7a3e3eb63fc28d34255">UrosTcpRosStatus::err</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca2aa45ad0fcc039cef995b754c97f63ce">UROS_OK</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, <a class="el" href="group__conn__funcs.html#ga403f6b0dd7d07bf22e8f288913f0a909">urosConnSend()</a>, <a class="el" href="group__base__macros.html#gae2617103c16f3e9d923d712289011471">urosError</a>, and <a class="el" href="group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a">urosErrorText()</a>.</p>
 
-<p>Referenced by <a class="el" href="group__tcpros__funcs.html#ga6d57ee0bf0ff513f186fb07936f9fa6e">urosTcpRosSendError()</a>, <a class="el" href="group__tcpros__funcs.html#ga712e84742c7b81d9191220775c77b75c">urosTcpRosSendString()</a>, <a class="el" href="group__tcpros__funcs.html#ga44234e944e36a16ebe304d1a5e64230d">urosTcpRosSendStringSZ()</a>, and <a class="el" href="group__tcpros__funcs.html#ga53416bb911ab68ff7ab4b0931b844514">urosTcpRosServerThread()</a>.</p>
+<p>Referenced by <a class="el" href="group__tcpros__funcs.html#ga712e84742c7b81d9191220775c77b75c">urosTcpRosSendString()</a>, <a class="el" href="group__tcpros__funcs.html#ga44234e944e36a16ebe304d1a5e64230d">urosTcpRosSendStringSZ()</a>, and <a class="el" href="group__tcpros__funcs.html#ga53416bb911ab68ff7ab4b0931b844514">urosTcpRosServerThread()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -868,7 +868,7 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Error code. </dd></dl>
 
-<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01078">1078</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
+<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01089">1089</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
 
 <p>References <a class="el" href="struct_uros_string.html#af400c70d8d855a509e3c8bf7312f65de">UrosString::datap</a>, <a class="el" href="struct_uros_tcp_ros_status.html#af23a918cf2c1d7a3e3eb63fc28d34255">UrosTcpRosStatus::err</a>, <a class="el" href="struct_uros_string.html#ab401588ed4bd01f81686bc7ce5edde91">UrosString::length</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca2aa45ad0fcc039cef995b754c97f63ce">UROS_OK</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, <a class="el" href="group__base__funcs.html#gab56136abf86b735834072883da8e1e52">urosStringIsValid()</a>, and <a class="el" href="group__tcpros__funcs.html#ga6a15d0789a11e47de153b6425318f013">urosTcpRosSend()</a>.</p>
 
@@ -917,7 +917,7 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Error code. </dd></dl>
 
-<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01108">1108</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
+<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01119">1119</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
 
 <p>References <a class="el" href="struct_uros_tcp_ros_status.html#af23a918cf2c1d7a3e3eb63fc28d34255">UrosTcpRosStatus::err</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca2aa45ad0fcc039cef995b754c97f63ce">UROS_OK</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, and <a class="el" href="group__tcpros__funcs.html#ga6a15d0789a11e47de153b6425318f013">urosTcpRosSend()</a>.</p>
 
@@ -956,20 +956,11 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Error code. </dd></dl>
 
-<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01136">1136</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
+<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01147">1147</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
 
-<p>References <a class="el" href="struct_uros_tcp_ros_status.html#af23a918cf2c1d7a3e3eb63fc28d34255">UrosTcpRosStatus::err</a>, <a class="el" href="struct_uros_tcp_ros_status.html#a53b54f24dee14dfe86ce850ecae5ad01">UrosTcpRosStatus::errstr</a>, <a class="el" href="struct_uros_string.html#ab401588ed4bd01f81686bc7ce5edde91">UrosString::length</a>, <a class="el" href="struct_uros_msg_type.html#a4cc949aa5333370fd12adf9d93a81c87">UrosMsgType::md5str</a>, <a class="el" href="struct_uros_msg_type.html#a66908c2943f4d2f1d61e2b7be9ce39fe">UrosMsgType::name</a>, <a class="el" href="struct_uros_tcp_ros_status.html#afc1b0399b8b6dc23c58672813889a1b4">UrosTcpRosStatus::topicp</a>, <a class="el" href="struct_uros_topic.html#a67377ab341821c1906a4b3feac57cb20">UrosTopic::typep</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca2aa45ad0fcc039cef995b754c97f63ce">UROS_OK</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, and <a class="el" href="group__tcpros__funcs.html#ga6a15d0789a11e47de153b6425318f013">urosTcpRosSend()</a>.</p>
+<p>References <a class="el" href="struct_uros_tcp_ros_status.html#af23a918cf2c1d7a3e3eb63fc28d34255">UrosTcpRosStatus::err</a>, <a class="el" href="struct_uros_tcp_ros_status.html#a53b54f24dee14dfe86ce850ecae5ad01">UrosTcpRosStatus::errstr</a>, <a class="el" href="struct_uros_string.html#ab401588ed4bd01f81686bc7ce5edde91">UrosString::length</a>, <a class="el" href="struct_uros_msg_type.html#a4cc949aa5333370fd12adf9d93a81c87">UrosMsgType::md5str</a>, <a class="el" href="struct_uros_msg_type.html#a66908c2943f4d2f1d61e2b7be9ce39fe">UrosMsgType::name</a>, <a class="el" href="struct_uros_tcp_ros_status.html#afc1b0399b8b6dc23c58672813889a1b4">UrosTcpRosStatus::topicp</a>, <a class="el" href="struct_uros_topic.html#a67377ab341821c1906a4b3feac57cb20">UrosTopic::typep</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca2aa45ad0fcc039cef995b754c97f63ce">UROS_OK</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, and <a class="el" href="group__tcpros__macros.html#ga85f8048ab01af69876f1b7e860c449dc">urosTcpRosSendRaw</a>.</p>
 
 <p>Referenced by <a class="el" href="group__tcpros__funcs.html#ga53416bb911ab68ff7ab4b0931b844514">urosTcpRosServerThread()</a>.</p>
-
-<p><div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="group__tcpros__funcs_ga6d57ee0bf0ff513f186fb07936f9fa6e_cgraph.png" border="0" usemap="#group__tcpros__funcs_ga6d57ee0bf0ff513f186fb07936f9fa6e_cgraph" alt=""/></div>
-<map name="group__tcpros__funcs_ga6d57ee0bf0ff513f186fb07936f9fa6e_cgraph" id="group__tcpros__funcs_ga6d57ee0bf0ff513f186fb07936f9fa6e_cgraph">
-<area shape="rect" id="node3" href="group__tcpros__funcs.html#ga6a15d0789a11e47de153b6425318f013" title="Writes some data to the outgoing TCPROS stream." alt="" coords="185,30,289,58"/><area shape="rect" id="node5" href="group__conn__funcs.html#ga403f6b0dd7d07bf22e8f288913f0a909" title="Sends some data." alt="" coords="340,5,433,33"/><area shape="rect" id="node7" href="group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a" title="Text of an error code." alt="" coords="343,55,431,83"/></map>
-</div>
-</p>
 
 </div>
 </div>
@@ -1000,7 +991,7 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Error code. </dd></dl>
 
-<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01195">1195</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
+<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01206">1206</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
 
 <p>References <a class="el" href="struct_uros_node.html#adc952e6ab7c3a6fa73a3f35f445dce8b">UrosNode::config</a>, <a class="el" href="union_uros_ip.html#aa800316c57525c3f7ab7e63806268378">UrosIp::dword</a>, <a class="el" href="struct_uros_addr.html#a14bb7d41100bb1cd35d4a79ea9f44d56">UrosAddr::ip</a>, <a class="el" href="struct_uros_addr.html#a3dc073d966e7e4cb97e7d70d2a5a0240">UrosAddr::port</a>, <a class="el" href="struct_uros_node.html#a5824c0ae5741fd90f941e81ce22fac13">UrosNode::status</a>, <a class="el" href="struct_uros_node_config.html#ab753d63232b5afd9216da455e2ddcd6d">UrosNodeConfig::tcprosAddr</a>, <a class="el" href="struct_uros_node_status.html#a484c6aadfbac1dd852b91889ff048363">UrosNodeStatus::tcpsvrThdPool</a>, <a class="el" href="group__conn__macros.html#ga24a26fea1ce8b4a5e09286811acc92c5">UROS_ANY_IP</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca2aa45ad0fcc039cef995b754c97f63ce">UROS_OK</a>, <a class="el" href="group__conn__types.html#ggaaab21b48f9c58022ce7de007837df406ac14a3548720df9c18a5f8cd95aea6d29">UROS_PROTO_TCP</a>, <a class="el" href="group__tcpros__config.html#ga063486fd466e2663faadde01e988a2e2">UROS_TCPROS_LISTENER_BACKLOG</a>, <a class="el" href="group__tcpros__config.html#ga40bb153d3143de9a5615f6aac78c06d0">UROS_TCPROS_SENDTIMEOUT</a>, <a class="el" href="group__base__macros.html#gafe1e9e4dd81f26e3eeaca59d8416142e">UROS_TRUE</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, <a class="el" href="group__conn__funcs.html#gab9e1753658f7bcbd7c28914b08ade339">urosConnAccept()</a>, <a class="el" href="group__conn__funcs.html#ga30377a386e675aeda42dfb579048be10">urosConnBind()</a>, <a class="el" href="group__conn__funcs.html#ga2e43894e0610daef8ae04450d054a9f1">urosConnClose()</a>, <a class="el" href="group__conn__funcs.html#gaf925c33a56c993810dabaac72eda9527">urosConnCreate()</a>, <a class="el" href="group__conn__funcs.html#gaee11d892e258d71b827dc8d691ab8ac7">urosConnIsValid()</a>, <a class="el" href="group__conn__funcs.html#ga6f2a857ee263efc01e1599d2ebbb0f8f">urosConnListen()</a>, <a class="el" href="group__conn__funcs.html#ga5e01ef471ab9fb2d299085c98f8a53e5">urosConnObjectInit()</a>, <a class="el" href="group__conn__funcs.html#ga4d717846968981e2e9eb127840e12b77">urosConnSetSendTimeout()</a>, <a class="el" href="group__base__funcs.html#gabf008f1631293a018e1d7be3ffbb5b51">urosFree()</a>, <a class="el" href="group__base__macros.html#gaf5fd0f0a25b126bd46328ab6e956dc2d">urosNew</a>, <a class="el" href="uros_node_8h.html#a87ebbeb87be6c83d31d42c096913a711">urosNode</a>, and <a class="el" href="group__threading__funcs.html#gaeea85ae8f249cff2e9541a5aad289f9c">urosThreadPoolStartWorker()</a>.</p>
 
@@ -1046,7 +1037,7 @@ The connection was alloacted with <code><a class="el" href="group__base__funcs.h
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Error code. </dd></dl>
 
-<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01261">1261</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
+<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01272">1272</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
 
 <p>References <a class="el" href="struct_uros_string.html#af400c70d8d855a509e3c8bf7312f65de">UrosString::datap</a>, <a class="el" href="struct_uros_tcp_ros_status.html#af23a918cf2c1d7a3e3eb63fc28d34255">UrosTcpRosStatus::err</a>, <a class="el" href="struct_uros_tcp_ros_status.html#a53b54f24dee14dfe86ce850ecae5ad01">UrosTcpRosStatus::errstr</a>, <a class="el" href="struct_uros_tcp_ros_status.html#ad2ef0a50c4176a846aaf6898b30d6d3f">UrosTcpRosStatus::flags</a>, <a class="el" href="struct_uros_string.html#ab401588ed4bd01f81686bc7ce5edde91">UrosString::length</a>, <a class="el" href="struct_uros_topic.html#a48e8b6a49c7d892cf19854f00251d24d">UrosTopic::procf</a>, <a class="el" href="struct_uros_node_status.html#aea5546bf63f7cabcaebc7e377d50ca68">UrosNodeStatus::pubServiceListLock</a>, <a class="el" href="struct_uros_node_status.html#a6e0bf4f06068497a8254ff5b5341d1b5">UrosNodeStatus::pubTopicListLock</a>, <a class="el" href="structuros__topicflags__t.html#a7cfab42a7b27fac28fae7b6f69d4ae73">uros_topicflags_t::service</a>, <a class="el" href="struct_uros_node.html#a5824c0ae5741fd90f941e81ce22fac13">UrosNode::status</a>, <a class="el" href="struct_uros_tcp_ros_status.html#afc1b0399b8b6dc23c58672813889a1b4">UrosTcpRosStatus::topicp</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6cad6877461eb507108e0b2d8d26608252c">UROS_ERR_NOMEM</a>, <a class="el" href="group__base__macros.html#ga9e109897ade099aba061ded6ee7064e9">UROS_FALSE</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca2aa45ad0fcc039cef995b754c97f63ce">UROS_OK</a>, <a class="el" href="group__base__macros.html#gafe1e9e4dd81f26e3eeaca59d8416142e">UROS_TRUE</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, <a class="el" href="group__conn__funcs.html#ga2e43894e0610daef8ae04450d054a9f1">urosConnClose()</a>, <a class="el" href="group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a">urosErrorText()</a>, <a class="el" href="group__threading__funcs.html#ga1db2c55616b4b1264d778c1ae5f25a83">urosMutexLock()</a>, <a class="el" href="group__threading__funcs.html#ga35dba778a18d8708fcf957da4e5110b3">urosMutexUnlock()</a>, <a class="el" href="group__base__macros.html#gaf5fd0f0a25b126bd46328ab6e956dc2d">urosNew</a>, <a class="el" href="uros_node_8h.html#a87ebbeb87be6c83d31d42c096913a711">urosNode</a>, <a class="el" href="group__base__funcs.html#ga09d885f53087047696beb347b4b9a220">urosStringClean()</a>, <a class="el" href="group__base__funcs.html#ga20b51d5d62b9561ed898801e9963a517">urosStringCloneZ()</a>, <a class="el" href="group__tcpros__funcs.html#ga6a15d0789a11e47de153b6425318f013">urosTcpRosSend()</a>, <a class="el" href="group__tcpros__funcs.html#ga6d57ee0bf0ff513f186fb07936f9fa6e">urosTcpRosSendError()</a>, <a class="el" href="group__tcpros__funcs.html#ga510c24182e90fc5d44c7ee5d6b0969c3">urosTcpRosServiceDone()</a>, <a class="el" href="group__tcpros__funcs.html#gac6770ed38ddd8fac19166e8d18c7179e">urosTcpRosTopicPublisherDone()</a>, <a class="el" href="group__tcpros__funcs.html#ga5a87826f92ae5990e19edca7ea4615ae">urosTpcRosStatusDelete()</a>, and <a class="el" href="group__tcpros__funcs.html#ga355da4ecb2705d1c48c34e4b454ef15f">urosTpcRosStatusObjectInit()</a>.</p>
 
@@ -1081,7 +1072,7 @@ The connection was alloacted with <code><a class="el" href="group__base__funcs.h
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Error code. </dd></dl>
 
-<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01360">1360</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
+<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01371">1371</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
 
 <p>References <a class="el" href="structuros__tcpcliargs__t.html#abb5017dc11b35c261436b6222a2a5298">uros_tcpcliargs_t::topicName</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca2aa45ad0fcc039cef995b754c97f63ce">UROS_OK</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, <a class="el" href="group__base__funcs.html#ga683b6cffc3b9aa9d349d61e12a87a7bb">urosStringNotEmpty()</a>, and <a class="el" href="group__tcpros__funcs.html#gadead49ee66691a69d903cad58010a2ab">urosTopicSubParamsDelete()</a>.</p>
 
@@ -1125,7 +1116,7 @@ If this is the last topic reference, the topic descriptor is deleted.</dd></dl>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01397">1397</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
+<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01408">1408</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
 
 <p>References <a class="el" href="structuros__topicflags__t.html#aa7325cf4481f1dee71ba9fe3ff8407ed">uros_topicflags_t::deleted</a>, <a class="el" href="struct_uros_tcp_ros_status.html#ad2ef0a50c4176a846aaf6898b30d6d3f">UrosTcpRosStatus::flags</a>, <a class="el" href="struct_uros_node.html#a5824c0ae5741fd90f941e81ce22fac13">UrosNode::status</a>, <a class="el" href="struct_uros_node_status.html#afe2468e629b5497699cdd79b3e134f95">UrosNodeStatus::subTopicListLock</a>, <a class="el" href="struct_uros_tcp_ros_status.html#afc1b0399b8b6dc23c58672813889a1b4">UrosTcpRosStatus::topicp</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, <a class="el" href="group__threading__funcs.html#ga1db2c55616b4b1264d778c1ae5f25a83">urosMutexLock()</a>, <a class="el" href="group__threading__funcs.html#ga35dba778a18d8708fcf957da4e5110b3">urosMutexUnlock()</a>, <a class="el" href="uros_node_8h.html#a87ebbeb87be6c83d31d42c096913a711">urosNode</a>, <a class="el" href="group__base__funcs.html#ga4d08e89758fa879909cd58df47bf4d94">urosTopicDelete()</a>, and <a class="el" href="group__base__funcs.html#ga5d198e01c806bed197064c19965019f3">urosTopicRefDec()</a>.</p>
 
@@ -1167,7 +1158,7 @@ If this is the last topic reference, the topic descriptor is deleted.</dd></dl>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01428">1428</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
+<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01439">1439</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
 
 <p>References <a class="el" href="structuros__topicflags__t.html#aa7325cf4481f1dee71ba9fe3ff8407ed">uros_topicflags_t::deleted</a>, <a class="el" href="struct_uros_tcp_ros_status.html#ad2ef0a50c4176a846aaf6898b30d6d3f">UrosTcpRosStatus::flags</a>, <a class="el" href="struct_uros_node_status.html#a6e0bf4f06068497a8254ff5b5341d1b5">UrosNodeStatus::pubTopicListLock</a>, <a class="el" href="struct_uros_node.html#a5824c0ae5741fd90f941e81ce22fac13">UrosNode::status</a>, <a class="el" href="struct_uros_tcp_ros_status.html#afc1b0399b8b6dc23c58672813889a1b4">UrosTcpRosStatus::topicp</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, <a class="el" href="group__threading__funcs.html#ga1db2c55616b4b1264d778c1ae5f25a83">urosMutexLock()</a>, <a class="el" href="group__threading__funcs.html#ga35dba778a18d8708fcf957da4e5110b3">urosMutexUnlock()</a>, <a class="el" href="uros_node_8h.html#a87ebbeb87be6c83d31d42c096913a711">urosNode</a>, <a class="el" href="group__base__funcs.html#ga4d08e89758fa879909cd58df47bf4d94">urosTopicDelete()</a>, and <a class="el" href="group__base__funcs.html#ga5d198e01c806bed197064c19965019f3">urosTopicRefDec()</a>.</p>
 
@@ -1211,7 +1202,7 @@ If this is the last service reference, the service descriptor is deleted.</dd></
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01458">1458</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
+<p>Definition at line <a class="el" href="uros_tcp_ros_8c_source.html#l01469">1469</a> of file <a class="el" href="uros_tcp_ros_8c_source.html">urosTcpRos.c</a>.</p>
 
 <p>References <a class="el" href="structuros__topicflags__t.html#aa7325cf4481f1dee71ba9fe3ff8407ed">uros_topicflags_t::deleted</a>, <a class="el" href="struct_uros_tcp_ros_status.html#ad2ef0a50c4176a846aaf6898b30d6d3f">UrosTcpRosStatus::flags</a>, <a class="el" href="struct_uros_node_status.html#aea5546bf63f7cabcaebc7e377d50ca68">UrosNodeStatus::pubServiceListLock</a>, <a class="el" href="struct_uros_node.html#a5824c0ae5741fd90f941e81ce22fac13">UrosNode::status</a>, <a class="el" href="struct_uros_tcp_ros_status.html#afc1b0399b8b6dc23c58672813889a1b4">UrosTcpRosStatus::topicp</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, <a class="el" href="group__threading__funcs.html#ga1db2c55616b4b1264d778c1ae5f25a83">urosMutexLock()</a>, <a class="el" href="group__threading__funcs.html#ga35dba778a18d8708fcf957da4e5110b3">urosMutexUnlock()</a>, <a class="el" href="uros_node_8h.html#a87ebbeb87be6c83d31d42c096913a711">urosNode</a>, <a class="el" href="group__base__funcs.html#ga4d08e89758fa879909cd58df47bf4d94">urosTopicDelete()</a>, and <a class="el" href="group__base__funcs.html#ga5d198e01c806bed197064c19965019f3">urosTopicRefDec()</a>.</p>
 

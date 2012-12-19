@@ -2,9 +2,9 @@
 <area shape="rect" id="node3" href="$group__threading__funcs.html#ga1db2c55616b4b1264d778c1ae5f25a83" title="Locks a mutex." alt="" coords="252,5,345,33"/>
 <area shape="rect" id="node7" href="$group__rpc__call__funcs.html#ga2dfa564dc6891e14712ccd0043837ae7" title="Retrieve parameter value from server and subscribe to updates to that param." alt="" coords="213,55,384,83"/>
 <area shape="rect" id="node9" href="$group__rpc__funcs.html#ga3aa421f7a9011427fb23add0d0bd80c8" title="Initializes a XMLRPC response." alt="" coords="221,106,376,134"/>
-<area shape="rect" id="node11" href="$group__base__funcs.html#ga683b6cffc3b9aa9d349d61e12a87a7bb" title="Checks if a string is not empty." alt="" coords="641,207,759,235"/>
-<area shape="rect" id="node13" href="$group__base__funcs.html#gaf3be0d7e379f41fd664bf2d6356fe84f" title="Gets the list node referencing a topic with the requested name." alt="" coords="225,207,372,235"/>
+<area shape="rect" id="node11" href="$group__base__funcs.html#ga314096aed1e7830b1b8ca08ca2cbb05a" title="Gets the list node referencing the referenced string." alt="" coords="224,157,373,185"/>
+<area shape="rect" id="node17" href="$group__base__funcs.html#ga683b6cffc3b9aa9d349d61e12a87a7bb" title="Checks if a string is not empty." alt="" coords="240,207,357,235"/>
 <area shape="rect" id="node5" href="$group__threading__lld__funcs.html#ga3d1782a58820716535c2b1328999d882" title="Locks a mutex." alt="" coords="453,5,571,33"/>
-<area shape="rect" id="node15" href="$group__base__funcs.html#gaf2fb34900da45a0b6d5c5205c318c2f1" title="First matching node occurrence of the list." alt="" coords="472,207,552,235"/>
-<area shape="rect" id="node17" href="$group__base__funcs.html#gaa4847838297b5280c1430f08848ea495" title="Checks if the list node links to a topic with the requested name." alt="" coords="433,258,591,286"/>
+<area shape="rect" id="node13" href="$group__base__funcs.html#gaf2fb34900da45a0b6d5c5205c318c2f1" title="First matching node occurrence of the list." alt="" coords="472,131,552,159"/>
+<area shape="rect" id="node15" href="$group__base__funcs.html#gaaffb9d619c05897881e868954708c446" title="Checks if the list node data equals the referenced string." alt="" coords="432,182,592,210"/>
 </map>

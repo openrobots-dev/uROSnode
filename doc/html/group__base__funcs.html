@@ -219,6 +219,10 @@ List</h2></td></tr>
 <tr class="memdesc:gae5808c2f0aeb0a570ae545f7468acdce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a node to the list.  <a href="#gae5808c2f0aeb0a570ae545f7468acdce"></a><br/></td></tr>
 <tr class="memitem:ga778761e65942c459b0b3be5049686d0a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_uros_list_node.html">UrosListNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base__funcs.html#ga778761e65942c459b0b3be5049686d0a">urosListRemove</a> (<a class="el" href="struct_uros_list.html">UrosList</a> *lstp, const <a class="el" href="struct_uros_list_node.html">UrosListNode</a> *np)</td></tr>
 <tr class="memdesc:ga778761e65942c459b0b3be5049686d0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a node from the list.  <a href="#ga778761e65942c459b0b3be5049686d0a"></a><br/></td></tr>
+<tr class="memitem:gaaffb9d619c05897881e868954708c446"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__base__types.html#ga054dde91f71050290ad158e45e684187">uros_bool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base__funcs.html#gaaffb9d619c05897881e868954708c446">urosStringListNodeHasString</a> (const <a class="el" href="struct_uros_list_node.html">UrosListNode</a> *np, const <a class="el" href="struct_uros_string.html">UrosString</a> *strp)</td></tr>
+<tr class="memdesc:gaaffb9d619c05897881e868954708c446"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the list node data equals the referenced string.  <a href="#gaaffb9d619c05897881e868954708c446"></a><br/></td></tr>
+<tr class="memitem:ga314096aed1e7830b1b8ca08ca2cbb05a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_uros_list_node.html">UrosListNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base__funcs.html#ga314096aed1e7830b1b8ca08ca2cbb05a">urosStringListFindByName</a> (const <a class="el" href="struct_uros_list.html">UrosList</a> *lstp, const <a class="el" href="struct_uros_string.html">UrosString</a> *strp)</td></tr>
+<tr class="memdesc:ga314096aed1e7830b1b8ca08ca2cbb05a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the list node referencing the referenced string.  <a href="#ga314096aed1e7830b1b8ca08ca2cbb05a"></a><br/></td></tr>
 <tr class="memitem:ga0b1c8d9b6739d96478539785f5d87621"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__base__types.html#ga054dde91f71050290ad158e45e684187">uros_bool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base__funcs.html#ga0b1c8d9b6739d96478539785f5d87621">urosTopicListNodeHasTopic</a> (const <a class="el" href="struct_uros_list_node.html">UrosListNode</a> *np, const <a class="el" href="struct_uros_topic.html">UrosTopic</a> *topicp)</td></tr>
 <tr class="memdesc:ga0b1c8d9b6739d96478539785f5d87621"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the list node is linked to the referenced topic.  <a href="#ga0b1c8d9b6739d96478539785f5d87621"></a><br/></td></tr>
 <tr class="memitem:gaa4847838297b5280c1430f08848ea495"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__base__types.html#ga054dde91f71050290ad158e45e684187">uros_bool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base__funcs.html#gaa4847838297b5280c1430f08848ea495">urosTopicListNodeHasName</a> (const <a class="el" href="struct_uros_list_node.html">UrosListNode</a> *np, const <a class="el" href="struct_uros_string.html">UrosString</a> *namep)</td></tr>
@@ -296,7 +300,7 @@ Here is the call graph for this function:</div>
 
 <p>References <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6cad66aea2ea18a19f906c1849084e58ba1">UROS_ERR_BADCONN</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca19c137733c13835c93db1cc3099c7a83">UROS_ERR_BADPARAM</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca80a8979a995f7f9ef18727b88358725e">UROS_ERR_EOF</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6cab596808ea449278f68ded37fe3fdb5b9">UROS_ERR_NOCONN</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6cad6877461eb507108e0b2d8d26608252c">UROS_ERR_NOMEM</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca2fd024e7418fda8b9d6cdd7ddafc7245">UROS_ERR_NOTIMPL</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6cad7ed191d7a5838fac252e1815bf4db42">UROS_ERR_PARSE</a>, <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca47d539b3d2ea5ae579dd3a26b987567b">UROS_ERR_TIMEOUT</a>, and <a class="el" href="group__base__types.html#ggaac94ee32652dcb53686fdf6881996b6ca2aa45ad0fcc039cef995b754c97f63ce">UROS_OK</a>.</p>
 
-<p>Referenced by <a class="el" href="group__node__funcs.html#ga9ca502f6e069b5a99f6f80627bb50ce2">urosNodePublishTopicByDesc()</a>, <a class="el" href="group__node__funcs.html#ga3c583fe282e14b2a1a8decfdbbdbe971">urosNodeUnpublishService()</a>, <a class="el" href="group__node__funcs.html#gafc8f59fe8f65ea0b6a87c9f811f3c7f0">urosNodeUnpublishTopic()</a>, <a class="el" href="group__node__funcs.html#ga17900ea2127b5e185605b1dc0aa2ad8c">urosNodeUnsubscribeTopic()</a>, <a class="el" href="group__rpc__parser__funcs.html#gaa4e45c8fc162cdc5b6b139e7b342f2a1">urosRpcParserDouble()</a>, <a class="el" href="group__rpc__parser__funcs.html#ga94a9b75cbe770f528da5c674f0083d46">urosRpcParserExpectWs()</a>, <a class="el" href="group__rpc__parser__funcs.html#ga175edf67d958a3b569eacf3294f650b9">urosRpcParserHttpRequest()</a>, <a class="el" href="group__rpc__parser__funcs.html#gaef39440223c86f541e708c0ff52b1914">urosRpcParserHttpResponse()</a>, <a class="el" href="group__rpc__parser__funcs.html#ga5f2306619872273541102d07180a6ac4">urosRpcParserInt32()</a>, <a class="el" href="group__rpc__parser__funcs.html#ga008dc044789ebb1eb71e8fd31a1b9ee1">urosRpcParserParamValueArray()</a>, <a class="el" href="group__rpc__parser__funcs.html#gaaef059e0c047cc6db96262a85c97870b">urosRpcParserParamValueString()</a>, <a class="el" href="group__rpc__parser__funcs.html#ga580190002d7a17e33ed4e2262fee3ed9">urosRpcParserRefill()</a>, <a class="el" href="group__rpc__parser__funcs.html#gab2dff25f63404e49583ee282e4a1fd43">urosRpcParserSkipAfter()</a>, <a class="el" href="group__rpc__parser__funcs.html#ga2c05f383ecbed0d710a11a7a4f377b20">urosRpcParserXmlAttrWVal()</a>, <a class="el" href="group__rpc__parser__funcs.html#ga2e62ee65a449c28d1388601da16e0618">urosRpcParserXmlHeader()</a>, <a class="el" href="group__rpc__parser__funcs.html#gaf66853971a8d1dad0f4642e445a861e6">urosRpcParserXmlTagBeginNoName()</a>, <a class="el" href="group__rpc__slave__funcs.html#gab2d8688e2c24c7856981c3762cb1c1a3">urosRpcSlaveConnectToPublishers()</a>, <a class="el" href="group__rpc__slave__funcs.html#gaaa6f4fa47d56e09c998ab1c5659befa7">urosRpcSlaveListenerThread()</a>, <a class="el" href="group__rpc__slave__funcs.html#gae71dcf7f9749f9f62d33f6dc314dd55e">urosRpcSlaveServerThread()</a>, <a class="el" href="group__rpc__streamer__funcs.html#gab25dac9fce18b6989a06a8b056a9bde7">urosRpcStreamerFlush()</a>, <a class="el" href="group__rpc__streamer__funcs.html#ga9db04b4c11ce2a33673b0dfc6d3145ef">urosRpcStreamerWrite()</a>, <a class="el" href="group__tcpros__funcs.html#ga8fb1d59a558150b8d90299c5dbdfcf11">urosTcpRosExpect()</a>, <a class="el" href="group__tcpros__funcs.html#ga74f24303701aaee160150572ea7ff3a4">urosTcpRosRecv()</a>, <a class="el" href="group__tcpros__funcs.html#ga6a15d0789a11e47de153b6425318f013">urosTcpRosSend()</a>, <a class="el" href="group__tcpros__funcs.html#ga53416bb911ab68ff7ab4b0931b844514">urosTcpRosServerThread()</a>, <a class="el" href="group__tcpros__funcs.html#ga1a2f70f87a1030699eb181552d6ee1bd">urosTcpRosSkip()</a>, <a class="el" href="group__threading__funcs.html#ga55879b0adf8eb2fc82113413a77e417c">urosThreadCreateFromHeap()</a>, <a class="el" href="group__threading__funcs.html#ga06b839f3199a979cbc5b64366506418e">urosThreadCreateFromMemPool()</a>, <a class="el" href="group__threading__funcs.html#ga11f1b2995c20d144955f79b198ba3c33">urosThreadCreateStatic()</a>, <a class="el" href="group__threading__funcs.html#ga0d51472a699f6790707980c71370af4d">urosThreadJoin()</a>, and <a class="el" href="group__conn__funcs.html#ga2620f709a43b802a0037220fc85ff5f1">urosUriToAddr()</a>.</p>
+<p>Referenced by <a class="el" href="group__node__funcs.html#ga9ca502f6e069b5a99f6f80627bb50ce2">urosNodePublishTopicByDesc()</a>, <a class="el" href="group__node__funcs.html#ga57066b1bc73c5654171f34af5d19456d">urosNodeSubscribeParam()</a>, <a class="el" href="group__node__funcs.html#ga3c583fe282e14b2a1a8decfdbbdbe971">urosNodeUnpublishService()</a>, <a class="el" href="group__node__funcs.html#gafc8f59fe8f65ea0b6a87c9f811f3c7f0">urosNodeUnpublishTopic()</a>, <a class="el" href="group__node__funcs.html#ga17900ea2127b5e185605b1dc0aa2ad8c">urosNodeUnsubscribeTopic()</a>, <a class="el" href="group__rpc__parser__funcs.html#gaa4e45c8fc162cdc5b6b139e7b342f2a1">urosRpcParserDouble()</a>, <a class="el" href="group__rpc__parser__funcs.html#ga94a9b75cbe770f528da5c674f0083d46">urosRpcParserExpectWs()</a>, <a class="el" href="group__rpc__parser__funcs.html#ga175edf67d958a3b569eacf3294f650b9">urosRpcParserHttpRequest()</a>, <a class="el" href="group__rpc__parser__funcs.html#gaef39440223c86f541e708c0ff52b1914">urosRpcParserHttpResponse()</a>, <a class="el" href="group__rpc__parser__funcs.html#ga5f2306619872273541102d07180a6ac4">urosRpcParserInt32()</a>, <a class="el" href="group__rpc__parser__funcs.html#ga008dc044789ebb1eb71e8fd31a1b9ee1">urosRpcParserParamValueArray()</a>, <a class="el" href="group__rpc__parser__funcs.html#gaaef059e0c047cc6db96262a85c97870b">urosRpcParserParamValueString()</a>, <a class="el" href="group__rpc__parser__funcs.html#ga580190002d7a17e33ed4e2262fee3ed9">urosRpcParserRefill()</a>, <a class="el" href="group__rpc__parser__funcs.html#gab2dff25f63404e49583ee282e4a1fd43">urosRpcParserSkipAfter()</a>, <a class="el" href="group__rpc__parser__funcs.html#ga2c05f383ecbed0d710a11a7a4f377b20">urosRpcParserXmlAttrWVal()</a>, <a class="el" href="group__rpc__parser__funcs.html#ga2e62ee65a449c28d1388601da16e0618">urosRpcParserXmlHeader()</a>, <a class="el" href="group__rpc__parser__funcs.html#gaf66853971a8d1dad0f4642e445a861e6">urosRpcParserXmlTagBeginNoName()</a>, <a class="el" href="group__rpc__slave__funcs.html#gab2d8688e2c24c7856981c3762cb1c1a3">urosRpcSlaveConnectToPublishers()</a>, <a class="el" href="group__rpc__slave__funcs.html#gaaa6f4fa47d56e09c998ab1c5659befa7">urosRpcSlaveListenerThread()</a>, <a class="el" href="group__rpc__slave__funcs.html#gae71dcf7f9749f9f62d33f6dc314dd55e">urosRpcSlaveServerThread()</a>, <a class="el" href="group__rpc__streamer__funcs.html#gab25dac9fce18b6989a06a8b056a9bde7">urosRpcStreamerFlush()</a>, <a class="el" href="group__rpc__streamer__funcs.html#ga9db04b4c11ce2a33673b0dfc6d3145ef">urosRpcStreamerWrite()</a>, <a class="el" href="group__tcpros__funcs.html#ga8fb1d59a558150b8d90299c5dbdfcf11">urosTcpRosExpect()</a>, <a class="el" href="group__tcpros__funcs.html#ga74f24303701aaee160150572ea7ff3a4">urosTcpRosRecv()</a>, <a class="el" href="group__tcpros__funcs.html#ga6a15d0789a11e47de153b6425318f013">urosTcpRosSend()</a>, <a class="el" href="group__tcpros__funcs.html#ga53416bb911ab68ff7ab4b0931b844514">urosTcpRosServerThread()</a>, <a class="el" href="group__tcpros__funcs.html#ga1a2f70f87a1030699eb181552d6ee1bd">urosTcpRosSkip()</a>, <a class="el" href="group__threading__funcs.html#ga55879b0adf8eb2fc82113413a77e417c">urosThreadCreateFromHeap()</a>, <a class="el" href="group__threading__funcs.html#ga06b839f3199a979cbc5b64366506418e">urosThreadCreateFromMemPool()</a>, <a class="el" href="group__threading__funcs.html#ga11f1b2995c20d144955f79b198ba3c33">urosThreadCreateStatic()</a>, <a class="el" href="group__threading__funcs.html#ga0d51472a699f6790707980c71370af4d">urosThreadJoin()</a>, and <a class="el" href="group__conn__funcs.html#ga2620f709a43b802a0037220fc85ff5f1">urosUriToAddr()</a>.</p>
 
 </div>
 </div>
@@ -376,7 +380,7 @@ Here is the call graph for this function:</div>
 
 <p>References <a class="el" href="group__base__lld__funcs.html#ga2862473343e5349c85bc008b9e5b51ed">uros_lld_free()</a>.</p>
 
-<p>Referenced by <a class="el" href="group__base__funcs.html#ga73eee145395f603458fe0dbe8667356c">urosListDelete()</a>, <a class="el" href="group__base__funcs.html#ga16bb69f7a4f4c18940a3680a41a62f37">urosListNodeDelete()</a>, <a class="el" href="group__base__funcs.html#gadd7461218c6b85ba4a7a7ffd2f93b138">urosMsgTypeDelete()</a>, <a class="el" href="group__node__funcs.html#ga289dbcb25897f91da1a881f63c75f190">urosNodeFindNewPublishers()</a>, <a class="el" href="group__rpc__call__funcs.html#ga5af5be4afc2ec7c7b527770b52fdcc5a">urosRpcCallParamUpdate()</a>, <a class="el" href="group__rpc__call__funcs.html#ga2a08fc0416f5a7de8504175ef73a447a">urosRpcCallPublisherUpdate()</a>, <a class="el" href="group__rpc__call__funcs.html#ga3e3fc4e7520ea411e0bea9583b061f5a">urosRpcCallRequestTopic()</a>, <a class="el" href="group__rpc__call__funcs.html#ga0125a68f54764d45c0d82c243299dde8">urosRpcCallSetParam()</a>, <a class="el" href="group__rpc__call__funcs.html#gaca4c310214b0589aa7b0ca106cda8ba7">urosRpcCallSubscribeParam()</a>, <a class="el" href="group__rpc__funcs.html#ga4d63fb4aec1bccb6dbf894df6c2f9836">urosRpcParamClean()</a>, <a class="el" href="group__rpc__funcs.html#ga9d84b2ca625930ed4598bbf7cc9295e7">urosRpcParamDelete()</a>, <a class="el" href="group__rpc__funcs.html#gaa937351d449572b45678fb3343338dd9">urosRpcParamListDelete()</a>, <a class="el" href="group__rpc__funcs.html#ga961f90e27e81a2b23beff0431b369c53">urosRpcParamNodeDelete()</a>, <a class="el" href="group__rpc__parser__funcs.html#gaa56b77a2e94f41e51b06c6491a6fdf9e">urosRpcParserClean()</a>, <a class="el" href="group__rpc__parser__funcs.html#ga830e85328a6ca195ff93568333f7f800">urosRpcParserParam()</a>, <a class="el" href="group__rpc__slave__funcs.html#gaaa6f4fa47d56e09c998ab1c5659befa7">urosRpcSlaveListenerThread()</a>, <a class="el" href="group__rpc__slave__funcs.html#gae71dcf7f9749f9f62d33f6dc314dd55e">urosRpcSlaveServerThread()</a>, <a class="el" href="group__rpc__streamer__funcs.html#gaf7f0680051fc5a62e3086bd3b905743e">urosRpcStreamerClean()</a>, <a class="el" href="group__base__funcs.html#ga09d885f53087047696beb347b4b9a220">urosStringClean()</a>, <a class="el" href="group__base__funcs.html#ga2771682c759ab7046892c3e3ae41f3f8">urosStringDelete()</a>, <a class="el" href="group__tcpros__funcs.html#ga0863f6cc0a7313c35873578e51f6e54d">urosTcpRosArrayClean()</a>, <a class="el" href="group__tcpros__funcs.html#ga23d16e57c89d26f91c72fe660eafc3cf">urosTcpRosArrayDelete()</a>, <a class="el" href="group__tcpros__funcs.html#gad38db04ed0ca13213d4fc056c00a5865">urosTcpRosListenerThread()</a>, <a class="el" href="group__threading__funcs.html#gac5bfbfd2ad200da8e4b78f8b49f22b74">urosThreadPoolClean()</a>, <a class="el" href="group__base__funcs.html#ga4d08e89758fa879909cd58df47bf4d94">urosTopicDelete()</a>, <a class="el" href="group__tcpros__funcs.html#gadead49ee66691a69d903cad58010a2ab">urosTopicSubParamsDelete()</a>, <a class="el" href="group__tcpros__funcs.html#ga6ef04378c7fc0728e04bf383eb57b6a3">urosTpcRosStatusClean()</a>, and <a class="el" href="group__tcpros__funcs.html#ga5a87826f92ae5990e19edca7ea4615ae">urosTpcRosStatusDelete()</a>.</p>
+<p>Referenced by <a class="el" href="group__base__funcs.html#ga73eee145395f603458fe0dbe8667356c">urosListDelete()</a>, <a class="el" href="group__base__funcs.html#ga16bb69f7a4f4c18940a3680a41a62f37">urosListNodeDelete()</a>, <a class="el" href="group__base__funcs.html#gadd7461218c6b85ba4a7a7ffd2f93b138">urosMsgTypeDelete()</a>, <a class="el" href="group__node__funcs.html#ga289dbcb25897f91da1a881f63c75f190">urosNodeFindNewPublishers()</a>, <a class="el" href="group__node__funcs.html#ga57066b1bc73c5654171f34af5d19456d">urosNodeSubscribeParam()</a>, <a class="el" href="group__rpc__call__funcs.html#ga5af5be4afc2ec7c7b527770b52fdcc5a">urosRpcCallParamUpdate()</a>, <a class="el" href="group__rpc__call__funcs.html#ga2a08fc0416f5a7de8504175ef73a447a">urosRpcCallPublisherUpdate()</a>, <a class="el" href="group__rpc__call__funcs.html#ga3e3fc4e7520ea411e0bea9583b061f5a">urosRpcCallRequestTopic()</a>, <a class="el" href="group__rpc__call__funcs.html#ga0125a68f54764d45c0d82c243299dde8">urosRpcCallSetParam()</a>, <a class="el" href="group__rpc__call__funcs.html#gaca4c310214b0589aa7b0ca106cda8ba7">urosRpcCallSubscribeParam()</a>, <a class="el" href="group__rpc__funcs.html#ga4d63fb4aec1bccb6dbf894df6c2f9836">urosRpcParamClean()</a>, <a class="el" href="group__rpc__funcs.html#ga9d84b2ca625930ed4598bbf7cc9295e7">urosRpcParamDelete()</a>, <a class="el" href="group__rpc__funcs.html#gaa937351d449572b45678fb3343338dd9">urosRpcParamListDelete()</a>, <a class="el" href="group__rpc__funcs.html#ga961f90e27e81a2b23beff0431b369c53">urosRpcParamNodeDelete()</a>, <a class="el" href="group__rpc__parser__funcs.html#gaa56b77a2e94f41e51b06c6491a6fdf9e">urosRpcParserClean()</a>, <a class="el" href="group__rpc__parser__funcs.html#ga830e85328a6ca195ff93568333f7f800">urosRpcParserParam()</a>, <a class="el" href="group__rpc__slave__funcs.html#gaaa6f4fa47d56e09c998ab1c5659befa7">urosRpcSlaveListenerThread()</a>, <a class="el" href="group__rpc__slave__funcs.html#gae71dcf7f9749f9f62d33f6dc314dd55e">urosRpcSlaveServerThread()</a>, <a class="el" href="group__rpc__streamer__funcs.html#gaf7f0680051fc5a62e3086bd3b905743e">urosRpcStreamerClean()</a>, <a class="el" href="group__base__funcs.html#ga09d885f53087047696beb347b4b9a220">urosStringClean()</a>, <a class="el" href="group__base__funcs.html#ga2771682c759ab7046892c3e3ae41f3f8">urosStringDelete()</a>, <a class="el" href="group__tcpros__funcs.html#ga0863f6cc0a7313c35873578e51f6e54d">urosTcpRosArrayClean()</a>, <a class="el" href="group__tcpros__funcs.html#ga23d16e57c89d26f91c72fe660eafc3cf">urosTcpRosArrayDelete()</a>, <a class="el" href="group__tcpros__funcs.html#gad38db04ed0ca13213d4fc056c00a5865">urosTcpRosListenerThread()</a>, <a class="el" href="group__threading__funcs.html#gac5bfbfd2ad200da8e4b78f8b49f22b74">urosThreadPoolClean()</a>, <a class="el" href="group__base__funcs.html#ga4d08e89758fa879909cd58df47bf4d94">urosTopicDelete()</a>, <a class="el" href="group__tcpros__funcs.html#gadead49ee66691a69d903cad58010a2ab">urosTopicSubParamsDelete()</a>, <a class="el" href="group__tcpros__funcs.html#ga6ef04378c7fc0728e04bf383eb57b6a3">urosTpcRosStatusClean()</a>, and <a class="el" href="group__tcpros__funcs.html#ga5a87826f92ae5990e19edca7ea4615ae">urosTpcRosStatusDelete()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1042,7 +1046,7 @@ The string data must have been allocated with <code><a class="el" href="group__b
 <dl class="section post"><dt>Postcondition</dt><dd><code>strp</code> points to an invalid address.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">strp</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_string.html" title="String object.">UrosString</a></code> object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">strp</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_string.html" title="String object.">UrosString</a></code> object, or <code>NULL</code>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1051,7 +1055,7 @@ The string data must have been allocated with <code><a class="el" href="group__b
 
 <p>References <a class="el" href="struct_uros_string.html#af400c70d8d855a509e3c8bf7312f65de">UrosString::datap</a>, and <a class="el" href="group__base__funcs.html#gabf008f1631293a018e1d7be3ffbb5b51">urosFree()</a>.</p>
 
-<p>Referenced by <a class="el" href="group__rpc__funcs.html#ga42e2108515c503cc0e89a65c4361b794">urosRpcResponseClean()</a>.</p>
+<p>Referenced by <a class="el" href="group__node__funcs.html#ga57066b1bc73c5654171f34af5d19456d">urosNodeSubscribeParam()</a>, and <a class="el" href="group__rpc__funcs.html#ga42e2108515c503cc0e89a65c4361b794">urosRpcResponseClean()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1093,7 +1097,7 @@ Here is the call graph for this function:</div>
 
 <p>References <a class="el" href="struct_uros_string.html#af400c70d8d855a509e3c8bf7312f65de">UrosString::datap</a>, and <a class="el" href="struct_uros_string.html#ab401588ed4bd01f81686bc7ce5edde91">UrosString::length</a>.</p>
 
-<p>Referenced by <a class="el" href="group__rpc__call__funcs.html#ga69bc6851159408b9099951d94318184d">urosRpcCallShutdown()</a>, <a class="el" href="group__base__funcs.html#ga78efe29ebd12a2c10a0b101b5c982612">urosStringCmp()</a>, and <a class="el" href="group__tcpros__funcs.html#ga712e84742c7b81d9191220775c77b75c">urosTcpRosSendString()</a>.</p>
+<p>Referenced by <a class="el" href="group__rpc__call__funcs.html#ga69bc6851159408b9099951d94318184d">urosRpcCallShutdown()</a>, <a class="el" href="group__base__funcs.html#ga78efe29ebd12a2c10a0b101b5c982612">urosStringCmp()</a>, <a class="el" href="group__base__funcs.html#gaaffb9d619c05897881e868954708c446">urosStringListNodeHasString()</a>, and <a class="el" href="group__tcpros__funcs.html#ga712e84742c7b81d9191220775c77b75c">urosTcpRosSendString()</a>.</p>
 
 </div>
 </div>
@@ -1126,7 +1130,7 @@ Here is the call graph for this function:</div>
 
 <p>References <a class="el" href="struct_uros_string.html#af400c70d8d855a509e3c8bf7312f65de">UrosString::datap</a>, and <a class="el" href="struct_uros_string.html#ab401588ed4bd01f81686bc7ce5edde91">UrosString::length</a>.</p>
 
-<p>Referenced by <a class="el" href="group__base__funcs.html#ga55350c72a8397fbdd9b9bc4f7f68735f">urosFindStaticMsgType()</a>, <a class="el" href="group__base__funcs.html#ga13754ff12d667881c4d8db5c3fa9922c">urosFindStaticSrvType()</a>, <a class="el" href="group__node__funcs.html#ga289dbcb25897f91da1a881f63c75f190">urosNodeFindNewPublishers()</a>, <a class="el" href="group__node__funcs.html#gabcc745049a22e8be757283cb534565e0">urosNodePublishService()</a>, <a class="el" href="group__node__funcs.html#ga23dd94be8d8eca304c09aa91fa6a7107">urosNodePublishServiceByDesc()</a>, <a class="el" href="group__node__funcs.html#ga7e72bc38a7dc724e2294077972af78cb">urosNodePublishTopic()</a>, <a class="el" href="group__node__funcs.html#ga9ca502f6e069b5a99f6f80627bb50ce2">urosNodePublishTopicByDesc()</a>, <a class="el" href="group__node__funcs.html#ga57066b1bc73c5654171f34af5d19456d">urosNodeSubscribeParam()</a>, <a class="el" href="group__node__funcs.html#ga2eed510f72ca4194a3a1b44d31761e1d">urosNodeSubscribeParamByDesc()</a>, <a class="el" href="group__node__funcs.html#ga28263c8607d14c52bb11450febe0624c">urosNodeSubscribeTopic()</a>, <a class="el" href="group__node__funcs.html#ga9a15140cb500fbbcf29fce16ad31a573">urosNodeSubscribeTopicByDesc()</a>, <a class="el" href="group__node__funcs.html#ga3c583fe282e14b2a1a8decfdbbdbe971">urosNodeUnpublishService()</a>, <a class="el" href="group__node__funcs.html#gafc8f59fe8f65ea0b6a87c9f811f3c7f0">urosNodeUnpublishTopic()</a>, <a class="el" href="group__node__funcs.html#ga0ec4ef27932603646162bef8bf15c16c">urosNodeUnsubscribeParam()</a>, <a class="el" href="group__node__funcs.html#ga17900ea2127b5e185605b1dc0aa2ad8c">urosNodeUnsubscribeTopic()</a>, <a class="el" href="group__base__funcs.html#gaee6c695e918c805d508cc02592b97ce2">urosRegisterStaticMsgType()</a>, <a class="el" href="group__base__funcs.html#gaba8e42fc8dc1374e1e0de837747dcec4">urosRegisterStaticSrvType()</a>, <a class="el" href="group__rpc__call__funcs.html#ga9897ead85d4632bccbbbf3b82a64dd22">urosRpcCallDeleteParam()</a>, <a class="el" href="group__rpc__call__funcs.html#ga1be3eea160c876a30c16974fc4818173">urosRpcCallGetParam()</a>, <a class="el" href="group__rpc__call__funcs.html#ga586777a6b74bd1a583d4ca2de92e0e73">urosRpcCallLookupService()</a>, <a class="el" href="group__rpc__call__funcs.html#ga5af5be4afc2ec7c7b527770b52fdcc5a">urosRpcCallParamUpdate()</a>, <a class="el" href="group__rpc__call__funcs.html#ga2a08fc0416f5a7de8504175ef73a447a">urosRpcCallPublisherUpdate()</a>, <a class="el" href="group__rpc__call__funcs.html#ga3e3fc4e7520ea411e0bea9583b061f5a">urosRpcCallRequestTopic()</a>, <a class="el" href="group__rpc__call__funcs.html#gadae9c784fab626d6857dc4ecf4829953">urosRpcCallSearchParam()</a>, <a class="el" href="group__rpc__call__funcs.html#ga0125a68f54764d45c0d82c243299dde8">urosRpcCallSetParam()</a>, <a class="el" href="group__rpc__call__funcs.html#gaca4c310214b0589aa7b0ca106cda8ba7">urosRpcCallSubscribeParam()</a>, <a class="el" href="group__rpc__slave__funcs.html#gab2d8688e2c24c7856981c3762cb1c1a3">urosRpcSlaveConnectToPublishers()</a>, <a class="el" href="group__tcpros__funcs.html#ga49843d8a86d3164a3c318b7afa456332">urosTcpRosClientThread()</a>, <a class="el" href="group__base__funcs.html#gaa4847838297b5280c1430f08848ea495">urosTopicListNodeHasName()</a>, <a class="el" href="group__conn__funcs.html#ga2620f709a43b802a0037220fc85ff5f1">urosUriToAddr()</a>, and <a class="el" href="group__user__funcs.html#ga54f92e933c2edc98b10c745e71a77be1">urosUserParamUpdate()</a>.</p>
+<p>Referenced by <a class="el" href="group__base__funcs.html#ga55350c72a8397fbdd9b9bc4f7f68735f">urosFindStaticMsgType()</a>, <a class="el" href="group__base__funcs.html#ga13754ff12d667881c4d8db5c3fa9922c">urosFindStaticSrvType()</a>, <a class="el" href="group__node__funcs.html#ga289dbcb25897f91da1a881f63c75f190">urosNodeFindNewPublishers()</a>, <a class="el" href="group__node__funcs.html#gabcc745049a22e8be757283cb534565e0">urosNodePublishService()</a>, <a class="el" href="group__node__funcs.html#ga23dd94be8d8eca304c09aa91fa6a7107">urosNodePublishServiceByDesc()</a>, <a class="el" href="group__node__funcs.html#ga7e72bc38a7dc724e2294077972af78cb">urosNodePublishTopic()</a>, <a class="el" href="group__node__funcs.html#ga9ca502f6e069b5a99f6f80627bb50ce2">urosNodePublishTopicByDesc()</a>, <a class="el" href="group__node__funcs.html#ga57066b1bc73c5654171f34af5d19456d">urosNodeSubscribeParam()</a>, <a class="el" href="group__node__funcs.html#ga28263c8607d14c52bb11450febe0624c">urosNodeSubscribeTopic()</a>, <a class="el" href="group__node__funcs.html#ga9a15140cb500fbbcf29fce16ad31a573">urosNodeSubscribeTopicByDesc()</a>, <a class="el" href="group__node__funcs.html#ga3c583fe282e14b2a1a8decfdbbdbe971">urosNodeUnpublishService()</a>, <a class="el" href="group__node__funcs.html#gafc8f59fe8f65ea0b6a87c9f811f3c7f0">urosNodeUnpublishTopic()</a>, <a class="el" href="group__node__funcs.html#ga0ec4ef27932603646162bef8bf15c16c">urosNodeUnsubscribeParam()</a>, <a class="el" href="group__node__funcs.html#ga17900ea2127b5e185605b1dc0aa2ad8c">urosNodeUnsubscribeTopic()</a>, <a class="el" href="group__base__funcs.html#gaee6c695e918c805d508cc02592b97ce2">urosRegisterStaticMsgType()</a>, <a class="el" href="group__base__funcs.html#gaba8e42fc8dc1374e1e0de837747dcec4">urosRegisterStaticSrvType()</a>, <a class="el" href="group__rpc__call__funcs.html#ga9897ead85d4632bccbbbf3b82a64dd22">urosRpcCallDeleteParam()</a>, <a class="el" href="group__rpc__call__funcs.html#ga1be3eea160c876a30c16974fc4818173">urosRpcCallGetParam()</a>, <a class="el" href="group__rpc__call__funcs.html#ga586777a6b74bd1a583d4ca2de92e0e73">urosRpcCallLookupService()</a>, <a class="el" href="group__rpc__call__funcs.html#ga5af5be4afc2ec7c7b527770b52fdcc5a">urosRpcCallParamUpdate()</a>, <a class="el" href="group__rpc__call__funcs.html#ga2a08fc0416f5a7de8504175ef73a447a">urosRpcCallPublisherUpdate()</a>, <a class="el" href="group__rpc__call__funcs.html#ga3e3fc4e7520ea411e0bea9583b061f5a">urosRpcCallRequestTopic()</a>, <a class="el" href="group__rpc__call__funcs.html#gadae9c784fab626d6857dc4ecf4829953">urosRpcCallSearchParam()</a>, <a class="el" href="group__rpc__call__funcs.html#ga0125a68f54764d45c0d82c243299dde8">urosRpcCallSetParam()</a>, <a class="el" href="group__rpc__call__funcs.html#gaca4c310214b0589aa7b0ca106cda8ba7">urosRpcCallSubscribeParam()</a>, <a class="el" href="group__rpc__slave__funcs.html#gab2d8688e2c24c7856981c3762cb1c1a3">urosRpcSlaveConnectToPublishers()</a>, <a class="el" href="group__tcpros__funcs.html#ga49843d8a86d3164a3c318b7afa456332">urosTcpRosClientThread()</a>, <a class="el" href="group__base__funcs.html#gaa4847838297b5280c1430f08848ea495">urosTopicListNodeHasName()</a>, <a class="el" href="group__conn__funcs.html#ga2620f709a43b802a0037220fc85ff5f1">urosUriToAddr()</a>, and <a class="el" href="group__user__funcs.html#ga54f92e933c2edc98b10c745e71a77be1">urosUserParamUpdate()</a>.</p>
 
 </div>
 </div>
@@ -1182,7 +1186,7 @@ If a string is empty but the other is not, then the first character is the retur
 
 <p>References <a class="el" href="struct_uros_string.html#af400c70d8d855a509e3c8bf7312f65de">UrosString::datap</a>, <a class="el" href="struct_uros_string.html#ab401588ed4bd01f81686bc7ce5edde91">UrosString::length</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, and <a class="el" href="group__base__funcs.html#gab56136abf86b735834072883da8e1e52">urosStringIsValid()</a>.</p>
 
-<p>Referenced by <a class="el" href="group__base__funcs.html#ga8a0d5762a24d4b78743863b329e475f1">urosMsgTypeNodeHasName()</a>, <a class="el" href="group__node__funcs.html#ga289dbcb25897f91da1a881f63c75f190">urosNodeFindNewPublishers()</a>, and <a class="el" href="group__base__funcs.html#gaa4847838297b5280c1430f08848ea495">urosTopicListNodeHasName()</a>.</p>
+<p>Referenced by <a class="el" href="group__base__funcs.html#ga8a0d5762a24d4b78743863b329e475f1">urosMsgTypeNodeHasName()</a>, <a class="el" href="group__node__funcs.html#ga289dbcb25897f91da1a881f63c75f190">urosNodeFindNewPublishers()</a>, <a class="el" href="group__base__funcs.html#gaaffb9d619c05897881e868954708c446">urosStringListNodeHasString()</a>, and <a class="el" href="group__base__funcs.html#gaa4847838297b5280c1430f08848ea495">urosTopicListNodeHasName()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1299,7 +1303,7 @@ Here is the call graph for this function:</div>
 <dl class="section post"><dt>Postcondition</dt><dd><code>typep</code> points to an invalid address.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">typep</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_msg_type.html" title="Message type descriptor.">UrosMsgType</a></code> object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">typep</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_msg_type.html" title="Message type descriptor.">UrosMsgType</a></code> object, or <code>NULL</code>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1850,7 +1854,7 @@ All the numeric values are nullified.</dd></dl>
 
 <p>References <a class="el" href="struct_uros_topic.html#a3730873d8d9cb05efed9343c53fc1f57">UrosTopic::flags</a>, <a class="el" href="struct_uros_topic.html#aeff3ee92d44d0e73582c314410d3d141">UrosTopic::name</a>, <a class="el" href="struct_uros_topic.html#a48e8b6a49c7d892cf19854f00251d24d">UrosTopic::procf</a>, <a class="el" href="struct_uros_topic.html#a017c55fd0af0b56715c32c64445d09fa">UrosTopic::refcnt</a>, <a class="el" href="struct_uros_topic.html#a67377ab341821c1906a4b3feac57cb20">UrosTopic::typep</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, and <a class="el" href="group__base__funcs.html#gae4c3b93a55591bdc3f0f57d7b437b9dc">urosStringObjectInit()</a>.</p>
 
-<p>Referenced by <a class="el" href="group__node__funcs.html#gabcc745049a22e8be757283cb534565e0">urosNodePublishService()</a>, <a class="el" href="group__node__funcs.html#ga7e72bc38a7dc724e2294077972af78cb">urosNodePublishTopic()</a>, <a class="el" href="group__node__funcs.html#ga57066b1bc73c5654171f34af5d19456d">urosNodeSubscribeParam()</a>, and <a class="el" href="group__node__funcs.html#ga28263c8607d14c52bb11450febe0624c">urosNodeSubscribeTopic()</a>.</p>
+<p>Referenced by <a class="el" href="group__node__funcs.html#gabcc745049a22e8be757283cb534565e0">urosNodePublishService()</a>, <a class="el" href="group__node__funcs.html#ga7e72bc38a7dc724e2294077972af78cb">urosNodePublishTopic()</a>, and <a class="el" href="group__node__funcs.html#ga28263c8607d14c52bb11450febe0624c">urosNodeSubscribeTopic()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1927,7 +1931,7 @@ Here is the call graph for this function:</div>
 <dl class="section post"><dt>Postcondition</dt><dd><code>tp</code> points to an invalid address.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">tp</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_topic.html" title="Topic descriptor.">UrosTopic</a></code> object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tp</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_topic.html" title="Topic descriptor.">UrosTopic</a></code> object, or <code>NULL</code>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1936,7 +1940,7 @@ Here is the call graph for this function:</div>
 
 <p>References <a class="el" href="group__base__funcs.html#gabf008f1631293a018e1d7be3ffbb5b51">urosFree()</a>, and <a class="el" href="group__base__funcs.html#ga73c9b14fcb73c2679bfe06c86ef81e96">urosTopicClean()</a>.</p>
 
-<p>Referenced by <a class="el" href="group__node__funcs.html#gabcc745049a22e8be757283cb534565e0">urosNodePublishService()</a>, <a class="el" href="group__node__funcs.html#ga7e72bc38a7dc724e2294077972af78cb">urosNodePublishTopic()</a>, <a class="el" href="group__node__funcs.html#ga57066b1bc73c5654171f34af5d19456d">urosNodeSubscribeParam()</a>, <a class="el" href="group__node__funcs.html#ga28263c8607d14c52bb11450febe0624c">urosNodeSubscribeTopic()</a>, <a class="el" href="group__node__funcs.html#ga3c583fe282e14b2a1a8decfdbbdbe971">urosNodeUnpublishService()</a>, <a class="el" href="group__node__funcs.html#gafc8f59fe8f65ea0b6a87c9f811f3c7f0">urosNodeUnpublishTopic()</a>, <a class="el" href="group__node__funcs.html#ga17900ea2127b5e185605b1dc0aa2ad8c">urosNodeUnsubscribeTopic()</a>, <a class="el" href="group__tcpros__funcs.html#ga510c24182e90fc5d44c7ee5d6b0969c3">urosTcpRosServiceDone()</a>, <a class="el" href="group__tcpros__funcs.html#gac6770ed38ddd8fac19166e8d18c7179e">urosTcpRosTopicPublisherDone()</a>, and <a class="el" href="group__tcpros__funcs.html#ga851d9b77af4844dbce51aebb0b13beed">urosTcpRosTopicSubscriberDone()</a>.</p>
+<p>Referenced by <a class="el" href="group__node__funcs.html#gabcc745049a22e8be757283cb534565e0">urosNodePublishService()</a>, <a class="el" href="group__node__funcs.html#ga7e72bc38a7dc724e2294077972af78cb">urosNodePublishTopic()</a>, <a class="el" href="group__node__funcs.html#ga28263c8607d14c52bb11450febe0624c">urosNodeSubscribeTopic()</a>, <a class="el" href="group__node__funcs.html#ga3c583fe282e14b2a1a8decfdbbdbe971">urosNodeUnpublishService()</a>, <a class="el" href="group__node__funcs.html#gafc8f59fe8f65ea0b6a87c9f811f3c7f0">urosNodeUnpublishTopic()</a>, <a class="el" href="group__node__funcs.html#ga17900ea2127b5e185605b1dc0aa2ad8c">urosNodeUnsubscribeTopic()</a>, <a class="el" href="group__tcpros__funcs.html#ga510c24182e90fc5d44c7ee5d6b0969c3">urosTcpRosServiceDone()</a>, <a class="el" href="group__tcpros__funcs.html#gac6770ed38ddd8fac19166e8d18c7179e">urosTcpRosTopicPublisherDone()</a>, and <a class="el" href="group__tcpros__funcs.html#ga851d9b77af4844dbce51aebb0b13beed">urosTcpRosTopicSubscriberDone()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -2224,7 +2228,7 @@ Here is the call graph for this function:</div>
 If the data deletion function is provided, each node data is deleted.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">lstp</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_list.html" title="Linked list, forward only.">UrosList</a></code> object. Can be <code>NULL</code>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">lstp</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_list.html" title="Linked list, forward only.">UrosList</a></code> object, or <code>NULL</code>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">datadelf</td><td>Data deletion function. Can be <code>NULL</code> if only the list object <code>lstp</code> and its <code><a class="el" href="struct_uros_list_node.html" title="List node, forward only.">UrosListNode</a></code> objects have to be deleted, but not their referenced data. </td></tr>
   </table>
   </dd>
@@ -2441,7 +2445,7 @@ Here is the call graph for this function:</div>
 
 <p>References <a class="el" href="struct_uros_list.html#a94a11e13479a04d2887443d8c55a572b">UrosList::headp</a>, <a class="el" href="struct_uros_list_node.html#aa3109ac041ab790fe3e4d4bfa36d3465">UrosListNode::nextp</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, and <a class="el" href="group__base__funcs.html#ga23589c831c48304c37d6244e30210bfc">urosListIsValid()</a>.</p>
 
-<p>Referenced by <a class="el" href="group__base__funcs.html#ga55350c72a8397fbdd9b9bc4f7f68735f">urosFindStaticMsgType()</a>, <a class="el" href="group__base__funcs.html#ga477f676e3939b35111c6d6eb8ac9c851">urosFindStaticMsgTypeSZ()</a>, <a class="el" href="group__base__funcs.html#ga13754ff12d667881c4d8db5c3fa9922c">urosFindStaticSrvType()</a>, <a class="el" href="group__base__funcs.html#ga0addf99030f6df0c8822e5c5303d5c82">urosFindStaticSrvTypeSZ()</a>, <a class="el" href="group__base__funcs.html#gaf3be0d7e379f41fd664bf2d6356fe84f">urosTopicListFindByName()</a>, and <a class="el" href="group__base__funcs.html#ga7d5b4c9f57b3ad3ae60f6cba96cff09b">urosTopicListFindByTopic()</a>.</p>
+<p>Referenced by <a class="el" href="group__base__funcs.html#ga55350c72a8397fbdd9b9bc4f7f68735f">urosFindStaticMsgType()</a>, <a class="el" href="group__base__funcs.html#ga477f676e3939b35111c6d6eb8ac9c851">urosFindStaticMsgTypeSZ()</a>, <a class="el" href="group__base__funcs.html#ga13754ff12d667881c4d8db5c3fa9922c">urosFindStaticSrvType()</a>, <a class="el" href="group__base__funcs.html#ga0addf99030f6df0c8822e5c5303d5c82">urosFindStaticSrvTypeSZ()</a>, <a class="el" href="group__base__funcs.html#ga314096aed1e7830b1b8ca08ca2cbb05a">urosStringListFindByName()</a>, <a class="el" href="group__base__funcs.html#gaf3be0d7e379f41fd664bf2d6356fe84f">urosTopicListFindByName()</a>, and <a class="el" href="group__base__funcs.html#ga7d5b4c9f57b3ad3ae60f6cba96cff09b">urosTopicListFindByTopic()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -2573,6 +2577,120 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="gaaffb9d619c05897881e868954708c446"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__base__types.html#ga054dde91f71050290ad158e45e684187">uros_bool_t</a> urosStringListNodeHasString </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_uros_list_node.html">UrosListNode</a> *&#160;</td>
+          <td class="paramname"><em>np</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="struct_uros_string.html">UrosString</a> *&#160;</td>
+          <td class="paramname"><em>strp</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if the list node data equals the referenced string. </p>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="group__base__funcs.html#ga78efe29ebd12a2c10a0b101b5c982612" title="Compares two string objects.">urosStringCmp()</a></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">np</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_list_node.html" title="List node, forward only.">UrosListNode</a></code> which points to an initialized <code><a class="el" href="struct_uros_string.html" title="String object.">UrosString</a></code> object. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">strp</td><td>Pointer to the reference initialized <code><a class="el" href="struct_uros_string.html" title="String object.">UrosString</a></code> object. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> <em>iif</em> the string of the node is equal to the referenced one. </dd></dl>
+
+<p>Definition at line <a class="el" href="uros_base_8c_source.html#l01531">1531</a> of file <a class="el" href="uros_base_8c_source.html">urosBase.c</a>.</p>
+
+<p>References <a class="el" href="struct_uros_list_node.html#ab88d07767307bb2312d50abf2e87833b">UrosListNode::datap</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, <a class="el" href="group__base__funcs.html#ga78efe29ebd12a2c10a0b101b5c982612">urosStringCmp()</a>, and <a class="el" href="group__base__funcs.html#gab56136abf86b735834072883da8e1e52">urosStringIsValid()</a>.</p>
+
+<p>Referenced by <a class="el" href="group__base__funcs.html#ga314096aed1e7830b1b8ca08ca2cbb05a">urosStringListFindByName()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="group__base__funcs_gaaffb9d619c05897881e868954708c446_cgraph.png" border="0" usemap="#group__base__funcs_gaaffb9d619c05897881e868954708c446_cgraph" alt=""/></div>
+<map name="group__base__funcs_gaaffb9d619c05897881e868954708c446_cgraph" id="group__base__funcs_gaaffb9d619c05897881e868954708c446_cgraph">
+<area shape="rect" id="node3" href="group__base__funcs.html#ga78efe29ebd12a2c10a0b101b5c982612" title="Compares two string objects." alt="" coords="215,5,308,33"/><area shape="rect" id="node5" href="group__base__funcs.html#gab56136abf86b735834072883da8e1e52" title="Checks if pointing to a valid string object." alt="" coords="359,30,460,58"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="ga314096aed1e7830b1b8ca08ca2cbb05a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_uros_list_node.html">UrosListNode</a>* urosStringListFindByName </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_uros_list.html">UrosList</a> *&#160;</td>
+          <td class="paramname"><em>lstp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="struct_uros_string.html">UrosString</a> *&#160;</td>
+          <td class="paramname"><em>strp</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the list node referencing the referenced string. </p>
+<p>Scans the list to find the node referencing the string equal to the referenced one. </p>
+<dl class="section note"><dt>Note</dt><dd>This function is not thread safe, please lock it with a dedicated locking primitive (e.g. <code>UrosMutex</code>). </dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="group__base__funcs.html#gaf2fb34900da45a0b6d5c5205c318c2f1" title="First matching node occurrence of the list.">urosListFind</a> </dd>
+<dd>
+urosStringListNodeHasName</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">lstp</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_list.html" title="Linked list, forward only.">UrosList</a></code> with <code><a class="el" href="struct_uros_string.html" title="String object.">UrosString</a></code> entries. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">strp</td><td>Requested string value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the list node with data equal to the reference string. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">NULL</td><td>No such topic node found. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="uros_base_8c_source.html#l01558">1558</a> of file <a class="el" href="uros_base_8c_source.html">urosBase.c</a>.</p>
+
+<p>References <a class="el" href="group__base__funcs.html#gaf2fb34900da45a0b6d5c5205c318c2f1">urosListFind()</a>, and <a class="el" href="group__base__funcs.html#gaaffb9d619c05897881e868954708c446">urosStringListNodeHasString()</a>.</p>
+
+<p>Referenced by <a class="el" href="group__node__funcs.html#ga57066b1bc73c5654171f34af5d19456d">urosNodeSubscribeParam()</a>, and <a class="el" href="group__node__funcs.html#ga0ec4ef27932603646162bef8bf15c16c">urosNodeUnsubscribeParam()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="group__base__funcs_ga314096aed1e7830b1b8ca08ca2cbb05a_cgraph.png" border="0" usemap="#group__base__funcs_ga314096aed1e7830b1b8ca08ca2cbb05a_cgraph" alt=""/></div>
+<map name="group__base__funcs_ga314096aed1e7830b1b8ca08ca2cbb05a_cgraph" id="group__base__funcs_ga314096aed1e7830b1b8ca08ca2cbb05a_cgraph">
+<area shape="rect" id="node3" href="group__base__funcs.html#gaf2fb34900da45a0b6d5c5205c318c2f1" title="First matching node occurrence of the list." alt="" coords="243,5,323,33"/><area shape="rect" id="node7" href="group__base__funcs.html#gaaffb9d619c05897881e868954708c446" title="Checks if the list node data equals the referenced string." alt="" coords="203,55,363,83"/><area shape="rect" id="node5" href="group__base__funcs.html#ga23589c831c48304c37d6244e30210bfc" title="Checks if pointing to a valid list object." alt="" coords="413,5,504,33"/><area shape="rect" id="node9" href="group__base__funcs.html#gab56136abf86b735834072883da8e1e52" title="Checks if pointing to a valid string object." alt="" coords="556,81,657,109"/><area shape="rect" id="node11" href="group__base__funcs.html#ga78efe29ebd12a2c10a0b101b5c982612" title="Compares two string objects." alt="" coords="412,106,505,134"/></map>
+</div>
+</p>
+
+</div>
+</div>
 <a class="anchor" id="ga0b1c8d9b6739d96478539785f5d87621"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2602,13 +2720,13 @@ Here is the call graph for this function:</div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">np</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_list_node.html" title="List node, forward only.">UrosListNode</a></code> which points to an initialized <code><a class="el" href="struct_uros_topic.html" title="Topic descriptor.">UrosTopic</a></code> descriptor. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">topicp</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_topic.html" title="Topic descriptor.">UrosTopic</a></code>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topicp</td><td>Pointer to the reference initialized <code><a class="el" href="struct_uros_topic.html" title="Topic descriptor.">UrosTopic</a></code> object. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> <em>iif</em> the topic of the node has the requested topic. </dd></dl>
 
-<p>Definition at line <a class="el" href="uros_base_8c_source.html#l01530">1530</a> of file <a class="el" href="uros_base_8c_source.html">urosBase.c</a>.</p>
+<p>Definition at line <a class="el" href="uros_base_8c_source.html#l01576">1576</a> of file <a class="el" href="uros_base_8c_source.html">urosBase.c</a>.</p>
 
 <p>References <a class="el" href="struct_uros_list_node.html#ab88d07767307bb2312d50abf2e87833b">UrosListNode::datap</a>, and <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>.</p>
 
@@ -2645,13 +2763,13 @@ Here is the call graph for this function:</div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">np</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_list_node.html" title="List node, forward only.">UrosListNode</a></code> which points to an initialized <code><a class="el" href="struct_uros_topic.html" title="Topic descriptor.">UrosTopic</a></code> descriptor. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">namep</td><td>Pointer to a non-empty <code><a class="el" href="struct_uros_string.html" title="String object.">UrosString</a></code>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">namep</td><td>Pointer to the reference non-empty <code><a class="el" href="struct_uros_string.html" title="String object.">UrosString</a></code> object. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> <em>iif</em> the topic of the node has the requested name. </dd></dl>
 
-<p>Definition at line <a class="el" href="uros_base_8c_source.html#l01550">1550</a> of file <a class="el" href="uros_base_8c_source.html">urosBase.c</a>.</p>
+<p>Definition at line <a class="el" href="uros_base_8c_source.html#l01596">1596</a> of file <a class="el" href="uros_base_8c_source.html">urosBase.c</a>.</p>
 
 <p>References <a class="el" href="struct_uros_list_node.html#ab88d07767307bb2312d50abf2e87833b">UrosListNode::datap</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, <a class="el" href="group__base__funcs.html#ga78efe29ebd12a2c10a0b101b5c982612">urosStringCmp()</a>, and <a class="el" href="group__base__funcs.html#ga683b6cffc3b9aa9d349d61e12a87a7bb">urosStringNotEmpty()</a>.</p>
 
@@ -2713,7 +2831,7 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="uros_base_8c_source.html#l01576">1576</a> of file <a class="el" href="uros_base_8c_source.html">urosBase.c</a>.</p>
+<p>Definition at line <a class="el" href="uros_base_8c_source.html#l01622">1622</a> of file <a class="el" href="uros_base_8c_source.html">urosBase.c</a>.</p>
 
 <p>References <a class="el" href="group__base__funcs.html#gaf2fb34900da45a0b6d5c5205c318c2f1">urosListFind()</a>, and <a class="el" href="group__base__funcs.html#ga0b1c8d9b6739d96478539785f5d87621">urosTopicListNodeHasTopic()</a>.</p>
 
@@ -2761,7 +2879,7 @@ Here is the call graph for this function:</div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">lstp</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_list.html" title="Linked list, forward only.">UrosList</a></code> with <code><a class="el" href="struct_uros_topic.html" title="Topic descriptor.">UrosTopic</a></code> entries. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">namep</td><td>Requested type name, null-terminated string, <code>NULL</code> forbidden. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">namep</td><td>Requested type name string. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2773,11 +2891,11 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="uros_base_8c_source.html#l01600">1600</a> of file <a class="el" href="uros_base_8c_source.html">urosBase.c</a>.</p>
+<p>Definition at line <a class="el" href="uros_base_8c_source.html#l01646">1646</a> of file <a class="el" href="uros_base_8c_source.html">urosBase.c</a>.</p>
 
 <p>References <a class="el" href="group__base__funcs.html#gaf2fb34900da45a0b6d5c5205c318c2f1">urosListFind()</a>, and <a class="el" href="group__base__funcs.html#gaa4847838297b5280c1430f08848ea495">urosTopicListNodeHasName()</a>.</p>
 
-<p>Referenced by <a class="el" href="group__node__funcs.html#gabcc745049a22e8be757283cb534565e0">urosNodePublishService()</a>, <a class="el" href="group__node__funcs.html#ga7e72bc38a7dc724e2294077972af78cb">urosNodePublishTopic()</a>, <a class="el" href="group__node__funcs.html#ga57066b1bc73c5654171f34af5d19456d">urosNodeSubscribeParam()</a>, <a class="el" href="group__node__funcs.html#ga28263c8607d14c52bb11450febe0624c">urosNodeSubscribeTopic()</a>, <a class="el" href="group__node__funcs.html#ga3c583fe282e14b2a1a8decfdbbdbe971">urosNodeUnpublishService()</a>, <a class="el" href="group__node__funcs.html#gafc8f59fe8f65ea0b6a87c9f811f3c7f0">urosNodeUnpublishTopic()</a>, <a class="el" href="group__node__funcs.html#ga0ec4ef27932603646162bef8bf15c16c">urosNodeUnsubscribeParam()</a>, and <a class="el" href="group__node__funcs.html#ga17900ea2127b5e185605b1dc0aa2ad8c">urosNodeUnsubscribeTopic()</a>.</p>
+<p>Referenced by <a class="el" href="group__node__funcs.html#gabcc745049a22e8be757283cb534565e0">urosNodePublishService()</a>, <a class="el" href="group__node__funcs.html#ga7e72bc38a7dc724e2294077972af78cb">urosNodePublishTopic()</a>, <a class="el" href="group__node__funcs.html#ga28263c8607d14c52bb11450febe0624c">urosNodeSubscribeTopic()</a>, <a class="el" href="group__node__funcs.html#ga3c583fe282e14b2a1a8decfdbbdbe971">urosNodeUnpublishService()</a>, <a class="el" href="group__node__funcs.html#gafc8f59fe8f65ea0b6a87c9f811f3c7f0">urosNodeUnpublishTopic()</a>, and <a class="el" href="group__node__funcs.html#ga17900ea2127b5e185605b1dc0aa2ad8c">urosNodeUnsubscribeTopic()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>

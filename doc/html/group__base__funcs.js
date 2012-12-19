@@ -51,6 +51,8 @@ var group__base__funcs =
     [ "urosListFind", "group__base__funcs.html#gaf2fb34900da45a0b6d5c5205c318c2f1", null ],
     [ "urosListAdd", "group__base__funcs.html#gae5808c2f0aeb0a570ae545f7468acdce", null ],
     [ "urosListRemove", "group__base__funcs.html#ga778761e65942c459b0b3be5049686d0a", null ],
+    [ "urosStringListNodeHasString", "group__base__funcs.html#gaaffb9d619c05897881e868954708c446", null ],
+    [ "urosStringListFindByName", "group__base__funcs.html#ga314096aed1e7830b1b8ca08ca2cbb05a", null ],
     [ "urosTopicListNodeHasTopic", "group__base__funcs.html#ga0b1c8d9b6739d96478539785f5d87621", null ],
     [ "urosTopicListNodeHasName", "group__base__funcs.html#gaa4847838297b5280c1430f08848ea495", null ],
     [ "urosTopicListFindByTopic", "group__base__funcs.html#ga7d5b4c9f57b3ad3ae60f6cba96cff09b", null ],

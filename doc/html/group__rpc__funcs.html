@@ -222,7 +222,7 @@ Here is the call graph for this function:</div>
 If desidred so, private members are deallocated. They must have been allocated with <code><a class="el" href="group__base__funcs.html#gaca31660467115b07820c90fd9f282d67" title="Allocates a memory block.">urosAlloc()</a></code>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">paramp</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_rpc_param.html" title="XMLRPC parameter value.">UrosRpcParam</a></code> object. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">paramp</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_rpc_param.html" title="XMLRPC parameter value.">UrosRpcParam</a></code> object, or <code>NULL</code>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">deep</td><td>Performs deallocation of private members. </td></tr>
   </table>
   </dd>
@@ -378,7 +378,7 @@ Here is the call graph for this function:</div>
 If desidred so, private members are deallocated. They must have been allocated with <code><a class="el" href="group__base__funcs.html#gaca31660467115b07820c90fd9f282d67" title="Allocates a memory block.">urosAlloc()</a></code>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">nodep</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_rpc_param_node.html" title="Parameter list node, forward only.">UrosRpcParamNode</a></code> object. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">nodep</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_rpc_param_node.html" title="Parameter list node, forward only.">UrosRpcParamNode</a></code> object, or <code>NULL</code>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">deep</td><td>Performs deallocation of private members. </td></tr>
   </table>
   </dd>
@@ -539,7 +539,7 @@ Here is the call graph for this function:</div>
 If desidred so, all the nodes are deallocated. They must have been allocated with <code><a class="el" href="group__base__funcs.html#gaca31660467115b07820c90fd9f282d67" title="Allocates a memory block.">urosAlloc()</a></code>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">listp</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_rpc_param_list.html" title="Parameter list, double ended.">UrosRpcParamList</a></code> object. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">listp</td><td>Pointer to an initialized <code><a class="el" href="struct_uros_rpc_param_list.html" title="Parameter list, double ended.">UrosRpcParamList</a></code> object, or <code>NULL</code>. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">deep</td><td>Performs deallocation of all the nodes. </td></tr>
   </table>
   </dd>
@@ -725,7 +725,7 @@ The list is consistent.</dd></dl>
 
 <p>References <a class="el" href="struct_uros_rpc_response.html#a2b2df079d5bf428ca349ecac28bba0ad">UrosRpcResponse::code</a>, <a class="el" href="struct_uros_rpc_response.html#a42e0052eb6b721c22ca020a76c1fa106">UrosRpcResponse::httpcode</a>, <a class="el" href="struct_uros_rpc_response.html#a36eac8b18321e6384f9a185618ce7215">UrosRpcResponse::statusMsgp</a>, <a class="el" href="group__rpc__types.html#gga17b8b6fc0f50d5d51c58ba1e3259487aa95f983c3c5e7d8e310e7479290a20af5">UROS_RPCC_ERROR</a>, <a class="el" href="group__base__macros.html#ga54eab9e05e9149628d6950a87eb8b6f8">urosAssert</a>, and <a class="el" href="struct_uros_rpc_response.html#a43a84dc1f5badf8084d3d757263cf9d7">UrosRpcResponse::valuep</a>.</p>
 
-<p>Referenced by <a class="el" href="group__node__funcs.html#ga23dd94be8d8eca304c09aa91fa6a7107">urosNodePublishServiceByDesc()</a>, <a class="el" href="group__node__funcs.html#ga9ca502f6e069b5a99f6f80627bb50ce2">urosNodePublishTopicByDesc()</a>, <a class="el" href="group__node__funcs.html#ga2eed510f72ca4194a3a1b44d31761e1d">urosNodeSubscribeParamByDesc()</a>, <a class="el" href="group__node__funcs.html#ga9a15140cb500fbbcf29fce16ad31a573">urosNodeSubscribeTopicByDesc()</a>, <a class="el" href="group__node__funcs.html#ga0ec4ef27932603646162bef8bf15c16c">urosNodeUnsubscribeParam()</a>, <a class="el" href="group__rpc__call__funcs.html#ga5af5be4afc2ec7c7b527770b52fdcc5a">urosRpcCallParamUpdate()</a>, <a class="el" href="group__rpc__call__funcs.html#ga2a08fc0416f5a7de8504175ef73a447a">urosRpcCallPublisherUpdate()</a>, <a class="el" href="group__rpc__call__funcs.html#ga3e3fc4e7520ea411e0bea9583b061f5a">urosRpcCallRequestTopic()</a>, <a class="el" href="group__rpc__call__funcs.html#ga0125a68f54764d45c0d82c243299dde8">urosRpcCallSetParam()</a>, <a class="el" href="group__rpc__call__funcs.html#gaca4c310214b0589aa7b0ca106cda8ba7">urosRpcCallSubscribeParam()</a>, and <a class="el" href="group__rpc__parser__funcs.html#ga73f1b75f47d893b06d55aa9cae8a41c1">urosRpcParserMethodResponse()</a>.</p>
+<p>Referenced by <a class="el" href="group__node__funcs.html#ga23dd94be8d8eca304c09aa91fa6a7107">urosNodePublishServiceByDesc()</a>, <a class="el" href="group__node__funcs.html#ga9ca502f6e069b5a99f6f80627bb50ce2">urosNodePublishTopicByDesc()</a>, <a class="el" href="group__node__funcs.html#ga57066b1bc73c5654171f34af5d19456d">urosNodeSubscribeParam()</a>, <a class="el" href="group__node__funcs.html#ga9a15140cb500fbbcf29fce16ad31a573">urosNodeSubscribeTopicByDesc()</a>, <a class="el" href="group__node__funcs.html#ga0ec4ef27932603646162bef8bf15c16c">urosNodeUnsubscribeParam()</a>, <a class="el" href="group__rpc__call__funcs.html#ga5af5be4afc2ec7c7b527770b52fdcc5a">urosRpcCallParamUpdate()</a>, <a class="el" href="group__rpc__call__funcs.html#ga2a08fc0416f5a7de8504175ef73a447a">urosRpcCallPublisherUpdate()</a>, <a class="el" href="group__rpc__call__funcs.html#ga3e3fc4e7520ea411e0bea9583b061f5a">urosRpcCallRequestTopic()</a>, <a class="el" href="group__rpc__call__funcs.html#ga0125a68f54764d45c0d82c243299dde8">urosRpcCallSetParam()</a>, <a class="el" href="group__rpc__call__funcs.html#gaca4c310214b0589aa7b0ca106cda8ba7">urosRpcCallSubscribeParam()</a>, and <a class="el" href="group__rpc__parser__funcs.html#ga73f1b75f47d893b06d55aa9cae8a41c1">urosRpcParserMethodResponse()</a>.</p>
 
 </div>
 </div>

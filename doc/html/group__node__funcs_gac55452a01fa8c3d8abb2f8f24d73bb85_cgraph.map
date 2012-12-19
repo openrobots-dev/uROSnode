@@ -1,5 +1,5 @@
 <map id="urosNodePublishServiceSZ" name="urosNodePublishServiceSZ">
-<area shape="rect" id="node3" href="$group__node__funcs.html#gabcc745049a22e8be757283cb534565e0" title="urosNodePublishService" alt="" coords="205,207,344,235"/>
+<area shape="rect" id="node3" href="$group__node__funcs.html#gabcc745049a22e8be757283cb534565e0" title="Publishes a service." alt="" coords="205,207,344,235"/>
 <area shape="rect" id="node26" href="$group__base__funcs.html#ga45818844e48c6458a4ab88820a0ef6c1" title="The string object points to a memory chunk." alt="" coords="220,258,329,286"/>
 <area shape="rect" id="node5" href="$group__base__funcs.html#ga683b6cffc3b9aa9d349d61e12a87a7bb" title="Checks if a string is not empty." alt="" coords="617,55,735,83"/>
 <area shape="rect" id="node7" href="$group__base__funcs.html#ga13754ff12d667881c4d8db5c3fa9922c" title="Gets the service type descriptor with the requested name." alt="" coords="415,5,545,33"/>

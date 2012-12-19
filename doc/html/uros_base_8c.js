@@ -51,6 +51,8 @@ var uros_base_8c =
     [ "urosListFind", "uros_base_8c.html#gaf2fb34900da45a0b6d5c5205c318c2f1", null ],
     [ "urosListAdd", "uros_base_8c.html#gae5808c2f0aeb0a570ae545f7468acdce", null ],
     [ "urosListRemove", "uros_base_8c.html#ga778761e65942c459b0b3be5049686d0a", null ],
+    [ "urosStringListNodeHasString", "uros_base_8c.html#gaaffb9d619c05897881e868954708c446", null ],
+    [ "urosStringListFindByName", "uros_base_8c.html#ga314096aed1e7830b1b8ca08ca2cbb05a", null ],
     [ "urosTopicListNodeHasTopic", "uros_base_8c.html#ga0b1c8d9b6739d96478539785f5d87621", null ],
     [ "urosTopicListNodeHasName", "uros_base_8c.html#gaa4847838297b5280c1430f08848ea495", null ],
     [ "urosTopicListFindByTopic", "uros_base_8c.html#ga7d5b4c9f57b3ad3ae60f6cba96cff09b", null ],
