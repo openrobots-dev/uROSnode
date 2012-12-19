@@ -1660,7 +1660,9 @@ uros_err_t urosRpcParserParamValueArray(UrosRpcParser *pp,
       /* No more nodes found.*/
       urosRpcParamListUnlinkNode(paramp->value.listp, nodep);
       urosRpcParamNodeDelete(nodep, UROS_TRUE);
-      urosRpcParserXmlTagClose(pp, "data", 4); _CHKOK
+      if (urosRpcParserExpectQuiet(pp, "/data>", 6) == UROS_ERR_PARSE) {
+        urosRpcParserXmlTagClose(pp, "data", 4); _CHKOK
+      }
       break;
     }
     urosError(pp->err != UROS_OK, goto _error,

@@ -1143,7 +1143,7 @@ uros_err_t urosTcpRosSendError(UrosTcpRosStatus *tcpstp) {
   urosAssert(tcpstp != NULL);
 #define _CHKOK  { if (tcpstp->err != UROS_OK) { return tcpstp->err; } }
 
-  if (tcpstp->topicp != NULL) {
+  if (tcpstp->topicp == NULL) {
     typestrp = &dummytype.name;
     md5strp = &dummytype.md5str;
     (void)dummytopic;
@@ -1159,7 +1159,7 @@ uros_err_t urosTcpRosSendError(UrosTcpRosStatus *tcpstp) {
 
   /* uint32 header_length */
   hdrlen32 = (uint32_t)hdrlen;
-  urosTcpRosSend(tcpstp, &hdrlen32, sizeof(hdrlen32)); _CHKOK
+  urosTcpRosSendRaw(tcpstp, hdrlen32); _CHKOK
 
   /* uint32 field_length, error={str} */
   uros_tcpros_sendfieldstring(tcpstp, &errfield, errstrp); _CHKOK
