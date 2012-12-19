@@ -543,7 +543,7 @@ uros_err_t uros_lld_thread_join(UrosThreadId id) {
  */
 void uros_lld_thread_sleepsec(uint32_t sec) {
 
-  chThdSleepSeconds(sec);
+  chThdSleepSeconds((systime_t)sec);
 }
 
 /**
@@ -555,7 +555,7 @@ void uros_lld_thread_sleepsec(uint32_t sec) {
  */
 void uros_lld_thread_sleepmsec(uint32_t msec) {
 
-  chThdSleepMilliseconds(msec * 1000);
+  chThdSleepMilliseconds((systime_t)msec);
 }
 
 /**
@@ -567,7 +567,7 @@ void uros_lld_thread_sleepmsec(uint32_t msec) {
  */
 void uros_lld_thread_sleepusec(uint32_t usec) {
 
-  chThdSleepMicroseconds(usec);
+  chThdSleepMicroseconds((systime_t)usec);
 }
 
 /**

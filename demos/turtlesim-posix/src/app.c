@@ -18,6 +18,10 @@
 #include "app.h"
 #include "urosTcpRosHandlers.h"
 
+/*===========================================================================*/
+/* TYPES & MACROS                                                            */
+/*===========================================================================*/
+
 #define min(a,b)    (((a) <= (b)) ? (a) : (b))
 #define max(a,b)    (((a) >= (b)) ? (a) : (b))
 
@@ -28,7 +32,6 @@
 fifo_t rosoutQueue;
 
 turtle_t turtles[MAX_TURTLES];
-
 UrosThreadPool turtlesThreadPool;
 UrosMemPool turtlesMemPool;
 static uint8_t turtlesThreadStacks[MAX_TURTLES]
@@ -252,22 +255,22 @@ uros_err_t turtle_brain_thread(turtle_t *turtlep) {
 
   urosAssert(turtlep != NULL);
 
-  /* Simple integration every 1ms.*/
+  /* Simple integration every 4ms.*/
+  posep = (struct msg__turtlesim__Pose *)&turtlep->pose;
   urosMutexLock(&turtlep->lock);
-  posep = &turtlep->pose;
   while (turtlep->status == TURTLE_ALIVE) {
     /* Execute commands until their deadline.*/
     if (turtlep->countdown > 0) {
       --turtlep->countdown;
-      posep->x += (float)cos(posep->theta) * posep->linear_velocity * 0.001f;
-      posep->y += (float)sin(posep->theta) * posep->linear_velocity * 0.001f;
-      posep->theta += posep->angular_velocity * 0.001f;
+      posep->x += (float)cos(posep->theta) * posep->linear_velocity * 0.004f;
+      posep->y += (float)sin(posep->theta) * posep->linear_velocity * 0.004f;
+      posep->theta += posep->angular_velocity * 0.004f;
 
       /* Clamp values.*/
       if (posep->x < 0 || posep->x > SANDBOX_WIDTH ||
           posep->y < 0 || posep->y > SANDBOX_WIDTH) {
-        UrosString msg = urosStringAssignZ("Turtle hit the wall");
-        rosout_warn(&msg, UROS_TRUE);
+        static const UrosString msg = { 19, "Turtle hit the wall" };
+        rosout_warn((UrosString*)&msg, UROS_TRUE);
       }
       posep->x = min(max(0, posep->x), SANDBOX_WIDTH);
       posep->y = min(max(0, posep->y), SANDBOX_HEIGHT);
@@ -278,7 +281,7 @@ uros_err_t turtle_brain_thread(turtle_t *turtlep) {
       posep->angular_velocity = 0;
     }
     urosMutexUnlock(&turtlep->lock);
-    urosThreadSleepMsec(1);
+    urosThreadSleepMsec(4);
     urosMutexLock(&turtlep->lock);
   }
   turtle_unref(turtlep);
@@ -390,7 +393,7 @@ turtle_t *turtle_spawn(const UrosString *namep,
   turtlep->pose.angular_velocity = 0;
   turtlep->countdown = 0;
   turtlep->status = TURTLE_ALIVE;
-  turtlep->refCnt = 1; /* For the brain only */
+  turtlep->refCnt = 1; /* For the brain thread only.*/
 
   /* Publish "<turtle>/pose" .*/
   err = urosNodePublishTopicSZ(posname.datap,

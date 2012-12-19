@@ -245,12 +245,6 @@ uros_err_t sub_tpc__turtleX__command_velocity(UrosTcpRosStatus *tcpstp) {
       tcpstp->err = UROS_ERR_BADPARAM; goto _finally;
     }
 
-    /* Dump the received packet contents.*/
-    printf("PID: %d\n", (int)urosThreadSelf());
-    printf("%.*s\n", UROS_STRARG(&tcpstp->topicp->name));
-    printf("\tlinear  %f\n", msgp->linear);
-    printf("\tangular %f\n", msgp->angular);
-
     /* Start a new turtle movement for 1s.*/
     urosMutexLock(&turtlep->lock);
     turtlep->pose.linear_velocity = msgp->linear;
@@ -267,7 +261,9 @@ _finally:
   /* Message deinitialization and deallocation.*/
   clean_msg__turtlesim__Velocity(msgp);
   urosFree(msgp);
+  urosMutexLock(&turtlep->lock);
   turtle_unref(turtlep);
+  urosMutexUnlock(&turtlep->lock);
   return tcpstp->err;
 }
 
@@ -413,10 +409,12 @@ uros_err_t pub_srv__kill(UrosTcpRosStatus *tcpstp) {
     urosStringClean(&tcpstp->errstr);
     okByte = 1;
 
-    turtlep = turtle_refbypath(&inmsgp->name);
+    turtlep = turtle_refbyname(&inmsgp->name);
     if (turtlep == NULL) { return UROS_ERR_BADPARAM; }
-    turtle_unref(turtlep);
     turtle_kill(turtlep);
+    urosMutexLock(&turtlep->lock);
+    turtle_unref(turtlep);
+    urosMutexUnlock(&turtlep->lock);
 
     /* Dispose the contents of the request message.*/
     clean_in_srv__turtlesim__Kill(inmsgp);
@@ -633,7 +631,9 @@ _finally:
   clean_out_srv__turtlesim__SetPen(outmsgp);
   urosFree(inmsgp);
   urosFree(outmsgp);
+  urosMutexLock(&turtlep->lock);
   turtle_unref(turtlep);
+  urosMutexUnlock(&turtlep->lock);
   return tcpstp->err;
 }
 
@@ -738,7 +738,9 @@ _finally:
   clean_out_srv__turtlesim__TeleportAbsolute(outmsgp);
   urosFree(inmsgp);
   urosFree(outmsgp);
+  urosMutexLock(&turtlep->lock);
   turtle_unref(turtlep);
+  urosMutexUnlock(&turtlep->lock);
   return tcpstp->err;
 }
 
@@ -773,6 +775,7 @@ uros_err_t pub_srv__turtleX__teleport_relative(UrosTcpRosStatus *tcpstp) {
 
   /* Get the turtle slot.*/
   turtlep = turtle_refbypath(&tcpstp->topicp->name);
+  if (turtlep == NULL) { return UROS_ERR_BADPARAM; }
   posep = (struct msg__turtlesim__Pose *)&turtlep->pose;
 
   /* Service messages allocation and initialization.*/
@@ -842,7 +845,9 @@ _finally:
   clean_out_srv__turtlesim__TeleportRelative(outmsgp);
   urosFree(inmsgp);
   urosFree(outmsgp);
+  urosMutexLock(&turtlep->lock);
   turtle_unref(turtlep);
+  urosMutexUnlock(&turtlep->lock);
   return tcpstp->err;
 }
 

@@ -1505,7 +1505,7 @@ UrosListNode *urosListRemove(UrosList *lstp, const UrosListNode *np) {
       if (prevp != NULL) {
         prevp->nextp = curp->nextp;
       } else {
-        lstp->headp = NULL;
+        lstp->headp = curp->nextp;
       }
       curp->nextp = NULL;
       --lstp->length;
