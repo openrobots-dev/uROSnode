@@ -401,9 +401,6 @@ uros_err_t uros_lld_conn_recv(UrosConn *cp,
             ("Socket error [%s] while receiving at most %uz bytes from "
              UROS_ADDRFMT"\n", strerror(errno), limit,
              UROS_ADDRARG(&cp->remaddr)));
-  urosError(nb == 0, return UROS_ERR_EOF,
-            ("End of stream reached, self "UROS_ADDRFMT", remote "UROS_ADDRFMT"\n",
-             UROS_ADDRARG(&cp->locaddr), UROS_ADDRARG(&cp->remaddr)));
   *bufpp = cp->recvbufp;
   *buflenp = (size_t)nb;
   return UROS_OK;
@@ -480,7 +477,7 @@ uros_err_t uros_lld_conn_send(UrosConn *cp,
   curp = (uint8_t*)bufp;
   pending = buflen;
   while (pending > 0) {
-    ssize_t nb = send(cp->socket, bufp, buflen, 0);
+    ssize_t nb = send(cp->socket, bufp, buflen, MSG_NOSIGNAL);
     urosError(nb < 0, return UROS_ERR_BADCONN,
               ("Socket error [%s] while sending [%.*s] (%zu bytes) to "
                UROS_ADDRFMT"\n", strerror(errno),

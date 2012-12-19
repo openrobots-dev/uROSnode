@@ -986,10 +986,20 @@ uros_err_t urosTcpRosRecv(UrosTcpRosStatus *tcpstp,
   while (pending > 0) {
     size_t nb = pending;
     tcpstp->err = urosConnRecv(tcpstp->csp, (void**)&recvp, &nb);
-    urosError(tcpstp->err != UROS_OK, return tcpstp->err,
-              ("Error %s while receiving %zu bytes after [%.*s]\n",
-               urosErrorText(tcpstp->err), nb,
-               (int)((ptrdiff_t)curp - (ptrdiff_t)bufp), bufp));
+    if (tcpstp->err != UROS_OK) {
+      if (tcpstp->err == UROS_ERR_EOF && nb < pending) {
+        urosError(tcpstp->err == UROS_ERR_EOF && nb < pending,
+                  return tcpstp->err,
+                  ("Error %s while receiving %zu bytes after [%.*s]\n",
+                   urosErrorText(tcpstp->err), nb,
+                   (int)((ptrdiff_t)curp - (ptrdiff_t)bufp), bufp));
+      } else {
+        urosError(tcpstp->err != UROS_OK, return tcpstp->err,
+                  ("Error %s while receiving %zu bytes after [%.*s]\n",
+                   urosErrorText(tcpstp->err), nb,
+                   (int)((ptrdiff_t)curp - (ptrdiff_t)bufp), bufp));
+      }
+    }
     memcpy(curp, recvp, nb);
     pending -= nb;
     curp += nb;
