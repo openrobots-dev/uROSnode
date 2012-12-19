@@ -206,7 +206,24 @@ void urosNodeConfigSave(const UrosNodeConfig *cfgp) {
 }
 
 /**
- * TODO
+ * @brief   Publishes a topic.
+ * @details Issues a @p publishTopic() call to the XMLRPC Master.
+ * @see     urosRpcCallRegisterPublisher()
+ * @see     urosNodePublishTopicByDesc()
+ * @warning The access to the topic registry is thread-safe, but delays of the
+ *          XMLRPC communication will delay also any other threads trying to
+ *          publish/unpublish any topics.
+ *
+ * @pre     The topic is not published.
+ *
+ * @param[in] namep
+ *          Pointer to the topic name string.
+ * @param[in] typep
+ *          Pointer to the topic message type name string.
+ * @param[in] procf
+ *          Topic handler function.
+ * @return
+ *          Error code.
  */
 uros_err_t urosNodePublishTopic(const UrosString *namep,
                                 const UrosString *typep,
@@ -248,7 +265,24 @@ uros_err_t urosNodePublishTopic(const UrosString *namep,
 }
 
 /**
- * TODO
+ * @brief   Publishes a topic.
+ * @details Issues a @p publishTopic() call to the XMLRPC Master.
+ * @see     urosRpcCallRegisterPublisher()
+ * @see     urosNodePublishTopicByDesc()
+ * @warning The access to the topic registry is thread-safe, but delays of the
+ *          XMLRPC communication will delay also any other threads trying to
+ *          publish/unpublish any topics.
+ *
+ * @pre     The topic is not published.
+ *
+ * @param[in] namep
+ *          Pointer to the topic name null-terminated string.
+ * @param[in] typep
+ *          Pointer to the topic message type name null-terminated string.
+ * @param[in] procf
+ *          Topic handler function.
+ * @return
+ *          Error code.
  */
 uros_err_t urosNodePublishTopicSZ(const char *namep,
                                   const char *typep,
@@ -318,11 +352,11 @@ uros_err_t urosNodePublishTopicByDesc(UrosTopic *topicp) {
 
   /* Check for valid codes.*/
   urosError(response.code != UROS_RPCC_SUCCESS,
-            { return UROS_ERR_BADPARAM; goto _finally; },
+            { err = UROS_ERR_BADPARAM; goto _finally; },
             ("Response code %d, expected %d\n",
              response.code, UROS_RPCC_SUCCESS));
   urosError(response.httpcode != 200,
-            { return UROS_ERR_BADPARAM; goto _finally; },
+            { err = UROS_ERR_BADPARAM; goto _finally; },
             ("Response HTTP code %d, expected 200\n", response.httpcode));
 
   /* Add to the published topics list.*/
@@ -422,7 +456,28 @@ _finally:
 }
 
 /**
- * TODO
+ * @brief   Subscribes to a topic.
+ * @details Issues a @p registerSubscriber() call to the XMLRPC Master, and
+ *          connects to known publishers.
+ * @see     urosNodeSubscribeTopicByDesc()
+ * @see     urosRpcCallRegisterSubscriber()
+ * @see     urosNodeFindNewPublishers()
+ * @see     urosRpcSlaveConnectToPublishers()
+ * @warning The access to the topic registry is thread-safe, but delays of the
+ *          XMLRPC communication will delay also any other threads trying to
+ *          subscribe/unsubscribe to any topics.
+ *
+ * @pre     The topic is not subscribed.
+ * @post    Connects to known publishers listed by a successful response.
+ *
+ * @param[in] namep
+ *          Pointer to the topic name string.
+ * @param[in] typep
+ *          Pointer to the topic message type name string.
+ * @param[in] procf
+ *          Topic handler function.
+ * @return
+ *          Error code.
  */
 uros_err_t urosNodeSubscribeTopic(const UrosString *namep,
                                   const UrosString *typep,
@@ -464,7 +519,28 @@ uros_err_t urosNodeSubscribeTopic(const UrosString *namep,
 }
 
 /**
- * TODO
+ * @brief   Subscribes to a topic.
+ * @details Issues a @p registerSubscriber() call to the XMLRPC Master, and
+ *          connects to known publishers.
+ * @see     urosNodeSubscribeTopicByDesc()
+ * @see     urosRpcCallRegisterSubscriber()
+ * @see     urosNodeFindNewPublishers()
+ * @see     urosRpcSlaveConnectToPublishers()
+ * @warning The access to the topic registry is thread-safe, but delays of the
+ *          XMLRPC communication will delay also any other threads trying to
+ *          subscribe/unsubscribe to any topics.
+ *
+ * @pre     The topic is not subscribed.
+ * @post    Connects to known publishers listed by a successful response.
+ *
+ * @param[in] namep
+ *          Pointer to the topic name null-terminated string.
+ * @param[in] typep
+ *          Pointer to the topic message type name null-terminated string.
+ * @param[in] procf
+ *          Topic handler function.
+ * @return
+ *          Error code.
  */
 uros_err_t urosNodeSubscribeTopicSZ(const char *namep,
                                     const char *typep,
@@ -540,11 +616,11 @@ uros_err_t urosNodeSubscribeTopicByDesc(UrosTopic *topicp) {
 
   /* Check for valid codes.*/
   urosError(response.code != UROS_RPCC_SUCCESS,
-            { return UROS_ERR_BADPARAM; goto _finally; },
+            { err = UROS_ERR_BADPARAM; goto _finally; },
             ("Response code %d, expected %d\n",
              response.code, UROS_RPCC_SUCCESS));
   urosError(response.httpcode != 200,
-            { return UROS_ERR_BADPARAM; goto _finally; },
+            { err = UROS_ERR_BADPARAM; goto _finally; },
             ("Response HTTP code %d, expected 200\n", response.httpcode));
 
   /* Connect to registered publishers.*/
@@ -656,7 +732,24 @@ _finally:
 }
 
 /**
- * TODO
+ * @brief   Publishes a service.
+ * @details Issues a @p registerService() call to the XMLRPC Master.
+ * @warning The access to the service registry is thread-safe, but delays of
+ *          the XMLRPC communication will delay also any other threads trying
+ *          to publish/unpublish any services.
+ * @see     urosNodePublishServiceByDesc()
+ * @see     urosRpcCallRegisterService()
+ *
+ * @pre     The service is not published.
+ *
+ * @param[in] namep
+ *          Pointer to the service name string.
+ * @param[in] typep
+ *          Pointer to the service type name string.
+ * @param[in] procf
+ *          Service handler function.
+ * @return
+ *          Error code.
  */
 uros_err_t urosNodePublishService(const UrosString *namep,
                                   const UrosString *typep,
@@ -700,7 +793,24 @@ uros_err_t urosNodePublishService(const UrosString *namep,
 }
 
 /**
- * TODO
+ * @brief   Publishes a service.
+ * @details Issues a @p registerService() call to the XMLRPC Master.
+ * @warning The access to the service registry is thread-safe, but delays of
+ *          the XMLRPC communication will delay also any other threads trying
+ *          to publish/unpublish any services.
+ * @see     urosNodePublishServiceByDesc()
+ * @see     urosRpcCallRegisterService()
+ *
+ * @pre     The service is not published.
+ *
+ * @param[in] namep
+ *          Pointer to the service name null-terminated string.
+ * @param[in] typep
+ *          Pointer to the service type name null-terminated string.
+ * @param[in] procf
+ *          Service handler function.
+ * @return
+ *          Error code.
  */
 uros_err_t urosNodePublishServiceSZ(const char *namep,
                                     const char *typep,
@@ -770,11 +880,11 @@ uros_err_t urosNodePublishServiceByDesc(const UrosTopic *servicep) {
 
   /* Check for valid codes.*/
   urosError(response.code != UROS_RPCC_SUCCESS,
-            { return UROS_ERR_BADPARAM; goto _finally; },
+            { err = UROS_ERR_BADPARAM; goto _finally; },
             ("Response code %d, expected %d\n",
              response.code, UROS_RPCC_SUCCESS));
   urosError(response.httpcode != 200,
-            { return UROS_ERR_BADPARAM; goto _finally; },
+            { err = UROS_ERR_BADPARAM; goto _finally; },
             ("Response HTTP code %d, expected 200\n", response.httpcode));
 
   /* Add to the published topics list.*/
@@ -825,11 +935,9 @@ uros_err_t urosNodeUnpublishService(const UrosString *namep) {
   urosMutexLock(&urosNode.status.pubServiceListLock);
   servicenodep = urosTopicListFindByName(&urosNode.status.pubServiceList,
                                          namep);
-  if (servicenodep == NULL) {
-    urosError(servicenodep == NULL,
-              { err = UROS_ERR_BADPARAM; goto _finally; },
-              ("Service [%.*s] not published\n", UROS_STRARG(namep)));
-  }
+  urosError(servicenodep == NULL,
+            { err = UROS_ERR_BADPARAM; goto _finally; },
+            ("Service [%.*s] not published\n", UROS_STRARG(namep)));
   servicep = (UrosTopic*)servicenodep->datap;
 
   /* Unregister the service on the Master node.*/
@@ -840,7 +948,7 @@ uros_err_t urosNodeUnpublishService(const UrosString *namep) {
     &urosNode.config.tcprosUri,
     &res
   );
-  urosError(err != UROS_OK, UROS_NOP,
+  urosError(err != UROS_OK, goto _finally,
             ("Error %s while unregistering as publisher of service [%.*s]\n",
              urosErrorText(err), UROS_STRARG(namep)));
 
@@ -876,37 +984,105 @@ _finally:
 }
 
 /**
- * TODO
+ * @brief   Subscribes to a parameter by its descriptor.
+ * @details Issues a @p subscribeParam() call to the XMLRPC Master, and
+ *          connects to known publishers.
+ * @see     urosRpcCallSubscribeParam()
+ * @see     urosNodeSubscribeParamByDesc()
+ * @warning The access to the parameter registry is thread-safe, but delays of
+ *          the XMLRPC communication will delay also any other threads trying
+ *          to subscribe/unsubscribe to any parameters.
+ *
+ * @pre     The parameter has not been registered yet.
+ *
+ * @param[in] namep
+ *          Pointer to the parameter name string.
+ * @return
+ *          Error code.
  */
 uros_err_t urosNodeSubscribeParam(const UrosString *namep) {
 
-  UrosTopic *paramp;
+  static const UrosNodeConfig *cfgp = &urosNode.config;
+
+  UrosString *clonednamep;
   UrosListNode *paramnodep;
+  UrosRpcResponse response;
+  UrosListNode *nodep;
   uros_err_t err;
 
   urosAssert(urosStringNotEmpty(namep));
 
-  /* Check if the topic already exists.*/
+  /* Check if the parameter already exists.*/
   urosMutexLock(&urosNode.status.subParamListLock);
-  paramnodep = urosTopicListFindByName(&urosNode.status.subParamList, namep);
+  paramnodep = urosStringListFindByName(&urosNode.status.subParamList, namep);
   urosMutexUnlock(&urosNode.status.subParamListLock);
   urosError(paramnodep != NULL, return UROS_ERR_BADPARAM,
             ("Parameter [%.*s] already subscribed\n", UROS_STRARG(namep)));
 
-  /* Create a new topic descriptor.*/
-  paramp = urosNew(UrosTopic);
-  if (paramp == NULL) { return UROS_ERR_NOMEM; }
-  urosTopicObjectInit(paramp);
-  paramp->name = urosStringClone(namep);
+  /* Create the storage data in advance.*/
+  clonednamep = urosNew(UrosString);
+  if (clonednamep == NULL) { return UROS_ERR_NOMEM; }
+  *clonednamep = urosStringClone(namep);
+  nodep = urosNew(UrosListNode);
+  if (clonednamep->datap == NULL || nodep == NULL) {
+    urosStringDelete(clonednamep); urosFree(nodep);
+    return UROS_ERR_NOMEM;
+  }
 
   /* Subscribe to the topic.*/
-  err = urosNodeSubscribeParamByDesc(paramp);
-  if (err != UROS_OK) { urosTopicDelete(paramp); }
+  urosRpcResponseObjectInit(&response);
+  urosMutexLock(&urosNode.status.subParamListLock);
+
+  /* Master XMLRPC registerSubscriber() */
+  err = urosRpcCallSubscribeParam(
+    &cfgp->masterAddr,
+    &cfgp->nodeName,
+    &cfgp->xmlrpcUri,
+    namep,
+    &response
+  );
+  urosError(err != UROS_OK, goto _finally,
+            ("Error %s while subscribing to parameter [%.*s]\n",
+             urosErrorText(err), UROS_STRARG(namep)));
+
+  /* Check for valid codes.*/
+  urosError(response.code != UROS_RPCC_SUCCESS,
+            { err = UROS_ERR_BADPARAM; goto _finally; },
+            ("Response code %d, expected %d\n",
+             response.code, UROS_RPCC_SUCCESS));
+  urosError(response.httpcode != 200,
+            { err = UROS_ERR_BADPARAM; goto _finally; },
+            ("Response HTTP code %d, expected 200\n", response.httpcode));
+
+  /* Add to the subscribed topics list.*/
+  urosListNodeObjectInit(nodep);
+  nodep->datap = (void*)clonednamep;
+  urosListAdd(&urosNode.status.subParamList, nodep);
+
+  err = UROS_OK;
+_finally:
+  /* Cleanup and return.*/
+  urosMutexUnlock(&urosNode.status.subParamListLock);
+  urosRpcResponseClean(&response);
   return err;
 }
 
 /**
- * TODO
+ * @brief   Subscribes to a parameter.
+ * @details Issues a @p subscribeParam() call to the XMLRPC Master, and
+ *          connects to known publishers.
+ * @see     urosRpcCallSubscribeParam()
+ * @see     urosNodeSubscribeParamByDesc()
+ * @warning The access to the parameter registry is thread-safe, but delays of
+ *          the XMLRPC communication will delay also any other threads trying
+ *          to subscribe/unsubscribe to any parameters.
+ *
+ * @pre     The parameter has not been registered yet.
+ *
+ * @param[in] namep
+ *          Pointer to the parameter name null-terminated string.
+ * @return
+ *          Error code.
  */
 uros_err_t urosNodeSubscribeParamSZ(const char *namep) {
 
@@ -917,77 +1093,6 @@ uros_err_t urosNodeSubscribeParamSZ(const char *namep) {
 
   namestr = urosStringAssignZ(namep);
   return urosNodeSubscribeParam(&namestr);
-}
-
-/**
- * @brief   Subscribes to a parameter by its descriptor.
- * @details Issues a @p subscribeParam() call to the XMLRPC Master, and
- *          connects to known publishers.
- * @see     urosRpcCallSubscribeParam()
- * @warning The access to the parameter registry is thread-safe, but delays of
- *          the XMLRPC communication will delay also any other threads trying
- *          to subscribe/unsubscribe to any parameters.
- *
- * @pre     The parameter has not been registered yet.
- * @post    - If successful, the parameter descriptor is referenced by the
- *            parameter registry, and is no longer modifiable by the caller
- *            function.
- *          - If unsuccessful, the parameter descriptor can be deallocated by
- *            the caller function.
- *
- * @param[in] paramp
- *          Pointer to the parameter descriptor to be subscribed to and
- *          registered.
- * @return
- *          Error code.
- */
-uros_err_t urosNodeSubscribeParamByDesc(const UrosTopic *paramp) {
-
-  static const UrosNodeConfig *cfgp = &urosNode.config;
-  UrosRpcResponse response;
-  uros_err_t err;
-  UrosListNode *nodep;
-
-  urosAssert(paramp != NULL);
-  urosAssert(urosStringNotEmpty(&paramp->name));
-
-  urosRpcResponseObjectInit(&response);
-  urosMutexLock(&urosNode.status.subParamListLock);
-
-  /* Master XMLRPC registerSubscriber() */
-  err = urosRpcCallSubscribeParam(
-    &cfgp->masterAddr,
-    &cfgp->nodeName,
-    &cfgp->xmlrpcUri,
-    &paramp->name,
-    &response
-  );
-  urosError(err != UROS_OK, goto _finally,
-            ("Cannot subscribe to parameter [%.*s]\n",
-             UROS_STRARG(&paramp->name)));
-
-  /* Check for valid codes.*/
-  urosError(response.code != UROS_RPCC_SUCCESS,
-            { return UROS_ERR_BADPARAM; goto _finally; },
-            ("Response code %d, expected %d\n",
-             response.code, UROS_RPCC_SUCCESS));
-  urosError(response.httpcode != 200,
-            { return UROS_ERR_BADPARAM; goto _finally; },
-            ("Response HTTP code %d, expected 200\n", response.httpcode));
-
-  /* Add to the subscribed topics list.*/
-  nodep = urosNew(UrosListNode);
-  if (nodep == NULL) { err = UROS_ERR_NOMEM; goto _finally; }
-  urosListNodeObjectInit(nodep);
-  nodep->datap = (void*)paramp;
-  urosListAdd(&urosNode.status.subParamList, nodep);
-
-  err = UROS_OK;
-_finally:
-  /* Cleanup and return.*/
-  urosMutexUnlock(&urosNode.status.subParamListLock);
-  urosRpcResponseClean(&response);
-  return err;
 }
 
 /**
@@ -1021,8 +1126,8 @@ uros_err_t urosNodeUnsubscribeParam(const UrosString *namep) {
   urosMutexLock(&urosNode.status.subParamListLock);
 
   /* Check if the parameter was actually subscribed.*/
-  nodep = urosTopicListFindByName(&urosNode.status.subParamList, namep);
-  urosError(nodep == NULL, return UROS_ERR_BADPARAM,
+  nodep = urosStringListFindByName(&urosNode.status.subParamList, namep);
+  urosError(nodep == NULL, { err = UROS_ERR_BADPARAM; goto _finally; },
             ("Topic [%.*s] not found\n", UROS_STRARG(namep)));
 
   /* Master XMLRPC registerSubscriber() */
@@ -1039,17 +1144,17 @@ uros_err_t urosNodeUnsubscribeParam(const UrosString *namep) {
 
   /* Check for valid codes.*/
   urosError(response.code != UROS_RPCC_SUCCESS,
-            { return UROS_ERR_BADPARAM; goto _finally; },
+            { err = UROS_ERR_BADPARAM; goto _finally; },
             ("Response code %ld, expected %d\n",
              response.code, UROS_RPCC_SUCCESS));
   urosError(response.httpcode != 200,
-            { return UROS_ERR_BADPARAM; goto _finally; },
+            { err = UROS_ERR_BADPARAM; goto _finally; },
             ("Response HTTP code %ld, expected 200\n", response.httpcode));
 
   /* Remove from the subscribed topics list and delete.*/
   nodep = urosListRemove(&urosNode.status.subParamList, nodep);
   urosAssert(nodep != NULL);
-  urosListNodeDelete(nodep, (uros_delete_f)urosTopicDelete);
+  urosListNodeDelete(nodep, (uros_delete_f)urosStringDelete);
 
   err = UROS_OK;
 _finally:

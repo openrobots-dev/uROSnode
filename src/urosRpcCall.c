@@ -573,7 +573,7 @@ void urosRpcParamClean(UrosRpcParam *paramp, uros_bool_t deep) {
  *          been allocated with @p urosAlloc().
  *
  * @param[in,out] paramp
- *          Pointer to an initialized @p UrosRpcParam object.
+ *          Pointer to an initialized @p UrosRpcParam object, or @p NULL.
  * @param[in] deep
  *          Performs deallocation of private members.
  */
@@ -676,7 +676,7 @@ void urosRpcParamNodeClean(UrosRpcParamNode *nodep, uros_bool_t deep) {
  *          been allocated with @p urosAlloc().
  *
  * @param[in,out] nodep
- *          Pointer to an initialized @p UrosRpcParamNode object.
+ *          Pointer to an initialized @p UrosRpcParamNode object, or @p NULL.
  * @param[in] deep
  *          Performs deallocation of private members.
  */
@@ -754,7 +754,7 @@ void urosRpcParamListClean(UrosRpcParamList *listp, uros_bool_t deep) {
  *          been allocated with @p urosAlloc().
  *
  * @param[in,out] listp
- *          Pointer to an initialized @p UrosRpcParamList object.
+ *          Pointer to an initialized @p UrosRpcParamList object, or @p NULL.
  * @param[in] deep
  *          Performs deallocation of all the nodes.
  */

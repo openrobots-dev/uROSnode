@@ -159,7 +159,6 @@ uros_err_t urosNodeUnpublishService(const UrosString *namep);
 
 uros_err_t urosNodeSubscribeParam(const UrosString *namep);
 uros_err_t urosNodeSubscribeParamSZ(const char *namep);
-uros_err_t urosNodeSubscribeParamByDesc(const UrosTopic *paramp);
 uros_err_t urosNodeUnsubscribeParam(const UrosString *namep);
 
 uros_err_t urosNodeFindNewPublishers(const UrosString *topicnamep,

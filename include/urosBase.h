@@ -569,6 +569,11 @@ UrosListNode *urosListFind(const UrosList *lstp,
 void urosListAdd(UrosList *lstp, UrosListNode *np);
 UrosListNode *urosListRemove(UrosList *lstp, const UrosListNode *np);
 
+uros_bool_t urosStringListNodeHasString(const UrosListNode *np,
+                                        const UrosString *strp);
+UrosListNode *urosStringListFindByName(const UrosList *lstp,
+                                       const UrosString *strp);
+
 uros_bool_t urosTopicListNodeHasTopic(const UrosListNode *np,
                                       const UrosTopic *topicp);
 uros_bool_t urosTopicListNodeHasName(const UrosListNode *np,

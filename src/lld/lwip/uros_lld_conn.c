@@ -41,17 +41,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "../../../include/lld/uros_lld_conn.h"
 
-#include <lwipopts.h>
 #include <lwip/opt.h>
 #include <lwip/init.h>
+#include <lwip/sys.h>
 #include <lwip/mem.h>
 #include <lwip/memp.h>
-#include <lwip/sys.h>
-#include <lwip/stats.h>
-#include <lwip/tcp_impl.h>
+#include <lwip/api.h>
 #include <lwip/inet_chksum.h>
 #include <lwip/tcpip.h>
-#include <lwip/sockets.h>
+#include <lwip/tcp_impl.h>
+#include <lwip/stats.h>
 
 #include <string.h>
 

@@ -612,7 +612,7 @@ void urosStringClean(UrosString *strp) {
  * @post    @p strp points to an invalid address.
  *
  * @param[in] strp
- *          Pointer to an initialized @p UrosString object.
+ *          Pointer to an initialized @p UrosString object, or @p NULL.
  */
 void urosStringDelete(UrosString *strp) {
 
@@ -765,7 +765,7 @@ void urosMsgTypeClean(UrosMsgType *typep) {
  * @post    @p typep points to an invalid address.
  *
  * @param[in] typep
- *          Pointer to an initialized @p UrosMsgType object.
+ *          Pointer to an initialized @p UrosMsgType object, or @p NULL.
  */
 void urosMsgTypeDelete(UrosMsgType *typep) {
 
@@ -1162,7 +1162,7 @@ void urosTopicClean(UrosTopic *tp) {
  * @post    @p tp points to an invalid address.
  *
  * @param[in] tp
- *          Pointer to an initialized @p UrosTopic object.
+ *          Pointer to an initialized @p UrosTopic object, or @p NULL.
  */
 void urosTopicDelete(UrosTopic *tp) {
 
@@ -1323,7 +1323,7 @@ void urosListClean(UrosList *lstp, uros_delete_f datadelf) {
  *          deleted.
  *
  * @param[in] lstp
- *          Pointer to an initialized @p UrosList object. Can be @p NULL.
+ *          Pointer to an initialized @p UrosList object, or @p NULL.
  * @param[in] datadelf
  *          Data deletion function. Can be @p NULL if only the list object
  *          @p lstp and its @p UrosListNode objects have to be deleted, but
@@ -1516,6 +1516,52 @@ UrosListNode *urosListRemove(UrosList *lstp, const UrosListNode *np) {
 }
 
 /**
+ * @brief   Checks if the list node data equals the referenced string.
+ * @see     urosStringCmp()
+ *
+ * @param[in] np
+ *          Pointer to an initialized @p UrosListNode which points to an
+ *          initialized @p UrosString object.
+ * @param[in] strp
+ *          Pointer to the reference initialized @p UrosString object.
+ * @return
+ *          @p true <i>iif</i> the string of the node is equal to the
+ *          referenced one.
+ */
+uros_bool_t urosStringListNodeHasString(const UrosListNode *np,
+                                        const UrosString *strp) {
+
+  urosAssert(np != NULL);
+  urosAssert(urosStringIsValid(strp));
+
+  return 0 == urosStringCmp((const UrosString *)np->datap, strp);
+}
+
+/**
+ * @brief   Gets the list node referencing the referenced string.
+ * @details Scans the list to find the node referencing the string equal to the
+ *          referenced one.
+ * @note    This function is not thread safe, please lock it with a dedicated
+ *          locking primitive (e.g. @p UrosMutex).
+ * @see     urosListFind
+ * @see     urosStringListNodeHasName
+ *
+ * @param[in] lstp
+ *          Pointer to an initialized @p UrosList with @p UrosString entries.
+ * @param[in] strp
+ *          Requested string value.
+ * @return
+ *          Pointer to the list node with data equal to the reference string.
+ * @retval NULL
+ *          No such topic node found.
+ */
+UrosListNode *urosStringListFindByName(const UrosList *lstp,
+                                       const UrosString *strp) {
+
+  return urosListFind(lstp, (uros_cmp_f)urosStringListNodeHasString, strp);
+}
+
+/**
  * @brief   Checks if the list node is linked to the referenced topic.
  * @details The comparison is done at reference (pointer) level.
  *
@@ -1523,7 +1569,7 @@ UrosListNode *urosListRemove(UrosList *lstp, const UrosListNode *np) {
  *          Pointer to an initialized @p UrosListNode which points to an
  *          initialized @p UrosTopic descriptor.
  * @param[in] topicp
- *          Pointer to an initialized @p UrosTopic.
+ *          Pointer to the reference initialized @p UrosTopic object.
  * @return
  *          @p true <i>iif</i> the topic of the node has the requested topic.
  */
@@ -1543,7 +1589,7 @@ uros_bool_t urosTopicListNodeHasTopic(const UrosListNode *np,
  *          Pointer to an initialized @p UrosListNode which points to an
  *          initialized @p UrosTopic descriptor.
  * @param[in] namep
- *          Pointer to a non-empty @p UrosString.
+ *          Pointer to the reference non-empty @p UrosString object.
  * @return
  *          @p true <i>iif</i> the topic of the node has the requested name.
  */
@@ -1591,7 +1637,7 @@ UrosListNode *urosTopicListFindByTopic(const UrosList *lstp,
  * @param[in] lstp
  *          Pointer to an initialized @p UrosList with @p UrosTopic entries.
  * @param[in] namep
- *          Requested type name, null-terminated string, @p NULL forbidden.
+ *          Requested type name string.
  * @return
  *          Pointer to the registered type descriptor with the requested name.
  * @retval NULL
