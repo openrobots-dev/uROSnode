@@ -57,8 +57,6 @@ extern "C" {
 void urosUserErrPrintf(const char *formatp, ...);
 
 void urosUserRegisterStaticTypes(void);
-void urosUserAllocMemPools(UrosNode *np);
-void urosUserCreateListeners(void);
 
 uros_err_t urosUserShutdown(const UrosString *msgp);
 uros_err_t urosUserParamUpdate(const UrosString *keyp,

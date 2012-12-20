@@ -415,6 +415,8 @@ uros_err_t uros_lld_thread_createstatic(UrosThreadId *idp, const char *namep,
     chSysLock();
     (*idp)->p_name = namep;
     chSysUnlock();
+#else
+    (void)namep;
 #endif
     return UROS_OK;
   }
@@ -463,6 +465,8 @@ uros_err_t uros_lld_thread_createfrommempool(UrosThreadId *idp, const char *name
     chSysLock();
     (*idp)->p_name = namep;
     chSysUnlock();
+#else
+    (void)namep;
 #endif
     return UROS_OK;
   }
@@ -507,6 +511,8 @@ uros_err_t uros_lld_thread_createfromheap(UrosThreadId *idp, const char *namep,
     chSysLock();
     (*idp)->p_name = namep;
     chSysUnlock();
+#else
+    (void)namep;
 #endif
     return UROS_OK;
   }

@@ -58,6 +58,28 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 /*===========================================================================*/
+/* LOCAL VARIABLES                                                           */
+/*===========================================================================*/
+
+/** @brief XMLRPC Listener thread stack.*/
+static UROS_STACK(xmlrpcListenerStack, UROS_XMLRPC_LISTENER_STKSIZE);
+
+/** @brief TCPROS Listener thread stack.*/
+static UROS_STACK(tcprosListenerStack, UROS_TCPROS_LISTENER_STKSIZE);
+
+/** @brief XMLRPC Slave server worker thread stacks.*/
+static UROS_STACKPOOL(slaveMemPoolChunk, UROS_XMLRPC_SLAVE_STKSIZE,
+                      UROS_XMLRPC_SLAVE_POOLSIZE);
+
+/** @brief TCPROS Client worker thread stacks.*/
+static UROS_STACKPOOL(tcpcliMemPoolChunk, UROS_TCPROS_CLIENT_STKSIZE,
+                      UROS_TCPROS_CLIENT_POOLSIZE);
+
+/** @brief TCPROS Server worker thread stacks.*/
+static UROS_STACKPOOL(tcpsvrMemPoolChunk, UROS_TCPROS_SERVER_STKSIZE,
+                      UROS_TCPROS_SERVER_POOLSIZE);
+
+/*===========================================================================*/
 /* GLOBAL VARIABLES                                                          */
 /*===========================================================================*/
 
@@ -114,8 +136,24 @@ void urosNodeObjectInit(UrosNode *np) {
   urosMutexObjectInit(&stp->subTcpListLock);
   urosMutexObjectInit(&stp->pubTcpListLock);
 
-  /* Initialize stack pools.*/
-  urosUserAllocMemPools(np);
+  /* Initialize mempools with their description.*/
+  urosMemPoolObjectInit(&stp->slaveMemPool,
+                        UROS_STACKPOOL_BLKSIZE(UROS_XMLRPC_SLAVE_STKSIZE),
+                        NULL);
+  urosMemPoolObjectInit(&stp->tcpcliMemPool,
+                        UROS_STACKPOOL_BLKSIZE(UROS_TCPROS_CLIENT_STKSIZE),
+                        NULL);
+  urosMemPoolObjectInit(&stp->tcpsvrMemPool,
+                        UROS_STACKPOOL_BLKSIZE(UROS_TCPROS_SERVER_STKSIZE),
+                        NULL);
+
+  /* Load the actual memory chunks for worker thread stacks.*/
+  urosMemPoolLoadArray(&stp->slaveMemPool, slaveMemPoolChunk,
+                       UROS_XMLRPC_SLAVE_POOLSIZE);
+  urosMemPoolLoadArray(&stp->tcpcliMemPool, tcpcliMemPoolChunk,
+                       UROS_TCPROS_CLIENT_POOLSIZE);
+  urosMemPoolLoadArray(&stp->tcpsvrMemPool, tcpsvrMemPoolChunk,
+                       UROS_TCPROS_SERVER_POOLSIZE);
 
   /* Initialize thread pools.*/
   urosThreadPoolObjectInit(&stp->tcpcliThdPool, &stp->tcpcliMemPool,
@@ -171,6 +209,35 @@ void urosNodeConfigLoadDefaults(UrosNodeConfig *cfgp) {
   cfgp->masterUri = urosStringCloneZ(
     "http://"UROS_XMLRPC_MASTER_IP_SZ
     ":"UROS_STRINGIFY2(UROS_XMLRPC_MASTER_PORT));
+}
+
+/**
+ * @brief   Creates the listener threads.
+ * @details This callback function is called at boot time to create the
+ *          listener threads of the middleware.
+ *
+ * @pre     The listener threads have not been created before.
+ */
+void urosNodeCreateListeners(void) {
+
+  static UrosNodeStatus *stp = &urosNode.status;
+
+  uros_err_t err;
+  (void)err;
+
+  err = urosThreadCreateStatic(&stp->xmlrpcListenerId, "RpcSlaveListener",
+                               UROS_XMLRPC_LISTENER_PRIO,
+                               (uros_proc_f)urosRpcSlaveListenerThread, NULL,
+                               xmlrpcListenerStack,
+                               UROS_XMLRPC_LISTENER_STKSIZE);
+  urosAssert(err == UROS_OK);
+
+  err = urosThreadCreateStatic(&stp->tcprosListenerId, "TcpRosListener",
+                               UROS_TCPROS_LISTENER_PRIO,
+                               (uros_proc_f)urosTcpRosListenerThread, NULL,
+                               tcprosListenerStack,
+                               UROS_TCPROS_LISTENER_STKSIZE);
+  urosAssert(err == UROS_OK);
 }
 
 /**

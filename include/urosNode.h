@@ -98,6 +98,8 @@ typedef struct UrosNodeStatus {
   UrosThreadPool    tcpcliThdPool;      /**< @brief TCPROS Client worker thread pool.*/
   UrosThreadPool    tcpsvrThdPool;      /**< @brief TCPROS Server worker thread pool.*/
   UrosThreadPool    slaveThdPool;       /**< @brief XMLRPC Slave worker thread pool.*/
+  UrosThreadId      xmlrpcListenerId;   /**< @brief XMLRPC Listener thread id.*/
+  UrosThreadId      tcprosListenerId;   /**< @brief TCPROS Listener thread id.*/
 } UrosNodeStatus;
 
 /**
@@ -125,7 +127,7 @@ extern "C" {
 #endif
 
 void urosNodeObjectInit(UrosNode *np);
-void urosNodeAllocMemPools(UrosNode *np);
+void urosNodeCreateListeners(void);
 void urosNodeConfigLoadDefaults(UrosNodeConfig *cfgp);
 void urosNodeConfigLoad(UrosNodeConfig *cfgp);
 void urosNodeConfigSave(const UrosNodeConfig *cfgp);

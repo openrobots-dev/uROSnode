@@ -39,38 +39,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* HEADER FILES                                                              */
 /*===========================================================================*/
 
-#include <urosUser.h>
-#include "urosTcpRosTypes.h"
-
+#include <urosBase.h>
+#include <urosNode.h>
+#include <urosRpcCall.h>
+#include <urosRpcSlave.h>
+#include <urosTcpRos.h>
 #include <stdarg.h>
 
-/*===========================================================================*/
-/* LOCAL VARIABLES                                                           */
-/*===========================================================================*/
-
-/** @brief XMLRPC Listener thread stack.*/
-static uint8_t xmlrpcListenerStack[UROS_XMLRPC_LISTENER_STKSIZE];
-
-/** @brief TCPROS Listener thread stack.*/
-static uint8_t tcprosListenerStack[UROS_TCPROS_LISTENER_STKSIZE];
-
-/** @brief XMLRPC Slave server worker thread stacks.*/
-static uint8_t slaveMemPoolChunk[UROS_XMLRPC_SLAVE_POOLSIZE]
-                                [sizeof(void*) + UROS_XMLRPC_SLAVE_STKSIZE];
-
-/** @brief TCPROS Client worker thread stacks.*/
-static uint8_t tcpcliMemPoolChunk[UROS_TCPROS_CLIENT_POOLSIZE]
-                                 [sizeof(void*) + UROS_TCPROS_CLIENT_STKSIZE];
-
-/** @brief TCPROS Server worker thread stacks.*/
-static uint8_t tcpsvrMemPoolChunk[UROS_TCPROS_SERVER_POOLSIZE]
-                                 [sizeof(void*) + UROS_TCPROS_SERVER_STKSIZE];
-
-/** @brief XMLRPC Listener thread id.*/
-static UrosThreadId xmlrpcListenerId;
-
-/** @brief TCPROS Listener thread id.*/
-static UrosThreadId tcprosListenerId;
+#include "urosTcpRosTypes.h"
 
 /*===========================================================================*/
 /* GLOBAL FUNCTIONS                                                          */
@@ -101,40 +77,7 @@ void urosUserErrPrintf(const char *formatp, ...) {
 }
 
 /**
- * @brief   Initializes and allocates memory pools.
- * @details Function called at boot time, with platform-dependent stack size
- *          and alignment declarations.
- *
- * @pre     The memory pools of @p np have not been initialized yet.
- *
- * @param[in,out] np
- *          Pointer to an @p UrosNode object being initialized.
- */
-void urosUserAllocMemPools(UrosNode *np) {
-
-  UrosNodeStatus *stp = &np->status;
-
-  /* Initialize mempools with their description.*/
-  urosMemPoolObjectInit(&stp->tcpcliMemPool,
-                        sizeof(void*) + UROS_TCPROS_CLIENT_STKSIZE, NULL);
-  urosMemPoolObjectInit(&stp->tcpsvrMemPool,
-                        sizeof(void*) + UROS_TCPROS_SERVER_STKSIZE, NULL);
-  urosMemPoolObjectInit(&stp->slaveMemPool,
-                        sizeof(void*) + UROS_XMLRPC_SLAVE_STKSIZE, NULL);
-
-  /* Load the actual memory chunks for worker thread stacks.*/
-  urosMemPoolLoadArray(&stp->tcpcliMemPool, tcpcliMemPoolChunk,
-                       UROS_TCPROS_CLIENT_POOLSIZE);
-
-  urosMemPoolLoadArray(&stp->tcpsvrMemPool, tcpsvrMemPoolChunk,
-                       UROS_TCPROS_SERVER_POOLSIZE);
-
-  urosMemPoolLoadArray(&stp->slaveMemPool, slaveMemPoolChunk,
-                       UROS_XMLRPC_SLAVE_POOLSIZE);
-}
-
-/**
- * @brief   Registers static message and service types.
+ * @brief   Registers static message types.
  * @details This callback function is called at boot time to initialize the
  *          set of message types recognized by the system.
  *
@@ -142,33 +85,7 @@ void urosUserAllocMemPools(UrosNode *np) {
  */
 void urosUserRegisterStaticTypes(void) {
 
-  /* Register types used by TCPROS topics and services.*/
   urosTcpRosRegStaticTypes();
-}
-
-/**
- * @brief   Creates the listener threads.
- * @details This callback function is called at boot time to create the
- *          listener threads of the middleware.
- *
- * @pre     The listener threads have not been created before.
- */
-void urosUserCreateListeners(void) {
-
-  uros_err_t err;
-  (void)err;
-
-  err = urosThreadCreateStatic(&xmlrpcListenerId, "RpcSlaveListener",
-                               UROS_XMLRPC_LISTENER_PRIO,
-                               (uros_proc_f)urosRpcSlaveListenerThread, NULL,
-                               xmlrpcListenerStack, UROS_XMLRPC_LISTENER_STKSIZE);
-  urosAssert(err == UROS_OK);
-
-  err = urosThreadCreateStatic(&tcprosListenerId, "TcpRosListener",
-                               UROS_TCPROS_LISTENER_PRIO,
-                               (uros_proc_f)urosTcpRosListenerThread, NULL,
-                               tcprosListenerStack, UROS_TCPROS_LISTENER_STKSIZE);
-  urosAssert(err == UROS_OK);
 }
 
 /**
@@ -209,35 +126,9 @@ uros_err_t urosUserParamUpdate(const UrosString *keyp,
   urosAssert(urosStringNotEmpty(keyp));
   urosAssert(paramp != NULL);
 
-  /* Handle the new parameter value.*/
-  printf("<paramUpdate: [%.*s] = [", UROS_STRARG(keyp));
-  switch (paramp->class) {
-  case UROS_RPCP_INT: {
-    printf("%ld", (long)paramp->value.int32); break;
-  }
-  case UROS_RPCP_BOOLEAN: {
-    printf(paramp->value.boolean ? "true" : "false"); break;
-  }
-  case UROS_RPCP_STRING: {
-    printf("%.*s", UROS_STRARG(&paramp->value.string)); break;
-  }
-  case UROS_RPCP_DOUBLE: {
-    printf("%f", paramp->value.real); break;
-  }
-  case UROS_RPCP_BASE64: {
-    printf("(base64)"); break; /* TODO */
-  }
-  case UROS_RPCP_STRUCT: {
-    printf("(struct)"); break; /* TODO */
-  }
-  case UROS_RPCP_ARRAY: {
-    printf("(array)"); break; /* TODO */
-  }
-  default: {
-    printf("(UNKNOWN)"); break;
-  }
-  }
-  printf("]>\n");
+  /* TODO: Handle the new parameter value.*/
+  (void)keyp;
+  (void)paramp;
   return UROS_OK;
 }
 

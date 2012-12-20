@@ -115,7 +115,7 @@ void urosInit(void) {
   urosThreadPoolCreateAll(&urosNode.status.slaveThdPool);
 
   /* Create listener threads.*/
-  urosUserCreateListeners();
+  urosNodeCreateListeners();
 }
 
 /**

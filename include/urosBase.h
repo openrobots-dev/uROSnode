@@ -129,6 +129,85 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define UROS_STRARG(stringp) \
   ((int)((stringp)->length)), ((stringp)->datap)
 
+#if !defined(UROS_STACK_BLKSIZE) || defined(__DOXYGEN__)
+/**
+ * @brief   Size of a stack memory block.
+ * @note    This macro should be overridden in <tt>urosconf.h</tt>, so that it
+ *          can satisfy memory alignment rules, if any.
+ *
+ * @param[in] stksize
+ *          Nominal stack size, in bytes. The total allocated space may be
+ *          greater because of alignment rules, or space reserved for the
+ *          <i>thread control block</i>.
+ * @return
+ *          Size of a stack memory block.
+ */
+#  define UROS_STACK_BLKSIZE(stksize) \
+  ((size_t)(stksize))
+#endif
+
+#if !defined(UROS_STACK) || defined(__DOXYGEN__)
+/**
+ * @brief   Defines a static stack memory chunk.
+ * @note    The stack is meant to be allocated statically, as a global
+ *          variable.
+ * @note    This macro should be overridden in <tt>urosconf.h</tt>, so that it
+ *          can satisfy memory alignment rules, if any.
+ *
+ * @param[in] varname
+ *          Name of the array variable to be defined.
+ * @param[in] stksize
+ *          Nominal stack size, in bytes. The total allocated space may be
+ *          greater because of alignment rules, or space reserved for the
+ *          <i>thread control block</i>.
+ */
+#  define UROS_STACK(varname, stksize) \
+  uint8_t varname[UROS_STACK_BLKSIZE(stksize)]
+#endif /* !defined(UROS_STACK) || defined(__DOXYGEN__) */
+
+#if !defined(UROS_STACKPOOL_BLKSIZE) || defined(__DOXYGEN__)
+/**
+ * @brief   Size of a stack pool memory block.
+ * @details Automatically adds the space for the reserved @p UrosMemPool
+ *          pointer at the very beginning of the stack memory chunk.
+ * @note    This macro should be overridden in <tt>urosconf.h</tt>, so that it
+ *          can satisfy memory alignment rules, if any.
+ *
+ * @param[in] stksize
+ *          Nominal stack size, in bytes. The total allocated space may be
+ *          greater because of alignment rules, or space reserved for the
+ *          <i>thread control block</i>.
+ * @return
+ *          Size of a stack pool memory block.
+ */
+#  define UROS_STACKPOOL_BLKSIZE(stksize) \
+  (sizeof(void*) + (size_t)(stksize))
+#endif /* !defined(UROS_STACKPOOL_BLKSIZE) || defined(__DOXYGEN__) */
+
+#if !defined(UROS_STACKPOOL) || defined(__DOXYGEN__)
+/**
+ * @brief   Defines a stack pool memory chunk.
+ * @details The defined memory pool automatically adds the space for the
+ *          reserved @p UrosMemPool pointer at the very beginning of each
+ *          stack memory chunk.
+ * @note    The stacks are meant to be allocated statically, as a global
+ *          variable.
+ * @note    This macro should be overridden in <tt>urosconf.h</tt>, so that it
+ *          can satisfy memory alignment rules, if any.
+ *
+ * @param[in] varname
+ *          Name of the array variable to be defined.
+ * @param[in] stksize
+ *          Nominal stack size, in bytes. The total allocated space may be
+ *          greater because of alignment rules, or space reserved for the
+ *          <i>thread control block</i>.
+ * @param[in] numstacks
+ *          Number of stacks in the pool.
+ */
+#  define UROS_STACKPOOL(varname, stksize, numstacks) \
+  uint8_t varname[(numstacks)][UROS_STACKPOOL_BLKSIZE(stksize)]
+#endif /* !defined(UROS_STACKPOOL) || defined(__DOXYGEN__) */
+
 #if UROS_USE_ASSERT == UROS_FALSE || !defined(urosAssert) || defined(__DOXYGEN__)
 #  if defined(urosAssert)
 #    undef urosAssert
