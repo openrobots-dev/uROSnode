@@ -1,4 +1,0 @@
-<map id="urosConnRecvFrom" name="urosConnRecvFrom">
-<area shape="rect" id="node3" href="$group__conn__lld__funcs.html#gad4cdd7b14468fcd00d8dab85fe8f7b9f" title="Receives some data from a remote address." alt="" coords="173,5,309,33"/>
-<area shape="rect" id="node5" href="$group__conn__funcs.html#gaee11d892e258d71b827dc8d691ab8ac7" title="Checks if pointing to a valid connection object." alt="" coords="359,5,457,33"/>
-</map>

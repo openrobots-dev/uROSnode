@@ -1,5 +1,0 @@
-<map id="UrosNodeConfig" name="UrosNodeConfig">
-<area shape="rect" id="node2" href="$struct_uros_string.html" title="String object." alt="" coords="5,249,77,346"/>
-<area shape="rect" id="node4" href="$struct_uros_addr.html" title="Full address record (IP + port)." alt="" coords="101,257,168,338"/>
-<area shape="rect" id="node6" href="$union_uros_ip.html" title="Little&#45;endian IP addres record." alt="" coords="104,6,165,183"/>
-</map>

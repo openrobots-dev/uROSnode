@@ -1,5 +1,0 @@
-<map id="urosTcpRosSendError" name="urosTcpRosSendError">
-<area shape="rect" id="node3" href="$group__tcpros__funcs.html#ga6a15d0789a11e47de153b6425318f013" title="Writes some data to the outgoing TCPROS stream." alt="" coords="185,30,289,58"/>
-<area shape="rect" id="node5" href="$group__conn__funcs.html#ga403f6b0dd7d07bf22e8f288913f0a909" title="Sends some data." alt="" coords="340,5,433,33"/>
-<area shape="rect" id="node7" href="$group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a" title="Text of an error code." alt="" coords="343,55,431,83"/>
-</map>

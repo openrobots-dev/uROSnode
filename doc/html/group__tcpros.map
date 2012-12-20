@@ -1,7 +1,0 @@
-<map id="TCPROS" name="TCPROS">
-<area shape="rect" id="node1" href="$group__tcpros__config.html" title="Configuration" alt="" coords="133,5,219,33"/>
-<area shape="rect" id="node2" href="$group__tcpros__funcs.html" title="Functions" alt="" coords="143,55,209,83"/>
-<area shape="rect" id="node3" href="$group__tcpros__macros.html" title="Macros" alt="" coords="148,106,204,134"/>
-<area shape="rect" id="node5" href="$group__tcpros__lld__funcs.html" title="Low&#45;level functions" alt="" coords="120,157,232,185"/>
-<area shape="rect" id="node6" href="$group__tcpros__types.html" title="Data types" alt="" coords="140,207,212,235"/>
-</map>

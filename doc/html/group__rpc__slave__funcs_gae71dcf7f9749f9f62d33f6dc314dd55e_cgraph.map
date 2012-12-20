@@ -1,7 +1,0 @@
-<map id="urosRpcSlaveServerThread" name="urosRpcSlaveServerThread">
-<area shape="rect" id="node3" href="$group__conn__funcs.html#ga2e43894e0610daef8ae04450d054a9f1" title="Closes a connection." alt="" coords="208,5,304,33"/>
-<area shape="rect" id="node7" href="$group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a" title="Text of an error code." alt="" coords="212,55,300,83"/>
-<area shape="rect" id="node9" href="$group__base__funcs.html#gabf008f1631293a018e1d7be3ffbb5b51" title="Deallocates a memory block." alt="" coords="223,106,289,134"/>
-<area shape="rect" id="node5" href="$group__conn__lld__funcs.html#gaab6a9e021c5325d35ee04fe20092c519" title="Closes a connection." alt="" coords="353,5,471,33"/>
-<area shape="rect" id="node11" href="$group__base__lld__funcs.html#ga2862473343e5349c85bc008b9e5b51ed" title="Deallocates a memory block." alt="" coords="371,106,453,134"/>
-</map>

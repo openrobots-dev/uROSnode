@@ -1,7 +1,0 @@
-<map id="urosTopicListFindByName" name="urosTopicListFindByName">
-<area shape="rect" id="node3" href="$group__base__funcs.html#gaf2fb34900da45a0b6d5c5205c318c2f1" title="First matching node occurrence of the list." alt="" coords="240,5,320,33"/>
-<area shape="rect" id="node7" href="$group__base__funcs.html#gaa4847838297b5280c1430f08848ea495" title="Checks if the list node links to a topic with the requested name." alt="" coords="201,55,359,83"/>
-<area shape="rect" id="node5" href="$group__base__funcs.html#ga23589c831c48304c37d6244e30210bfc" title="Checks if pointing to a valid list object." alt="" coords="423,5,513,33"/>
-<area shape="rect" id="node9" href="$group__base__funcs.html#ga683b6cffc3b9aa9d349d61e12a87a7bb" title="Checks if a string is not empty." alt="" coords="409,55,527,83"/>
-<area shape="rect" id="node11" href="$group__base__funcs.html#ga78efe29ebd12a2c10a0b101b5c982612" title="Compares two string objects." alt="" coords="421,106,515,134"/>
-</map>

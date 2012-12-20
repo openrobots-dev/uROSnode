@@ -1,5 +1,0 @@
-<map id="UrosRpcResponse" name="UrosRpcResponse">
-<area shape="rect" id="node2" href="$struct_uros_string.html" title="String object." alt="" coords="5,14,77,111"/>
-<area shape="rect" id="node4" href="$struct_uros_rpc_param.html" title="XMLRPC parameter value." alt="" coords="116,201,212,394"/>
-<area shape="rect" id="node7" href="$struct_uros_rpc_param_list.html" title="Parameter list, double ended." alt="" coords="108,6,220,119"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="urosRegisterStaticMsgType" name="urosRegisterStaticMsgType">
-<area shape="rect" id="node3" href="$group__base__funcs.html#gae5808c2f0aeb0a570ae545f7468acdce" title="Adds a node to the list." alt="" coords="235,5,312,33"/>
-<area shape="rect" id="node7" href="$group__base__funcs.html#ga04cdcbb27dde6c72beb5d31aea330e6b" title="Initializes a list node." alt="" coords="209,55,337,83"/>
-<area shape="rect" id="node9" href="$group__base__funcs.html#ga683b6cffc3b9aa9d349d61e12a87a7bb" title="Checks if a string is not empty." alt="" coords="215,106,332,134"/>
-<area shape="rect" id="node5" href="$group__base__funcs.html#ga23589c831c48304c37d6244e30210bfc" title="Checks if pointing to a valid list object." alt="" coords="387,5,477,33"/>
-</map>

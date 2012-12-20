@@ -1,8 +1,0 @@
-<map id="urosNodePublishTopicByDesc" name="urosNodePublishTopicByDesc">
-<area shape="rect" id="node3" href="$group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a" title="Text of an error code." alt="" coords="257,5,345,33"/>
-<area shape="rect" id="node5" href="$group__threading__funcs.html#ga1db2c55616b4b1264d778c1ae5f25a83" title="Locks a mutex." alt="" coords="255,55,348,83"/>
-<area shape="rect" id="node9" href="$group__rpc__call__funcs.html#ga2aac062d5fc2d53174ac5359823d0bef" title="Register the caller as a publisher the topic." alt="" coords="220,106,383,134"/>
-<area shape="rect" id="node11" href="$group__rpc__funcs.html#ga3aa421f7a9011427fb23add0d0bd80c8" title="Initializes a XMLRPC response." alt="" coords="224,157,379,185"/>
-<area shape="rect" id="node13" href="$group__base__funcs.html#ga683b6cffc3b9aa9d349d61e12a87a7bb" title="Checks if a string is not empty." alt="" coords="243,207,360,235"/>
-<area shape="rect" id="node7" href="$group__threading__lld__funcs.html#ga3d1782a58820716535c2b1328999d882" title="Locks a mutex." alt="" coords="433,55,551,83"/>
-</map>

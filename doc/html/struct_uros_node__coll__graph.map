@@ -1,9 +1,0 @@
-<map id="UrosNode" name="UrosNode">
-<area shape="rect" id="node2" href="$struct_uros_node_status.html" title="Node status record." alt="" coords="123,635,235,877"/>
-<area shape="rect" id="node4" href="$struct_uros_mem_pool.html" title="Built&#45;in memory pool object." alt="" coords="15,6,105,151"/>
-<area shape="rect" id="node8" href="$struct_uros_thread_pool.html" title="Thread pool object." alt="" coords="109,217,211,490"/>
-<area shape="rect" id="node6" href="$struct_uros_list.html" title="Linked list, forward only." alt="" coords="235,313,296,394"/>
-<area shape="rect" id="node11" href="$struct_uros_node_config.html" title="Node configuration descriptor." alt="" coords="313,667,415,845"/>
-<area shape="rect" id="node13" href="$struct_uros_string.html" title="String object." alt="" coords="328,305,400,402"/>
-<area shape="rect" id="node15" href="$struct_uros_addr.html" title="Full address record (IP + port)." alt="" coords="424,313,491,394"/>
-</map>

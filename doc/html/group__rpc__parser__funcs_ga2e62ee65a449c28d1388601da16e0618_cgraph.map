@@ -1,9 +1,0 @@
-<map id="urosRpcParserXmlHeader" name="urosRpcParserXmlHeader">
-<area shape="rect" id="node3" href="$group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a" title="Text of an error code." alt="" coords="772,105,860,133"/>
-<area shape="rect" id="node5" href="$group__rpc__parser__funcs.html#ga4ea5d7606832903417fe32794494ca84" title="Expects the parser to be pointing to a token." alt="" coords="419,29,544,57"/>
-<area shape="rect" id="node10" href="$group__rpc__parser__funcs.html#ga123432b847b829546ac86277f652d9ef" title="Expects the parser to be pointing to a token." alt="" coords="407,79,556,107"/>
-<area shape="rect" id="node13" href="$group__rpc__parser__funcs.html#ga94a9b75cbe770f528da5c674f0083d46" title="Expects some whitespace." alt="" coords="209,181,351,209"/>
-<area shape="rect" id="node19" href="$group__rpc__parser__funcs.html#ga2c05f383ecbed0d710a11a7a4f377b20" title="Expects an XML attribute with a specific value." alt="" coords="203,130,357,158"/>
-<area shape="rect" id="node7" href="$group__rpc__parser__funcs.html#ga580190002d7a17e33ed4e2262fee3ed9" title="Refills the parsing buffer." alt="" coords="605,79,723,107"/>
-<area shape="rect" id="node15" href="$group__rpc__parser__funcs.html#gae164cded55e7f23afe3af7768bda41e4" title="Skips any whitespace." alt="" coords="417,181,545,209"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="UrosConn" name="UrosConn">
-<area shape="rect" id="node2" href="$struct_uros_addr.html" title="Full address record (IP + port)." alt="" coords="8,249,75,330"/>
-<area shape="rect" id="node4" href="$union_uros_ip.html" title="Little&#45;endian IP addres record." alt="" coords="11,6,72,183"/>
-</map>

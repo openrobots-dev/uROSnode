@@ -1,8 +1,0 @@
-<map id="urosThreadPoolClean" name="urosThreadPoolClean">
-<area shape="rect" id="node3" href="$group__threading__funcs.html#gab0c66c91215c99a4a60d0f6aceada223" title="Cleans a condvar." alt="" coords="181,5,296,33"/>
-<area shape="rect" id="node7" href="$group__base__funcs.html#gabf008f1631293a018e1d7be3ffbb5b51" title="Deallocates a memory block." alt="" coords="205,55,272,83"/>
-<area shape="rect" id="node11" href="$group__threading__funcs.html#gab6908a7228ced9708b3547945cd546a8" title="Cleans a mutex." alt="" coords="189,106,288,134"/>
-<area shape="rect" id="node5" href="$group__threading__lld__funcs.html#ga281663fafe8e9f243bd36a6a9ae61d72" title="Cleans a condvar." alt="" coords="345,5,479,33"/>
-<area shape="rect" id="node9" href="$group__base__lld__funcs.html#ga2862473343e5349c85bc008b9e5b51ed" title="Deallocates a memory block." alt="" coords="371,55,453,83"/>
-<area shape="rect" id="node13" href="$group__threading__lld__funcs.html#ga743fe8aa0460aeb545b77c9a4d7c81a7" title="Cleans a mutex." alt="" coords="349,106,475,134"/>
-</map>

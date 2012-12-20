@@ -1,5 +1,0 @@
-<map id="UrosTopic" name="UrosTopic">
-<area shape="rect" id="node2" href="$struct_uros_msg_type.html" title="Message type descriptor." alt="" coords="64,225,152,338"/>
-<area shape="rect" id="node4" href="$struct_uros_string.html" title="String object." alt="" coords="8,6,80,103"/>
-<area shape="rect" id="node7" href="$structuros__topicflags__t.html" title="Topic and service flags." alt="" coords="176,201,277,362"/>
-</map>

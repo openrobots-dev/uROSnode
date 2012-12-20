@@ -1,6 +1,0 @@
-<map id="urosTcpRosSendString" name="urosTcpRosSendString">
-<area shape="rect" id="node3" href="$group__base__funcs.html#gab56136abf86b735834072883da8e1e52" title="Checks if pointing to a valid string object." alt="" coords="189,5,291,33"/>
-<area shape="rect" id="node5" href="$group__tcpros__funcs.html#ga6a15d0789a11e47de153b6425318f013" title="Writes some data to the outgoing TCPROS stream." alt="" coords="188,55,292,83"/>
-<area shape="rect" id="node7" href="$group__conn__funcs.html#ga403f6b0dd7d07bf22e8f288913f0a909" title="Sends some data." alt="" coords="343,30,436,58"/>
-<area shape="rect" id="node9" href="$group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a" title="Text of an error code." alt="" coords="345,81,433,109"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="urosRpcParserExpectWs" name="urosRpcParserExpectWs">
-<area shape="rect" id="node3" href="$group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a" title="Text of an error code." alt="" coords="540,5,628,33"/>
-<area shape="rect" id="node5" href="$group__rpc__parser__funcs.html#gae164cded55e7f23afe3af7768bda41e4" title="Skips any whitespace." alt="" coords="196,30,324,58"/>
-<area shape="rect" id="node7" href="$group__rpc__parser__funcs.html#ga580190002d7a17e33ed4e2262fee3ed9" title="Refills the parsing buffer." alt="" coords="373,30,491,58"/>
-</map>

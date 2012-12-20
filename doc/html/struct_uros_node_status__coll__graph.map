@@ -1,6 +1,0 @@
-<map id="UrosNodeStatus" name="UrosNodeStatus">
-<area shape="rect" id="node2" href="$struct_uros_mem_pool.html" title="Built&#45;in memory pool object." alt="" coords="39,6,130,151"/>
-<area shape="rect" id="node9" href="$struct_uros_thread_pool.html" title="Thread pool object." alt="" coords="111,217,212,490"/>
-<area shape="rect" id="node4" href="$struct_uros_list.html" title="Linked list, forward only." alt="" coords="236,313,298,394"/>
-<area shape="rect" id="node6" href="$struct_uros_list_node.html" title="List node, forward only." alt="" coords="224,38,310,119"/>
-</map>

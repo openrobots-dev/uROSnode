@@ -1,4 +1,0 @@
-<map id="UrosRpcParser" name="UrosRpcParser">
-<area shape="rect" id="node2" href="$struct_uros_conn.html" title="Connection information record." alt="" coords="19,169,91,282"/>
-<area shape="rect" id="node4" href="$struct_uros_addr.html" title="Full address record (IP + port)." alt="" coords="21,6,88,87"/>
-</map>

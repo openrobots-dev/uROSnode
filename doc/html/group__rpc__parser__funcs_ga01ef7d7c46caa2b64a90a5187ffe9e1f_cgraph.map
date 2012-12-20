@@ -1,5 +1,0 @@
-<map id="urosRpcParserLookAheadQuiet" name="urosRpcParserLookAheadQuiet">
-<area shape="rect" id="node3" href="$group__rpc__parser__funcs.html#ga580190002d7a17e33ed4e2262fee3ed9" title="Refills the parsing buffer." alt="" coords="227,30,344,58"/>
-<area shape="rect" id="node5" href="$group__conn__funcs.html#gaf57e00f8dfcad939c94754753df0952f" title="Receives some data." alt="" coords="392,5,485,33"/>
-<area shape="rect" id="node7" href="$group__base__funcs.html#gaffc66585c4773691fb36881ecf8bab2a" title="Text of an error code." alt="" coords="395,55,483,83"/>
-</map>

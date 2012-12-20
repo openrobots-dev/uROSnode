@@ -1,7 +1,0 @@
-<map id="urosListDelete" name="urosListDelete">
-<area shape="rect" id="node3" href="$group__base__funcs.html#gabf008f1631293a018e1d7be3ffbb5b51" title="Deallocates a memory block." alt="" coords="445,30,512,58"/>
-<area shape="rect" id="node7" href="$group__base__funcs.html#ga7467dba1ce6d13c799cb038ac9b761fe" title="Cleans a list." alt="" coords="145,30,231,58"/>
-<area shape="rect" id="node5" href="$group__base__lld__funcs.html#ga2862473343e5349c85bc008b9e5b51ed" title="Deallocates a memory block." alt="" coords="561,30,644,58"/>
-<area shape="rect" id="node9" href="$group__base__funcs.html#ga23589c831c48304c37d6244e30210bfc" title="Checks if pointing to a valid list object." alt="" coords="293,30,384,58"/>
-<area shape="rect" id="node11" href="$group__base__funcs.html#ga16bb69f7a4f4c18940a3680a41a62f37" title="Deallocates a list node." alt="" coords="281,81,396,109"/>
-</map>

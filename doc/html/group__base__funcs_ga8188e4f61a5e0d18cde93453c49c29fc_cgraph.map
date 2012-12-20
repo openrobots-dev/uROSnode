@@ -1,6 +1,0 @@
-<map id="urosMemPoolFree" name="urosMemPoolFree">
-<area shape="rect" id="node3" href="$group__threading__funcs.html#ga1db2c55616b4b1264d778c1ae5f25a83" title="Locks a mutex." alt="" coords="171,5,264,33"/>
-<area shape="rect" id="node7" href="$group__threading__funcs.html#ga35dba778a18d8708fcf957da4e5110b3" title="Unlocks a mutex." alt="" coords="165,55,269,83"/>
-<area shape="rect" id="node5" href="$group__threading__lld__funcs.html#ga3d1782a58820716535c2b1328999d882" title="Locks a mutex." alt="" coords="324,5,441,33"/>
-<area shape="rect" id="node9" href="$group__threading__lld__funcs.html#gab2a24cbd59df48ebad27e5d7c32fc416" title="Unlocks a mutex." alt="" coords="317,55,448,83"/>
-</map>

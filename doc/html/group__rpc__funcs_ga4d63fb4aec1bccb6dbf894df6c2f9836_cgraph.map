@@ -1,7 +1,0 @@
-<map id="urosRpcParamClean" name="urosRpcParamClean">
-<area shape="rect" id="node3" href="$group__base__funcs.html#gabf008f1631293a018e1d7be3ffbb5b51" title="Deallocates a memory block." alt="" coords="401,22,468,50"/>
-<area shape="rect" id="node7" href="$group__rpc__funcs.html#gaa937351d449572b45678fb3343338dd9" title="Deletes a XMLRPC parameter list object." alt="" coords="176,73,317,101"/>
-<area shape="rect" id="node12" href="$group__base__funcs.html#ga09d885f53087047696beb347b4b9a220" title="Cleans a string object." alt="" coords="197,22,296,50"/>
-<area shape="rect" id="node5" href="$group__base__lld__funcs.html#ga2862473343e5349c85bc008b9e5b51ed" title="Deallocates a memory block." alt="" coords="553,22,636,50"/>
-<area shape="rect" id="node9" href="$group__rpc__funcs.html#ga06fc78ec921f587246ec86e189498861" title="Cleans a XMLRPC parameter list." alt="" coords="365,73,504,101"/>
-</map>

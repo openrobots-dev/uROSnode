@@ -1,8 +1,0 @@
-<map id="urosNodeSubscribeTopicByDesc" name="urosNodeSubscribeTopicByDesc">
-<area shape="rect" id="node3" href="$group__base__funcs.html#ga44e0ce54ba23fc5f0d5d505356867837" title="Initializes a list object." alt="" coords="267,5,368,33"/>
-<area shape="rect" id="node5" href="$group__threading__funcs.html#ga1db2c55616b4b1264d778c1ae5f25a83" title="Locks a mutex." alt="" coords="271,55,364,83"/>
-<area shape="rect" id="node9" href="$group__rpc__call__funcs.html#ga93410883896c1317de511a964973da19" title="Subscribe the caller to the specified topic." alt="" coords="232,106,403,134"/>
-<area shape="rect" id="node11" href="$group__rpc__funcs.html#ga3aa421f7a9011427fb23add0d0bd80c8" title="Initializes a XMLRPC response." alt="" coords="240,157,395,185"/>
-<area shape="rect" id="node13" href="$group__base__funcs.html#ga683b6cffc3b9aa9d349d61e12a87a7bb" title="Checks if a string is not empty." alt="" coords="259,207,376,235"/>
-<area shape="rect" id="node7" href="$group__threading__lld__funcs.html#ga3d1782a58820716535c2b1328999d882" title="Locks a mutex." alt="" coords="452,55,569,83"/>
-</map>

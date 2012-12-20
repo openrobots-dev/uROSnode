@@ -1,7 +1,0 @@
-<map id="Threading" name="Threading">
-<area shape="rect" id="node2" href="$group__threading__funcs.html" title="Functions" alt="" coords="148,5,215,33"/>
-<area shape="rect" id="node3" href="$group__threading__macros.html" title="Macros" alt="" coords="153,55,209,83"/>
-<area shape="rect" id="node4" href="$group__threading__config.html" title="Configuration" alt="" coords="139,106,224,134"/>
-<area shape="rect" id="node5" href="$group__threading__lld__funcs.html" title="Low&#45;level functions" alt="" coords="125,157,237,185"/>
-<area shape="rect" id="node6" href="$group__threading__types.html" title="Data types" alt="" coords="145,207,217,235"/>
-</map>

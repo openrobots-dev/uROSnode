@@ -1,4 +1,0 @@
-<map id="urosRpcParserLookAhead" name="urosRpcParserLookAhead">
-<area shape="rect" id="node3" href="$group__rpc__parser__funcs.html#ga01ef7d7c46caa2b64a90a5187ffe9e1f" title="Expects the provided look&#45;ahead character." alt="" coords="203,5,376,33"/>
-<area shape="rect" id="node5" href="$group__rpc__parser__funcs.html#ga580190002d7a17e33ed4e2262fee3ed9" title="Refills the parsing buffer." alt="" coords="424,5,541,33"/>
-</map>

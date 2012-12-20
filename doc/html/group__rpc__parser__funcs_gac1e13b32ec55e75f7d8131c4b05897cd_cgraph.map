@@ -1,6 +1,0 @@
-<map id="urosRpcParserParamByTag" name="urosRpcParserParamByTag">
-<area shape="rect" id="node3" href="$group__rpc__parser__funcs.html#ga76978c3eb552863082a0fe836cf02312" title="Expects an opening XML tag." alt="" coords="211,31,368,59"/>
-<area shape="rect" id="node5" href="$group__rpc__parser__funcs.html#gaf66853971a8d1dad0f4642e445a861e6" title="Expects the beginning of an XML tag, without name." alt="" coords="417,23,575,67"/>
-<area shape="rect" id="node7" href="$group__rpc__parser__funcs.html#ga4ea5d7606832903417fe32794494ca84" title="Expects the parser to be pointing to a token." alt="" coords="627,5,752,33"/>
-<area shape="rect" id="node9" href="$group__rpc__parser__funcs.html#gae164cded55e7f23afe3af7768bda41e4" title="Skips any whitespace." alt="" coords="625,59,753,87"/>
-</map>
