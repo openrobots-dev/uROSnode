@@ -53,7 +53,7 @@ void fifo_init(fifo_t *queuep, unsigned length) {
   queuep->length = length;
   queuep->head = 0;
   queuep->tail = 0;
-  queuep->slots = urosArrayAlloc(length, void *);
+  queuep->slots = urosArrayNew(length, void *);
   urosAssert(queuep->slots != NULL);
 }
 

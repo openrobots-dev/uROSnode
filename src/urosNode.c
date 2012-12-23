@@ -496,9 +496,9 @@ uros_err_t urosNodeUnpublishTopic(const UrosString *namep) {
   tcprosnodep = urosListRemove(&urosNode.status.pubTopicList, topicnodep);
   urosAssert(tcprosnodep == topicnodep);
 
-  urosMutexLock(&urosNode.status.pubTcpListLock);
-  if (urosNode.status.pubTcpList.length > 0) {
+  if (topicp->refcnt > 0) {
     /* Tell each publishing TCPROS thread to exit.*/
+    urosMutexLock(&urosNode.status.pubTcpListLock);
     for (tcprosnodep = urosNode.status.pubTcpList.headp;
          tcprosnodep != NULL;
          tcprosnodep = tcprosnodep->nextp) {
@@ -510,12 +510,12 @@ uros_err_t urosNodeUnpublishTopic(const UrosString *namep) {
         urosMutexUnlock(&tcpstp->threadExitMtx);
       }
     }
+    urosMutexUnlock(&urosNode.status.pubTcpListLock);
     /* NOTE: The last exiting thread freeds the topic descriptor.*/
   } else {
     /* No TCPROS connections, just free the descriptor immediately.*/
     urosListNodeDelete(topicnodep, (uros_delete_f)urosTopicDelete);
   }
-  urosMutexUnlock(&urosNode.status.pubTcpListLock);
 
 _finally:
   urosMutexUnlock(&urosNode.status.pubTopicListLock);
@@ -740,6 +740,7 @@ uros_err_t urosNodeUnsubscribeTopic(const UrosString *namep) {
 
   UrosListNode *tcprosnodep, *topicnodep;
   UrosTopic *topicp;
+  UrosTcpRosStatus *tcpstp;
   uros_err_t err;
   UrosRpcResponse res;
 
@@ -772,26 +773,26 @@ uros_err_t urosNodeUnsubscribeTopic(const UrosString *namep) {
   tcprosnodep = urosListRemove(&urosNode.status.subTopicList, topicnodep);
   urosAssert(tcprosnodep == topicnodep);
 
-  urosMutexLock(&urosNode.status.subTcpListLock);
-  if (urosNode.status.subTcpList.length > 0) {
+  if (topicp->refcnt > 0) {
     /* Tell each subscribing TCPROS thread to exit.*/
+    urosMutexLock(&urosNode.status.subTcpListLock);
     for (tcprosnodep = urosNode.status.subTcpList.headp;
          tcprosnodep != NULL;
          tcprosnodep = tcprosnodep->nextp) {
 
-      UrosTcpRosStatus *tcpstp = (UrosTcpRosStatus*)tcprosnodep->datap;
+      tcpstp = (UrosTcpRosStatus*)tcprosnodep->datap;
       if (tcpstp->topicp == topicp && !tcpstp->flags.service) {
         urosMutexLock(&tcpstp->threadExitMtx);
         tcpstp->threadExit = UROS_TRUE;
         urosMutexUnlock(&tcpstp->threadExitMtx);
       }
     }
+    urosMutexUnlock(&urosNode.status.subTcpListLock);
     /* NOTE: The last exiting thread freeds the topic descriptor.*/
   } else {
     /* No TCPROS connections, just free the descriptor immediately.*/
     urosListNodeDelete(topicnodep, (uros_delete_f)urosTopicDelete);
   }
-  urosMutexUnlock(&urosNode.status.subTcpListLock);
 
 _finally:
   urosMutexUnlock(&urosNode.status.subTopicListLock);
@@ -1024,9 +1025,9 @@ uros_err_t urosNodeUnpublishService(const UrosString *namep) {
   tcprosnodep = urosListRemove(&urosNode.status.pubServiceList, servicenodep);
   urosAssert(tcprosnodep == servicenodep);
 
-  urosMutexLock(&urosNode.status.pubTcpListLock);
   if (urosNode.status.pubTcpList.length > 0) {
     /* Tell each publishing TCPROS thread to exit.*/
+    urosMutexLock(&urosNode.status.pubTcpListLock);
     for (tcprosnodep = urosNode.status.pubTcpList.headp;
          tcprosnodep != NULL;
          tcprosnodep = tcprosnodep->nextp) {
@@ -1038,12 +1039,12 @@ uros_err_t urosNodeUnpublishService(const UrosString *namep) {
         urosMutexUnlock(&tcpstp->threadExitMtx);
       }
     }
+    urosMutexUnlock(&urosNode.status.pubTcpListLock);
     /* NOTE: The last exiting thread freeds the service descriptor.*/
   } else {
     /* No TCPROS connections, just free the descriptor immediately.*/
     urosListNodeDelete(servicenodep, (uros_delete_f)urosTopicDelete);
   }
-  urosMutexUnlock(&urosNode.status.pubTcpListLock);
 
 _finally:
   urosMutexUnlock(&urosNode.status.pubServiceListLock);

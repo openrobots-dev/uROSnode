@@ -336,7 +336,9 @@ uros_err_t urosThreadPoolObjectInit(UrosThreadPool *poolp,
   poolp->routine = routine;
   poolp->namep = namep;
   poolp->priority = priority;
-  poolp->threadsp = urosAlloc(poolp->size * urosMemPoolBlockSize(stackpoolp));
+  poolp->threadsp =
+    (UrosThreadId*)urosArrayAlloc(poolp->size,
+                                  urosMemPoolBlockSize(stackpoolp));
   poolp->readyCnt = 0;
   poolp->busyCnt = 0;
   urosMutexObjectInit(&poolp->readyMtx);

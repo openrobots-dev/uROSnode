@@ -303,8 +303,7 @@ uros_err_t recv_msg__rosgraph_msgs__Log(
   urosTcpRosRecvRaw(tcpstp, objp->line); _CHKOK
   urosTcpRosArrayObjectInit((UrosTcpRosArray *)&objp->topics);
   urosTcpRosRecvRaw(tcpstp, objp->topics.length); _CHKOK
-  objp->topics.entriesp = urosArrayAlloc(objp->topics.length,
-                                         UrosString);
+  objp->topics.entriesp = urosArrayNew(objp->topics.length, UrosString);
   if (objp->topics.entriesp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _error; }
   for (i = 0; i < objp->topics.length; ++i) {
     urosTcpRosRecvString(tcpstp, &objp->topics.entriesp[i]); _CHKOK

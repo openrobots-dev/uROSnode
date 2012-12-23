@@ -358,8 +358,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *          There is not enough contiguous free memory to allocate a memory
  *          block of the requested size.
  */
-#define urosArrayAlloc(n, type) \
+#define urosArrayNew(n, type) \
   ((type *)urosAlloc((size_t)(n) * sizeof(type)))
+
+/**
+ * @brief   Allocates an array.
+ * @details Allocates a memory chunk which can hold an array of contiguous
+ *          chunks with the provided size.
+ *
+ * @param[in] n
+ *          Number of objects to be allocated.
+ * @param[in] size
+ *          Size of each single chunk to be allocated.
+ * @return
+ *          The address of the allocated memory chunk.
+ * @retval NULL
+ *          There is not enough contiguous free memory to allocate a memory
+ *          block of the requested size.
+ */
+#define urosArrayAlloc(n, size) \
+  urosAlloc((size_t)(n) * (size_t)(size))
 
 /** @} */
 
