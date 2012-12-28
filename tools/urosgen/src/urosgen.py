@@ -446,6 +446,16 @@ class MsgType:
         body = self.gen_length_body()
         if len(body) > 0:
             text += body + '\n'
+            objpUsed = False
+            for f in self.fields:
+                if f.rostype == 'string' or not primitive_map.has_key(f.rostype) or f.arraylen == '*':
+                    objpUsed = True
+                    break
+            if not objpUsed:
+                text += tab + '(void)objp;\n'
+        else:
+            text += tab + '/* Nothing to measure.*/\n'
+            text += tab + '(void)objp;\n'
         text += tab + 'return length;\n'
         text += '}'
         return text
@@ -590,7 +600,7 @@ class MsgType:
                     enpstr = 'objp->%s.entriesp' % f.cname
                     text += tab + 'urosTcpRosArrayObjectInit((UrosTcpRosArray *)&objp->%s);\n' % f.cname
                     text += tab + 'urosTcpRosRecvRaw(tcpstp, %s); _CHKOK\n' % lenstr
-                    line = tab + '%s = urosArrayAlloc(' % enpstr
+                    line = tab + '%s = urosArrayNew(' % enpstr
                     text += line + '%s,\n' % lenstr
                     text += ' ' * len(line) + '%s);\n' % f.ctype
                     text += tab + 'if (%s == NULL) { ' % enpstr
@@ -642,8 +652,7 @@ class MsgType:
         body = self.gen_recv_body()
         if len(body) > 0:
             text += '#define _CHKOK { if (tcpstp->err != UROS_OK) { goto _error; } }\n\n'
-            text += body
-            text += '\n'
+            text += body + '\n'
             text += tab + 'return tcpstp->err = UROS_OK;\n'
             text += '_error:\n'
             text += tab + 'clean_%s(objp);\n' % self.cname
@@ -652,6 +661,7 @@ class MsgType:
         else:
             text += '\n'
             text += tab + '/* Nothing to receive.*/\n'
+            text += tab + '(void)objp;\n'
             text += tab + 'return tcpstp->err = UROS_OK;\n'
         text += '}'
         return text
@@ -718,13 +728,13 @@ class MsgType:
         body = self.gen_send_body()
         if len(body) > 0:
             text += '#define _CHKOK { if (tcpstp->err != UROS_OK) { return tcpstp->err; } }\n\n'
-            text += body
-            text += '\n'
+            text += body + '\n'
             text += tab + 'return tcpstp->err = UROS_OK;\n'
             text += '#undef _CHKOK\n'
         else:
             text += '\n'
             text += tab + '/* Nothing to send.*/\n'
+            text += tab + '(void)objp;\n'
             text += tab + 'return tcpstp->err = UROS_OK;\n'
         text += '}'
         return text
@@ -901,6 +911,16 @@ class SrvType:
         body = self.intype.gen_length_body()
         if len(body) > 0:
             text += body + '\n'
+            objpUsed = False
+            for f in self.intype.fields:
+                if f.rostype == 'string' or not primitive_map.has_key(f.rostype) or f.arraylen == '*':
+                    objpUsed = True
+                    break
+            if not objpUsed:
+                text += tab + '(void)objp;\n'
+        else:
+            text += tab + '/* Nothing to measure.*/\n'
+            text += tab + '(void)objp;\n'
         text += tab + 'return length;\n'
         text += '}'
         return text
@@ -927,6 +947,16 @@ class SrvType:
         body = self.outtype.gen_length_body()
         if len(body) > 0:
             text += body + '\n'
+            objpUsed = False
+            for f in self.outtype.fields:
+                if f.rostype == 'string' or not primitive_map.has_key(f.rostype) or f.arraylen == '*':
+                    objpUsed = True
+                    break
+            if not objpUsed:
+                text += tab + '(void)objp;\n'
+        else:
+            text += tab + '/* Nothing to measure.*/\n'
+            text += tab + '(void)objp;\n'
         text += tab + 'return length;\n'
         text += '}'
         return text
@@ -1070,6 +1100,7 @@ class SrvType:
         else:
             text += '\n'
             text += tab + '/* Nothing to receive.*/\n'
+            text += tab + '(void)objp;\n'
             text += tab + 'return tcpstp->err = UROS_OK;\n'
         text += '}'
         return text
@@ -1106,6 +1137,7 @@ class SrvType:
         else:
             text += '\n'
             text += tab + '/* Nothing to send.*/\n'
+            text += tab + '(void)objp;\n'
             text += tab + 'return tcpstp->err = UROS_OK;\n'
         text += '}'
         return text
@@ -1125,6 +1157,10 @@ class CodeGen:
             'sourceDir'                 : '.',
             'msgTypesFilename'          : 'urosTcpRosTypes',
             'handlersFilename'          : 'urosTcpRosHandlers',
+            'genMsgTypesHeader'         : 'True',
+            'genMsgTypesSource'         : 'True',
+            'genHandlersHeader'         : 'True',
+            'genHandlersSource'         : 'True',
             
             'fieldComments'             : 'True',
             'msgOnStack'                : 'False',
@@ -1222,9 +1258,6 @@ class CodeGen:
                     self.licenseText = '/*\n' + (''.join(f.readlines())).strip() + '\n*/\n\n'
             else:
                 raise ValueError('Invalid license file path: [%s]' % licpath)
-        
-        print self.msgtypes_header_path()
-        print self.msgtypes_source_path()
         
         hpath = os.sep.join(os.path.split(self.msgtypes_header_path())[:-1])
         if len(hpath) == 0: hpath = '.'
@@ -1951,9 +1984,11 @@ def main():
     
     gen = CodeGen()
     
-    print 'Configuration file [%s] ...' % ('<stdin>' if cfgpath == '.' else cfgpath)
+    print 'Configuration file [%s] ...' % ('<stdin>' if cfgpath == '.' else cfgpath),
     gen.load(cfgpath)
+    print 'done'
     
+    print 'Configuration:'
     print '\n[Options]'
     for k in sorted(gen.opts):
         print '%s = %s' % (k, gen.opts[k])
@@ -1967,32 +2002,36 @@ def main():
     for name in gen.pubServices:
         print '%s = %s' % (name, gen.pubServices[name])
 
-    print '\nRetrieving data types from ROS ...'
+    print '\nRetrieving data types from ROS ...',
     gen.elaborate()
+    print 'done'
     print 'Message types sorted by dependency:'
     for name in gen.sortedMsgTypeNames:
         print '\t' + name
+
+    print ''    
+    if str2bool(gen.opts['genMsgTypesHeader']):
+        print 'Types header file [%s] ...' % gen.msgtypes_header_path(),
+        msgTypesHeader = gen.gen_msgtypes_header()
+        gen.export_msgtypes_header(msgTypesHeader)
+        print 'done'
     
-    print '\nTypes header file [%s] ...' % gen.msgtypes_header_path()
-    msgTypesHeader = gen.gen_msgtypes_header()
-    gen.export_msgtypes_header(msgTypesHeader)
+    if str2bool(gen.opts['genMsgTypesSource']):
+        print 'Types source file [%s] ...' % gen.msgtypes_source_path(),
+        msgTypesSource = gen.gen_msgtypes_source()
+        gen.export_msgtypes_source(msgTypesSource)
+        print 'done'
     
-    print 'Types source file [%s] ...' % gen.msgtypes_source_path()
-    msgTypesSource = gen.gen_msgtypes_source()
-    gen.export_msgtypes_source(msgTypesSource)
+    if str2bool(gen.opts['genHandlersHeader']):
+        print 'Handlers header file [%s] ...' % gen.handlers_header_path(),
+        handlersHeader = gen.gen_handlers_header()
+        gen.export_handlers_header(handlersHeader)
+        print 'done'
     
-    print 'Handlers header file [%s] ...' % gen.handlers_header_path()
-    handlersHeader = gen.gen_handlers_header()
-    gen.export_handlers_header(handlersHeader)
-    
-    print 'Handlers source file [%s] ...' % gen.handlers_source_path()
-    handlersSource = gen.gen_handlers_source()
-    gen.export_handlers_source(handlersSource)
+    if str2bool(gen.opts['genHandlersSource']):
+        print 'Handlers source file [%s] ...' % gen.handlers_source_path(),
+        handlersSource = gen.gen_handlers_source()
+        gen.export_handlers_source(handlersSource)
+        print 'done'
 
 main()
-
-
-# TODO
-# * Finish lengths computation
-# + Add custom message and service type list
-# + Handle lengths in handlers
