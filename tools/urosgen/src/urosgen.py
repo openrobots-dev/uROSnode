@@ -1168,9 +1168,12 @@ class CodeGen:
             'srvOnStack_out'            : 'False',
             
             'regTypesFuncName'          : 'urosTcpRosRegStaticTypes',
-            'regPubTopicsFuncName'      : 'urosTcpRosRegPubTopics',
-            'regSubTopicsFuncName'      : 'urosTcpRosRegSubTopics',
-            'regPubServicesFuncName'    : 'urosTcpRosRegPubServices',
+            'regPubTopicsFuncName'      : 'urosTcpRosPublishTopics',
+            'unregPubTopicsFuncName'    : 'urosTcpRosUnpublishTopics',
+            'regSubTopicsFuncName'      : 'urosTcpRosSubscribeTopics',
+            'unregSubTopicsFuncName'    : 'urosTcpRosUnsubscribeTopics',
+            'regPubServicesFuncName'    : 'urosTcpRosPublishServices',
+            'unregPubServicesFuncName'  : 'urosTcpRosUnpublishServices',
         }
         self.pubTopics = {}
         self.subTopics = {}
@@ -1765,7 +1768,7 @@ class CodeGen:
         return text
             
     def gen_regpubtopics_sig(self):
-        return 'uros_err_t %s(void)' % self.opts['regPubTopicsFuncName']
+        return 'void %s(void)' % self.opts['regPubTopicsFuncName']
         
     def gen_regpubtopics_func(self):
         text = '/**\n'
@@ -1775,26 +1778,46 @@ class CodeGen:
         text += self.gen_regpubtopics_sig() + ' {\n\n'
         
         if len(self.pubTopics) > 0:
-            text += tab + 'uros_err_t err;\n\n'
             for name in sorted(self.pubTopics):
                 rostype = self.pubTopics[name];
                 text += tab + '/* %s */\n' % name
-                text += tab + 'err = urosNodePublishTopicSZ(\n'
+                text += tab + 'urosNodePublishTopicSZ(\n'
                 text += tab*2 + '"%s",\n' % name
                 text += tab*2 + '"%s",\n' % rostype
                 text += tab*2 + '(uros_proc_f)pub_tpc%s\n' % mangled_name(name)
                 text += tab + ');\n'
-                text += tab + 'if (err != UROS_OK) { return err; }\n\n'
-            text += tab + 'return err;\n'
+            text = text[:-1]
         else:
-            text += tab + '/* No topic to publish.*/\n'
-            text += tab + 'return UROS_OK;\n'
+            text += tab + '/* No topics to publish.*/\n'
+            
+        text += '}'
+        return text
+            
+    def gen_unregpubtopics_sig(self):
+        return 'void %s(void)' % self.opts['unregPubTopicsFuncName']
+        
+    def gen_unregpubtopics_func(self):
+        text = '/**\n'
+        text += ' * @brief   Unregisters all the published topics to the Master node.\n'
+        text += ' * @note    Should be called at node shutdown.\n'
+        text += ' */\n'
+        text += self.gen_unregpubtopics_sig() + ' {\n\n'
+        
+        if len(self.pubTopics) > 0:
+            for name in sorted(self.pubTopics):
+                text += tab + '/* %s */\n' % name
+                text += tab + 'urosNodeUnpublishTopicSZ(\n'
+                text += tab*2 + '"%s"\n' % name
+                text += tab + ');\n'
+            text = text[:-1]
+        else:
+            text += tab + '/* No topics to unpublish.*/\n'
             
         text += '}'
         return text
             
     def gen_regsubtopics_sig(self):
-        return 'uros_err_t %s(void)' % self.opts['regSubTopicsFuncName']
+        return 'void %s(void)' % self.opts['regSubTopicsFuncName']
         
     def gen_regsubtopics_func(self):
         text = '/**\n'
@@ -1804,26 +1827,46 @@ class CodeGen:
         text += self.gen_regsubtopics_sig() + ' {\n\n'
         
         if len(self.subTopics) > 0:
-            text += tab + 'uros_err_t err;\n\n'
             for name in sorted(self.subTopics):
                 rostype = self.subTopics[name];
                 text += tab + '/* %s */\n' % name
-                text += tab + 'err = urosNodeSubscribeTopicSZ(\n'
+                text += tab + 'urosNodeSubscribeTopicSZ(\n'
                 text += tab*2 + '"%s",\n' % name
                 text += tab*2 + '"%s",\n' % rostype
                 text += tab*2 + '(uros_proc_f)sub_tpc%s\n' % mangled_name(name)
-                text += tab + ');\n'
-                text += tab + 'if (err != UROS_OK) { return err; }\n\n'
-            text += tab + 'return err;\n'
+                text += tab + ');\n\n'
+            text = text[:-1]
         else:
-            text += tab + '/* No topic to subscribe to.*/\n'
-            text += tab + 'return UROS_OK;\n'
+            text += tab + '/* No topics to subscribe to.*/\n'
+            
+        text += '}'
+        return text
+            
+    def gen_unregsubtopics_sig(self):
+        return 'void %s(void)' % self.opts['unregSubTopicsFuncName']
+        
+    def gen_unregsubtopics_func(self):
+        text = '/**\n'
+        text += ' * @brief   Unregisters all the subscribed topics to the Master node.\n'
+        text += ' * @note    Should be called at node shutdown.\n'
+        text += ' */\n'
+        text += self.gen_unregsubtopics_sig() + ' {\n\n'
+        
+        if len(self.subTopics) > 0:
+            for name in sorted(self.subTopics):
+                text += tab + '/* %s */\n' % name
+                text += tab + 'urosNodeUnsubscribeTopicSZ(\n'
+                text += tab*2 + '"%s"\n' % name
+                text += tab + ');\n\n'
+            text = text[:-1]
+        else:
+            text += tab + '/* No topics to unsubscribe from.*/\n'
             
         text += '}'
         return text
             
     def gen_regpubservices_sig(self):
-        return 'uros_err_t %s(void)' % self.opts['regPubServicesFuncName']
+        return 'void %s(void)' % self.opts['regPubServicesFuncName']
         
     def gen_regpubservices_func(self):
         text = '/**\n'
@@ -1833,20 +1876,40 @@ class CodeGen:
         text += self.gen_regpubservices_sig() + ' {\n\n'
         
         if len(self.pubServices) > 0:
-            text += tab + 'uros_err_t err;\n\n'
             for name in sorted(self.pubServices):
                 rostype = self.pubServices[name];
                 text += tab + '/* %s */\n' % name
-                text += tab + 'err = urosNodePublishServiceSZ(\n'
+                text += tab + 'urosNodePublishServiceSZ(\n'
                 text += tab*2 + '"%s",\n' % name
                 text += tab*2 + '"%s",\n' % rostype
                 text += tab*2 + '(uros_proc_f)pub_srv%s\n' % mangled_name(name)
-                text += tab + ');\n'
-                text += tab + 'if (err != UROS_OK) { return err; }\n\n'
-            text += tab + 'return err;\n'
+                text += tab + ');\n\n'
+            text = text[:-1]
         else:
-            text += tab + '/* No service to publish.*/\n'
-            text += tab + 'return UROS_OK;\n'
+            text += tab + '/* No services to publish.*/\n'
+            
+        text += '}'
+        return text
+            
+    def gen_unregpubservices_sig(self):
+        return 'void %s(void)' % self.opts['unregPubServicesFuncName']
+        
+    def gen_unregpubservices_func(self):
+        text = '/**\n'
+        text += ' * @brief   Unregisters all the published services to the Master node.\n'
+        text += ' * @note    Should be called at node shutdown.\n'
+        text += ' */\n'
+        text += self.gen_unregpubservices_sig() + ' {\n\n'
+        
+        if len(self.pubServices) > 0:
+            for name in sorted(self.pubServices):
+                text += tab + '/* %s */\n' % name
+                text += tab + 'urosNodeUnpublishServiceSZ(\n'
+                text += tab*2 + '"%s"\n' % name
+                text += tab + ');\n\n'
+            text = text[:-1]
+        else:
+            text += tab + '/* No services to unpublish.*/\n'
             
         text += '}'
         return text
@@ -1887,8 +1950,11 @@ class CodeGen:
         
         text += banner_big('GLOBAL PROTOTYPES') + '\n\n'
         text += self.gen_regpubtopics_sig() + ';\n'
+        text += self.gen_unregpubtopics_sig() + ';\n\n'
         text += self.gen_regsubtopics_sig() + ';\n'
-        text += self.gen_regpubservices_sig() + ';\n\n'
+        text += self.gen_unregsubtopics_sig() + ';\n\n'
+        text += self.gen_regpubservices_sig() + ';\n'
+        text += self.gen_unregpubservices_sig() + ';\n\n'
         
         text += '#ifdef __cplusplus\n'
         text += '} /* extern "C" */\n'
@@ -1947,9 +2013,12 @@ class CodeGen:
         text += '/** @} */\n\n'
         text += banner_big('GLOBAL FUNCTIONS') + '\n\n'
         text += '/** @addtogroup tcpros_funcs */\n/** @{ */\n\n'
-        text += self.gen_regpubtopics_func() + '\n'
-        text += self.gen_regsubtopics_func() + '\n'
+        text += self.gen_regpubtopics_func() + '\n\n'
+        text += self.gen_unregpubtopics_func() + '\n\n'
+        text += self.gen_regsubtopics_func() + '\n\n'
+        text += self.gen_unregsubtopics_func() + '\n\n'
         text += self.gen_regpubservices_func() + '\n\n'
+        text += self.gen_unregpubservices_func() + '\n\n'
         text += '/** @} */\n\n'
         return text
     
