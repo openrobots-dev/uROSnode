@@ -426,6 +426,10 @@ uros_err_t uros_lld_thread_createstatic(UrosThreadId *idp, const char *namep,
             ("Error [%s] while initializing thread attributes\n",
              strerror(err)));
 
+  err = pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+  urosError(err != 0, goto _error,
+            ("Error [%s] while setting as joinable\n", strerror(err)));
+
   err = pthread_attr_setschedpolicy(&attr, SCHED_RR);
   urosError(err != 0, goto _error,
             ("Error [%s] while setting the Round-Robin scheduling policy\n",
