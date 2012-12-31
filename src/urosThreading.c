@@ -339,6 +339,12 @@ uros_err_t urosThreadPoolObjectInit(UrosThreadPool *poolp,
   poolp->threadsp =
     (UrosThreadId*)urosArrayAlloc(poolp->size,
                                   urosMemPoolBlockSize(stackpoolp));
+  if (poolp->threadsp != NULL) {
+    unsigned i;
+    for (i = 0; i < poolp->size; ++i) {
+      poolp->threadsp[i] = UROS_NULL_THREADID;
+    }
+  }
   poolp->readyCnt = 0;
   poolp->busyCnt = 0;
   urosMutexObjectInit(&poolp->readyMtx);
@@ -448,6 +454,7 @@ uros_err_t urosThreadPoolJoinAll(UrosThreadPool *poolp) {
 
   urosAssert(poolp != NULL);
   urosAssert(poolp->stackPoolp != NULL);
+  urosAssert(!(poolp->size > 0) || (poolp->threadsp != NULL));
 
   /* Wait for all the running threads to terminate.*/
   urosMutexLock(&poolp->readyMtx);
@@ -471,6 +478,7 @@ uros_err_t urosThreadPoolJoinAll(UrosThreadPool *poolp) {
   urosMutexUnlock(&poolp->readyMtx);
   for (i = 0; i < poolp->size; ++i) {
     urosThreadJoin(poolp->threadsp[i]);
+    poolp->threadsp[i] = UROS_NULL_THREADID;
   }
   return UROS_OK;
 }

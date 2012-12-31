@@ -61,6 +61,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* LOCAL VARIABLES                                                           */
 /*===========================================================================*/
 
+/** @brief Node thread stack.*/
+static UROS_STACK(urosNodeThreadStack, UROS_NODE_THREAD_STKSIZE);
+
 /** @brief XMLRPC Listener thread stack.*/
 static UROS_STACK(xmlrpcListenerStack, UROS_XMLRPC_LISTENER_STKSIZE);
 
@@ -87,6 +90,130 @@ static UROS_STACKPOOL(tcpsvrMemPoolChunk, UROS_TCPROS_SERVER_STKSIZE,
  * @brief   Node singleton.
  */
 UrosNode urosNode;
+
+/*===========================================================================*/
+/* LOCAL FUNCTIONS                                                           */
+/*===========================================================================*/
+
+void uros_node_createthreads(void) {
+
+  static UrosNodeStatus *const stp = &urosNode.status;
+
+  uros_err_t err;
+  (void)err;
+
+  urosAssert(stp->xmlrpcListenerId == UROS_NULL_THREADID);
+  urosAssert(stp->tcprosListenerId == UROS_NULL_THREADID);
+
+  /* Fill the worker thread pools.*/
+  err = urosThreadPoolCreateAll(&stp->tcpcliThdPool);
+  urosAssert(err == UROS_OK);
+  err = urosThreadPoolCreateAll(&stp->tcpsvrThdPool);
+  urosAssert(err == UROS_OK);
+  err = urosThreadPoolCreateAll(&stp->slaveThdPool);
+  urosAssert(err == UROS_OK);
+
+  /* Spawn the XMLRPC Slave listener threads.*/
+  err = urosThreadCreateStatic(&stp->xmlrpcListenerId,
+                               "RpcSlaveListener",
+                               UROS_XMLRPC_LISTENER_PRIO,
+                               (uros_proc_f)urosRpcSlaveListenerThread, NULL,
+                               xmlrpcListenerStack,
+                               UROS_XMLRPC_LISTENER_STKSIZE);
+  urosAssert(err == UROS_OK);
+
+  /* Spawn the TCPROS listener thread.*/
+  err = urosThreadCreateStatic(&stp->tcprosListenerId,
+                               "TcpRosListener",
+                               UROS_TCPROS_LISTENER_PRIO,
+                               (uros_proc_f)urosTcpRosListenerThread, NULL,
+                               tcprosListenerStack,
+                               UROS_TCPROS_LISTENER_STKSIZE);
+  urosAssert(err == UROS_OK);
+}
+
+void uros_node_jointhreads(void) {
+
+  static const UrosNodeConfig *const cfgp = &urosNode.config;
+  static UrosNodeStatus *const stp = &urosNode.status;
+
+  UrosConn conn;
+  uros_err_t err;
+  (void)err;
+
+  urosAssert(stp->xmlrpcListenerId != UROS_NULL_THREADID);
+  urosAssert(stp->tcprosListenerId != UROS_NULL_THREADID);
+
+  /* Join the XMLRPC Slave listener threads.*/
+  urosConnObjectInit(&conn);
+  urosConnCreate(&conn, UROS_PROTO_TCP);
+  urosConnConnect(&conn, &cfgp->xmlrpcAddr);
+  urosConnClose(&conn);
+  err = urosThreadJoin(stp->xmlrpcListenerId);
+  urosAssert(err == UROS_OK);
+  stp->xmlrpcListenerId = UROS_NULL_THREADID;
+
+  /* Join the TCPROS listener thread.*/
+  urosConnObjectInit(&conn);
+  urosConnCreate(&conn, UROS_PROTO_TCP);
+  urosConnConnect(&conn, &cfgp->tcprosAddr);
+  urosConnClose(&conn);
+  err = urosThreadJoin(stp->tcprosListenerId);
+  urosAssert(err == UROS_OK);
+  stp->tcprosListenerId = UROS_NULL_THREADID;
+
+  /* Join the worker thread pools.*/
+  err = urosThreadPoolJoinAll(&stp->tcpcliThdPool);
+  urosAssert(err == UROS_OK);
+  err = urosThreadPoolJoinAll(&stp->tcpsvrThdPool);
+  urosAssert(err == UROS_OK);
+  err = urosThreadPoolJoinAll(&stp->slaveThdPool);
+  urosAssert(err == UROS_OK);
+}
+
+uros_err_t uros_node_pollmaster(void) {
+
+  static const UrosNodeConfig *const cfgp = &urosNode.config;
+
+  UrosRpcResponse res;
+  uros_err_t err;
+
+  /* Check if the Master can reply to a getPid() request.*/
+  urosRpcResponseObjectInit(&res);
+  err = urosRpcCallGetPid(
+    &cfgp->masterAddr,
+    &cfgp->xmlrpcUri,
+    &res
+  );
+  urosRpcResponseClean(&res);
+  return err;
+}
+
+void uros_node_registerall(void) {
+
+  /* Register topics.*/
+  urosUserPublishTopics();
+  urosUserSubscribeTopics();
+
+  /* Register services.*/
+  urosUserPublishServices();
+
+  /* Register parameters.*/
+  urosUserSubscribeParams();
+}
+
+void uros_node_unregisterall(void) {
+
+  /* Unregister topics.*/
+  urosUserUnpublishTopics();
+  urosUserUnsubscribeTopics();
+
+  /* Unregister services.*/
+  urosUserUnpublishServices();
+
+  /* Unregister parameters.*/
+  urosUserUnsubscribeParams();
+}
 
 /*===========================================================================*/
 /* GLOBAL FUNCTIONS                                                          */
@@ -127,6 +254,8 @@ void urosNodeObjectInit(UrosNode *np) {
   urosListObjectInit(&stp->subParamList);
   urosListObjectInit(&stp->subTcpList);
   urosListObjectInit(&stp->pubTcpList);
+  stp->xmlrpcListenerId = UROS_NULL_THREADID;
+  stp->tcprosListenerId = UROS_NULL_THREADID;
 
   urosMutexObjectInit(&stp->xmlrpcPidLock);
   urosMutexObjectInit(&stp->subTopicListLock);
@@ -135,6 +264,8 @@ void urosNodeObjectInit(UrosNode *np) {
   urosMutexObjectInit(&stp->subParamListLock);
   urosMutexObjectInit(&stp->subTcpListLock);
   urosMutexObjectInit(&stp->pubTcpListLock);
+  stp->exitFlag = UROS_FALSE;
+  urosMutexObjectInit(&stp->exitLock);
 
   /* Initialize mempools with their description.*/
   urosMemPoolObjectInit(&stp->slaveMemPool,
@@ -170,6 +301,90 @@ void urosNodeObjectInit(UrosNode *np) {
                            (uros_proc_f)urosRpcSlaveServerThread,
                            "RpcSlaveServer",
                            UROS_XMLRPC_SLAVE_PRIO);
+}
+
+/**
+ * @brief   Creates the main Node thread.
+ * @note    Should be called at system startup, after @p urosInit().
+ *
+ * @return
+ *          Error code.
+ */
+uros_err_t urosNodeCreateThread(void) {
+
+  return urosThreadCreateStatic(
+    &urosNode.status.nodeThreadId, "urosNode",
+    UROS_NODE_THREAD_PRIO,
+    (uros_proc_f)urosNodeThread, NULL,
+    urosNodeThreadStack, UROS_NODE_THREAD_STKSIZE
+  );
+}
+
+/**
+ * @brief   Node thread.
+ * @details This thread handles the whole life of the local node, including
+ *          (un)registration (from)to the Master, thread pool magnagement,
+ *          node shutdown, and so on.
+ *
+ * @param[in] argp
+ *          Ignored.
+ * @return
+ *          Error code.
+ */
+uros_err_t urosNodeThread(void *argp) {
+
+  static UrosNodeStatus *const stp = &urosNode.status;
+
+  uros_bool_t exitFlag;
+  (void)argp;
+
+  /* Create the listener and pool threads.*/
+  uros_node_createthreads();
+
+  urosMutexLock(&stp->exitLock);
+  exitFlag = stp->exitFlag;
+  urosMutexUnlock(&stp->exitLock);
+  while (!exitFlag) {
+    /* Check if the Master is alive.*/
+    if (uros_node_pollmaster() != UROS_OK) {
+      /* Add a delay not to flood in case of short timeouts.*/
+      urosThreadSleepSec(3);
+      urosMutexLock(&stp->exitLock);
+      exitFlag = stp->exitFlag;
+      urosMutexUnlock(&stp->exitLock);
+      continue;
+    }
+
+    /* Register to the Master.*/
+    uros_node_registerall();
+
+    /* Check if the Master is alive every 3 seconds.*/
+    urosMutexLock(&stp->exitLock);
+    exitFlag = stp->exitFlag;
+    urosMutexUnlock(&stp->exitLock);
+    while (!exitFlag) {
+      urosError(uros_node_pollmaster() != UROS_OK, break,
+                ("Master node "UROS_IPFMT" lost\n",
+                 UROS_IPARG(&urosNode.config.masterAddr.ip)));
+
+      urosThreadSleepSec(3);
+      urosMutexLock(&stp->exitLock);
+      exitFlag = stp->exitFlag;
+      urosMutexUnlock(&stp->exitLock);
+    }
+
+    /* Unregister from the Master*/
+    uros_node_unregisterall();
+
+    urosMutexLock(&stp->exitLock);
+    exitFlag = stp->exitFlag;
+    urosMutexUnlock(&stp->exitLock);
+  }
+
+  /* Join listener and pool threads.*/
+  uros_node_jointhreads();
+
+  return UROS_OK;
 }
 
 /**
@@ -209,35 +424,6 @@ void urosNodeConfigLoadDefaults(UrosNodeConfig *cfgp) {
   cfgp->masterUri = urosStringCloneZ(
     "http://"UROS_XMLRPC_MASTER_IP_SZ
     ":"UROS_STRINGIFY2(UROS_XMLRPC_MASTER_PORT));
-}
-
-/**
- * @brief   Creates the listener threads.
- * @details This callback function is called at boot time to create the
- *          listener threads of the middleware.
- *
- * @pre     The listener threads have not been created before.
- */
-void urosNodeCreateListeners(void) {
-
-  static UrosNodeStatus *stp = &urosNode.status;
-
-  uros_err_t err;
-  (void)err;
-
-  err = urosThreadCreateStatic(&stp->xmlrpcListenerId, "RpcSlaveListener",
-                               UROS_XMLRPC_LISTENER_PRIO,
-                               (uros_proc_f)urosRpcSlaveListenerThread, NULL,
-                               xmlrpcListenerStack,
-                               UROS_XMLRPC_LISTENER_STKSIZE);
-  urosAssert(err == UROS_OK);
-
-  err = urosThreadCreateStatic(&stp->tcprosListenerId, "TcpRosListener",
-                               UROS_TCPROS_LISTENER_PRIO,
-                               (uros_proc_f)urosTcpRosListenerThread, NULL,
-                               tcprosListenerStack,
-                               UROS_TCPROS_LISTENER_STKSIZE);
-  urosAssert(err == UROS_OK);
 }
 
 /**
@@ -296,6 +482,8 @@ uros_err_t urosNodePublishTopic(const UrosString *namep,
                                 const UrosString *typep,
                                 uros_proc_f procf) {
 
+  static UrosNode *const np = &urosNode;
+
   UrosTopic *topicp;
   const UrosMsgType *statictypep;
   UrosListNode *topicnodep;
@@ -311,9 +499,9 @@ uros_err_t urosNodePublishTopic(const UrosString *namep,
             ("Unknown message type [%.*s]\n", UROS_STRARG(typep)));
 
   /* Check if the topic already exists.*/
-  urosMutexLock(&urosNode.status.pubTopicListLock);
-  topicnodep = urosTopicListFindByName(&urosNode.status.pubTopicList, namep);
-  urosMutexUnlock(&urosNode.status.pubTopicListLock);
+  urosMutexLock(&np->status.pubTopicListLock);
+  topicnodep = urosTopicListFindByName(&np->status.pubTopicList, namep);
+  urosMutexUnlock(&np->status.pubTopicListLock);
   urosError(topicnodep != NULL, return UROS_ERR_BADPARAM,
             ("Topic [%.*s] already published\n", UROS_STRARG(namep)));
 
@@ -390,7 +578,8 @@ uros_err_t urosNodePublishTopicSZ(const char *namep,
  */
 uros_err_t urosNodePublishTopicByDesc(UrosTopic *topicp) {
 
-  static const UrosNodeConfig *cfgp = &urosNode.config;
+  static UrosNode *const np = &urosNode;
+
   UrosRpcResponse response;
   uros_err_t err;
   UrosListNode *nodep;
@@ -402,15 +591,15 @@ uros_err_t urosNodePublishTopicByDesc(UrosTopic *topicp) {
   urosAssert(topicp->refcnt == 0);
 
   urosRpcResponseObjectInit(&response);
-  urosMutexLock(&urosNode.status.pubTopicListLock);
+  urosMutexLock(&np->status.pubTopicListLock);
 
   /* Master XMLRPC registerPublisher() */
   err = urosRpcCallRegisterPublisher(
-    &cfgp->masterAddr,
-    &cfgp->nodeName,
+    &np->config.masterAddr,
+    &np->config.nodeName,
     &topicp->name,
     &topicp->typep->name,
-    &cfgp->xmlrpcUri,
+    &np->config.xmlrpcUri,
     &response
   );
   urosError(err != UROS_OK, goto _finally,
@@ -431,12 +620,12 @@ uros_err_t urosNodePublishTopicByDesc(UrosTopic *topicp) {
   if (nodep == NULL) { err = UROS_ERR_NOMEM; goto _finally; }
   urosListNodeObjectInit(nodep);
   nodep->datap = (void*)topicp;
-  urosListAdd(&urosNode.status.pubTopicList, nodep);
+  urosListAdd(&np->status.pubTopicList, nodep);
 
   err = UROS_OK;
 _finally:
   /* Cleanup and return.*/
-  urosMutexUnlock(&urosNode.status.pubTopicListLock);
+  urosMutexUnlock(&np->status.pubTopicListLock);
   urosRpcResponseClean(&response);
   return err;
 }
@@ -462,6 +651,8 @@ _finally:
  */
 uros_err_t urosNodeUnpublishTopic(const UrosString *namep) {
 
+  static UrosNode *const np = &urosNode;
+
   UrosListNode *tcprosnodep, *topicnodep;
   UrosTopic *topicp;
   uros_err_t err;
@@ -470,8 +661,8 @@ uros_err_t urosNodeUnpublishTopic(const UrosString *namep) {
   urosAssert(urosStringNotEmpty(namep));
 
   /* Find the topic descriptor.*/
-  urosMutexLock(&urosNode.status.pubTopicListLock);
-  topicnodep = urosTopicListFindByName(&urosNode.status.pubTopicList, namep);
+  urosMutexLock(&np->status.pubTopicListLock);
+  topicnodep = urosTopicListFindByName(&np->status.pubTopicList, namep);
   if (topicnodep == NULL) {
     urosError(topicnodep == NULL,
               { err = UROS_ERR_BADPARAM; goto _finally; },
@@ -481,10 +672,10 @@ uros_err_t urosNodeUnpublishTopic(const UrosString *namep) {
 
   /* Unregister the topic on the Master node.*/
   err = urosRpcCallUnregisterPublisher(
-    &urosNode.config.masterAddr,
-    &urosNode.config.nodeName,
+    &np->config.masterAddr,
+    &np->config.nodeName,
     namep,
-    &urosNode.config.xmlrpcUri,
+    &np->config.xmlrpcUri,
     &res
   );
   urosError(err != UROS_OK, UROS_NOP,
@@ -493,13 +684,13 @@ uros_err_t urosNodeUnpublishTopic(const UrosString *namep) {
 
   /* Unregister the topic locally.*/
   topicp->flags.deleted = UROS_TRUE;
-  tcprosnodep = urosListRemove(&urosNode.status.pubTopicList, topicnodep);
+  tcprosnodep = urosListRemove(&np->status.pubTopicList, topicnodep);
   urosAssert(tcprosnodep == topicnodep);
 
   if (topicp->refcnt > 0) {
     /* Tell each publishing TCPROS thread to exit.*/
-    urosMutexLock(&urosNode.status.pubTcpListLock);
-    for (tcprosnodep = urosNode.status.pubTcpList.headp;
+    urosMutexLock(&np->status.pubTcpListLock);
+    for (tcprosnodep = np->status.pubTcpList.headp;
          tcprosnodep != NULL;
          tcprosnodep = tcprosnodep->nextp) {
 
@@ -510,7 +701,7 @@ uros_err_t urosNodeUnpublishTopic(const UrosString *namep) {
         urosMutexUnlock(&tcpstp->threadExitMtx);
       }
     }
-    urosMutexUnlock(&urosNode.status.pubTcpListLock);
+    urosMutexUnlock(&np->status.pubTcpListLock);
     /* NOTE: The last exiting thread freeds the topic descriptor.*/
   } else {
     /* No TCPROS connections, just free the descriptor immediately.*/
@@ -518,8 +709,38 @@ uros_err_t urosNodeUnpublishTopic(const UrosString *namep) {
   }
 
 _finally:
-  urosMutexUnlock(&urosNode.status.pubTopicListLock);
+  urosMutexUnlock(&np->status.pubTopicListLock);
   return err;
+}
+
+/**
+ * @brief   Unpublishes a topic.
+ * @details Issues an @p unpublishTopic() call to the XMLRPC Master.
+ * @see     urosRpcCallUnregisterPublisher()
+ * @warning The access to the topic registry is thread-safe, but delays of the
+ *          XMLRPC communication will delay also any other threads trying to
+ *          publish/unpublish any topics.
+ *
+ * @pre     The topic is published.
+ * @post    If successful, the topic descriptor is dereferenced by the topic
+ *          registry, and will be freed:
+ *          - by this function, if there are no publishing TCPROS threads, or
+ *          - by the last publishing TCPROS thread which references the topic.
+ *
+ * @param[in] namep
+ *          Pointer to a null-terminated string which names the topic.
+ * @return
+ *          Error code.
+ */
+uros_err_t urosNodeUnpublishTopicSZ(const char *namep) {
+
+  UrosString namestr;
+
+  urosAssert(namep != NULL);
+  urosAssert(namep[0] != 0);
+
+  namestr = urosStringAssignZ(namep);
+  return urosNodeUnpublishTopic(&namestr);
 }
 
 /**
@@ -550,6 +771,8 @@ uros_err_t urosNodeSubscribeTopic(const UrosString *namep,
                                   const UrosString *typep,
                                   uros_proc_f procf) {
 
+  static UrosNode *const np = &urosNode;
+
   UrosTopic *topicp;
   const UrosMsgType *statictypep;
   UrosListNode *topicnodep;
@@ -565,9 +788,9 @@ uros_err_t urosNodeSubscribeTopic(const UrosString *namep,
             ("Unknown message type [%.*s]\n", UROS_STRARG(typep)));
 
   /* Check if the topic already exists.*/
-  urosMutexLock(&urosNode.status.subTopicListLock);
-  topicnodep = urosTopicListFindByName(&urosNode.status.subTopicList, namep);
-  urosMutexUnlock(&urosNode.status.subTopicListLock);
+  urosMutexLock(&np->status.subTopicListLock);
+  topicnodep = urosTopicListFindByName(&np->status.subTopicList, namep);
+  urosMutexUnlock(&np->status.subTopicListLock);
   urosError(topicnodep != NULL, return UROS_ERR_BADPARAM,
             ("Topic [%.*s] already subscribed\n", UROS_STRARG(namep)));
 
@@ -652,7 +875,8 @@ uros_err_t urosNodeSubscribeTopicSZ(const char *namep,
  */
 uros_err_t urosNodeSubscribeTopicByDesc(UrosTopic *topicp) {
 
-  static const UrosNodeConfig *cfgp = &urosNode.config;
+  static UrosNode *const np = &urosNode;
+
   UrosRpcResponse response;
   uros_err_t err;
   UrosList newpubs;
@@ -666,15 +890,15 @@ uros_err_t urosNodeSubscribeTopicByDesc(UrosTopic *topicp) {
 
   urosRpcResponseObjectInit(&response);
   urosListObjectInit(&newpubs);
-  urosMutexLock(&urosNode.status.subTopicListLock);
+  urosMutexLock(&np->status.subTopicListLock);
 
   /* Master XMLRPC registerSubscriber() */
   err = urosRpcCallRegisterSubscriber(
-    &cfgp->masterAddr,
-    &cfgp->nodeName,
+    &np->config.masterAddr,
+    &np->config.nodeName,
     &topicp->name,
     &topicp->typep->name,
-    &cfgp->xmlrpcUri,
+    &np->config.xmlrpcUri,
     &response
   );
   urosError(err != UROS_OK, goto _finally,
@@ -706,12 +930,12 @@ uros_err_t urosNodeSubscribeTopicByDesc(UrosTopic *topicp) {
   if (nodep == NULL) { err = UROS_ERR_NOMEM; goto _finally; }
   urosListNodeObjectInit(nodep);
   nodep->datap = (void*)topicp;
-  urosListAdd(&urosNode.status.subTopicList, nodep);
+  urosListAdd(&np->status.subTopicList, nodep);
 
   err = UROS_OK;
 _finally:
   /* Cleanup and return.*/
-  urosMutexUnlock(&urosNode.status.subTopicListLock);
+  urosMutexUnlock(&np->status.subTopicListLock);
   urosListClean(&newpubs, (uros_delete_f)urosFree);
   urosRpcResponseClean(&response);
   return err;
@@ -738,6 +962,8 @@ _finally:
  */
 uros_err_t urosNodeUnsubscribeTopic(const UrosString *namep) {
 
+  static UrosNode *const np = &urosNode;
+
   UrosListNode *tcprosnodep, *topicnodep;
   UrosTopic *topicp;
   UrosTcpRosStatus *tcpstp;
@@ -747,8 +973,8 @@ uros_err_t urosNodeUnsubscribeTopic(const UrosString *namep) {
   urosAssert(urosStringNotEmpty(namep));
 
   /* Find the topic descriptor.*/
-  urosMutexLock(&urosNode.status.subTopicListLock);
-  topicnodep = urosTopicListFindByName(&urosNode.status.subTopicList, namep);
+  urosMutexLock(&np->status.subTopicListLock);
+  topicnodep = urosTopicListFindByName(&np->status.subTopicList, namep);
   if (topicnodep == NULL) {
     urosError(topicnodep == NULL,
               { err = UROS_ERR_BADPARAM; goto _finally; },
@@ -758,10 +984,10 @@ uros_err_t urosNodeUnsubscribeTopic(const UrosString *namep) {
 
   /* Unregister the topic on the Master node.*/
   err = urosRpcCallUnregisterSubscriber(
-    &urosNode.config.masterAddr,
-    &urosNode.config.nodeName,
+    &np->config.masterAddr,
+    &np->config.nodeName,
     namep,
-    &urosNode.config.xmlrpcUri,
+    &np->config.xmlrpcUri,
     &res
   );
   urosError(err != UROS_OK, UROS_NOP,
@@ -770,13 +996,13 @@ uros_err_t urosNodeUnsubscribeTopic(const UrosString *namep) {
 
   /* Unregister the topic locally.*/
   topicp->flags.deleted = UROS_TRUE;
-  tcprosnodep = urosListRemove(&urosNode.status.subTopicList, topicnodep);
+  tcprosnodep = urosListRemove(&np->status.subTopicList, topicnodep);
   urosAssert(tcprosnodep == topicnodep);
 
   if (topicp->refcnt > 0) {
     /* Tell each subscribing TCPROS thread to exit.*/
-    urosMutexLock(&urosNode.status.subTcpListLock);
-    for (tcprosnodep = urosNode.status.subTcpList.headp;
+    urosMutexLock(&np->status.subTcpListLock);
+    for (tcprosnodep = np->status.subTcpList.headp;
          tcprosnodep != NULL;
          tcprosnodep = tcprosnodep->nextp) {
 
@@ -787,7 +1013,7 @@ uros_err_t urosNodeUnsubscribeTopic(const UrosString *namep) {
         urosMutexUnlock(&tcpstp->threadExitMtx);
       }
     }
-    urosMutexUnlock(&urosNode.status.subTcpListLock);
+    urosMutexUnlock(&np->status.subTcpListLock);
     /* NOTE: The last exiting thread freeds the topic descriptor.*/
   } else {
     /* No TCPROS connections, just free the descriptor immediately.*/
@@ -795,8 +1021,38 @@ uros_err_t urosNodeUnsubscribeTopic(const UrosString *namep) {
   }
 
 _finally:
-  urosMutexUnlock(&urosNode.status.subTopicListLock);
+  urosMutexUnlock(&np->status.subTopicListLock);
   return err;
+}
+
+/**
+ * @brief   Unsubscribes to a topic.
+ * @details Issues an @p unregisterSubscriber() call to the XMLRPC Master.
+ * @see     urosRpcCallUnregisterSubscriber()
+ * @warning The access to the topic registry is thread-safe, but delays of the
+ *          XMLRPC communication will delay also any other threads trying to
+ *          publish/unpublish any topics.
+ *
+ * @pre     The topic is published.
+ * @post    If successful, the topic descriptor is dereferenced by the topic
+ *          registry, and will be freed:
+ *          - by this function, if there are no subscribing TCPROS threads, or
+ *          - by the last subscribing TCPROS thread which references the topic.
+ *
+ * @param[in] namep
+ *          Pointer to a null-terminated string which names the topic.
+ * @return
+ *          Error code.
+ */
+uros_err_t urosNodeUnsubscribeTopicSZ(const char *namep) {
+
+  UrosString namestr;
+
+  urosAssert(namep != NULL);
+  urosAssert(namep[0] != 0);
+
+  namestr = urosStringAssignZ(namep);
+  return urosNodeUnsubscribeTopic(&namestr);
 }
 
 /**
@@ -823,6 +1079,8 @@ uros_err_t urosNodePublishService(const UrosString *namep,
                                   const UrosString *typep,
                                   uros_proc_f procf) {
 
+  static UrosNode *const np = &urosNode;
+
   UrosTopic *servicep;
   const UrosMsgType *statictypep;
   UrosListNode *servicenodep;
@@ -838,10 +1096,10 @@ uros_err_t urosNodePublishService(const UrosString *namep,
             ("Unknown message type [%.*s]\n", UROS_STRARG(typep)));
 
   /* Check if the service already exists.*/
-  urosMutexLock(&urosNode.status.pubServiceListLock);
-  servicenodep = urosTopicListFindByName(&urosNode.status.pubServiceList,
+  urosMutexLock(&np->status.pubServiceListLock);
+  servicenodep = urosTopicListFindByName(&np->status.pubServiceList,
                                          namep);
-  urosMutexUnlock(&urosNode.status.pubServiceListLock);
+  urosMutexUnlock(&np->status.pubServiceListLock);
   urosError(servicenodep != NULL, return UROS_ERR_BADPARAM,
             ("Service [%.*s] already published\n", UROS_STRARG(namep)));
 
@@ -920,7 +1178,8 @@ uros_err_t urosNodePublishServiceSZ(const char *namep,
  */
 uros_err_t urosNodePublishServiceByDesc(const UrosTopic *servicep) {
 
-  static const UrosNodeConfig *cfgp = &urosNode.config;
+  static UrosNode *const np = &urosNode;
+
   UrosRpcResponse response;
   uros_err_t err;
   UrosListNode *nodep;
@@ -931,15 +1190,15 @@ uros_err_t urosNodePublishServiceByDesc(const UrosTopic *servicep) {
   urosAssert(urosStringNotEmpty(&servicep->typep->name));
 
   urosRpcResponseObjectInit(&response);
-  urosMutexLock(&urosNode.status.pubServiceListLock);
+  urosMutexLock(&np->status.pubServiceListLock);
 
   /* Master XMLRPC registerPublisher() */
   err = urosRpcCallRegisterService(
-    &cfgp->masterAddr,
-    &cfgp->nodeName,
+    &np->config.masterAddr,
+    &np->config.nodeName,
     &servicep->name,
-    &cfgp->tcprosUri,
-    &cfgp->xmlrpcUri,
+    &np->config.tcprosUri,
+    &np->config.xmlrpcUri,
     &response
   );
   urosError(err != UROS_OK, goto _finally,
@@ -960,12 +1219,12 @@ uros_err_t urosNodePublishServiceByDesc(const UrosTopic *servicep) {
   if (nodep == NULL) { err = UROS_ERR_NOMEM; goto _finally; }
   urosListNodeObjectInit(nodep);
   nodep->datap = (void*)servicep;
-  urosListAdd(&urosNode.status.pubServiceList, nodep);
+  urosListAdd(&np->status.pubServiceList, nodep);
 
   err = UROS_OK;
 _finally:
   /* Cleanup and return.*/
-  urosMutexUnlock(&urosNode.status.pubServiceListLock);
+  urosMutexUnlock(&np->status.pubServiceListLock);
   urosRpcResponseClean(&response);
   return err;
 }
@@ -992,6 +1251,8 @@ _finally:
  */
 uros_err_t urosNodeUnpublishService(const UrosString *namep) {
 
+  static UrosNode *const np = &urosNode;
+
   UrosListNode *tcprosnodep, *servicenodep;
   UrosTopic *servicep;
   uros_err_t err;
@@ -1000,8 +1261,8 @@ uros_err_t urosNodeUnpublishService(const UrosString *namep) {
   urosAssert(urosStringNotEmpty(namep));
 
   /* Find the service descriptor.*/
-  urosMutexLock(&urosNode.status.pubServiceListLock);
-  servicenodep = urosTopicListFindByName(&urosNode.status.pubServiceList,
+  urosMutexLock(&np->status.pubServiceListLock);
+  servicenodep = urosTopicListFindByName(&np->status.pubServiceList,
                                          namep);
   urosError(servicenodep == NULL,
             { err = UROS_ERR_BADPARAM; goto _finally; },
@@ -1010,10 +1271,10 @@ uros_err_t urosNodeUnpublishService(const UrosString *namep) {
 
   /* Unregister the service on the Master node.*/
   err = urosRpcCallUnregisterService(
-    &urosNode.config.masterAddr,
-    &urosNode.config.nodeName,
+    &np->config.masterAddr,
+    &np->config.nodeName,
     namep,
-    &urosNode.config.tcprosUri,
+    &np->config.tcprosUri,
     &res
   );
   urosError(err != UROS_OK, goto _finally,
@@ -1022,13 +1283,13 @@ uros_err_t urosNodeUnpublishService(const UrosString *namep) {
 
   /* Unregister the service locally.*/
   servicep->flags.deleted = UROS_TRUE;
-  tcprosnodep = urosListRemove(&urosNode.status.pubServiceList, servicenodep);
+  tcprosnodep = urosListRemove(&np->status.pubServiceList, servicenodep);
   urosAssert(tcprosnodep == servicenodep);
 
-  if (urosNode.status.pubTcpList.length > 0) {
+  if (np->status.pubTcpList.length > 0) {
     /* Tell each publishing TCPROS thread to exit.*/
-    urosMutexLock(&urosNode.status.pubTcpListLock);
-    for (tcprosnodep = urosNode.status.pubTcpList.headp;
+    urosMutexLock(&np->status.pubTcpListLock);
+    for (tcprosnodep = np->status.pubTcpList.headp;
          tcprosnodep != NULL;
          tcprosnodep = tcprosnodep->nextp) {
 
@@ -1039,7 +1300,7 @@ uros_err_t urosNodeUnpublishService(const UrosString *namep) {
         urosMutexUnlock(&tcpstp->threadExitMtx);
       }
     }
-    urosMutexUnlock(&urosNode.status.pubTcpListLock);
+    urosMutexUnlock(&np->status.pubTcpListLock);
     /* NOTE: The last exiting thread freeds the service descriptor.*/
   } else {
     /* No TCPROS connections, just free the descriptor immediately.*/
@@ -1047,8 +1308,39 @@ uros_err_t urosNodeUnpublishService(const UrosString *namep) {
   }
 
 _finally:
-  urosMutexUnlock(&urosNode.status.pubServiceListLock);
+  urosMutexUnlock(&np->status.pubServiceListLock);
   return err;
+}
+
+/**
+ * @brief   Unpublishes a service.
+ * @details Issues an @p unregisterService() call to the XMLRPC Master.
+ * @see     urosRpcCallUnregisterService()
+ * @warning The access to the service registry is thread-safe, but delays of
+ *          the XMLRPC communication will delay also any other threads trying
+ *          to publish/unpublish any services.
+ *
+ * @pre     The service is published.
+ * @post    If successful, the service descriptor is dereferenced by the
+ *          service registry, and will be freed:
+ *          - by this function, if there are no publishing TCPROS threads, or
+ *          - by the last publishing TCPROS thread which references the
+ *            service.
+ *
+ * @param[in] namep
+ *          Pointer to a null-terminated string which names the service.
+ * @return
+ *          Error code.
+ */
+uros_err_t urosNodeUnpublishServiceSZ(const char *namep) {
+
+  UrosString namestr;
+
+  urosAssert(namep != NULL);
+  urosAssert(namep[0] != 0);
+
+  namestr = urosStringAssignZ(namep);
+  return urosNodeUnpublishService(&namestr);
 }
 
 /**
@@ -1070,7 +1362,7 @@ _finally:
  */
 uros_err_t urosNodeSubscribeParam(const UrosString *namep) {
 
-  static const UrosNodeConfig *cfgp = &urosNode.config;
+  static UrosNode *const np = &urosNode;
 
   UrosString *clonednamep;
   UrosListNode *paramnodep;
@@ -1081,9 +1373,9 @@ uros_err_t urosNodeSubscribeParam(const UrosString *namep) {
   urosAssert(urosStringNotEmpty(namep));
 
   /* Check if the parameter already exists.*/
-  urosMutexLock(&urosNode.status.subParamListLock);
-  paramnodep = urosStringListFindByName(&urosNode.status.subParamList, namep);
-  urosMutexUnlock(&urosNode.status.subParamListLock);
+  urosMutexLock(&np->status.subParamListLock);
+  paramnodep = urosStringListFindByName(&np->status.subParamList, namep);
+  urosMutexUnlock(&np->status.subParamListLock);
   urosError(paramnodep != NULL, return UROS_ERR_BADPARAM,
             ("Parameter [%.*s] already subscribed\n", UROS_STRARG(namep)));
 
@@ -1099,13 +1391,13 @@ uros_err_t urosNodeSubscribeParam(const UrosString *namep) {
 
   /* Subscribe to the topic.*/
   urosRpcResponseObjectInit(&response);
-  urosMutexLock(&urosNode.status.subParamListLock);
+  urosMutexLock(&np->status.subParamListLock);
 
   /* Master XMLRPC registerSubscriber() */
   err = urosRpcCallSubscribeParam(
-    &cfgp->masterAddr,
-    &cfgp->nodeName,
-    &cfgp->xmlrpcUri,
+    &np->config.masterAddr,
+    &np->config.nodeName,
+    &np->config.xmlrpcUri,
     namep,
     &response
   );
@@ -1125,12 +1417,12 @@ uros_err_t urosNodeSubscribeParam(const UrosString *namep) {
   /* Add to the subscribed topics list.*/
   urosListNodeObjectInit(nodep);
   nodep->datap = (void*)clonednamep;
-  urosListAdd(&urosNode.status.subParamList, nodep);
+  urosListAdd(&np->status.subParamList, nodep);
 
   err = UROS_OK;
 _finally:
   /* Cleanup and return.*/
-  urosMutexUnlock(&urosNode.status.subParamListLock);
+  urosMutexUnlock(&np->status.subParamListLock);
   urosRpcResponseClean(&response);
   return err;
 }
@@ -1183,7 +1475,8 @@ uros_err_t urosNodeSubscribeParamSZ(const char *namep) {
  */
 uros_err_t urosNodeUnsubscribeParam(const UrosString *namep) {
 
-  static const UrosNodeConfig *cfgp = &urosNode.config;
+  static UrosNode *const np = &urosNode;
+
   UrosRpcResponse response;
   uros_err_t err;
   UrosListNode *nodep;
@@ -1191,18 +1484,18 @@ uros_err_t urosNodeUnsubscribeParam(const UrosString *namep) {
   urosAssert(urosStringNotEmpty(namep));
 
   urosRpcResponseObjectInit(&response);
-  urosMutexLock(&urosNode.status.subParamListLock);
+  urosMutexLock(&np->status.subParamListLock);
 
   /* Check if the parameter was actually subscribed.*/
-  nodep = urosStringListFindByName(&urosNode.status.subParamList, namep);
+  nodep = urosStringListFindByName(&np->status.subParamList, namep);
   urosError(nodep == NULL, { err = UROS_ERR_BADPARAM; goto _finally; },
-            ("Topic [%.*s] not found\n", UROS_STRARG(namep)));
+            ("Parameter [%.*s] not found\n", UROS_STRARG(namep)));
 
   /* Master XMLRPC registerSubscriber() */
   err = urosRpcCallUnsubscribeParam(
-    &cfgp->masterAddr,
-    &cfgp->nodeName,
-    &cfgp->xmlrpcUri,
+    &np->config.masterAddr,
+    &np->config.nodeName,
+    &np->config.xmlrpcUri,
     namep,
     &response
   );
@@ -1220,16 +1513,46 @@ uros_err_t urosNodeUnsubscribeParam(const UrosString *namep) {
             ("Response HTTP code %ld, expected 200\n", response.httpcode));
 
   /* Remove from the subscribed topics list and delete.*/
-  nodep = urosListRemove(&urosNode.status.subParamList, nodep);
+  nodep = urosListRemove(&np->status.subParamList, nodep);
   urosAssert(nodep != NULL);
   urosListNodeDelete(nodep, (uros_delete_f)urosStringDelete);
 
   err = UROS_OK;
 _finally:
   /* Cleanup and return.*/
-  urosMutexUnlock(&urosNode.status.subParamListLock);
+  urosMutexUnlock(&np->status.subParamListLock);
   urosRpcResponseClean(&response);
   return err;
+}
+
+/**
+ * @brief   Subscribes to a parameter.
+ * @details Issues an @p unsubscribeParam() call to the XMLRPC Master, and
+ *          connects to known publishers.
+ * @see     urosRpcCallUnubscribeParam()
+ * @warning The access to the parameter registry is thread-safe, but delays of
+ *          the XMLRPC communication will delay also any other threads trying
+ *          to subscribe/unsubscribe to any parameters.
+ *
+ * @pre     The parameter has been registered.
+ * @post    If successful, the parameter descriptor is unreferenced and deleted
+ *          by the parameter registry.
+ *
+ * @param[in] namep
+ *          Pointer to a null-terminated string which names the parameter to be
+ *          unregistered.
+ * @return
+ *          Error code.
+ */
+uros_err_t urosNodeUnsubscribeParamSZ(const char *namep) {
+
+  UrosString namestr;
+
+  urosAssert(namep != NULL);
+  urosAssert(namep[0] != 0);
+
+  namestr = urosStringAssignZ(namep);
+  return urosNodeUnsubscribeParam(&namestr);
 }
 
 /**
@@ -1254,6 +1577,8 @@ uros_err_t urosNodeFindNewPublishers(const UrosString *topicnamep,
                                      const UrosRpcParam *publishersp,
                                      UrosList *newpubsp) {
 
+  static UrosNode *const np = &urosNode;
+
   uros_err_t err;
   const UrosListNode *tcpnodep;
   const UrosRpcParamNode *paramnodep;
@@ -1270,7 +1595,7 @@ uros_err_t urosNodeFindNewPublishers(const UrosString *topicnamep,
   urosAssert(newpubsp->length == 0);
 
   /* Build a list of newly discovered publishers.*/
-  urosMutexLock(&urosNode.status.subTcpListLock);
+  urosMutexLock(&np->status.subTcpListLock);
   for (paramnodep = publishersp->value.listp->headp;
        paramnodep != NULL;
        paramnodep = paramnodep->nextp) {
@@ -1279,7 +1604,7 @@ uros_err_t urosNodeFindNewPublishers(const UrosString *topicnamep,
     err = urosUriToAddr(urip, &pubaddr);
     urosAssert(err == UROS_OK);
     tcpfoundp = NULL;
-    for (tcpnodep = urosNode.status.subTcpList.headp;
+    for (tcpnodep = np->status.subTcpList.headp;
          tcpnodep != NULL;
          tcpnodep = tcpnodep->nextp) {
 
@@ -1302,13 +1627,13 @@ uros_err_t urosNodeFindNewPublishers(const UrosString *topicnamep,
       /* New publisher.*/
       addrp = urosNew(UrosAddr);
       if (addrp == NULL) {
-        urosMutexUnlock(&urosNode.status.subTcpListLock);
+        urosMutexUnlock(&np->status.subTcpListLock);
         return UROS_ERR_NOMEM;
       }
       nodep = urosNew(UrosListNode);
       if (nodep == NULL) {
         urosFree(addrp);
-        urosMutexUnlock(&urosNode.status.subTcpListLock);
+        urosMutexUnlock(&np->status.subTcpListLock);
         return UROS_ERR_NOMEM;
       }
       *addrp = pubaddr;
@@ -1317,7 +1642,7 @@ uros_err_t urosNodeFindNewPublishers(const UrosString *topicnamep,
       urosListAdd(newpubsp, nodep);
     }
   }
-  urosMutexUnlock(&urosNode.status.subTcpListLock);
+  urosMutexUnlock(&np->status.subTcpListLock);
 
   return UROS_OK;
 }

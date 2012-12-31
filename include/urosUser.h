@@ -59,6 +59,18 @@ void urosUserErrPrintf(const char *formatp, ...);
 void urosUserRegisterStaticTypes(void);
 
 uros_err_t urosUserShutdown(const UrosString *msgp);
+
+uros_err_t urosUserPublishTopics(void);
+uros_err_t urosUserUnpublishTopics(void);
+
+uros_err_t urosUserSubscribeTopics(void);
+uros_err_t urosUserUnsubscribeTopics(void);
+
+uros_err_t urosUserPublishServices(void);
+uros_err_t urosUserUnpublishServices(void);
+
+uros_err_t urosUserSubscribeParams(void);
+uros_err_t urosUserUnsubscribeParams(void);
 uros_err_t urosUserParamUpdate(const UrosString *keyp,
                                const UrosRpcParam *paramp);
 

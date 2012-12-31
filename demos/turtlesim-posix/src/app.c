@@ -37,6 +37,9 @@ UrosMemPool turtlesMemPool;
 static uint8_t turtlesThreadStacks[MAX_TURTLES]
                                   [sizeof(void*) + TURTLE_THREAD_STKSIZE];
 
+uros_bool_t turtleCanSpawn = UROS_FALSE;
+UrosMutex turtleCanSpawnLock;
+
 /*===========================================================================*/
 /* GLOBAL FUNCTIONS                                                          */
 /*===========================================================================*/
@@ -170,15 +173,6 @@ void app_set_params(void) {
   urosRpcResponseClean(&response);
 }
 
-/* Register supported subscribed parameters.*/
-void app_register_subscribed_params(void) {
-
-  /* Subscribe to background color components.*/
-  urosNodeSubscribeParamSZ("/turtlesim/background_r");
-  urosNodeSubscribeParamSZ("/turtlesim/background_g");
-  urosNodeSubscribeParamSZ("/turtlesim/background_b");
-}
-
 void app_initialize(void) {
 
   static const UrosString turtle1 = { 7, "turtle1" };
@@ -188,7 +182,12 @@ void app_initialize(void) {
   /* Initialize the uROS system.*/
   urosInit();
 
+  /* Initialize the /rosout queue.*/
+  fifo_init(&rosoutQueue, 8);
+
   /* Initialize the turtle slots.*/
+  urosMutexObjectInit(&turtleCanSpawnLock);
+  turtleCanSpawn = UROS_TRUE;
   turtle_init_pools();
   for (i = 0; i < MAX_TURTLES; ++i) {
     turtle_init(&turtles[i], i);
@@ -197,17 +196,8 @@ void app_initialize(void) {
   /* Spawn the first turtle.*/
   turtle_spawn(&turtle1, 0.5f * SANDBOX_WIDTH, 0.5f * SANDBOX_HEIGHT, 0.0f);
 
-  /* Register topics and services.*/
-  urosTcpRosRegPubTopics();
-  urosTcpRosRegSubTopics();
-  urosTcpRosRegPubServices();
-
   /* Set its own parameters.*/
   app_set_params();
-
-  /* Register supported subscribed topics.*/
-  app_register_subscribed_params();
-
 }
 
 /*~~~ TURTLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -304,6 +294,14 @@ turtle_t *turtle_spawn(const UrosString *namep,
   UrosString name, posname, velname, setpenname, telabsname, telrelname;
 
   urosAssert(urosStringNotEmpty(namep));
+
+  /* Check if the turtle can be spawned.*/
+  urosMutexLock(&turtleCanSpawnLock);
+  if (!turtleCanSpawn) {
+    urosMutexUnlock(&turtleCanSpawnLock);
+    return NULL;
+  }
+  urosMutexUnlock(&turtleCanSpawnLock);
 
   /* Fill an empty slot.*/
   for (turtlep = NULL, numAlive = 0; turtlep == NULL;) {

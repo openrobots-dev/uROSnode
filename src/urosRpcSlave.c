@@ -863,8 +863,10 @@ uros_err_t uros_rpcslave_method_requesttopic(UrosRpcStreamer *sp,
 uros_err_t uros_rpcslave_method_shutdown(UrosRpcStreamer *sp,
                                          UrosRpcParamList *parlistp) {
 
-  const UrosRpcParam *msgparam;
-  const UrosString *msgstr;
+  static UrosNodeStatus *const stp = &urosNode.status;
+  const UrosRpcParam *msgparamp;
+  const UrosString *msgstrp;
+  UrosListNode *np;
 
   urosAssert(sp != NULL);
   urosAssert(parlistp != NULL);
@@ -874,12 +876,12 @@ uros_err_t uros_rpcslave_method_shutdown(UrosRpcStreamer *sp,
   urosError(parlistp->length != 2, return sp->err = UROS_ERR_BADPARAM,
             ("Expecting 2 parameters, got %d\n", (int)parlistp->length));
   urosAssert(parlistp->headp != NULL);
-  msgparam = &parlistp->headp->nextp->param;
-  urosError(msgparam->class != UROS_RPCP_STRING,
+  msgparamp = &parlistp->headp->nextp->param;
+  urosError(msgparamp->class != UROS_RPCP_STRING,
             return sp->err = UROS_ERR_BADPARAM,
             ("Class id of [msg] is %d, expected %d (UROS_RPCP_STRING)\n",
-             (int)msgparam->class, (int)UROS_RPCP_STRING));
-  msgstr = &msgparam->value.string;
+             (int)msgparamp->class, (int)UROS_RPCP_STRING));
+  msgstrp = &msgparamp->value.string;
 
   /* Generate the HTTP response.*/
   uros_rpcslave_methodresponse_prologue(sp); _CHKOK
@@ -895,8 +897,26 @@ uros_err_t uros_rpcslave_method_shutdown(UrosRpcStreamer *sp,
 
   uros_rpcslave_methodresponse_epilogue(sp); _CHKOK
 
+  /* Set the shudtown flag for listeners.*/
+  urosMutexLock(&stp->exitLock);
+  stp->exitFlag = UROS_TRUE;
+  urosMutexUnlock(&stp->exitLock);
+
+  /* Exit from all the registered TCPROS worker threads.*/
+  urosMutexLock(&stp->pubTcpListLock);
+  for (np = stp->pubTcpList.headp; np != NULL; np = np->nextp) {
+    urosTcpRosStatusIssueExit((UrosTcpRosStatus*)np->datap);
+  }
+  urosMutexUnlock(&stp->pubTcpListLock);
+
+  urosMutexLock(&stp->subTcpListLock);
+  for (np = stp->subTcpList.headp; np != NULL; np = np->nextp) {
+    urosTcpRosStatusIssueExit((UrosTcpRosStatus*)np->datap);
+  }
+  urosMutexUnlock(&stp->subTcpListLock);
+
   /* shutdown() callback.*/
-  return urosUserShutdown(msgstr);
+  return urosUserShutdown(msgstrp);
 #undef _CHKOK
 }
 
@@ -1125,12 +1145,25 @@ uros_err_t urosRpcSlaveListenerThread(void *data) {
     urosConnObjectInit(spawnedp);
     err = urosConnAccept(&conn, spawnedp);
     urosError(err != UROS_OK, UROS_NOP,
-              ("Error %s while accepting an incoming connection"UROS_ADDRFMT"\n",
+              ("Error %s while accepting an incoming XMLRPC Slave connection "
+               UROS_ADDRFMT"\n",
                urosErrorText(err), UROS_ADDRARG(&spawnedp->remaddr)));
+    urosMutexLock(&urosNode.status.exitLock);
+    if (urosNode.status.exitFlag) {
+      /* Refuse the connection if the listener has to exit.*/
+      urosMutexUnlock(&urosNode.status.exitLock);
+      if (err == UROS_OK) {
+        urosConnClose(spawnedp);
+      }
+      urosFree(spawnedp);
+      break;
+    }
+    urosMutexUnlock(&urosNode.status.exitLock);
     if (err != UROS_OK) {
       urosFree(spawnedp);
       continue;
     }
+
 #if 0
     err = urosConnSetRecvTimeout(&conn, UROS_XMLRPC_RECVTIMEOUT);
     urosAssert(err == UROS_OK);
@@ -1151,6 +1184,10 @@ uros_err_t urosRpcSlaveListenerThread(void *data) {
       urosFree(spawnedp);
     }
   }
+
+  /* Close the listening connection.*/
+  urosConnClose(&conn);
+
   return UROS_OK;
 }
 

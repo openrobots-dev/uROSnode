@@ -87,6 +87,8 @@ extern fifo_t rosoutQueue;
 
 extern turtle_t turtles[MAX_TURTLES];
 extern UrosThreadPool turtlesThreadPool;
+extern uros_bool_t turtleCanSpawn;
+extern UrosMutex turtleCanSpawnLock;
 
 /*===========================================================================*/
 /* GLOBAL PROTOTYPES                                                         */

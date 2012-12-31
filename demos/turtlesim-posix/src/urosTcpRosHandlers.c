@@ -88,7 +88,7 @@ uros_err_t pub_tpc__rosout(UrosTcpRosStatus *tcpstp) {
     /* Get the next message from the queue.*/
     rosout_fetch(&msgp);
     constant = msgp->header.frame_id.datap[0] != '0';
-    msgp->header.frame_id.datap[0] = '0';
+    msgp->header.frame_id.datap = "0";
 
     /* Send the message.*/
     length = (uint32_t)length_msg__rosgraph_msgs__Log(msgp);
@@ -866,63 +866,98 @@ _finally:
  * @brief   Registers all the published topics to the Master node.
  * @note    Should be called at node initialization.
  */
-uros_err_t urosTcpRosRegPubTopics(void) {
-
-  uros_err_t err;
+void urosTcpRosPublishTopics(void) {
 
   /* /rosout */
-  err = urosNodePublishTopicSZ(
+  urosNodePublishTopicSZ(
     "/rosout",
     "rosgraph_msgs/Log",
     (uros_proc_f)pub_tpc__rosout
   );
-  if (err != UROS_OK) { return err; }
-
-  return err;
 }
+
+/**
+ * @brief   Unregisters all the published topics to the Master node.
+ * @note    Should be called at node shutdown.
+ */
+void urosTcpRosUnpublishTopics(void) {
+
+  /* /rosout */
+  urosNodeUnpublishTopicSZ(
+    "/rosout"
+  );
+}
+
 /**
  * @brief   Registers all the subscribed topics to the Master node.
  * @note    Should be called at node initialization.
  */
-uros_err_t urosTcpRosRegSubTopics(void) {
+void urosTcpRosSubscribeTopics(void) {
 
-  /* No globally subscribed topics*/
-  return UROS_OK;
+  /* No topics to subscribe to.*/
 }
+
+/**
+ * @brief   Unregisters all the subscribed topics to the Master node.
+ * @note    Should be called at node shutdown.
+ */
+void urosTcpRosUnsubscribeTopics(void) {
+
+  /* No topics to unsubscribe from.*/
+}
+
 /**
  * @brief   Registers all the published services to the Master node.
  * @note    Should be called at node initialization.
  */
-uros_err_t urosTcpRosRegPubServices(void) {
-
-  uros_err_t err;
+void urosTcpRosPublishServices(void) {
 
   /* /clear */
-  err = urosNodePublishServiceSZ(
+  urosNodePublishServiceSZ(
     "/clear",
     "std_srvs/Empty",
     (uros_proc_f)pub_srv__clear
   );
-  if (err != UROS_OK) { return err; }
 
   /* /kill */
-  err = urosNodePublishServiceSZ(
+  urosNodePublishServiceSZ(
     "/kill",
     "turtlesim/Kill",
     (uros_proc_f)pub_srv__kill
   );
-  if (err != UROS_OK) { return err; }
 
   /* /spawn */
-  err = urosNodePublishServiceSZ(
+  urosNodePublishServiceSZ(
     "/spawn",
     "turtlesim/Spawn",
     (uros_proc_f)pub_srv__spawn
   );
-  if (err != UROS_OK) { return err; }
 
   /* All the remaining services are turtle-specific.*/
-  return err;
+}
+
+/**
+ * @brief   Unregisters all the published services to the Master node.
+ * @note    Should be called at node shutdown.
+ */
+void urosTcpRosUnpublishServices(void) {
+
+  /* /clear */
+  urosNodeUnpublishServiceSZ(
+    "/clear"
+  );
+
+  /* /kill */
+  urosNodeUnpublishServiceSZ(
+    "/kill"
+  );
+
+  /* /spawn */
+  urosNodeUnpublishServiceSZ(
+    "/spawn"
+  );
+
+  /* All the remaining services are turtle-specific.*/
 }
 
 /** @} */

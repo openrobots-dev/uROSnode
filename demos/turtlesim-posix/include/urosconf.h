@@ -67,6 +67,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /** @brief Default ROS node name, C string.*/
 #define UROS_NODE_NAME                      "/turtlesim"
 
+/** @brief Node thread priorty.*/
+#define UROS_NODE_THREAD_PRIO               1
+
+/** @brief Node thread stack size.*/
+#define UROS_NODE_THREAD_STKSIZE            (PTHREAD_STACK_MIN << 1)
+
 /** @} */
 /** @} */
 
@@ -406,6 +412,8 @@ struct UrosMemPool;
 
 /** @brief Thread ID type, platform-dependent.*/
 typedef pthread_t       UrosThreadId;
+/** @brief Invalid thread ID.*/
+#define UROS_NULL_THREADID  (~0ul)
 
 /** @brief Thread priority type, platform-dependent.*/
 typedef int             uros_prio_t;

@@ -38,9 +38,6 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="cdt.managedbuild.toolchain.gnu.base.2009498951.423679296" name="tcpros_handlers.c" rcbsApplicability="disable" resourcePath="src/tcpros_handlers.c" toolsToInvoke="cdt.managedbuild.tool.gnu.c.compiler.base.650927032.633844389">
-						<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.650927032.633844389" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base.650927032"/>
-					</fileInfo>
 					<fileInfo id="cdt.managedbuild.toolchain.gnu.base.2009498951.1957730329" name="main.c" rcbsApplicability="disable" resourcePath="main.c" toolsToInvoke="cdt.managedbuild.tool.gnu.c.compiler.base.650927032.1086946771">
 						<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.650927032.1086946771" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base.650927032">
 							<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.669173771" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
@@ -89,4 +86,5 @@
 		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>

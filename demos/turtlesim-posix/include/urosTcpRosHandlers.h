@@ -100,9 +100,14 @@ uros_err_t pub_srv__turtleX__teleport_relative(UrosTcpRosStatus *tcpstp);
 /* GLOBAL PROTOTYPES                                                          */
 /*============================================================================*/
 
-uros_err_t urosTcpRosRegPubTopics(void);
-uros_err_t urosTcpRosRegSubTopics(void);
-uros_err_t urosTcpRosRegPubServices(void);
+void urosTcpRosPublishTopics(void);
+void urosTcpRosUnpublishTopics(void);
+
+void urosTcpRosSubscribeTopics(void);
+void urosTcpRosUnsubscribeTopics(void);
+
+void urosTcpRosPublishServices(void);
+void urosTcpRosUnpublishServices(void);
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -100,6 +100,9 @@ typedef struct UrosNodeStatus {
   UrosThreadPool    slaveThdPool;       /**< @brief XMLRPC Slave worker thread pool.*/
   UrosThreadId      xmlrpcListenerId;   /**< @brief XMLRPC Listener thread id.*/
   UrosThreadId      tcprosListenerId;   /**< @brief TCPROS Listener thread id.*/
+  UrosThreadId      nodeThreadId;       /**< @brief Node thread id.*/
+  uros_bool_t       exitFlag;           /**< @brief Thread exit flag.*/
+  UrosMutex         exitLock;           /**< @brief Exit flag lock.*/
 } UrosNodeStatus;
 
 /**
@@ -127,7 +130,9 @@ extern "C" {
 #endif
 
 void urosNodeObjectInit(UrosNode *np);
-void urosNodeCreateListeners(void);
+uros_err_t urosNodeCreateThread(void);
+uros_err_t urosNodeThread(void *argp);
+
 void urosNodeConfigLoadDefaults(UrosNodeConfig *cfgp);
 void urosNodeConfigLoad(UrosNodeConfig *cfgp);
 void urosNodeConfigSave(const UrosNodeConfig *cfgp);
@@ -140,6 +145,7 @@ uros_err_t urosNodePublishTopicSZ(const char *namep,
                                   uros_proc_f procf);
 uros_err_t urosNodePublishTopicByDesc(UrosTopic *topicp);
 uros_err_t urosNodeUnpublishTopic(const UrosString *namep);
+uros_err_t urosNodeUnpublishTopicSZ(const char *namep);
 
 uros_err_t urosNodeSubscribeTopic(const UrosString *namep,
                                   const UrosString *typep,
@@ -149,6 +155,7 @@ uros_err_t urosNodeSubscribeTopicSZ(const char *namep,
                                     uros_proc_f procf);
 uros_err_t urosNodeSubscribeTopicByDesc(UrosTopic *topicp);
 uros_err_t urosNodeUnsubscribeTopic(const UrosString *namep);
+uros_err_t urosNodeUnsubscribeTopicSZ(const char *namep);
 
 uros_err_t urosNodePublishService(const UrosString *namep,
                                   const UrosString *typep,
@@ -158,10 +165,12 @@ uros_err_t urosNodePublishServiceSZ(const char *namep,
                                     uros_proc_f procf);
 uros_err_t urosNodePublishServiceByDesc(const UrosTopic *servicep);
 uros_err_t urosNodeUnpublishService(const UrosString *namep);
+uros_err_t urosNodeUnpublishServiceSZ(const char *namep);
 
 uros_err_t urosNodeSubscribeParam(const UrosString *namep);
 uros_err_t urosNodeSubscribeParamSZ(const char *namep);
 uros_err_t urosNodeUnsubscribeParam(const UrosString *namep);
+uros_err_t urosNodeUnsubscribeParamSZ(const char *namep);
 
 uros_err_t urosNodeFindNewPublishers(const UrosString *topicnamep,
                                      const UrosRpcParam *publishersp,

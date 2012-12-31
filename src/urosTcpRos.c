@@ -1233,7 +1233,26 @@ uros_err_t urosTcpRosListenerThread(void *data) {
     urosAssert(spawnedp != NULL);
     urosConnObjectInit(spawnedp);
     err = urosConnAccept(&conn, spawnedp);
-    urosAssert(err == UROS_OK);
+    urosError(err != UROS_OK, UROS_NOP,
+              ("Error %s while accepting an incoming TCPROS connection "
+               UROS_ADDRFMT"\n",
+               urosErrorText(err), UROS_ADDRARG(&spawnedp->remaddr)));
+    urosMutexLock(&urosNode.status.exitLock);
+    if (urosNode.status.exitFlag) {
+      /* Refuse the connection if the listener has to exit.*/
+      urosMutexUnlock(&urosNode.status.exitLock);
+      if (err == UROS_OK) {
+        urosConnClose(spawnedp);
+      }
+      urosFree(spawnedp);
+      break;
+    }
+    urosMutexUnlock(&urosNode.status.exitLock);
+    if (err != UROS_OK) {
+      urosFree(spawnedp);
+      continue;
+    }
+
 #if 0
     err = urosConnSetSendTimeout(&conn, UROS_TCPROS_SENDTIMEOUT);
     urosAssert(err == UROS_OK);
@@ -1248,6 +1267,10 @@ uros_err_t urosTcpRosListenerThread(void *data) {
       urosFree(spawnedp);
     }
   }
+
+  /* Close the listening connection.*/
+  urosConnClose(&conn);
+
   return UROS_OK;
 }
 

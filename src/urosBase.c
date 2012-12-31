@@ -109,13 +109,8 @@ void urosInit(void) {
   urosListObjectInit(&urosSrvTypeList);
   urosUserRegisterStaticTypes();
 
-  /* Fill the worker thread pools.*/
-  urosThreadPoolCreateAll(&urosNode.status.tcpcliThdPool);
-  urosThreadPoolCreateAll(&urosNode.status.tcpsvrThdPool);
-  urosThreadPoolCreateAll(&urosNode.status.slaveThdPool);
-
-  /* Create listener threads.*/
-  urosNodeCreateListeners();
+  /* Create the node thread.*/
+  urosNodeCreateThread();
 }
 
 /**

@@ -177,6 +177,8 @@ uros_err_t urosTcpRosSendString(UrosTcpRosStatus *tcpstp,
 uros_err_t urosTcpRosSendStringSZ(UrosTcpRosStatus *tcpstp,
                                   const char *strp);
 uros_err_t urosTcpRosSendError(UrosTcpRosStatus *tcpstp);
+uros_err_t urosTcpRosSentMsgLength(UrosTcpRosStatus *tcpstp,
+                                   size_t length);
 
 uros_err_t urosTcpRosListenerThread(void *data);
 uros_err_t urosTcpRosServerThread(UrosConn *csp);
