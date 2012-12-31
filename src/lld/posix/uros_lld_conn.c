@@ -112,7 +112,7 @@ uros_err_t uros_lld_hostnametoip(const UrosString *hostnamep,
   status = getaddrinfo(namep, NULL, &hints, &res);
   urosError(status != 0, { err = UROS_ERR_BADPARAM; goto _finally; },
             ("Socket error [%s] while getting address info\n",
-             strerror(status)));
+             strerror(errno)));
   urosError(res == NULL, { err = UROS_ERR_BADPARAM; goto _finally; },
             ("Null getaddrinfo() result\n"));
 
@@ -242,7 +242,7 @@ uros_err_t uros_lld_conn_bind(UrosConn *cp, const UrosAddr *locaddrp) {
   err = bind(cp->socket, (struct sockaddr *)&locaddr, sizeof(struct sockaddr_in));
   urosError(err != 0, return UROS_ERR_BADCONN,
             ("Socket error [%s] while binding as "UROS_ADDRFMT"\n",
-             strerror(err), UROS_ADDRARG(locaddrp)));
+             strerror(errno), UROS_ADDRARG(locaddrp)));
 
   cp->locaddr = *locaddrp;
   return UROS_OK;
@@ -317,7 +317,7 @@ uros_err_t uros_lld_conn_listen(UrosConn *cp, uros_cnt_t backlog) {
   err = listen(cp->socket, (int)backlog);
   urosError(err != 0, return UROS_ERR_BADCONN,
             ("Socket error [%s] while listening as "UROS_ADDRFMT"\n",
-             strerror(err), UROS_ADDRARG(&cp->locaddr)));
+             strerror(errno), UROS_ADDRARG(&cp->locaddr)));
   return UROS_OK;
 }
 
@@ -346,13 +346,19 @@ uros_err_t uros_lld_conn_connect(UrosConn *cp, const UrosAddr *remaddrp) {
   remaddr.sin_port = htons(remaddrp->port);
   remaddr.sin_addr.s_addr = htonl(remaddrp->ip.dword);
   memset(remaddr.sin_zero, 0, sizeof(remaddr.sin_zero));
+  cp->remaddr = *remaddrp;
 
   err = connect(cp->socket, (struct sockaddr *)&remaddr, sizeof(remaddr));
-  urosError(err != 0, return UROS_ERR_BADCONN,
+  urosError(err == ETIMEDOUT, return UROS_ERR_NOCONN,
+            ("Connection to "UROS_ADDRFMT" timed out\n",
+             UROS_ADDRARG(remaddrp)));
+  urosError(err == ECONNREFUSED, return UROS_ERR_NOCONN,
+            ("Connection to "UROS_ADDRFMT" refused\n",
+             UROS_ADDRARG(remaddrp)));
+  urosError(err != 0, return UROS_ERR_NOCONN,
             ("Socket error [%s] while connecting to "UROS_ADDRFMT"\n",
-             strerror(err), UROS_ADDRARG(remaddrp)));
+             strerror(errno), UROS_ADDRARG(remaddrp)));
 
-  cp->remaddr = *remaddrp;
   return UROS_OK;
 }
 
@@ -382,7 +388,6 @@ uros_err_t uros_lld_conn_connect(UrosConn *cp, const UrosAddr *remaddrp) {
 uros_err_t uros_lld_conn_recv(UrosConn *cp,
                               void **bufpp, size_t *buflenp) {
 
-  size_t limit;
   ssize_t nb;
 
   urosAssert(urosConnIsValid(cp));
@@ -395,14 +400,15 @@ uros_err_t uros_lld_conn_recv(UrosConn *cp,
     if (cp->recvbufp == NULL) { return UROS_ERR_NOMEM; }
     cp->recvbuflen = UROS_CONN_RECVBUFLEN;
   }
-  limit = (*buflenp <= cp->recvbuflen) ? *buflenp : cp->recvbuflen;
-  nb = recv(cp->socket, cp->recvbufp, limit, 0);
+  if (*buflenp > cp->recvbuflen) { *buflenp = cp->recvbuflen; }
+  nb = recv(cp->socket, cp->recvbufp, *buflenp, 0);
   urosError(nb < 0, return UROS_ERR_BADCONN,
             ("Socket error [%s] while receiving at most %uz bytes from "
-             UROS_ADDRFMT"\n", strerror(errno), limit,
+             UROS_ADDRFMT"\n", strerror(errno), *buflenp,
              UROS_ADDRARG(&cp->remaddr)));
   *bufpp = cp->recvbufp;
   *buflenp = (size_t)nb;
+  cp->recvlen += (size_t)nb;
   return UROS_OK;
 }
 
@@ -468,23 +474,19 @@ uros_err_t uros_lld_conn_recvfrom(UrosConn *cp,
 uros_err_t uros_lld_conn_send(UrosConn *cp,
                               const void *bufp, size_t buflen) {
 
-  uint8_t *curp;
-  size_t pending;
-
   urosAssert(urosConnIsValid(cp));
   urosAssert(!(buflen > 0) || (bufp != NULL));
 
-  curp = (uint8_t*)bufp;
-  pending = buflen;
-  while (pending > 0) {
+  while (buflen > 0) {
     ssize_t nb = send(cp->socket, bufp, buflen, MSG_NOSIGNAL);
     urosError(nb < 0, return UROS_ERR_BADCONN,
               ("Socket error [%s] while sending [%.*s] (%zu bytes) to "
-               UROS_ADDRFMT"\n", strerror(errno),
-               (int)buflen, bufp, buflen,
+               UROS_ADDRFMT"\n",
+               strerror(errno), (int)buflen, bufp, buflen,
                UROS_ADDRARG(&cp->remaddr)));
-    pending -= (size_t)nb;
-    curp += (size_t)nb;
+    buflen -= (size_t)nb;
+    bufp = (const void *)((const uint8_t *)bufp + (ptrdiff_t)nb);
+    cp->sentlen += (size_t)nb;
   }
   return UROS_OK;
 }
@@ -636,7 +638,7 @@ uros_err_t uros_lld_conn_shutdown(UrosConn *cp,
   else          { err = 0; }
   urosError(err != 0, return UROS_ERR_BADCONN,
             ("Socket error [%s] while shutting down (RX=%d, TX=%d), self "UROS_ADDRFMT
-             ", remote"UROS_ADDRFMT"\n", strerror(err), (int)rx, (int)tx,
+             ", remote"UROS_ADDRFMT"\n", strerror(errno), (int)rx, (int)tx,
              UROS_ADDRARG(&cp->locaddr), UROS_ADDRARG(&cp->remaddr)));
   return UROS_OK;
 }
@@ -670,7 +672,7 @@ uros_err_t uros_lld_conn_close(UrosConn *cp) {
     cp->socket = -1;
     urosError(err != 0, return UROS_ERR_BADCONN,
               ("Socket error [%s] while closing, self "UROS_ADDRFMT
-               ", remote "UROS_ADDRFMT"\n", strerror(err)));
+               ", remote "UROS_ADDRFMT"\n", strerror(errno)));
   }
   return UROS_OK;
 }
@@ -702,7 +704,7 @@ uros_err_t uros_lld_conn_gettcpnodelay(UrosConn *cp, uros_bool_t *enablep) {
 
   err = getsockopt(cp->socket, IPPROTO_TCP, TCP_NODELAY, &flag, &size);
   urosError(err != 0, return UROS_ERR_BADCONN,
-            ("Socket error [%s] while getting TCP_NODELAY\n", strerror(err)));
+            ("Socket error [%s] while getting TCP_NODELAY\n", strerror(errno)));
   urosError(size != sizeof(int), return UROS_ERR_BADCONN,
             ("Wrong <int> size, got %zu, expected %zu\n",
              size, sizeof(int)));
@@ -739,7 +741,7 @@ uros_err_t uros_lld_conn_settcpnodelay(UrosConn *cp, uros_bool_t enable) {
   err = setsockopt(cp->socket, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(int));
   urosError(err != 0, return UROS_ERR_BADCONN,
             ("Socket error [%s] while setting TCP_NODELAY to %d\n",
-             strerror(err), (int)enable));
+             strerror(errno), (int)enable));
   return UROS_OK;
 }
 
@@ -766,7 +768,7 @@ uros_err_t uros_lld_conn_getrecvtimeout(UrosConn *cp, uint32_t *msp) {
   err = getsockopt(cp->socket, SOL_SOCKET, SO_RCVTIMEO, &tv, &size);
   urosError(err != 0, return UROS_ERR_BADCONN,
             ("Socket error [%s] while getting the recv() timeout\n",
-             strerror(err)));
+             strerror(errno)));
   urosError(size != sizeof(tv), return UROS_ERR_BADCONN,
             ("Wrong <struct timeval> size, got %zu, expected %zu\n",
              size, sizeof(tv)));
@@ -800,7 +802,7 @@ uros_err_t uros_lld_conn_setrecvtimeout(UrosConn *cp, uint32_t ms) {
   err = setsockopt(cp->socket, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
   urosError(err != 0, return UROS_ERR_BADCONN,
             ("Socket error [%s] while setting the recv() timeout to %lu\n",
-             strerror(err), ms));
+             strerror(errno), ms));
   return UROS_OK;
 }
 
@@ -827,7 +829,7 @@ uros_err_t uros_lld_conn_getsendtimeout(UrosConn *cp, uint32_t *msp) {
   err = getsockopt(cp->socket, SOL_SOCKET, SO_SNDTIMEO, &tv, &size);
   urosError(err != 0, return UROS_ERR_BADCONN,
             ("Socket error [%s] while getting the send() timeout\n",
-             strerror(err)));
+             strerror(errno)));
   urosError(size != sizeof(tv), return UROS_ERR_BADCONN,
             ("Wrong <struct timeval> size, got %zu, expected %zu\n",
              size, sizeof(tv)));
@@ -861,7 +863,7 @@ uros_err_t uros_lld_conn_setsendtimeout(UrosConn *cp, uint32_t ms) {
   err = setsockopt(cp->socket, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
   urosError(err != 0, return UROS_ERR_BADCONN,
             ("Socket error [%s] while setting the send() timeout to %lu\n",
-             strerror(err), ms));
+             strerror(errno), ms));
   return UROS_OK;
 }
 

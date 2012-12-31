@@ -168,6 +168,9 @@ void urosConnObjectInit(UrosConn *cp) {
 
   cp->protocol = UROS_PROTO__LENGTH;
 
+  cp->recvlen = 0;
+  cp->sentlen = 0;
+
   uros_lld_conn_objectinit(cp);
 }
 

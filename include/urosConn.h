@@ -207,6 +207,8 @@ typedef struct UrosConn {
   UrosAddr          locaddr;    /**< @brief Local address.*/
   UrosAddr          remaddr;    /**< @brief Remote address.*/
   uros_connproto_t  protocol;   /**< @brief Connection protocol.*/
+  size_t            recvlen;    /**< @brief Number of received bytes up to now.*/
+  size_t            sentlen;    /**< @brief Number of sent bytes up up now.*/
 
   /* Implementation dependent.*/
   UrosConn__LLD
