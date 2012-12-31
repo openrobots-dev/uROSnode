@@ -221,22 +221,19 @@ uros_err_t urosRpcStreamerWrite(UrosRpcStreamer *sp,
  */
 uros_err_t urosRpcStreamerUint32(UrosRpcStreamer *sp, uint32_t value) {
 
-  char strbuf[9], *ptr;
-  uint32_t i;
+  char *ptr, strbuf[10];
 
   urosAssert(sp != NULL);
 
   /* Convert to string.*/
-  ptr = strbuf + 9;
+  ptr = &strbuf[10];
   do {
-    i = value % 10;
+    *--ptr = (char)(value % 10) + '0';
     value /= 10;
-    *--ptr = (char)(i + '0');
   } while (value != 0);
-  i = (uint32_t)(strbuf + 9 - ptr);
 
   /* Stream the value.*/
-  return urosRpcStreamerWrite(sp, ptr, (size_t)i);
+  return urosRpcStreamerWrite(sp, ptr, (size_t)((ptrdiff_t)strbuf - (ptrdiff_t)ptr + 10));
 }
 
 /**
@@ -280,13 +277,13 @@ uros_err_t urosRpcStreamerIp(UrosRpcStreamer *sp, UrosIp ip) {
   urosAssert(sp != NULL);
 #define _CHKOK  { if (sp->err != UROS_OK) { return sp->err; } }
 
-  urosRpcStreamerInt32(sp, (int32_t)ip.fields.field1); _CHKOK
+  urosRpcStreamerUint32(sp, (uint32_t)ip.fields.field1); _CHKOK
   urosRpcStreamerWrite(sp, ".", 1); _CHKOK
-  urosRpcStreamerInt32(sp, (int32_t)ip.fields.field2); _CHKOK
+  urosRpcStreamerUint32(sp, (uint32_t)ip.fields.field2); _CHKOK
   urosRpcStreamerWrite(sp, ".", 1); _CHKOK
-  urosRpcStreamerInt32(sp, (int32_t)ip.fields.field3); _CHKOK
+  urosRpcStreamerUint32(sp, (uint32_t)ip.fields.field3); _CHKOK
   urosRpcStreamerWrite(sp, ".", 1); _CHKOK
-  urosRpcStreamerInt32(sp, (int32_t)ip.fields.field4); _CHKOK
+  urosRpcStreamerUint32(sp, (uint32_t)ip.fields.field4); _CHKOK
 
   return sp->err = UROS_OK;
 #undef _CHKOK
