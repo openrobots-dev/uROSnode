@@ -216,10 +216,10 @@ void urosUserSubscribeParams(void) {
 
   static const UrosString *const namep = &urosNode.config.nodeName;
 
-  char *paramp = urosAlloc(namep->length + 13);
+  char *paramp = urosAlloc(namep->length + 14);
   urosAssert(paramp != NULL);
   memcpy(paramp, namep->datap, namep->length);
-  memcpy(paramp + namep->length, "/background_X", 13);
+  memcpy(paramp + namep->length, "/background_X\0", 14);
 
   /* Subscribe to background color components.*/
   paramp[namep->length + 12] = 'r';

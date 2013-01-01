@@ -436,7 +436,7 @@ typedef pthread_cond_t  UrosCondVar;
 /** @addtogroup base_macros */
 /** @{ */
 
-/** @brief Platform-dependent variables for @p uros_conn_t.*/
+/** @brief Platform-dependent variables for @p UrosConn.*/
 #define UrosConn__LLD \
   int       socket;         /**< @brief Socket descriptor identifier.*/ \
   void      *recvbufp;      /**< @brief Pointer to the receiver buffer.*/ \

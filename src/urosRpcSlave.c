@@ -864,8 +864,7 @@ uros_err_t uros_rpcslave_method_shutdown(UrosRpcStreamer *sp,
                                          UrosRpcParamList *parlistp) {
 
   static UrosNodeStatus *const stp = &urosNode.status;
-  const UrosRpcParam *msgparamp;
-  const UrosString *msgstrp;
+  UrosRpcParam *msgparamp;
   UrosListNode *np;
 
   urosAssert(sp != NULL);
@@ -881,7 +880,6 @@ uros_err_t uros_rpcslave_method_shutdown(UrosRpcStreamer *sp,
             return sp->err = UROS_ERR_BADPARAM,
             ("Class id of [msg] is %d, expected %d (UROS_RPCP_STRING)\n",
              (int)msgparamp->class, (int)UROS_RPCP_STRING));
-  msgstrp = &msgparamp->value.string;
 
   /* Generate the HTTP response.*/
   uros_rpcslave_methodresponse_prologue(sp); _CHKOK
@@ -916,55 +914,8 @@ uros_err_t uros_rpcslave_method_shutdown(UrosRpcStreamer *sp,
   urosMutexUnlock(&stp->subTcpListLock);
 
   /* shutdown() callback.*/
-  return urosUserShutdown(msgstrp);
+  return urosUserShutdown(&msgparamp->value.string);
 #undef _CHKOK
-}
-
-uros_err_t uros_rpcslave_process_method(UrosRpcStreamer *sp,
-                                        uros_rpcslave_methodid_t methodid,
-                                        UrosRpcParamList *parlistp) {
-
-  urosAssert(sp != NULL);
-  urosAssert(parlistp != NULL);
-
-  /* Method dispatcher.*/
-  switch(methodid) {
-  case UROS_RPCSM_GET_BUS_INFO: {
-    return uros_rpcslave_method_getbusinfo(sp, parlistp);
-  }
-  case UROS_RPCSM_GET_BUS_STATS: {
-    return uros_rpcslave_method_getbusstats(sp, parlistp);
-  }
-  case UROS_RPCSM_GET_MASTER_URI: {
-    return uros_rpcslave_method_getmasteruri(sp, parlistp);
-  }
-  case UROS_RPCSM_GET_PID: {
-    return uros_rpcslave_method_getpid(sp, parlistp);
-  }
-  case UROS_RPCSM_GET_PUBLICATIONS: {
-    return uros_rpcslave_method_getpublications(sp, parlistp);
-  }
-  case UROS_RPCSM_GET_SUBSCRIPTIONS: {
-    return uros_rpcslave_method_getsubscriptions(sp, parlistp);
-  }
-  case UROS_RPCSM_PARAM_UPDATE: {
-    return uros_rpcslave_method_paramupdate(sp, parlistp);
-  }
-  case UROS_RPCSM_PUBLISHER_UPDATE: {
-    return uros_rpcslave_method_publisherupdate(sp, parlistp);
-  }
-  case UROS_RPCSM_REQUEST_TOPIC: {
-    return uros_rpcslave_method_requesttopic(sp, parlistp);
-  }
-  case UROS_RPCSM_SHUTDOWN: {
-    return uros_rpcslave_method_shutdown(sp, parlistp);
-  }
-  default: {
-    urosError(UROS_ERR_BADPARAM, UROS_NOP,
-              ("Unknown XMLRPC Slave method id %d\n", (int)methodid));
-    return UROS_ERR_BADPARAM;
-  }
-  }
 }
 
 uros_err_t uros_rpcslave_process_call(UrosConn *csp) {
@@ -1011,7 +962,38 @@ uros_err_t uros_rpcslave_process_call(UrosConn *csp) {
   urosRpcStreamerObjectInit(&x->streamer, csp, bufp, UROS_MTU_SIZE);
 
   /* Reply to the method call.*/
-  uros_rpcslave_process_method(&x->streamer, methodid, &parlist); _CHKOK
+  switch(methodid) {
+#define _DISPATCH(id, proc) \
+  case id: { proc(&x->streamer, &parlist); _CHKOK; break; }
+
+    _DISPATCH(UROS_RPCSM_GET_BUS_INFO,
+              uros_rpcslave_method_getbusinfo)
+    _DISPATCH(UROS_RPCSM_GET_BUS_STATS,
+              uros_rpcslave_method_getbusstats)
+    _DISPATCH(UROS_RPCSM_GET_MASTER_URI,
+              uros_rpcslave_method_getmasteruri)
+    _DISPATCH(UROS_RPCSM_GET_PID,
+              uros_rpcslave_method_getpid)
+    _DISPATCH(UROS_RPCSM_GET_PUBLICATIONS,
+              uros_rpcslave_method_getpublications)
+    _DISPATCH(UROS_RPCSM_GET_SUBSCRIPTIONS,
+              uros_rpcslave_method_getsubscriptions)
+    _DISPATCH(UROS_RPCSM_PARAM_UPDATE,
+              uros_rpcslave_method_paramupdate)
+    _DISPATCH(UROS_RPCSM_PUBLISHER_UPDATE,
+              uros_rpcslave_method_publisherupdate)
+    _DISPATCH(UROS_RPCSM_REQUEST_TOPIC,
+              uros_rpcslave_method_requesttopic)
+    _DISPATCH(UROS_RPCSM_SHUTDOWN,
+              uros_rpcslave_method_shutdown)
+    default: {
+      urosError(UROS_ERR_BADPARAM, UROS_NOP,
+                ("Unknown XMLRPC Slave method id %d\n", (int)methodid));
+      x->err = UROS_ERR_BADPARAM;
+      goto _finally;
+    }
+#undef _DISPATCH
+    }
 
   /* Finalize any output messages.*/
   urosRpcStreamerFlush(&x->streamer); _CHKOK
