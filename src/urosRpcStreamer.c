@@ -300,7 +300,6 @@ uros_err_t urosRpcStreamerIp(UrosRpcStreamer *sp, UrosIp ip) {
  */
 uros_err_t urosRpcStreamerHttpPost(UrosRpcStreamer *sp) {
 
-  /** FIXME: Is /RPC2 broken in ROS itself? */
   return urosRpcStreamerWrite(sp, "POST /RPC2 HTTP/1.0\r\n", 21);
 }
 
@@ -767,7 +766,7 @@ uros_err_t urosRpcStreamerParamValueDouble(UrosRpcStreamer *sp,
   urosAssert(paramp->class == UROS_RPCP_DOUBLE);
 #define _CHKOK   { if (sp->err != UROS_OK) { return sp->err; } }
 
-  /* FIXME: This works well only for int-ranged numbers.*/
+  /* FIXME: This works well only for near-integer numbers.*/
   value = paramp->value.real;
   if (value < 0) {
     value = -value;
@@ -806,7 +805,8 @@ uros_err_t urosRpcStreamerParamValueBase64(UrosRpcStreamer *sp,
   urosAssert(paramp->class == UROS_RPCP_BASE64);
 #define _CHKOK   { if (sp->err != UROS_OK) { return sp->err; } }
 
-  /* TODO */
+  /* TODO: Stream a binary chunk into base64 text.*/
+  urosError(UROS_TRUE, UROS_NOP, ("XMLRPC base64 values not supported\n"));
 
   return sp->err = UROS_OK;
 #undef _CHKOK
@@ -833,7 +833,8 @@ uros_err_t urosRpcStreamerParamValueStruct(UrosRpcStreamer *sp,
   urosAssert(paramp->class == UROS_RPCP_STRUCT);
 #define _CHKOK   { if (sp->err != UROS_OK) { return sp->err; } }
 
-  /* TODO */
+  /* TODO: Stream the mapped struct.*/
+  urosError(UROS_TRUE, UROS_NOP, ("XMLRPC struct values not supported\n"));
 
   return sp->err = UROS_OK;
 #undef _CHKOK

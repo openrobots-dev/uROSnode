@@ -47,6 +47,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define min(a,b)    (((a) <= (b)) ? (a) : (b))
 #define max(a,b)    (((a) >= (b)) ? (a) : (b))
+#define _2PI        ((float)(2.0 * M_PI))
 
 /*===========================================================================*/
 /* GLOBAL VARIABLES                                                          */
@@ -79,6 +80,7 @@ void fifo_init(fifo_t *queuep, unsigned length) {
   queuep->length = length;
   queuep->head = 0;
   queuep->tail = 0;
+  urosMutexObjectInit(&queuep->slotsMtx);
   queuep->slots = urosArrayNew(length, void *);
   urosAssert(queuep->slots != NULL);
 }
@@ -161,13 +163,13 @@ void app_set_params(void) {
   UrosRpcParam value;
   UrosRpcResponse response;
   uros_err_t err;
+  (void)err;
 
   urosRpcParamObjectInit(&value, UROS_RPCP_INT);
   urosRpcResponseObjectInit(&response);
 
   /* Red background color component.*/
-  name.datap = "/turtlesim/background_r";
-  name.length = strlen(name.datap);
+  name = urosStringAssignZ("/turtlesim/background_r");
   value.value.int32 = 123;
   err = urosRpcCallSetParam(&urosNode.config.masterAddr,
                             &urosNode.config.nodeName,
@@ -176,8 +178,7 @@ void app_set_params(void) {
   urosRpcResponseClean(&response);
 
   /* Green background color component.*/
-  name.datap = "/turtlesim/background_g";
-  name.length = strlen(name.datap);
+  name = urosStringAssignZ("/turtlesim/background_g");
   value.value.int32 = 123;
   err = urosRpcCallSetParam(&urosNode.config.masterAddr,
                             &urosNode.config.nodeName,
@@ -186,12 +187,46 @@ void app_set_params(void) {
   urosRpcResponseClean(&response);
 
   /* Blue background color component.*/
-  name.datap = "/turtlesim/background_b";
-  name.length = strlen(name.datap);
+  name = urosStringAssignZ("/turtlesim/background_b");
   value.value.int32 = 123;
   err = urosRpcCallSetParam(&urosNode.config.masterAddr,
                             &urosNode.config.nodeName,
                             &name, &value, &response);
+  urosAssert(err == UROS_OK);
+  urosRpcResponseClean(&response);
+}
+
+/* Deletes its own paramaters.*/
+void app_delete_params(void) {
+
+  UrosString name;
+  UrosRpcResponse response;
+  uros_err_t err;
+  (void)err;
+
+  urosRpcResponseObjectInit(&response);
+
+  /* Red background color component.*/
+  name = urosStringAssignZ("/turtlesim/background_r");
+  err = urosRpcCallDeleteParam(&urosNode.config.masterAddr,
+                               &urosNode.config.nodeName,
+                               &name, &response);
+  urosAssert(err == UROS_OK);
+  urosRpcResponseClean(&response);
+
+  /* Green background color component.*/
+  name = urosStringAssignZ("/turtlesim/background_g");
+  err = urosRpcCallDeleteParam(&urosNode.config.masterAddr,
+                               &urosNode.config.nodeName,
+                               &name, &response);
+  urosAssert(err == UROS_OK);
+  urosRpcResponseClean(&response);
+
+  /* Blue background color component.*/
+  name = urosStringAssignZ("/turtlesim/background_b");
+  err = urosRpcCallDeleteParam(&urosNode.config.masterAddr,
+                               &urosNode.config.nodeName,
+                               &name, &response);
   urosAssert(err == UROS_OK);
   urosRpcResponseClean(&response);
 }
@@ -221,6 +256,11 @@ void app_initialize(void) {
 
   /* Set its own parameters.*/
   app_set_params();
+}
+
+void app_uninitialize(void) {
+
+  app_delete_params();
 }
 
 /*~~~ TURTLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -268,16 +308,19 @@ uros_err_t turtle_brain_thread(turtle_t *turtlep) {
 
   urosAssert(turtlep != NULL);
 
-  /* Simple integration every 4ms.*/
+  /* Simple integration.*/
   posep = (struct msg__turtlesim__Pose *)&turtlep->pose;
   urosMutexLock(&turtlep->lock);
   while (turtlep->status == TURTLE_ALIVE) {
     /* Execute commands until their deadline.*/
     if (turtlep->countdown > 0) {
       --turtlep->countdown;
-      posep->x += (float)cos(posep->theta) * posep->linear_velocity * 0.004f;
-      posep->y += (float)sin(posep->theta) * posep->linear_velocity * 0.004f;
-      posep->theta += posep->angular_velocity * 0.004f;
+      posep->x += (float)cos(posep->theta) * posep->linear_velocity
+                  * (0.001f * TURTLE_THREAD_PERIOD_MS);
+      posep->y += (float)sin(posep->theta) * posep->linear_velocity
+                  * (0.001f * TURTLE_THREAD_PERIOD_MS);
+      posep->theta += posep->angular_velocity
+                      * (0.001f * TURTLE_THREAD_PERIOD_MS);
 
       /* Clamp values.*/
       if (posep->x < 0 || posep->x > SANDBOX_WIDTH ||
@@ -287,14 +330,14 @@ uros_err_t turtle_brain_thread(turtle_t *turtlep) {
       }
       posep->x = min(max(0, posep->x), SANDBOX_WIDTH);
       posep->y = min(max(0, posep->y), SANDBOX_HEIGHT);
-      while (posep->theta < 0)         { posep->theta += 2 * M_PI; }
-      while (posep->theta >= 2 * M_PI) { posep->theta -= 2 * M_PI; }
+      while (posep->theta < 0)     { posep->theta += _2PI; }
+      while (posep->theta >= _2PI) { posep->theta -= _2PI; }
     } else {
       posep->linear_velocity = 0;
       posep->angular_velocity = 0;
     }
     urosMutexUnlock(&turtlep->lock);
-    urosThreadSleepMsec(4);
+    urosThreadSleepMsec(TURTLE_THREAD_PERIOD_MS);
     urosMutexLock(&turtlep->lock);
   }
   turtle_unref(turtlep);
@@ -408,8 +451,8 @@ turtle_t *turtle_spawn(const UrosString *namep,
   turtlep->pose.x = min(max(0, x), SANDBOX_WIDTH);
   turtlep->pose.y = min(max(0, y), SANDBOX_HEIGHT);
   turtlep->pose.theta = theta;
-  while (turtlep->pose.theta < 0)         { turtlep->pose.theta += 2 * M_PI; }
-  while (turtlep->pose.theta >= 2 * M_PI) { turtlep->pose.theta -= 2 * M_PI; }
+  while (turtlep->pose.theta < 0)     { turtlep->pose.theta += _2PI; }
+  while (turtlep->pose.theta >= _2PI) { turtlep->pose.theta -= _2PI; }
   turtlep->pose.linear_velocity = 0;
   turtlep->pose.angular_velocity = 0;
   turtlep->countdown = 0;

@@ -25,6 +25,7 @@
 #define MAX_TURTLES             4
 #define TURTLE_THREAD_STKSIZE   (PTHREAD_STACK_MIN << 1)
 #define TURTLE_THREAD_PRIO      90
+#define TURTLE_THREAD_PERIOD_MS 1
 
 /**
  * @brief   Thread-safe message queue.
@@ -133,6 +134,7 @@ void rosout_fetch(struct msg__rosgraph_msgs__Log **msgpp);
 /*~~~ APPLICATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 void app_initialize(void);
+void app_uninitialize(void);
 
 /*~~~ TURTLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 

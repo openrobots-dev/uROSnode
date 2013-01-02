@@ -303,7 +303,8 @@ uros_err_t recv_msg__rosgraph_msgs__Log(
   urosTcpRosRecvRaw(tcpstp, objp->line); _CHKOK
   urosTcpRosArrayObjectInit((UrosTcpRosArray *)&objp->topics);
   urosTcpRosRecvRaw(tcpstp, objp->topics.length); _CHKOK
-  objp->topics.entriesp = urosArrayNew(objp->topics.length, UrosString);
+  objp->topics.entriesp = urosArrayNew(objp->topics.length,
+                                       UrosString);
   if (objp->topics.entriesp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _error; }
   for (i = 0; i < objp->topics.length; ++i) {
     urosTcpRosRecvString(tcpstp, &objp->topics.entriesp[i]); _CHKOK
@@ -381,6 +382,7 @@ size_t length_msg__turtlesim__Pose(
   length += sizeof(float);
   length += sizeof(float);
 
+  (void)objp;
   return length;
 }
 
@@ -502,6 +504,7 @@ size_t length_msg__turtlesim__Velocity(
   length += sizeof(float);
   length += sizeof(float);
 
+  (void)objp;
   return length;
 }
 
@@ -629,6 +632,7 @@ size_t length_in_srv__turtlesim__SetPen(
   length += sizeof(uint8_t);
   length += sizeof(uint8_t);
 
+  (void)objp;
   return length;
 }
 
@@ -681,6 +685,8 @@ size_t length_out_srv__turtlesim__SetPen(
 
   urosAssert(objp != NULL);
 
+  /* Nothing to measure.*/
+  (void)objp;
   return length;
 }
 
@@ -769,6 +775,7 @@ uros_err_t send_srv__turtlesim__SetPen(
   urosAssert(objp != NULL);
 
   /* Nothing to send.*/
+  (void)objp;
   return tcpstp->err = UROS_OK;
 }
 
@@ -1017,6 +1024,8 @@ size_t length_out_srv__turtlesim__Kill(
 
   urosAssert(objp != NULL);
 
+  /* Nothing to measure.*/
+  (void)objp;
   return length;
 }
 
@@ -1101,6 +1110,7 @@ uros_err_t send_srv__turtlesim__Kill(
   urosAssert(objp != NULL);
 
   /* Nothing to send.*/
+  (void)objp;
   return tcpstp->err = UROS_OK;
 }
 
@@ -1130,6 +1140,7 @@ size_t length_in_srv__turtlesim__TeleportAbsolute(
   length += sizeof(float);
   length += sizeof(float);
 
+  (void)objp;
   return length;
 }
 
@@ -1182,6 +1193,8 @@ size_t length_out_srv__turtlesim__TeleportAbsolute(
 
   urosAssert(objp != NULL);
 
+  /* Nothing to measure.*/
+  (void)objp;
   return length;
 }
 
@@ -1268,6 +1281,7 @@ uros_err_t send_srv__turtlesim__TeleportAbsolute(
   urosAssert(objp != NULL);
 
   /* Nothing to send.*/
+  (void)objp;
   return tcpstp->err = UROS_OK;
 }
 
@@ -1293,6 +1307,8 @@ size_t length_in_srv__std_srvs__Empty(
 
   urosAssert(objp != NULL);
 
+  /* Nothing to measure.*/
+  (void)objp;
   return length;
 }
 
@@ -1345,6 +1361,8 @@ size_t length_out_srv__std_srvs__Empty(
 
   urosAssert(objp != NULL);
 
+  /* Nothing to measure.*/
+  (void)objp;
   return length;
 }
 
@@ -1401,6 +1419,7 @@ uros_err_t recv_srv__std_srvs__Empty(
   urosAssert(objp != NULL);
 
   /* Nothing to receive.*/
+  (void)objp;
   return tcpstp->err = UROS_OK;
 }
 
@@ -1423,6 +1442,7 @@ uros_err_t send_srv__std_srvs__Empty(
   urosAssert(objp != NULL);
 
   /* Nothing to send.*/
+  (void)objp;
   return tcpstp->err = UROS_OK;
 }
 
@@ -1451,6 +1471,7 @@ size_t length_in_srv__turtlesim__TeleportRelative(
   length += sizeof(float);
   length += sizeof(float);
 
+  (void)objp;
   return length;
 }
 
@@ -1503,6 +1524,8 @@ size_t length_out_srv__turtlesim__TeleportRelative(
 
   urosAssert(objp != NULL);
 
+  /* Nothing to measure.*/
+  (void)objp;
   return length;
 }
 
@@ -1588,6 +1611,7 @@ uros_err_t send_srv__turtlesim__TeleportRelative(
   urosAssert(objp != NULL);
 
   /* Nothing to send.*/
+  (void)objp;
   return tcpstp->err = UROS_OK;
 }
 

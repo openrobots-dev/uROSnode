@@ -249,7 +249,7 @@ uros_err_t sub_tpc__turtleX__command_velocity(UrosTcpRosStatus *tcpstp) {
     urosMutexLock(&turtlep->lock);
     turtlep->pose.linear_velocity = msgp->linear;
     turtlep->pose.angular_velocity = msgp->angular;
-    turtlep->countdown = 1000;
+    turtlep->countdown = 1000 / TURTLE_THREAD_PERIOD_MS;
     urosMutexUnlock(&turtlep->lock);
 
     /* Dispose the contents of the message.*/

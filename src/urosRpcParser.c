@@ -1583,7 +1583,10 @@ uros_err_t urosRpcParserParamValueBase64(UrosRpcParser *pp,
 
   paramp->class = UROS_RPCP_BASE64;
 
-  /* TODO */
+  /* TODO: Parse the base64 stream and convert it into a binary form.*/
+  urosRpcParserSkipUntil(pp, '<'); _CHKOK
+  urosStringObjectInit(&paramp->value.base64);
+  urosError(UROS_TRUE, UROS_NOP, ("XMLRPC base64 values not supported\n"));
 
   return pp->err = UROS_OK;
 
@@ -1611,7 +1614,9 @@ uros_err_t urosRpcParserParamValueStruct(UrosRpcParser *pp,
   paramp->class = UROS_RPCP_STRUCT;
   urosRpcParserSkipWs(pp); _CHKOK
 
-  /* TODO */
+  /* TODO: Parse the XMLRPC struct and map it.*/
+  urosError(UROS_TRUE, return UROS_ERR_NOTIMPL,
+            ("XMLRPC struct values not supported\n"));
 
   urosRpcParserSkipWs(pp); _CHKOK
   return pp->err = UROS_OK;

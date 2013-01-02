@@ -5,12 +5,12 @@
 
 # Compiler options here.
 ifeq ($(USE_OPT),)
-  USE_OPT = -O0 -ggdb
+  USE_OPT = -O0 -ggdb -fstack-usage
 endif
 
 # C specific options here (added to USE_OPT).
 ifeq ($(USE_COPT),)
-  USE_COPT = -ansi -pedantic -fstack-usage
+  USE_COPT = -ansi -pedantic
 endif
 
 # C++ specific options here (added to USE_OPT).
