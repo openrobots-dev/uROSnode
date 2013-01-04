@@ -177,7 +177,7 @@ void app_set_params(void) {
   name.length = cfgp->nodeName.length + 13;
   name.datap = (char*)urosAlloc(name.length);
   urosAssert(name.datap != NULL);
-  memcpy(name.datap, &cfgp->nodeName.datap, cfgp->nodeName.length);
+  memcpy(name.datap, cfgp->nodeName.datap, cfgp->nodeName.length);
   memcpy(name.datap + cfgp->nodeName.length, "/background_?", 13);
 
   /* Red background color component.*/
@@ -226,7 +226,7 @@ void app_delete_params(void) {
   name.length = cfgp->nodeName.length + 13;
   name.datap = (char*)urosAlloc(name.length);
   urosAssert(name.datap != NULL);
-  memcpy(name.datap, &cfgp->nodeName.datap, cfgp->nodeName.length);
+  memcpy(name.datap, cfgp->nodeName.datap, cfgp->nodeName.length);
   memcpy(name.datap + cfgp->nodeName.length, "/background_?", 13);
 
   /* Red background color component.*/
