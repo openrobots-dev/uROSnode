@@ -917,99 +917,6 @@ uros_err_t uros_rpcslave_method_shutdown(UrosRpcStreamer *sp,
 #undef _CHKOK
 }
 
-uros_err_t uros_rpcslave_process_call(UrosConn *csp) {
-
-  union eps {
-    uros_err_t      err;
-    UrosRpcParser   parser;
-    UrosRpcStreamer streamer;
-  } *x;
-  UrosRpcParamList parlist;
-  uros_rpcslave_methodid_t methodid = UROS_RPCSM__LENGTH;
-  char *bufp;
-  uros_err_t err;
-
-  urosAssert(csp != NULL);
-#define _CHKOK  { if (x->err != UROS_OK) { goto _finally; } }
-
-  x = urosNew(union eps);
-  if (x == NULL) { return UROS_ERR_NOMEM; }
-  urosRpcParamListObjectInit(&parlist);
-
-  /* Create the buffer.*/
-  bufp = (char*)urosAlloc(UROS_MTU_SIZE);
-  if (bufp == NULL) { return UROS_ERR_NOMEM; }
-
-  /* Initialize the parser object.*/
-  urosRpcParserObjectInit(&x->parser, csp, bufp, UROS_MTU_SIZE);
-
-  /* Check if it is a valid HTTP transfer.*/
-  urosRpcParserHttpRequest(&x->parser); _CHKOK
-
-  /* Check if the XML header is valid */
-  urosRpcParserSkipWs(&x->parser); _CHKOK
-  urosRpcParserXmlHeader(&x->parser); _CHKOK
-
-  /* Decode the method call.*/
-  urosRpcParserSkipWs(&x->parser); _CHKOK
-  uros_rpcslave_xmlmethodcall(&x->parser, &methodid, &parlist); _CHKOK
-
-  /* Dispose the parser object.*/
-  urosRpcParserClean(&x->parser, UROS_FALSE);
-
-  /* Initialize the streamer object.*/
-  urosRpcStreamerObjectInit(&x->streamer, csp, bufp, UROS_MTU_SIZE);
-
-  /* Reply to the method call.*/
-  switch(methodid) {
-#define _DISPATCH(id, proc) \
-  case id: { proc(&x->streamer, &parlist); _CHKOK; break; }
-
-    _DISPATCH(UROS_RPCSM_GET_BUS_INFO,
-              uros_rpcslave_method_getbusinfo)
-    _DISPATCH(UROS_RPCSM_GET_BUS_STATS,
-              uros_rpcslave_method_getbusstats)
-    _DISPATCH(UROS_RPCSM_GET_MASTER_URI,
-              uros_rpcslave_method_getmasteruri)
-    _DISPATCH(UROS_RPCSM_GET_PID,
-              uros_rpcslave_method_getpid)
-    _DISPATCH(UROS_RPCSM_GET_PUBLICATIONS,
-              uros_rpcslave_method_getpublications)
-    _DISPATCH(UROS_RPCSM_GET_SUBSCRIPTIONS,
-              uros_rpcslave_method_getsubscriptions)
-    _DISPATCH(UROS_RPCSM_PARAM_UPDATE,
-              uros_rpcslave_method_paramupdate)
-    _DISPATCH(UROS_RPCSM_PUBLISHER_UPDATE,
-              uros_rpcslave_method_publisherupdate)
-    _DISPATCH(UROS_RPCSM_REQUEST_TOPIC,
-              uros_rpcslave_method_requesttopic)
-    _DISPATCH(UROS_RPCSM_SHUTDOWN,
-              uros_rpcslave_method_shutdown)
-    default: {
-      urosError(UROS_ERR_BADPARAM, UROS_NOP,
-                ("Unknown XMLRPC Slave method id %d\n", (int)methodid));
-      x->err = UROS_ERR_BADPARAM;
-      goto _finally;
-    }
-#undef _DISPATCH
-    }
-
-  /* Finalize any output messages.*/
-  urosRpcStreamerFlush(&x->streamer); _CHKOK
-
-  /* Dispose the streamer object.*/
-  urosRpcStreamerClean(&x->streamer, UROS_FALSE);
-
-_finally:
-  /* Free any allocated objects.*/
-  urosRpcParamListClean(&parlist, UROS_TRUE);
-  urosFree(bufp);
-  err = x->err;
-  urosFree(x);
-  return err;
-#undef _CHKOK
-}
-
 /*===========================================================================*/
 /* GLOBAL FUNCTIONS                                                          */
 /*===========================================================================*/
@@ -1195,20 +1102,99 @@ uros_err_t urosRpcSlaveListenerThread(void *data) {
  */
 uros_err_t urosRpcSlaveServerThread(UrosConn *csp) {
 
+  union eps {
+    uros_err_t      err;
+    UrosRpcParser   parser;
+    UrosRpcStreamer streamer;
+  } *x;
+  UrosRpcParamList parlist;
+  uros_rpcslave_methodid_t methodid = UROS_RPCSM__LENGTH;
+  char *bufp;
   uros_err_t err;
 
   urosAssert(csp != NULL);
+#define _CHKOK  { if (x->err != UROS_OK) { goto _finally; } }
 
-  /* Process the incoming transmission.*/
-  err = uros_rpcslave_process_call(csp);
-  urosError(err != UROS_OK, UROS_NOP,
-            ("Error %s while processing the XMLRPC Slave incoming call\n",
-             urosErrorText(err)));
+  x = urosNew(union eps);
+  if (x == NULL) { return UROS_ERR_NOMEM; }
+  urosRpcParamListObjectInit(&parlist);
+
+  /* Create the buffer.*/
+  bufp = (char*)urosAlloc(UROS_MTU_SIZE);
+  if (bufp == NULL) { return UROS_ERR_NOMEM; }
+
+  /* Initialize the parser object.*/
+  urosRpcParserObjectInit(&x->parser, csp, bufp, UROS_MTU_SIZE);
+
+  /* Check if it is a valid HTTP transfer.*/
+  urosRpcParserHttpRequest(&x->parser); _CHKOK
+
+  /* Check if the XML header is valid */
+  urosRpcParserSkipWs(&x->parser); _CHKOK
+  urosRpcParserXmlHeader(&x->parser); _CHKOK
+
+  /* Decode the method call.*/
+  urosRpcParserSkipWs(&x->parser); _CHKOK
+  uros_rpcslave_xmlmethodcall(&x->parser, &methodid, &parlist); _CHKOK
+
+  /* Dispose the parser object.*/
+  urosRpcParserClean(&x->parser, UROS_FALSE);
+
+  /* Initialize the streamer object.*/
+  urosRpcStreamerObjectInit(&x->streamer, csp, bufp, UROS_MTU_SIZE);
+
+  /* Reply to the method call.*/
+  switch(methodid) {
+#define _DISPATCH(id, proc) \
+  case id: { proc(&x->streamer, &parlist); _CHKOK; break; }
+
+  _DISPATCH(UROS_RPCSM_GET_BUS_INFO,
+            uros_rpcslave_method_getbusinfo)
+  _DISPATCH(UROS_RPCSM_GET_BUS_STATS,
+            uros_rpcslave_method_getbusstats)
+  _DISPATCH(UROS_RPCSM_GET_MASTER_URI,
+            uros_rpcslave_method_getmasteruri)
+  _DISPATCH(UROS_RPCSM_GET_PID,
+            uros_rpcslave_method_getpid)
+  _DISPATCH(UROS_RPCSM_GET_PUBLICATIONS,
+            uros_rpcslave_method_getpublications)
+  _DISPATCH(UROS_RPCSM_GET_SUBSCRIPTIONS,
+            uros_rpcslave_method_getsubscriptions)
+  _DISPATCH(UROS_RPCSM_PARAM_UPDATE,
+            uros_rpcslave_method_paramupdate)
+  _DISPATCH(UROS_RPCSM_PUBLISHER_UPDATE,
+            uros_rpcslave_method_publisherupdate)
+  _DISPATCH(UROS_RPCSM_REQUEST_TOPIC,
+            uros_rpcslave_method_requesttopic)
+  _DISPATCH(UROS_RPCSM_SHUTDOWN,
+            uros_rpcslave_method_shutdown)
+  default: {
+    urosError(UROS_ERR_BADPARAM, UROS_NOP,
+              ("Unknown XMLRPC Slave method id %d\n", (int)methodid));
+    x->err = UROS_ERR_BADPARAM;
+    goto _finally;
+  }
+#undef _DISPATCH
+  }
+
+  /* Finalize any output messages.*/
+  urosRpcStreamerFlush(&x->streamer); _CHKOK
+
+  /* Dispose the streamer object.*/
+  urosRpcStreamerClean(&x->streamer, UROS_FALSE);
+
+_finally:
+  /* Free any allocated objects.*/
+  urosRpcParamListClean(&parlist, UROS_TRUE);
+  urosFree(bufp);
+  err = x->err;
+  urosFree(x);
 
   /* Gentle connection close.*/
   urosConnClose(csp);
   urosFree(csp);
   return err;
+#undef _CHKOK
 }
 
 /** @} */
