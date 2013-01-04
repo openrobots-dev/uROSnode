@@ -1888,18 +1888,13 @@ uros_err_t urosRpcParserParam(UrosRpcParser *pp,
 uros_err_t urosRpcParserMethodResponse(UrosRpcParser *pp,
                                        UrosRpcResponse *resp) {
 
-  UrosRpcParam int1, str2, any3;
-
   urosAssert(pp != NULL);
   urosAssert(resp != NULL);
-  urosAssert(resp->statusMsgp == NULL);
-  urosAssert(resp->valuep == NULL);
-#define _CHKOK  { if (pp->err != UROS_OK) { goto _error; } }
+#define _CHKOK  { if (pp->err != UROS_OK) { return pp->err; } }
 
   urosRpcResponseObjectInit(resp);
-  urosRpcParamObjectInit(&int1, UROS_RPCP__LENGTH);
-  urosRpcParamObjectInit(&str2, UROS_RPCP__LENGTH);
-  urosRpcParamObjectInit(&any3, UROS_RPCP__LENGTH);
+  resp->valuep = urosNew(UrosRpcParam);
+  if (resp->valuep == NULL) { return pp->err = UROS_ERR_NOMEM; }
 
   /* Check the XML header.*/
   urosRpcParserXmlHeader(pp); _CHKOK
@@ -1920,12 +1915,15 @@ uros_err_t urosRpcParserMethodResponse(UrosRpcParser *pp,
   urosRpcParserSkipWs(pp); _CHKOK
 
   /* int code */
-  urosRpcParserParam(pp, &int1, UROS_RPCP_INT); _CHKOK
+  urosRpcParamObjectInit(resp->valuep, UROS_RPCP_INT);
+  urosRpcParserParam(pp, resp->valuep, UROS_RPCP_INT); _CHKOK
+  resp->code = resp->valuep->value.int32;
   urosRpcParserSkipWs(pp); _CHKOK
 
   /* str statusMessage */
 #if UROS_RPCPARSER_USE_STATUS_MSG
-  urosRpcParserParam(pp, &str2, UROS_RPCP_STRING); _CHKOK
+  urosRpcParamObjectInit(resp->valuep, UROS_RPCP_STRING);
+  urosRpcParserParam(pp, resp->valuep, UROS_RPCP_STRING); _CHKOK
 #else
   urosRpcParserXmlTagOpen(pp, "value", 5); _CHKOK
   urosRpcParserSkipUntil(pp, '<'); _CHKOK
@@ -1942,7 +1940,8 @@ uros_err_t urosRpcParserMethodResponse(UrosRpcParser *pp,
   urosRpcParserSkipWs(pp); _CHKOK
 
   /* XMLRPCLegalValue value */
-  urosRpcParserParamByTag(pp, &any3); _CHKOK
+  urosRpcParamObjectInit(resp->valuep, UROS_RPCP__LENGTH);
+  urosRpcParserParamByTag(pp, resp->valuep); _CHKOK
 
   urosRpcParserSkipWs(pp); _CHKOK
   urosRpcParserXmlTagClose(pp, "data", 4); _CHKOK
@@ -1958,26 +1957,7 @@ uros_err_t urosRpcParserMethodResponse(UrosRpcParser *pp,
   urosRpcParserXmlTagClose(pp, "methodResponse", 14); _CHKOK
   urosRpcParserSkip(pp, pp->contentLength - (pp->total - pp->mark)); _CHKOK
 
-  /* Check and fill the response record.*/
-  resp->code = int1.value.int32;
-  resp->statusMsgp = urosStringNew(NULL);
-#if UROS_RPCPARSER_USE_STATUS_MSG
-  *resp->statusMsgp = str2.value.string;
-#endif
-  resp->valuep = urosNew(UrosRpcParam);
-  if (resp->valuep == NULL) { pp->err = UROS_ERR_NOMEM; goto _error; }
-  *resp->valuep = any3;
-
   return pp->err = UROS_OK;
-
-_error:
-  /* Free the allocated objects and return the error message.*/
-  urosRpcParamClean(&int1, UROS_TRUE);
-  urosRpcParamClean(&str2, UROS_TRUE);
-  urosRpcParamClean(&any3, UROS_TRUE);
-  resp->statusMsgp = NULL;
-  resp->valuep = NULL;
-  return pp->err;
 #undef _CHKOK
 }
 
