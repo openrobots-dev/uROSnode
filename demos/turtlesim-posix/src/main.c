@@ -33,7 +33,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*===========================================================================*/
 
 #include <stdio.h>
+
+#include <urosNode.h>
 #include "app.h"
+
+/*===========================================================================*/
+/* GLOBAL FUNCTIONS                                                          */
+/*===========================================================================*/
 
 int main (int argc, char *argv[]) {
 
@@ -45,12 +51,9 @@ int main (int argc, char *argv[]) {
   /* Initialize the application.*/
   app_initialize();
 
-  /* Enter the background service loop.*/
-  for (;;) {
-    /* Nothing to do.*/
-    urosThreadSleepSec(1);
-  }
+  /* Wait until the node has shut down.*/
+  urosThreadJoin(urosNode.status.nodeThreadId);
 
+  printf("\n(Node has shut down successfully)\n");
   return 0;
 }
-

@@ -204,6 +204,34 @@ void uros_node_registerall(void) {
 
 void uros_node_unregisterall(void) {
 
+  static UrosNodeStatus *const stp = &urosNode.status;
+
+  UrosListNode *np;
+  UrosString exitMsg;
+
+  /* Get the exit message.*/
+  urosMutexLock(&stp->stateLock);
+  exitMsg = stp->exitMsg;
+  stp->exitMsg = urosStringAssignZ(NULL);
+  urosMutexUnlock(&stp->stateLock);
+
+  /* Exit from all the registered TCPROS worker threads.*/
+  urosMutexLock(&stp->pubTcpListLock);
+  for (np = stp->pubTcpList.headp; np != NULL; np = np->nextp) {
+    urosTcpRosStatusIssueExit((UrosTcpRosStatus*)np->datap);
+  }
+  urosMutexUnlock(&stp->pubTcpListLock);
+
+  urosMutexLock(&stp->subTcpListLock);
+  for (np = stp->subTcpList.headp; np != NULL; np = np->nextp) {
+    urosTcpRosStatusIssueExit((UrosTcpRosStatus*)np->datap);
+  }
+  urosMutexUnlock(&stp->subTcpListLock);
+
+  /* Call the shutdown function provided by the user.*/
+  urosUserShutdown(&exitMsg);
+  urosStringClean(&exitMsg);
+
   /* Unregister topics.*/
   urosUserUnpublishTopics();
   urosUserUnsubscribeTopics();
@@ -247,6 +275,7 @@ void urosNodeObjectInit(UrosNode *np) {
 
   /* Initialize status variables.*/
   stp = &np->status;
+  stp->state = UROS_NODE_UNINIT;
   stp->xmlrpcPid = ~0;
   urosListObjectInit(&stp->subTopicList);
   urosListObjectInit(&stp->pubTopicList);
@@ -257,6 +286,7 @@ void urosNodeObjectInit(UrosNode *np) {
   stp->xmlrpcListenerId = UROS_NULL_THREADID;
   stp->tcprosListenerId = UROS_NULL_THREADID;
 
+  urosMutexObjectInit(&stp->stateLock);
   urosMutexObjectInit(&stp->xmlrpcPidLock);
   urosMutexObjectInit(&stp->subTopicListLock);
   urosMutexObjectInit(&stp->pubTopicListLock);
@@ -265,7 +295,6 @@ void urosNodeObjectInit(UrosNode *np) {
   urosMutexObjectInit(&stp->subTcpListLock);
   urosMutexObjectInit(&stp->pubTcpListLock);
   stp->exitFlag = UROS_FALSE;
-  urosMutexObjectInit(&stp->exitLock);
 
   /* Initialize mempools with their description.*/
   urosMemPoolObjectInit(&stp->slaveMemPool,
@@ -301,6 +330,11 @@ void urosNodeObjectInit(UrosNode *np) {
                            (uros_proc_f)urosRpcSlaveServerThread,
                            "RpcSlaveServer",
                            UROS_XMLRPC_SLAVE_PRIO);
+
+  /* The node is initialized and stopped.*/
+  urosMutexLock(&stp->stateLock);
+  stp->state = UROS_NODE_IDLE;
+  urosMutexUnlock(&stp->stateLock);
 }
 
 /**
@@ -338,52 +372,77 @@ uros_err_t urosNodeThread(void *argp) {
   uros_bool_t exitFlag;
   (void)argp;
 
+#if UROS_NODE_C_USE_ASSERT
+  urosMutexLock(&stp->stateLock);
+  urosAssert(stp->state == UROS_NODE_IDLE);
+  urosMutexUnlock(&stp->stateLock);
+#endif
+
+  urosMutexLock(&stp->stateLock);
+  stp->state = UROS_NODE_STARTUP;
+  urosMutexUnlock(&stp->stateLock);
+
   /* Create the listener and pool threads.*/
   uros_node_createthreads();
 
-  urosMutexLock(&stp->exitLock);
+  urosMutexLock(&stp->stateLock);
   exitFlag = stp->exitFlag;
-  urosMutexUnlock(&stp->exitLock);
+  urosMutexUnlock(&stp->stateLock);
   while (!exitFlag) {
     /* Check if the Master is alive.*/
     if (uros_node_pollmaster() != UROS_OK) {
       /* Add a delay not to flood in case of short timeouts.*/
       urosThreadSleepSec(3);
-      urosMutexLock(&stp->exitLock);
+      urosMutexLock(&stp->stateLock);
       exitFlag = stp->exitFlag;
-      urosMutexUnlock(&stp->exitLock);
+      urosMutexUnlock(&stp->stateLock);
       continue;
     }
 
     /* Register to the Master.*/
     uros_node_registerall();
+    urosMutexLock(&stp->stateLock);
+    stp->state = UROS_NODE_RUNNING;
+    urosMutexUnlock(&stp->stateLock);
 
     /* Check if the Master is alive every 3 seconds.*/
-    urosMutexLock(&stp->exitLock);
+    urosMutexLock(&stp->stateLock);
     exitFlag = stp->exitFlag;
-    urosMutexUnlock(&stp->exitLock);
+    urosMutexUnlock(&stp->stateLock);
     while (!exitFlag) {
       urosError(uros_node_pollmaster() != UROS_OK, break,
                 ("Master node "UROS_IPFMT" lost\n",
                  UROS_IPARG(&urosNode.config.masterAddr.ip)));
 
       urosThreadSleepSec(3);
-      urosMutexLock(&stp->exitLock);
+      urosMutexLock(&stp->stateLock);
       exitFlag = stp->exitFlag;
-      urosMutexUnlock(&stp->exitLock);
+      urosMutexUnlock(&stp->stateLock);
     }
+    urosMutexLock(&stp->stateLock);
+    stp->state = UROS_NODE_SHUTDOWN;
+    urosMutexUnlock(&stp->stateLock);
 
     /* Unregister from the Master*/
     uros_node_unregisterall();
 
-    urosMutexLock(&stp->exitLock);
+    urosMutexLock(&stp->stateLock);
     exitFlag = stp->exitFlag;
-    urosMutexUnlock(&stp->exitLock);
+    if (!exitFlag) {
+      /* The node has simply lost sight of the Master, restart.*/
+      stp->state = UROS_NODE_STARTUP;
+    }
+    urosMutexUnlock(&stp->stateLock);
   }
 
   /* Join listener and pool threads.*/
   uros_node_jointhreads();
 
+  /* The node has shut down.*/
+  urosMutexLock(&stp->stateLock);
+  stp->exitFlag = UROS_FALSE;
+  stp->state = UROS_NODE_IDLE;
+  urosMutexUnlock(&stp->stateLock);
   return UROS_OK;
 }
 

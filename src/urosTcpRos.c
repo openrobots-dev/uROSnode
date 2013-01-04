@@ -1237,17 +1237,17 @@ uros_err_t urosTcpRosListenerThread(void *data) {
               ("Error %s while accepting an incoming TCPROS connection "
                UROS_ADDRFMT"\n",
                urosErrorText(err), UROS_ADDRARG(&spawnedp->remaddr)));
-    urosMutexLock(&urosNode.status.exitLock);
+    urosMutexLock(&urosNode.status.stateLock);
     if (urosNode.status.exitFlag) {
       /* Refuse the connection if the listener has to exit.*/
-      urosMutexUnlock(&urosNode.status.exitLock);
+      urosMutexUnlock(&urosNode.status.stateLock);
       if (err == UROS_OK) {
         urosConnClose(spawnedp);
       }
       urosFree(spawnedp);
       break;
     }
-    urosMutexUnlock(&urosNode.status.exitLock);
+    urosMutexUnlock(&urosNode.status.stateLock);
     if (err != UROS_OK) {
       urosFree(spawnedp);
       continue;

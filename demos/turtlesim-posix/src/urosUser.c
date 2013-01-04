@@ -102,9 +102,16 @@ void urosUserRegisterStaticTypes(void) {
  */
 uros_err_t urosUserShutdown(const UrosString *msgp) {
 
+  static UrosNodeStatus *const stp = &urosNode.status;
+
   (void)msgp;
 
+#if UROS_USE_ASSERT
   urosAssert(msgp != NULL);
+  urosMutexLock(&stp->stateLock);
+  urosAssert(stp->state == UROS_NODE_SHUTDOWN);
+  urosMutexUnlock(&stp->stateLock);
+#endif
 
   urosMutexLock(&turtleCanSpawnLock);
   turtleCanSpawn = UROS_FALSE;
@@ -125,7 +132,7 @@ uros_err_t urosUserShutdown(const UrosString *msgp) {
     }
   }
 
-  /* Send a dummy getPid() request, to unlock the XMLRPC server pool.*/
+  /* Send a dummy getPid() request, to unlock XMLRPC listener and pool.*/
   {
     UrosRpcResponse res;
     urosRpcResponseObjectInit(&res);
@@ -137,7 +144,7 @@ uros_err_t urosUserShutdown(const UrosString *msgp) {
     urosRpcResponseClean(&res);
   }
 
-  /* Send a dummy message to /rosout, to unlock the TCPROS server pool.*/
+  /* Send a dummy message to /rosout, to unlock TCPROS listener and pool.*/
   {
     UrosString shdnstr;
     shdnstr = urosStringAssignZ("\nNode is shutting down\n");

@@ -6,8 +6,7 @@ LEGEND:
     ! High priority
 
 JOB QUEUE:
-?!	Whitespace inside <value>$</value>
-*!	Update templates
+*!  Update templates
 +!  ChibiOS port of the turtlesim demo
 +   Add timeouts to XMLRPC recv()/send()
 +   Add installation info/tutorials

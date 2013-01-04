@@ -55,6 +55,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /** @{ */
 
 /**
+ * @brief   Node states.
+ */
+typedef enum uros_nodestate_t {
+  UROS_NODE_UNINIT = 0,                 /**< @brief Node is uninitialized.*/
+  UROS_NODE_IDLE,                       /**< @brief Node is stopped.*/
+  UROS_NODE_STARTUP,                    /**< @brief Startup sequence.*/
+  UROS_NODE_RUNNING,                    /**< @brief Node is running.*/
+  UROS_NODE_SHUTDOWN                    /**< @brief Shutdown sequence.*/
+} uros_nodestate_t;
+
+/**
  * @brief   Node configuration descriptor.
  */
 typedef struct UrosNodeConfig {
@@ -75,6 +86,7 @@ typedef struct UrosNodeConfig {
  */
 typedef struct UrosNodeStatus {
   /* Status variables.*/
+  uros_nodestate_t  state;              /**< @brief Current node state.*/
   int32_t           xmlrpcPid;          /**< @brief PID of the XMLRPC Listener process.*/
   UrosList          subTopicList;       /**< @brief List of topic subscriptions.*/
   UrosList          pubTopicList;       /**< @brief List of topic publications.*/
@@ -83,6 +95,7 @@ typedef struct UrosNodeStatus {
   UrosList          subTcpList;         /**< @brief Subscribed TCPROS connections.*/
   UrosList          pubTcpList;         /**< @brief Published TCPROS connections.*/
 
+  UrosMutex         stateLock;          /**< @brief State and exit lock.*/
   UrosMutex         xmlrpcPidLock;      /**< @brief PID lock.*/
   UrosMutex         subTopicListLock;   /**< @brief Topic subscriptions lock.*/
   UrosMutex         pubTopicListLock;   /**< @brief Topic publications lock.*/
@@ -102,7 +115,7 @@ typedef struct UrosNodeStatus {
   UrosThreadId      tcprosListenerId;   /**< @brief TCPROS Listener thread id.*/
   UrosThreadId      nodeThreadId;       /**< @brief Node thread id.*/
   uros_bool_t       exitFlag;           /**< @brief Thread exit flag.*/
-  UrosMutex         exitLock;           /**< @brief Exit flag lock.*/
+  UrosString        exitMsg;            /**< @brief Exit message string.*/
 } UrosNodeStatus;
 
 /**

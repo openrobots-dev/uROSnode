@@ -197,6 +197,8 @@ uros_err_t uros_rpcslave_value_string_ip(UrosRpcStreamer *sp, UrosIp ip) {
 uros_err_t uros_rpcslave_process_publisherupdate(const UrosString *topic,
                                                  const UrosRpcParam *publishers) {
 
+  static UrosNodeStatus *const stp = &urosNode.status;
+
   const UrosListNode *topicnodep;
   UrosList newpubs;
   uros_err_t err;
@@ -207,9 +209,9 @@ uros_err_t uros_rpcslave_process_publisherupdate(const UrosString *topic,
   urosAssert(publishers->value.listp != NULL);
 
   /* Check if the topic is actually subscribed.*/
-  urosMutexLock(&urosNode.status.subTopicListLock);
-  topicnodep = urosTopicListFindByName(&urosNode.status.subTopicList, topic);
-  urosMutexUnlock(&urosNode.status.subTopicListLock);
+  urosMutexLock(&stp->subTopicListLock);
+  topicnodep = urosTopicListFindByName(&stp->subTopicList, topic);
+  urosMutexUnlock(&stp->subTopicListLock);
   urosError(topicnodep == NULL, return UROS_ERR_BADPARAM,
             ("Topic [%.*s] not found\n", UROS_STRARG(topic)));
 
@@ -481,6 +483,8 @@ uros_err_t uros_rpcslave_method_getbusstats(UrosRpcStreamer *sp,
 uros_err_t uros_rpcslave_method_getmasteruri(UrosRpcStreamer *sp,
                                              UrosRpcParamList *parlistp) {
 
+  static const UrosNodeConfig *const cfgp = &urosNode.config;
+
   const UrosString *masterURI;
   (void)parlistp;
 
@@ -498,7 +502,7 @@ uros_err_t uros_rpcslave_method_getmasteruri(UrosRpcStreamer *sp,
   uros_rpcslave_value_string(sp, NULL, 0); _CHKOK
 
   /* str masterURI.*/
-  masterURI = &urosNode.config.masterUri;
+  masterURI = &cfgp->masterUri;
   uros_rpcslave_value_string(sp, masterURI->datap, masterURI->length);
 
   uros_rpcslave_methodresponse_epilogue(sp); _CHKOK
@@ -509,6 +513,8 @@ uros_err_t uros_rpcslave_method_getmasteruri(UrosRpcStreamer *sp,
 uros_err_t uros_rpcslave_method_getpid(UrosRpcStreamer *sp,
                                        UrosRpcParamList *parlistp) {
 
+  static UrosNodeStatus *const stp = &urosNode.status;
+
   int32_t pid;
   (void)parlistp;
 
@@ -516,9 +522,9 @@ uros_err_t uros_rpcslave_method_getpid(UrosRpcStreamer *sp,
   urosAssert(parlistp != NULL);
 #define _CHKOK   { if (sp->err != UROS_OK) { return sp->err; } }
 
-  urosMutexLock(&urosNode.status.xmlrpcPidLock);
-  pid = urosNode.status.xmlrpcPid;
-  urosMutexUnlock(&urosNode.status.xmlrpcPidLock);
+  urosMutexLock(&stp->xmlrpcPidLock);
+  pid = stp->xmlrpcPid;
+  urosMutexUnlock(&stp->xmlrpcPidLock);
 
   /* Generate the HTTP response.*/
   uros_rpcslave_methodresponse_prologue(sp); _CHKOK
@@ -540,6 +546,8 @@ uros_err_t uros_rpcslave_method_getpid(UrosRpcStreamer *sp,
 uros_err_t uros_rpcslave_method_getpublications(UrosRpcStreamer *sp,
                                                 UrosRpcParamList *parlistp) {
 
+  static UrosNodeStatus *const stp = &urosNode.status;
+
   const UrosListNode *curp;
   const UrosString *strp;
   (void)parlistp;
@@ -548,7 +556,7 @@ uros_err_t uros_rpcslave_method_getpublications(UrosRpcStreamer *sp,
   urosAssert(parlistp != NULL);
 #define _CHKOK   { if (sp->err != UROS_OK) { goto _finally; } }
 
-  urosMutexLock(&urosNode.status.pubTopicListLock);
+  urosMutexLock(&stp->pubTopicListLock);
 
   /* Generate the HTTP response.*/
   uros_rpcslave_methodresponse_prologue(sp); _CHKOK
@@ -561,7 +569,7 @@ uros_err_t uros_rpcslave_method_getpublications(UrosRpcStreamer *sp,
 
   /* [[str topic, str type]*] */
   uros_rpcslave_value_array_begin(sp); _CHKOK
-  for (curp = urosNode.status.pubTopicList.headp; curp != NULL; curp = curp->nextp) {
+  for (curp = stp->pubTopicList.headp; curp != NULL; curp = curp->nextp) {
     uros_rpcslave_value_array_begin(sp); _CHKOK
     strp = &((const UrosTopic *)curp->datap)->name;
     uros_rpcslave_value_string(sp, strp->datap, strp->length); _CHKOK
@@ -575,7 +583,7 @@ uros_err_t uros_rpcslave_method_getpublications(UrosRpcStreamer *sp,
   sp->err = UROS_OK;
 
 _finally:
-  urosMutexUnlock(&urosNode.status.pubTopicListLock);
+  urosMutexUnlock(&stp->pubTopicListLock);
   return sp->err;
 #undef _CHKOK
 }
@@ -583,6 +591,8 @@ _finally:
 uros_err_t uros_rpcslave_method_getsubscriptions(UrosRpcStreamer *sp,
                                                  UrosRpcParamList *parlistp) {
 
+  static UrosNodeStatus *const stp = &urosNode.status;
+
   const UrosListNode *curp;
   const UrosString *strp;
   (void)parlistp;
@@ -591,7 +601,7 @@ uros_err_t uros_rpcslave_method_getsubscriptions(UrosRpcStreamer *sp,
   urosAssert(parlistp != NULL);
 #define _CHKOK   { if (sp->err != UROS_OK) { goto _finally; } }
 
-  urosMutexLock(&urosNode.status.subTopicListLock);
+  urosMutexLock(&stp->subTopicListLock);
 
   /* Generate the HTTP response.*/
   uros_rpcslave_methodresponse_prologue(sp); _CHKOK
@@ -604,7 +614,7 @@ uros_err_t uros_rpcslave_method_getsubscriptions(UrosRpcStreamer *sp,
 
   /* [[str topic, str type]*] */
   uros_rpcslave_value_array_begin(sp); _CHKOK
-  for (curp = urosNode.status.subTopicList.headp; curp != NULL; curp = curp->nextp) {
+  for (curp = stp->subTopicList.headp; curp != NULL; curp = curp->nextp) {
     uros_rpcslave_value_array_begin(sp); _CHKOK
     strp = &((const UrosTopic *)curp->datap)->name;
     uros_rpcslave_value_string(sp, strp->datap, strp->length); _CHKOK
@@ -618,7 +628,7 @@ uros_err_t uros_rpcslave_method_getsubscriptions(UrosRpcStreamer *sp,
   sp->err = UROS_OK;
 
 _finally:
-  urosMutexUnlock(&urosNode.status.subTopicListLock);
+  urosMutexUnlock(&stp->subTopicListLock);
   return sp->err;
 #undef _CHKOK
 }
@@ -751,6 +761,8 @@ uros_err_t uros_rpcslave_method_publisherupdate(UrosRpcStreamer *sp,
 uros_err_t uros_rpcslave_method_requesttopic(UrosRpcStreamer *sp,
                                              UrosRpcParamList *parlistp) {
 
+  static const UrosNodeConfig *const cfgp = &urosNode.config;
+  static UrosNodeStatus *const stp = &urosNode.status;
   static const UrosString tcprosstr = { 6, "TCPROS" };
 
   const UrosRpcParamNode *paramnodep;
@@ -791,12 +803,12 @@ uros_err_t uros_rpcslave_method_requesttopic(UrosRpcStreamer *sp,
   }
 
   /* Check if the topic is actually published.*/
-  urosMutexLock(&urosNode.status.pubTopicListLock);
-  topicnodep = urosTopicListFindByName(&urosNode.status.pubTopicList, &topic->value.string);
+  urosMutexLock(&stp->pubTopicListLock);
+  topicnodep = urosTopicListFindByName(&stp->pubTopicList, &topic->value.string);
   if (topicnodep != NULL) {
     urosTopicRefInc((UrosTopic*)topicnodep->datap);
   }
-  urosMutexUnlock(&urosNode.status.pubTopicListLock);
+  urosMutexUnlock(&stp->pubTopicListLock);
   urosError(topicnodep == NULL, return UROS_ERR_BADPARAM,
             ("Topic [%.*s] not found\n", UROS_STRARG(&topic->value.string)));
 
@@ -847,11 +859,11 @@ uros_err_t uros_rpcslave_method_requesttopic(UrosRpcStreamer *sp,
   if (tcpros) {
     /* ["TCPROS", node_ip, node_port] */
     uros_rpcslave_value_string(sp, "TCPROS", 6); _CHKOK
-    uros_rpcslave_value_string_ip(sp, urosNode.config.tcprosAddr.ip);
+    uros_rpcslave_value_string_ip(sp, cfgp->tcprosAddr.ip);
     if (sp->err != UROS_OK) {
       return sp->err;
     }
-    uros_rpcslave_value_int(sp, (int32_t)urosNode.config.tcprosAddr.port);
+    uros_rpcslave_value_int(sp, (int32_t)cfgp->tcprosAddr.port);
   }
   uros_rpcslave_value_array_end(sp); _CHKOK
 
@@ -865,7 +877,6 @@ uros_err_t uros_rpcslave_method_shutdown(UrosRpcStreamer *sp,
 
   static UrosNodeStatus *const stp = &urosNode.status;
   UrosRpcParam *msgparamp;
-  UrosListNode *np;
 
   urosAssert(sp != NULL);
   urosAssert(parlistp != NULL);
@@ -881,6 +892,13 @@ uros_err_t uros_rpcslave_method_shutdown(UrosRpcStreamer *sp,
             ("Class id of [msg] is %d, expected %d (UROS_RPCP_STRING)\n",
              (int)msgparamp->class, (int)UROS_RPCP_STRING));
 
+  /* Set the shudtown flag, handled by the Node thread.*/
+  urosMutexLock(&stp->stateLock);
+  stp->exitFlag = UROS_TRUE;
+  stp->exitMsg = msgparamp->value.string;
+  msgparamp->value.string = urosStringAssignZ(NULL);
+  urosMutexUnlock(&stp->stateLock);
+
   /* Generate the HTTP response.*/
   uros_rpcslave_methodresponse_prologue(sp); _CHKOK
 
@@ -895,26 +913,7 @@ uros_err_t uros_rpcslave_method_shutdown(UrosRpcStreamer *sp,
 
   uros_rpcslave_methodresponse_epilogue(sp); _CHKOK
 
-  /* Set the shudtown flag for listeners.*/
-  urosMutexLock(&stp->exitLock);
-  stp->exitFlag = UROS_TRUE;
-  urosMutexUnlock(&stp->exitLock);
-
-  /* Exit from all the registered TCPROS worker threads.*/
-  urosMutexLock(&stp->pubTcpListLock);
-  for (np = stp->pubTcpList.headp; np != NULL; np = np->nextp) {
-    urosTcpRosStatusIssueExit((UrosTcpRosStatus*)np->datap);
-  }
-  urosMutexUnlock(&stp->pubTcpListLock);
-
-  urosMutexLock(&stp->subTcpListLock);
-  for (np = stp->subTcpList.headp; np != NULL; np = np->nextp) {
-    urosTcpRosStatusIssueExit((UrosTcpRosStatus*)np->datap);
-  }
-  urosMutexUnlock(&stp->subTcpListLock);
-
-  /* shutdown() callback.*/
-  return urosUserShutdown(&msgparamp->value.string);
+  return sp->err = UROS_OK;
 #undef _CHKOK
 }
 
@@ -927,7 +926,7 @@ uros_err_t uros_rpcslave_process_call(UrosConn *csp) {
   } *x;
   UrosRpcParamList parlist;
   uros_rpcslave_methodid_t methodid = UROS_RPCSM__LENGTH;
-  char *bufp = NULL;
+  char *bufp;
   uros_err_t err;
 
   urosAssert(csp != NULL);
@@ -1004,7 +1003,7 @@ uros_err_t uros_rpcslave_process_call(UrosConn *csp) {
 _finally:
   /* Free any allocated objects.*/
   urosRpcParamListClean(&parlist, UROS_TRUE);
-  if (bufp != NULL) { urosFree(bufp); }
+  urosFree(bufp);
   err = x->err;
   urosFree(x);
   return err;
@@ -1036,6 +1035,8 @@ _finally:
 uros_err_t urosRpcSlaveConnectToPublishers(const UrosString *topicp,
                                            const UrosList *addrlstp) {
 
+  static UrosNodeStatus *const stp = &urosNode.status;
+
   const UrosListNode *nodep;
   uros_err_t err;
   (void)err;
@@ -1051,8 +1052,7 @@ uros_err_t urosRpcSlaveConnectToPublishers(const UrosString *topicp,
     parp->remoteAddr = *(const UrosAddr *)nodep->datap;
 
     /* Start the TCPROS Client thread.*/
-    err = urosThreadPoolStartWorker(&urosNode.status.tcpcliThdPool,
-                                    (void*)parp);
+    err = urosThreadPoolStartWorker(&stp->tcpcliThdPool, (void*)parp);
 
     /* Check if anything went wrong.*/
     if (err != UROS_OK) {
@@ -1085,6 +1085,9 @@ uros_err_t urosRpcSlaveConnectToPublishers(const UrosString *topicp,
  */
 uros_err_t urosRpcSlaveListenerThread(void *data) {
 
+  static const UrosNodeConfig *const cfgp = &urosNode.config;
+  static UrosNodeStatus *const stp = &urosNode.status;
+
   uros_err_t err;
   UrosAddr locaddr;
   UrosConn conn;
@@ -1092,7 +1095,7 @@ uros_err_t urosRpcSlaveListenerThread(void *data) {
   (void)data;
 
   /* Setup the local address.*/
-  locaddr.port = urosNode.config.xmlrpcAddr.port;
+  locaddr.port = cfgp->xmlrpcAddr.port;
   locaddr.ip.dword = UROS_ANY_IP;
 
   /* Setup the listening socket.*/
@@ -1108,9 +1111,9 @@ uros_err_t urosRpcSlaveListenerThread(void *data) {
   urosAssert(err == UROS_OK);
 
   /* Save this thread ID as the server PID.*/
-  urosMutexLock(&urosNode.status.xmlrpcPidLock);
-  urosNode.status.xmlrpcPid = (int32_t)urosThreadSelf();
-  urosMutexUnlock(&urosNode.status.xmlrpcPidLock);
+  urosMutexLock(&stp->xmlrpcPidLock);
+  stp->xmlrpcPid = (int32_t)urosThreadSelf();
+  urosMutexUnlock(&stp->xmlrpcPidLock);
 
   /* Start listening.*/
   err = urosConnListen(&conn, UROS_XMLRPC_LISTENER_BACKLOG);
@@ -1130,17 +1133,17 @@ uros_err_t urosRpcSlaveListenerThread(void *data) {
               ("Error %s while accepting an incoming XMLRPC Slave connection "
                UROS_ADDRFMT"\n",
                urosErrorText(err), UROS_ADDRARG(&spawnedp->remaddr)));
-    urosMutexLock(&urosNode.status.exitLock);
-    if (urosNode.status.exitFlag) {
+    urosMutexLock(&stp->stateLock);
+    if (stp->exitFlag) {
       /* Refuse the connection if the listener has to exit.*/
-      urosMutexUnlock(&urosNode.status.exitLock);
+      urosMutexUnlock(&stp->stateLock);
       if (err == UROS_OK) {
         urosConnClose(spawnedp);
       }
       urosFree(spawnedp);
       break;
     }
-    urosMutexUnlock(&urosNode.status.exitLock);
+    urosMutexUnlock(&stp->stateLock);
     if (err != UROS_OK) {
       urosFree(spawnedp);
       continue;
@@ -1154,7 +1157,7 @@ uros_err_t urosRpcSlaveListenerThread(void *data) {
 #endif
 
     /* Create the XMLRPC Server worker thread.*/
-    err = urosThreadPoolStartWorker(&urosNode.status.slaveThdPool,
+    err = urosThreadPoolStartWorker(&stp->slaveThdPool,
                                     (void*)spawnedp);
 
     /* Check if anything went wrong.*/
