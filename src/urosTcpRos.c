@@ -580,6 +580,12 @@ uros_err_t uros_tcpcli_topicsubscription(const UrosString *topicnamep,
   tcpst.topicp = topicp;
   tcpst.flags = topicp->flags;
 
+  /* Set timeouts for the spawned connection.*/
+  err = urosConnSetRecvTimeout(&conn, UROS_TCPROS_RECVTIMEOUT);
+  urosAssert(err == UROS_OK);
+  err = urosConnSetSendTimeout(&conn, UROS_TCPROS_SENDTIMEOUT);
+  urosAssert(err == UROS_OK);
+
   /* Send the TCPROS conenction header.*/
   err = uros_tcpros_sendheader(&tcpst, UROS_TRUE); _CHKOK
 
@@ -1253,10 +1259,12 @@ uros_err_t urosTcpRosListenerThread(void *data) {
       continue;
     }
 
-#if 0
-    err = urosConnSetSendTimeout(&conn, UROS_TCPROS_SENDTIMEOUT);
+    /* Set timeouts for the spawned connection.*/
+    err = urosConnSetRecvTimeout(spawnedp, UROS_TCPROS_RECVTIMEOUT);
     urosAssert(err == UROS_OK);
-#endif
+    err = urosConnSetSendTimeout(spawnedp, UROS_TCPROS_SENDTIMEOUT);
+    urosAssert(err == UROS_OK);
+
     /* Create the TCPROS Server worker thread.*/
     err = urosThreadPoolStartWorker(&urosNode.status.tcpsvrThdPool,
                                     (void*)spawnedp);

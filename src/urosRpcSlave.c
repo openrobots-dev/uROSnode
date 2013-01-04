@@ -1056,12 +1056,11 @@ uros_err_t urosRpcSlaveListenerThread(void *data) {
       continue;
     }
 
-#if 0
-    err = urosConnSetRecvTimeout(&conn, UROS_XMLRPC_RECVTIMEOUT);
+    /* Set timeouts for the spawned connection.*/
+    err = urosConnSetRecvTimeout(spawnedp, UROS_XMLRPC_RECVTIMEOUT);
     urosAssert(err == UROS_OK);
-    err = urosConnSetSendTimeout(&conn, UROS_XMLRPC_SENDTIMEOUT);
+    err = urosConnSetSendTimeout(spawnedp, UROS_XMLRPC_SENDTIMEOUT);
     urosAssert(err == UROS_OK);
-#endif
 
     /* Create the XMLRPC Server worker thread.*/
     err = urosThreadPoolStartWorker(&stp->slaveThdPool,

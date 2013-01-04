@@ -459,6 +459,7 @@ uros_err_t urosNodeThread(void *argp) {
 void urosNodeConfigLoadDefaults(UrosNodeConfig *cfgp) {
 
   urosAssert(cfgp != NULL);
+  urosAssert(UROS_XMLRPC_LISTENER_PORT != UROS_TCPROS_LISTENER_PORT);
 
   /* Deallocate any previously allocated data.*/
   urosStringClean(&cfgp->nodeName);

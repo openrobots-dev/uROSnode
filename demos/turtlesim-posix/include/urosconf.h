@@ -140,16 +140,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /** @} */
 
-/*~~~ OTHER OPTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MISC OPTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name XMLRPC timeouts configuration */
 /** @{ */
 
 /** @brief Default timeout for incoming XMLRPC transactions, in milliseconds.*/
-#define UROS_XMLRPC_RECVTIMEOUT             300
+#define UROS_XMLRPC_RECVTIMEOUT             3000
 
 /** @brief Default timeout for outgoing XMLRPC transactions, in milliseconds.*/
-#define UROS_XMLRPC_SENDTIMEOUT             300
+#define UROS_XMLRPC_SENDTIMEOUT             3000
 
 /** @} */
 /** @} */
@@ -216,9 +216,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /** @brief TCPROS server thread stack size.*/
 #define UROS_TCPROS_SERVER_STKSIZE          (PTHREAD_STACK_MIN << 1)
 
-/** @brief Default timeout for TCPROS outgoing transactions, in milliseconds.*/
-#define UROS_TCPROS_SENDTIMEOUT             300
-
 /** @} */
 
 /*~~~ MISC OPTIONS `~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -228,6 +225,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /** @brief Reads the message definition, instead of skipping it.*/
 #define UROS_TCPROS_USE_MSGDEF              0
+
+/** @} */
+
+/** @name TCPROS timeouts configuration */
+/** @{ */
+
+/** @brief Default timeout for incoming TCPROS transactions, in milliseconds.*/
+#define UROS_TCPROS_RECVTIMEOUT             500
+
+/** @brief Default timeout for outgoing TCPROS transactions, in milliseconds.*/
+#define UROS_TCPROS_SENDTIMEOUT             500
 
 /** @} */
 /** @} */
@@ -439,6 +447,8 @@ typedef pthread_cond_t  UrosCondVar;
 /** @brief Platform-dependent variables for @p UrosConn.*/
 #define UrosConn__LLD \
   int       socket;         /**< @brief Socket descriptor identifier.*/ \
+  uint32_t  recvtimeout;    /**< @brief Receive timeout in milliseconds, or @p 0.*/ \
+  uint32_t  sendtimeout;    /**< @brief Send timeout in milliseconds, or @p 0.*/ \
   void      *recvbufp;      /**< @brief Pointer to the receiver buffer.*/ \
   size_t    recvbuflen;     /**< @brief Receiver buffer length*/
 

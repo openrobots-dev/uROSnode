@@ -117,12 +117,12 @@ uros_err_t uros_rpcpcall_buildctx(uros_rpcpcallctx_t *ctxp,
   if (ctxp->x.err != UROS_OK) { return ctxp->x.err; }
   ctxp->x.err = urosConnConnect(&ctxp->conn, addrp);
   if (ctxp->x.err != UROS_OK) { return ctxp->x.err; }
-#if 0
+
+  /* Set timeouts for the spawned connection.*/
   ctxp->x.err = urosConnSetRecvTimeout(&ctxp->conn, UROS_XMLRPC_RECVTIMEOUT);
-  if (ctxp->x.err != UROS_OK) { return ctxp->x.err; }
+  urosAssert(ctxp->x.err == UROS_OK);
   ctxp->x.err = urosConnSetSendTimeout(&ctxp->conn, UROS_XMLRPC_SENDTIMEOUT);
-  if (ctxp->x.err != UROS_OK) { return ctxp->x.err; }
-#endif
+  urosAssert(ctxp->x.err == UROS_OK);
 
   /* Initialize the streamer.*/
   bufp = (char*)urosAlloc(UROS_MTU_SIZE);

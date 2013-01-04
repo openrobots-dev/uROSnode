@@ -760,10 +760,9 @@ uros_err_t uros_lld_conn_getsendtimeout(UrosConn *cp, uint32_t *msp) {
   urosAssert(urosConnIsValid(cp));
   urosAssert(msp != NULL);
 
-  /* TODO: Get the transmitter timeout value.*/
-  (void)cp;
-  (void)msp;
-  return UROS_ERR_NOTIMPL;
+  /* Get the sender timeout value.*/
+  *msp = (uint32_t)netconn_get_sendtimeout(cp->netconnp);
+  return UROS_OK;
 }
 
 /**
@@ -781,10 +780,9 @@ uros_err_t uros_lld_conn_setsendtimeout(UrosConn *cp, uint32_t ms) {
 
   urosAssert(urosConnIsValid(cp));
 
-  /* TODO: Set the transmitter timeout value.*/
-  (void)cp;
-  (void)ms;
-  return UROS_ERR_NOTIMPL;
+  /* Set the sender timeout value.*/
+  netconn_set_sendtimeout(cp->netconnp, (int)ms);
+  return UROS_OK;
 }
 
 /**

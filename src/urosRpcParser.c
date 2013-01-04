@@ -1612,11 +1612,8 @@ uros_err_t urosRpcParserParamValueStruct(UrosRpcParser *pp,
 #define _CHKOK   { if (pp->err != UROS_OK) { return pp->err; } }
 
   paramp->class = UROS_RPCP_STRUCT;
-  urosRpcParserSkipWs(pp); _CHKOK
 
-  /* TODO: Parse the XMLRPC struct and map it.*/
-  urosError(UROS_TRUE, return UROS_ERR_NOTIMPL,
-            ("XMLRPC struct values not supported\n"));
+  /* FIXME: Parse the XMLRPC struct and map it.*/
 
   urosRpcParserSkipWs(pp); _CHKOK
   return pp->err = UROS_OK;
@@ -1848,7 +1845,9 @@ uros_err_t urosRpcParserParam(UrosRpcParser *pp,
     urosRpcParserSkipWs(pp); _CHKOK
     urosRpcParserXmlTagOpen(pp, "struct", 6); _CHKOK
     urosRpcParserParamValueStruct(pp, paramp); _CHKOK
-    urosRpcParserXmlTagClose(pp, "struct", 6); _CHKOK
+    /* TODO: Add support for structs.*/
+    urosRpcParserSkipAfter(pp, "</struct>", 9); _CHKOK
+    /*urosRpcParserXmlTagClose(pp, "struct", 6); _CHKOK*/
     urosRpcParserSkipWs(pp); _CHKOK
     break;
   }

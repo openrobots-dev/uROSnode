@@ -42,9 +42,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "../../../include/lld/uros_lld_conn.h"
 #include "../../../include/urosUser.h"
 
-#ifndef __USE_POSIX
-#define __USE_POSIX 1
+#if !defined(_XOPEN_SOURCE)
+#error "_XOPEN_SOURCE not defined, >= 600 expected"
 #endif
+#if _XOPEN_SOURCE < 600
+#error "_XOPEN_SOURCE >= 600 required"
+#endif
+
 #include <unistd.h>
 #include <sys/time.h>
 #include <sys/types.h>
@@ -54,6 +58,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <errno.h>
+#include <fcntl.h>
 
 /*===========================================================================*/
 /* LOCAL TYPES & MACROS                                                      */
@@ -70,6 +75,124 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #if !defined(UROS_CONN_RECVBUFLEN) || defined(__DOXYGEN__)
 #define UROS_CONN_RECVBUFLEN    256
 #endif
+
+/*===========================================================================*/
+/* LOCAL FUNCTIONS                                                           */
+/*===========================================================================*/
+
+/**
+ * @brief   Receive with timeout.
+ * @details Works like @p recv(), but it also checks for timeout.
+ *
+ * @param fd
+ *          Socket descriptor.
+ * @param bufp
+ *          Pointer to the buffer chunk.
+ * @param buflen
+ *          Length of the buffer chunk. Can be @p 0.
+ * @param flags
+ *          Flags for @p recv().
+ * @param ms
+ *          Timeout in milliseconds, @p 0 for blocking behavior.
+ * @return
+ *          Number of bytes received, or error code.
+ * @retval > 0
+ *          Number of bytes received.
+ * @retval 0
+ *          Connection closed by peer.
+ * @retval -1
+ *          Socket error, see @p errno. It <i>will</i> raise @p EAGAIN or
+ *          @p EWOULDBLOCK when expected by a non-blocking socket.
+ * @retval -2
+ *          Operation timed out.
+ */
+ssize_t recv_to(int sock, void *bufp, size_t buflen, int flags,
+                uint32_t ms) {
+
+  ssize_t nb;
+  int err, iof;
+  struct timeval tv;
+  fd_set fdset;
+
+  if (ms == 0) {
+    nb = recv(sock, bufp, buflen, flags);
+    return (nb >= 0) ? nb : -1;
+  }
+
+  FD_ZERO(&fdset);
+  FD_SET(sock, &fdset);
+  tv.tv_sec = (time_t)(ms / 1000);
+  tv.tv_usec = (time_t)((ms % 1000) * 1000);
+  err = select(sock + 1, &fdset, NULL, NULL, &tv);
+  if (err < 0) { return -1; }
+  if (err > 0 && FD_ISSET(sock, &fdset)) {
+    iof = fcntl(sock, F_GETFL, 0);
+    if (iof != -1) { fcntl(sock, F_SETFL, iof | O_NONBLOCK); }
+    nb = recv(sock, bufp, buflen, flags);
+    if (iof != -1) { fcntl(sock, F_SETFL, iof); }
+    return nb;
+  }
+  return -2;
+}
+
+/**
+ * @brief   Sends with timeout.
+ * @details Works like @p send(), but it also checks for timeout.
+ *
+ * @param fd
+ *          Socket descriptor.
+ * @param bufp
+ *          Pointer to the buffer chunk.
+ * @param buflen
+ *          Length of the buffer chunk. Can be @p 0.
+ * @param flags
+ *          Flags for @p send().
+ * @param ms
+ *          Timeout in milliseconds, @p 0 for blocking.
+ * @return
+ *          Number of bytes sent, or error code.
+ * @retval >= 0
+ *          Number of bytes sent.
+ * @retval -1
+ *          Socket error, see @p errno. It <i>will</i> raise @p EAGAIN or
+ *          @p EWOULDBLOCK when expected by a non-blocking socket.
+ * @retval -2
+ *          Operation timed out.
+ */
+ssize_t send_to(int sock, const void *bufp, size_t buflen, int flags,
+                uint32_t ms) {
+
+  ssize_t nb;
+  int err, iof;
+  struct timeval tv;
+  fd_set fdset;
+
+  if (ms == 0) {
+    nb = send(sock, bufp, buflen, flags);
+    return (nb >= 0) ? nb : -1;
+  }
+
+  do {
+    iof = fcntl(sock, F_GETFL, 0);
+    if (iof != -1) { fcntl(sock, F_SETFL, iof | O_NONBLOCK); }
+    nb = send(sock, bufp, buflen, flags);
+    if (iof != -1) { fcntl(sock, F_SETFL, iof); }
+    if (nb >= 0) { return nb; }
+    else {
+      if (errno == EAGAIN || errno == EWOULDBLOCK) {
+        FD_ZERO(&fdset);
+        FD_SET(sock, &fdset);
+        tv.tv_sec = (time_t)(ms / 1000);
+        tv.tv_usec = (time_t)((ms % 1000) * 1000);
+        err = select(sock + 1, &fdset, NULL, NULL, &tv);
+        if (err < 0) { return -1; }
+      } else {
+        return -1;
+      }
+    }
+  } while (err > 0 && FD_ISSET(sock, &fdset));
+  return -2;
+}
 
 /*===========================================================================*/
 /* GLOBAL FUNCTIONS                                                          */
@@ -138,8 +261,9 @@ void uros_lld_conn_objectinit(UrosConn *cp) {
 
   urosAssert(cp != NULL);
 
-  /* Invalidate the socket and the receiving buffer.*/
   cp->socket = -1;
+  cp->recvtimeout = 0;
+  cp->sendtimeout = 0;
   cp->recvbufp = NULL;
   cp->recvbuflen = 0;
 }
@@ -229,10 +353,16 @@ uros_err_t uros_lld_conn_create(UrosConn *cp, uros_connproto_t protocol) {
 uros_err_t uros_lld_conn_bind(UrosConn *cp, const UrosAddr *locaddrp) {
 
   struct sockaddr_in locaddr;
-  int err;
+  int err, reuse = 1;
 
   urosAssert(urosConnIsValid(cp));
   urosAssert(locaddrp != NULL);
+
+  err = setsockopt(cp->socket, SOL_SOCKET,  SO_REUSEADDR,
+                   (char*)&reuse, sizeof(reuse));
+  urosError(err != 0, return UROS_ERR_BADCONN,
+            ("Socket error [%s] while reusing "UROS_ADDRFMT"\n",
+             strerror(errno), UROS_ADDRARG(&cp->locaddr)));
 
   locaddr.sin_family = AF_INET;
   locaddr.sin_port = htons(locaddrp->port);
@@ -401,11 +531,23 @@ uros_err_t uros_lld_conn_recv(UrosConn *cp,
     cp->recvbuflen = UROS_CONN_RECVBUFLEN;
   }
   if (*buflenp > cp->recvbuflen) { *buflenp = cp->recvbuflen; }
-  nb = recv(cp->socket, cp->recvbufp, *buflenp, 0);
-  urosError(nb < 0, return UROS_ERR_BADCONN,
-            ("Socket error [%s] while receiving at most %uz bytes from "
-             UROS_ADDRFMT"\n", strerror(errno), *buflenp,
-             UROS_ADDRARG(&cp->remaddr)));
+  do {
+    nb = recv_to(cp->socket, cp->recvbufp, *buflenp, MSG_NOSIGNAL,
+                 cp->recvtimeout);
+  } while (nb == -1 && (errno == EAGAIN || errno == EWOULDBLOCK));
+  urosError(nb == 0, return UROS_ERR_EOF,
+            ("Socket closed by remote before receiving at most %zu bytes from "
+             UROS_ADDRFMT"\n",
+             *buflenp, UROS_ADDRARG(&cp->remaddr)));
+  urosError(nb == -1, return UROS_ERR_BADCONN,
+            ("Socket error [%s] while receiving at most %zu bytes from "
+             UROS_ADDRFMT"\n",
+             strerror(errno), *buflenp, UROS_ADDRARG(&cp->remaddr)));
+  urosError(nb == -2, return UROS_ERR_TIMEOUT,
+            ("Socket timed out %lums while receiving at most %zu bytes from "
+             UROS_ADDRFMT"\n",
+             cp->recvtimeout, *buflenp, UROS_ADDRARG(&cp->remaddr)));
+
   *bufpp = cp->recvbufp;
   *buflenp = (size_t)nb;
   cp->recvlen += (size_t)nb;
@@ -474,16 +616,26 @@ uros_err_t uros_lld_conn_recvfrom(UrosConn *cp,
 uros_err_t uros_lld_conn_send(UrosConn *cp,
                               const void *bufp, size_t buflen) {
 
+  ssize_t nb;
+
   urosAssert(urosConnIsValid(cp));
   urosAssert(!(buflen > 0) || (bufp != NULL));
 
   while (buflen > 0) {
-    ssize_t nb = send(cp->socket, bufp, buflen, MSG_NOSIGNAL);
-    urosError(nb < 0, return UROS_ERR_BADCONN,
+    do {
+      nb = send_to(cp->socket, bufp, buflen, MSG_NOSIGNAL, cp->sendtimeout);
+    } while (nb == -1 && (errno == EAGAIN || errno == EWOULDBLOCK));
+    urosError(nb == -1, return UROS_ERR_BADCONN,
               ("Socket error [%s] while sending [%.*s] (%zu bytes) to "
                UROS_ADDRFMT"\n",
                strerror(errno), (int)buflen, bufp, buflen,
                UROS_ADDRARG(&cp->remaddr)));
+    urosError(nb == -2, return UROS_ERR_TIMEOUT,
+              ("Socket timed out %lums while sending [%.*s] (%zu bytes) to "
+               UROS_ADDRFMT"\n",
+               cp->sendtimeout, (int)buflen, bufp, buflen,
+               UROS_ADDRARG(&cp->remaddr)));
+
     buflen -= (size_t)nb;
     bufp = (const void *)((const uint8_t *)bufp + (ptrdiff_t)nb);
     cp->sentlen += (size_t)nb;
@@ -758,22 +910,7 @@ uros_err_t uros_lld_conn_settcpnodelay(UrosConn *cp, uros_bool_t enable) {
  */
 uros_err_t uros_lld_conn_getrecvtimeout(UrosConn *cp, uint32_t *msp) {
 
-  struct timeval tv;
-  int err;
-  socklen_t size = sizeof(tv);
-
-  urosAssert(urosConnIsValid(cp));
-  urosAssert(msp != NULL);
-
-  err = getsockopt(cp->socket, SOL_SOCKET, SO_RCVTIMEO, &tv, &size);
-  urosError(err != 0, return UROS_ERR_BADCONN,
-            ("Socket error [%s] while getting the recv() timeout\n",
-             strerror(errno)));
-  urosError(size != sizeof(tv), return UROS_ERR_BADCONN,
-            ("Wrong <struct timeval> size, got %zu, expected %zu\n",
-             size, sizeof(tv)));
-
-  *msp = (uint32_t)(tv.tv_sec * 1000) + (uint32_t)(tv.tv_usec / 1000);
+  *msp = cp->recvtimeout;
   return UROS_OK;
 }
 
@@ -790,19 +927,7 @@ uros_err_t uros_lld_conn_getrecvtimeout(UrosConn *cp, uint32_t *msp) {
  */
 uros_err_t uros_lld_conn_setrecvtimeout(UrosConn *cp, uint32_t ms) {
 
-  struct timeval tv;
-  int err;
-
-  urosAssert(urosConnIsValid(cp));
-
-  tv.tv_sec = ms / 1000;
-  ms -= tv.tv_sec * 1000;
-  tv.tv_usec = ms * 1000;
-
-  err = setsockopt(cp->socket, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
-  urosError(err != 0, return UROS_ERR_BADCONN,
-            ("Socket error [%s] while setting the recv() timeout to %lu\n",
-             strerror(errno), ms));
+  cp->recvtimeout = ms;
   return UROS_OK;
 }
 
@@ -819,22 +944,7 @@ uros_err_t uros_lld_conn_setrecvtimeout(UrosConn *cp, uint32_t ms) {
  */
 uros_err_t uros_lld_conn_getsendtimeout(UrosConn *cp, uint32_t *msp) {
 
-  struct timeval tv;
-  int err;
-  socklen_t size = sizeof(tv);
-
-  urosAssert(urosConnIsValid(cp));
-  urosAssert(msp != NULL);
-
-  err = getsockopt(cp->socket, SOL_SOCKET, SO_SNDTIMEO, &tv, &size);
-  urosError(err != 0, return UROS_ERR_BADCONN,
-            ("Socket error [%s] while getting the send() timeout\n",
-             strerror(errno)));
-  urosError(size != sizeof(tv), return UROS_ERR_BADCONN,
-            ("Wrong <struct timeval> size, got %zu, expected %zu\n",
-             size, sizeof(tv)));
-
-  *msp = (uint32_t)(tv.tv_sec * 1000) + (uint32_t)(tv.tv_usec / 1000);
+  *msp = cp->sendtimeout;
   return UROS_OK;
 }
 
@@ -851,19 +961,7 @@ uros_err_t uros_lld_conn_getsendtimeout(UrosConn *cp, uint32_t *msp) {
  */
 uros_err_t uros_lld_conn_setsendtimeout(UrosConn *cp, uint32_t ms) {
 
-  struct timeval tv;
-  int err;
-
-  urosAssert(urosConnIsValid(cp));
-
-  tv.tv_sec = ms / 1000;
-  ms -= tv.tv_sec * 1000;
-  tv.tv_usec = ms * 1000;
-
-  err = setsockopt(cp->socket, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
-  urosError(err != 0, return UROS_ERR_BADCONN,
-            ("Socket error [%s] while setting the send() timeout to %lu\n",
-             strerror(errno), ms));
+  cp->sendtimeout = ms;
   return UROS_OK;
 }
 
