@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2012, Politecnico di Milano. All rights reserved.
+# Copyright (c) 2012-2013, Politecnico di Milano. All rights reserved.
 # 
 # Andrea Zoppi <texzk@email.it>
 # Martino Migliavacca <martino.migliavacca@gmail.com>

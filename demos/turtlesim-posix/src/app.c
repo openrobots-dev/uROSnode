@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2012, Politecnico di Milano. All rights reserved.
+Copyright (c) 2012-2013, Politecnico di Milano. All rights reserved.
 
 Andrea Zoppi <texzk@email.it>
 Martino Migliavacca <martino.migliavacca@gmail.com>
@@ -27,6 +27,13 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+
+/**
+ * @file    app.c
+ * @author  Andrea Zoppi <texzk@email.it>
+ *
+ * @brief   Application source code.
+ */
 
 /*===========================================================================*/
 /* HEADER FILES                                                              */

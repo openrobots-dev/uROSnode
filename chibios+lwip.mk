@@ -1,7 +1,7 @@
 # Makefile include for uROSnode
 
 ifeq ($(UROS),)
-  # Set the default uROSnode root directory to "<CHIBIOSOS>/ext/uros"
+  # Set the default uROSnode root directory to "<CHIBIOS>/ext/uros"
   UROS = $(CHIBIOS)/ext/uros
   $(info <UROS> folder automatically set to: $(UROS))
 endif
