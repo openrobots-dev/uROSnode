@@ -159,45 +159,61 @@ void rosout_fetch(struct msg__rosgraph_msgs__Log **msgpp) {
 /* Sets its own paramaters.*/
 void app_set_params(void) {
 
+  static const UrosNodeConfig *const cfgp = &urosNode.config;
+
   UrosString name;
   UrosRpcParam value;
   UrosRpcResponse response;
   uros_err_t err;
   (void)err;
 
+  urosAssert(urosStringNotEmpty(&cfgp->nodeName));
+  urosAssert(cfgp->nodeName.datap[0] == '/');
+
   urosRpcParamObjectInit(&value, UROS_RPCP_INT);
   urosRpcResponseObjectInit(&response);
 
+  /* Prepare the background prefix.*/
+  name.length = cfgp->nodeName.length + 13;
+  name.datap = (char*)urosAlloc(name.length);
+  urosAssert(name.datap != NULL);
+  memcpy(name.datap, &cfgp->nodeName.datap, cfgp->nodeName.length);
+  memcpy(name.datap + cfgp->nodeName.length, "/background_?", 13);
+
   /* Red background color component.*/
-  name = urosStringAssignZ("/turtlesim/background_r");
+  name.datap[name.length - 1] = 'r';
   value.value.int32 = 123;
-  err = urosRpcCallSetParam(&urosNode.config.masterAddr,
-                            &urosNode.config.nodeName,
+  err = urosRpcCallSetParam(&cfgp->masterAddr,
+                            &cfgp->nodeName,
                             &name, &value, &response);
   urosAssert(err == UROS_OK);
   urosRpcResponseClean(&response);
 
   /* Green background color component.*/
-  name = urosStringAssignZ("/turtlesim/background_g");
-  value.value.int32 = 123;
-  err = urosRpcCallSetParam(&urosNode.config.masterAddr,
-                            &urosNode.config.nodeName,
+  name.datap[name.length - 1] = 'g';
+  value.value.int32 = 132;
+  err = urosRpcCallSetParam(&cfgp->masterAddr,
+                            &cfgp->nodeName,
                             &name, &value, &response);
   urosAssert(err == UROS_OK);
   urosRpcResponseClean(&response);
 
   /* Blue background color component.*/
-  name = urosStringAssignZ("/turtlesim/background_b");
-  value.value.int32 = 123;
-  err = urosRpcCallSetParam(&urosNode.config.masterAddr,
-                            &urosNode.config.nodeName,
+  name.datap[name.length - 1] = 'b';
+  value.value.int32 = 213;
+  err = urosRpcCallSetParam(&cfgp->masterAddr,
+                            &cfgp->nodeName,
                             &name, &value, &response);
   urosAssert(err == UROS_OK);
+
+  urosStringClean(&name);
   urosRpcResponseClean(&response);
 }
 
 /* Deletes its own paramaters.*/
 void app_delete_params(void) {
+
+  static const UrosNodeConfig *const cfgp = &urosNode.config;
 
   UrosString name;
   UrosRpcResponse response;
@@ -206,8 +222,15 @@ void app_delete_params(void) {
 
   urosRpcResponseObjectInit(&response);
 
+  /* Prepare the background prefix.*/
+  name.length = cfgp->nodeName.length + 13;
+  name.datap = (char*)urosAlloc(name.length);
+  urosAssert(name.datap != NULL);
+  memcpy(name.datap, &cfgp->nodeName.datap, cfgp->nodeName.length);
+  memcpy(name.datap + cfgp->nodeName.length, "/background_?", 13);
+
   /* Red background color component.*/
-  name = urosStringAssignZ("/turtlesim/background_r");
+  name.datap[name.length - 1] = 'r';
   err = urosRpcCallDeleteParam(&urosNode.config.masterAddr,
                                &urosNode.config.nodeName,
                                &name, &response);
@@ -215,7 +238,7 @@ void app_delete_params(void) {
   urosRpcResponseClean(&response);
 
   /* Green background color component.*/
-  name = urosStringAssignZ("/turtlesim/background_g");
+  name.datap[name.length - 1] = 'g';
   err = urosRpcCallDeleteParam(&urosNode.config.masterAddr,
                                &urosNode.config.nodeName,
                                &name, &response);
@@ -223,11 +246,13 @@ void app_delete_params(void) {
   urosRpcResponseClean(&response);
 
   /* Blue background color component.*/
-  name = urosStringAssignZ("/turtlesim/background_b");
+  name.datap[name.length - 1] = 'b';
   err = urosRpcCallDeleteParam(&urosNode.config.masterAddr,
                                &urosNode.config.nodeName,
                                &name, &response);
   urosAssert(err == UROS_OK);
+
+  urosStringClean(&name);
   urosRpcResponseClean(&response);
 }
 
