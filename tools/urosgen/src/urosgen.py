@@ -691,7 +691,7 @@ class MsgType:
                     text += tab + '}\n'
                 elif primitive_map.has_key(f.rostype):
                     text += tab + 'urosTcpRosSend(tcpstp, %s,\n' % enpstr
-                    text += tab + '                (size_t)%s * sizeof(%s)); _CHKOK\n' % (lenstr, f.ctype)
+                    text += tab + '               (size_t)%s * sizeof(%s)); _CHKOK\n' % (lenstr, f.ctype)
                 else:
                     cplxtype = self.cplxtypes[f.rostype]
                     text += tab + 'for (i = 0; i < %s; ++i) {\n' % lenstr
@@ -1785,7 +1785,7 @@ class CodeGen:
                 text += tab*2 + '"%s",\n' % name
                 text += tab*2 + '"%s",\n' % rostype
                 text += tab*2 + '(uros_proc_f)pub_tpc%s\n' % mangled_name(name)
-                text += tab + ');\n'
+                text += tab + ');\n\n'
             text = text[:-1]
         else:
             text += tab + '/* No topics to publish.*/\n'
@@ -1808,7 +1808,7 @@ class CodeGen:
                 text += tab + '/* %s */\n' % name
                 text += tab + 'urosNodeUnpublishTopicSZ(\n'
                 text += tab*2 + '"%s"\n' % name
-                text += tab + ');\n'
+                text += tab + ');\n\n'
             text = text[:-1]
         else:
             text += tab + '/* No topics to unpublish.*/\n'
@@ -2039,7 +2039,7 @@ def print_usage():
     gen = CodeGen()
     print '\n[Options]'
     for k in sorted(gen.opts):
-        print '%s=%s' % (k, gen.opts[k])
+        print '%s = %s' % (k, gen.opts[k])
     print '\n[PubTopics]\n'
     print '[SubTopics]\n'
     print '[PubServices]\n'
