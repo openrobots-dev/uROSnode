@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project>
+	<configuration id="cdt.managedbuild.toolchain.gnu.base.1437498008" name="Default">
+		<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
+			<provider class="org.eclipse.cdt.core.language.settings.providers.LanguageSettingsGenericProvider" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider" name="CDT User Setting Entries" prefer-non-shared="true" store-entries-with-project="true">
+				<language id="org.eclipse.cdt.core.gcc">
+					<resource project-relative-path="">
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/chibios/ext/uros/include">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/chibios/os/kernel/include">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/chibios/os/hal/include">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/chibios/os/hal/platforms/STM32">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/chibios/os/hal/platforms/STM32/GPIOv2">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/chibios/os/hal/platforms/STM32/USBv1">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/chibios/os/hal/platforms/STM32F2xx">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/chibios/os/ports/common/ARMCMx">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/chibios/os/ports/common/ARMCMx/CMSIS/include">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/chibios/os/ports/GCC/ARMCMx">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/chibios/os/ports/GCC/ARMCMx/STM32F2xx">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/chibios/os/various">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/chibios/os/various/lwip_bindings">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/chibios/os/various/lwip_bindings/arch">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/chibios/ext/lwip/src/include/ipv4/lwip">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/chibios/test">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/tools/GNU Tools ARM Embedded/4.6 2012q4/arm-none-eabi/include">
+							<flag value="BUILTIN"/>
+						</entry>
+						<entry kind="includePath" name="/home/texzk/ChibiStudio/tools/GNU Tools ARM Embedded/4.6 2012q4/lib/gcc/arm-none-eabi/4.6.2/include">
+							<flag value="BUILTIN"/>
+						</entry>
+					</resource>
+				</language>
+			</provider>
+			<provider copy-of="extension" id="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser"/>
+			<provider-reference id="org.eclipse.cdt.managedbuilder.core.MBSLanguageSettingsProvider" ref="shared-provider"/>
+		</extension>
+	</configuration>
+</project>
