@@ -163,106 +163,6 @@ void rosout_fetch(struct msg__rosgraph_msgs__Log **msgpp) {
 
 /*~~~ APPLICATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/* Sets its own paramaters.*/
-void app_set_params(void) {
-
-  static const UrosNodeConfig *const cfgp = &urosNode.config;
-
-  UrosString name;
-  UrosRpcParam value;
-  UrosRpcResponse response;
-  uros_err_t err;
-  (void)err;
-
-  urosAssert(urosStringNotEmpty(&cfgp->nodeName));
-  urosAssert(cfgp->nodeName.datap[0] == '/');
-
-  urosRpcParamObjectInit(&value, UROS_RPCP_INT);
-  urosRpcResponseObjectInit(&response);
-
-  /* Prepare the background prefix.*/
-  name.length = cfgp->nodeName.length + 13;
-  name.datap = (char*)urosAlloc(name.length);
-  urosAssert(name.datap != NULL);
-  memcpy(name.datap, cfgp->nodeName.datap, cfgp->nodeName.length);
-  memcpy(name.datap + cfgp->nodeName.length, "/background_?", 13);
-
-  /* Red background color component.*/
-  name.datap[name.length - 1] = 'r';
-  value.value.int32 = 123;
-  err = urosRpcCallSetParam(&cfgp->masterAddr,
-                            &cfgp->nodeName,
-                            &name, &value, &response);
-  urosAssert(err == UROS_OK);
-  urosRpcResponseClean(&response);
-
-  /* Green background color component.*/
-  name.datap[name.length - 1] = 'g';
-  value.value.int32 = 132;
-  err = urosRpcCallSetParam(&cfgp->masterAddr,
-                            &cfgp->nodeName,
-                            &name, &value, &response);
-  urosAssert(err == UROS_OK);
-  urosRpcResponseClean(&response);
-
-  /* Blue background color component.*/
-  name.datap[name.length - 1] = 'b';
-  value.value.int32 = 213;
-  err = urosRpcCallSetParam(&cfgp->masterAddr,
-                            &cfgp->nodeName,
-                            &name, &value, &response);
-  urosAssert(err == UROS_OK);
-
-  urosStringClean(&name);
-  urosRpcResponseClean(&response);
-}
-
-/* Deletes its own paramaters.*/
-void app_delete_params(void) {
-
-  static const UrosNodeConfig *const cfgp = &urosNode.config;
-
-  UrosString name;
-  UrosRpcResponse response;
-  uros_err_t err;
-  (void)err;
-
-  urosRpcResponseObjectInit(&response);
-
-  /* Prepare the background prefix.*/
-  name.length = cfgp->nodeName.length + 13;
-  name.datap = (char*)urosAlloc(name.length);
-  urosAssert(name.datap != NULL);
-  memcpy(name.datap, cfgp->nodeName.datap, cfgp->nodeName.length);
-  memcpy(name.datap + cfgp->nodeName.length, "/background_?", 13);
-
-  /* Red background color component.*/
-  name.datap[name.length - 1] = 'r';
-  err = urosRpcCallDeleteParam(&urosNode.config.masterAddr,
-                               &urosNode.config.nodeName,
-                               &name, &response);
-  urosAssert(err == UROS_OK);
-  urosRpcResponseClean(&response);
-
-  /* Green background color component.*/
-  name.datap[name.length - 1] = 'g';
-  err = urosRpcCallDeleteParam(&urosNode.config.masterAddr,
-                               &urosNode.config.nodeName,
-                               &name, &response);
-  urosAssert(err == UROS_OK);
-  urosRpcResponseClean(&response);
-
-  /* Blue background color component.*/
-  name.datap[name.length - 1] = 'b';
-  err = urosRpcCallDeleteParam(&urosNode.config.masterAddr,
-                               &urosNode.config.nodeName,
-                               &name, &response);
-  urosAssert(err == UROS_OK);
-
-  urosStringClean(&name);
-  urosRpcResponseClean(&response);
-}
-
 void app_initialize(void) {
 
   static const UrosString turtle1 = { 7, "turtle1" };
@@ -285,14 +185,6 @@ void app_initialize(void) {
 
   /* Spawn the first turtle.*/
   turtle_spawn(&turtle1, 0.5f * SANDBOX_WIDTH, 0.5f * SANDBOX_HEIGHT, 0.0f);
-
-  /* Set its own parameters.*/
-  app_set_params();
-}
-
-void app_uninitialize(void) {
-
-  app_delete_params();
 }
 
 /*~~~ TURTLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

@@ -164,7 +164,6 @@ void rosout_fetch(struct msg__rosgraph_msgs__Log **msgpp);
 /*~~~ APPLICATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 void app_initialize(void);
-void app_uninitialize(void);
 
 /*~~~ TURTLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 

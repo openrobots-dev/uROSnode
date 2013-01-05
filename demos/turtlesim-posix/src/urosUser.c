@@ -223,20 +223,23 @@ void urosUserSubscribeParams(void) {
 
   static const UrosString *const namep = &urosNode.config.nodeName;
 
-  char *paramp = urosAlloc(namep->length + 14);
-  urosAssert(paramp != NULL);
-  memcpy(paramp, namep->datap, namep->length);
-  memcpy(paramp + namep->length, "/background_X\0", 14);
+  UrosString param;
+
+  param.length = namep->length + 13;
+  param.datap = (char*)urosAlloc(param.length);
+  urosAssert(param.datap != NULL);
+  memcpy(param.datap, namep->datap, namep->length);
+  memcpy(param.datap + namep->length, "/background_?", 13);
 
   /* Subscribe to background color components.*/
-  paramp[namep->length + 12] = 'r';
-  urosNodeSubscribeParamSZ(paramp);
-  paramp[namep->length + 12] = 'g';
-  urosNodeSubscribeParamSZ(paramp);
-  paramp[namep->length + 12] = 'b';
-  urosNodeSubscribeParamSZ(paramp);
+  param.datap[param.length - 1] = 'r';
+  urosNodeSubscribeParam(&param);
+  param.datap[param.length - 1] = 'g';
+  urosNodeSubscribeParam(&param);
+  param.datap[param.length - 1] = 'b';
+  urosNodeSubscribeParam(&param);
 
-  urosFree(paramp);
+  urosStringClean(&param);
 }
 
 /**
@@ -247,20 +250,23 @@ void urosUserUnsubscribeParams(void) {
 
   static const UrosString *const namep = &urosNode.config.nodeName;
 
-  char *paramp = urosAlloc(namep->length + 14);
-  urosAssert(paramp != NULL);
-  memcpy(paramp, namep->datap, namep->length);
-  memcpy(paramp + namep->length, "/background_X\0", 14);
+  UrosString param;
+
+  param.length = namep->length + 13;
+  param.datap = (char*)urosAlloc(param.length);
+  urosAssert(param.datap != NULL);
+  memcpy(param.datap, namep->datap, namep->length);
+  memcpy(param.datap + namep->length, "/background_?", 13);
 
   /* Unsubscribe from background color components.*/
-  paramp[namep->length + 12] = 'r';
-  urosNodeUnsubscribeParamSZ(paramp);
-  paramp[namep->length + 12] = 'g';
-  urosNodeUnsubscribeParamSZ(paramp);
-  paramp[namep->length + 12] = 'b';
-  urosNodeUnsubscribeParamSZ(paramp);
+  param.datap[param.length - 1] = 'r';
+  urosNodeUnsubscribeParam(&param);
+  param.datap[param.length - 1] = 'g';
+  urosNodeUnsubscribeParam(&param);
+  param.datap[param.length - 1] = 'b';
+  urosNodeUnsubscribeParam(&param);
 
-  urosFree(paramp);
+  urosStringClean(&param);
 }
 
 /**
