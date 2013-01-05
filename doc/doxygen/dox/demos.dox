@@ -30,12 +30,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /** @page pag_demos Demos
 
-@section sec_demos_chibilwip turtlesim-chibios+lwip
+@section sec_demos_posix turtlesim-posix
 
 TODO
 
 
-@section sec_demos_posix turtlesim-posix
+@section sec_demos_chibilwip turtlesim-chibios+lwip
 
 TODO
 

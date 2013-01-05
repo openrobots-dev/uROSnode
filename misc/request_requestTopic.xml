@@ -1,9 +1,0 @@
-POST / HTTP/1.1
-User-Agent: XMLRPC++ 0.7
-Host: localhost:48821
-Content-Type: text/xml
-Content-length: 302
-
-<?xml version="1.0"?>
-<methodCall><methodName>requestTopic</methodName>
-<params><param><value>/rosout</value></param><param><value>/rosout</value></param><param><value><array><data><value><array><data><value>TCPROS</value></data></array></value></data></array></value></param></params></methodCall>
