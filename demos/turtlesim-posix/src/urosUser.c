@@ -221,25 +221,48 @@ void urosUserUnpublishServices(void) {
  */
 void urosUserSubscribeParams(void) {
 
-  static const UrosString *const namep = &urosNode.config.nodeName;
+  static const UrosNodeConfig *const cfgp = &urosNode.config;
 
-  UrosString param;
+  UrosString paramname;
+  UrosRpcParam paramval;
+  UrosRpcResponse res;
 
-  param.length = namep->length + 13;
-  param.datap = (char*)urosAlloc(param.length);
-  urosAssert(param.datap != NULL);
-  memcpy(param.datap, namep->datap, namep->length);
-  memcpy(param.datap + namep->length, "/background_?", 13);
+  paramname.length = cfgp->nodeName.length + 13;
+  paramname.datap = (char*)urosAlloc(paramname.length);
+  urosAssert(paramname.datap != NULL);
+  memcpy(paramname.datap, cfgp->nodeName.datap, cfgp->nodeName.length);
+  memcpy(paramname.datap + cfgp->nodeName.length, "/background_?", 13);
+  urosRpcResponseObjectInit(&res);
+  urosRpcParamObjectInit(&paramval, UROS_RPCP_INT);
 
-  /* Subscribe to background color components.*/
-  param.datap[param.length - 1] = 'r';
-  urosNodeSubscribeParam(&param);
-  param.datap[param.length - 1] = 'g';
-  urosNodeSubscribeParam(&param);
-  param.datap[param.length - 1] = 'b';
-  urosNodeSubscribeParam(&param);
+  /* Red component set and subscribed to.*/
+  paramname.datap[paramname.length - 1] = 'r';
+  paramval.value.int32 = 123;
+  urosRpcCallSetParam(&cfgp->masterAddr, &cfgp->nodeName,
+                      &paramname, &paramval, &res);
+  urosRpcResponseClean(&res);
+  urosNodeSubscribeParam(&paramname);
 
-  urosStringClean(&param);
+  /* Green component set and subscribed to.*/
+  paramname.datap[paramname.length - 1] = 'g';
+  urosRpcResponseObjectInit(&res);
+  paramval.value.int32 = 132;
+  urosRpcCallSetParam(&cfgp->masterAddr, &cfgp->nodeName,
+                      &paramname, &paramval, &res);
+  urosRpcResponseClean(&res);
+  urosNodeSubscribeParam(&paramname);
+
+  /* Blue component set and subscribed to.*/
+  paramname.datap[paramname.length - 1] = 'b';
+  urosRpcResponseObjectInit(&res);
+  paramval.value.int32 = 213;
+  urosRpcCallSetParam(&cfgp->masterAddr, &cfgp->nodeName,
+                      &paramname, &paramval, &res);
+  urosRpcResponseClean(&res);
+  urosNodeSubscribeParam(&paramname);
+
+  urosRpcParamClean(&paramval, UROS_TRUE);
+  urosStringClean(&paramname);
 }
 
 /**
@@ -248,25 +271,40 @@ void urosUserSubscribeParams(void) {
  */
 void urosUserUnsubscribeParams(void) {
 
-  static const UrosString *const namep = &urosNode.config.nodeName;
+  static const UrosNodeConfig *const cfgp = &urosNode.config;
 
-  UrosString param;
+  UrosString paramname;
+  UrosRpcResponse res;
 
-  param.length = namep->length + 13;
-  param.datap = (char*)urosAlloc(param.length);
-  urosAssert(param.datap != NULL);
-  memcpy(param.datap, namep->datap, namep->length);
-  memcpy(param.datap + namep->length, "/background_?", 13);
+  paramname.length = cfgp->nodeName.length + 13;
+  paramname.datap = (char*)urosAlloc(paramname.length);
+  urosAssert(paramname.datap != NULL);
+  memcpy(paramname.datap, cfgp->nodeName.datap, cfgp->nodeName.length);
+  memcpy(paramname.datap + cfgp->nodeName.length, "/background_?", 13);
+  urosRpcResponseObjectInit(&res);
 
-  /* Unsubscribe from background color components.*/
-  param.datap[param.length - 1] = 'r';
-  urosNodeUnsubscribeParam(&param);
-  param.datap[param.length - 1] = 'g';
-  urosNodeUnsubscribeParam(&param);
-  param.datap[param.length - 1] = 'b';
-  urosNodeUnsubscribeParam(&param);
+  /* Red component unsubscribed from and deleted.*/
+  paramname.datap[paramname.length - 1] = 'r';
+  urosNodeUnsubscribeParam(&paramname);
+  urosRpcCallDeleteParam(&cfgp->masterAddr, &cfgp->nodeName,
+                         &paramname, &res);
+  urosRpcResponseClean(&res);
 
-  urosStringClean(&param);
+  /* Green component unsubscribed from and deleted.*/
+  paramname.datap[paramname.length - 1] = 'g';
+  urosNodeUnsubscribeParam(&paramname);
+  urosRpcCallDeleteParam(&cfgp->masterAddr, &cfgp->nodeName,
+                         &paramname, &res);
+  urosRpcResponseClean(&res);
+
+  /* Blue component unsubscribed from and deleted.*/
+  paramname.datap[paramname.length - 1] = 'b';
+  urosNodeUnsubscribeParam(&paramname);
+  urosRpcCallDeleteParam(&cfgp->masterAddr, &cfgp->nodeName,
+                         &paramname, &res);
+  urosRpcResponseClean(&res);
+
+  urosStringClean(&paramname);
 }
 
 /**
