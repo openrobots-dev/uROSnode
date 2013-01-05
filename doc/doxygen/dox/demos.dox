@@ -30,13 +30,100 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /** @page pag_demos Demos
 
+The package provides a <i>turtlesim</i> demo, which is quasi-equivalent to the
+<a href="http://www.ros.org/wiki/turtlesim#turtlesim_node">turtlesim_node</a>
+official ROS node. It supports all of its topics, services and parameters. The
+maximum number of turtles is bounded by the @p MAX_TURTLES constant.
+The turtle pose is updated at 1&nbsp;kHz, and streamed at 100&nbsp;Hz.
+
+Message types and handlers were first generated with the following
+<tt>urosgen.py</tt> configuration file (also found inside demo folders):
+<pre class="fragment"><span class="comment"># urosgen.py configuration file for turtlesim</span>
+&nbsp;
+<span class="preprocessor">[Options]</span>
+<span class="paramname">author</span>          = <span class="stringliteral">Andrea Zoppi &lt;texzk@email.it&gt;</span>
+<span class="paramname">licenseFile</span>     = <span class="stringliteral">../../COPYING</span>
+<span class="paramname">includeDir</span>      = <span class="stringliteral">include</span>
+<span class="paramname">sourceDir</span>       = <span class="stringliteral">src</span>
+<span class="paramname">nodeName</span>        = <span class="stringliteral">turtlesim</span>
+<span class="paramname">fieldComments</span>   = <span class="stringliteral">False</span>
+&nbsp;
+<span class="preprocessor">[PubTopics]</span>
+<span class="paramname">rosout</span>          = <span class="stringliteral">rosgraph_msgs/Log</span>
+<span class="paramname">turtleX/pose</span>    = <span class="stringliteral">turtlesim/Pose</span>
+&nbsp;
+<span class="preprocessor">[SubTopics]</span>
+<span class="paramname">turtleX/command_velocity</span>    = <span class="stringliteral">turtlesim/Velocity</span>
+&nbsp;
+<span class="preprocessor">[PubServices]</span>
+<span class="paramname">clear</span>                       = <span class="stringliteral">std_srvs/Empty</span>
+<span class="paramname">kill</span>                        = <span class="stringliteral">turtlesim/Kill</span>
+<span class="paramname">spawn</span>                       = <span class="stringliteral">turtlesim/Spawn</span>
+<span class="paramname">turtleX/set_pen</span>             = <span class="stringliteral">turtlesim/SetPen</span>
+<span class="paramname">turtleX/teleport_absolute</span>   = <span class="stringliteral">turtlesim/TeleportAbsolute</span>
+<span class="paramname">turtleX/teleport_relative</span>   = <span class="stringliteral">turtlesim/TeleportRelative</span>
+</pre>
+Since the name of <tt>turtleX/*</tt> topics and services changes with the
+turtle, their creation and deletion were moved to the application (<i>app</i>)
+module. This module handles the turtle @e spawn and @e kill operations, as well
+as the generation of <tt>/rosout</tt> messages.
+
+The demo comes into two ports: one developed with only <i>POSIX</i> API, and
+a second one which runs under <i>ChibiOS/RT</i> with the <i>LWIP</i> network
+stack.
+
 @section sec_demos_posix turtlesim-posix
 
-TODO
+This demo follows the <i>POSIX IEEE 1003.1-2004</i> standard for all of its
+low-level features. It was tested with <a href="http://www.linuxmint.com/">Linux
+Mint 14 Nadia</a> on a standard laptop from year 2009, and
+<a href="http://www.raspbian.org/">Raspbian Wheezy</a> on a
+<a href="http://www.raspberrypi.org/">Raspberry Pi</a> <i>model B</i> with
+256&nbsp;MB of RAM.
+
+It can be compiled by running the canonical @p make command inside the root
+folder of the demo. The generated executable @p turtlesim can be found inside
+the @p build directory. It needs the <a href="http://gcc.gnu.org/">GCC</a>
+toolchain, and the POSIX-compliant libraries and headers must be reachable
+by the toolchain environment.
+The project is developed with the <a href="http://www.eclipse.org/">Eclipse</a>
+IDE. A <tt>.launch</tt> file provides the debug configuration.
+
+The <tt>/turtlesim</tt> node should be shut down through the ROS command
+<pre class="fragment">rosnode kill /turtlesim</pre>
+and the application will exit.
 
 
 @section sec_demos_chibilwip turtlesim-chibios+lwip
 
-TODO
+This demo uses a combination of the <a href="http://www.chibios.org/">ChibiOS/RT</a>
+RTOS and the <a href="http://savannah.nongnu.org/projects/lwip/">LWIP</a>
+network stack, and can run on an <a href="http://www.arm.com/products/processors/cortex-m/cortex-m4-processor.php">
+ARM Cortex M4</a> core.
+Specifically, it was tested with <i>ChibiOS/RT</i> 2.5.2 and <i>LWIP</i> 1.4.1.
+The processor is a <a href="http://www.st.com/stm32f4">STM32F407</a> on
+a <a href="https://github.com/openrobots-dev/R2P_GW_module">custom board</a>
+with Ethernet capabilities, by using a
+<a href="http://www.ti.com/product/dp83848c">DP83848</a> PHY in <i>RMII</i>
+mode.
+The board also exposes an UART, a CAN, and an USB-FS ports. Only the USB port
+is used, as a serial port terminal/shell emulator.
+
+It can be compiled by running the canonical @p make command inside the root
+folder of the demo. The generated executable <tt>ch.bin</tt> can be found inside
+the @p build directory. It is best if the &mu;ROSnode root folder is located at
+the <tt>chibios/ext/uros</tt> folder of
+<a href="http://sourceforge.net/projects/chibios/files/ChibiStudio/">ChibiStudio</a>,
+so that the entire <a href="https://launchpad.net/gcc-arm-embedded">GCC ARM
+embedded</a> toolchain environment is set for free. An experimental
+<a href="http://forum.chibios.org/phpbb/viewtopic.php?f=13&t=624">version for
+<i>Linux</i></a> is available, and is the one used by the &mu;ROSnode
+developers. A pair of <tt>.launch</tt> files provide the
+<a href="http://openocd.sourceforge.net/">OpenOCD</a> hardware debug
+configurations (<i>flash then run</i>, and <i>run only</i>).
+
+The <tt>/turtlesim</tt> node should be shut down through the ROS command
+<pre class="fragment">rosnode kill /turtlesim</pre>
+but all the other demo features will keep working.
 
 */

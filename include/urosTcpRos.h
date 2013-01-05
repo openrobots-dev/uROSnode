@@ -103,7 +103,7 @@ typedef struct UrosTcpRosArray {
  * @return
  *          Error code.
  */
-#if UROS_ENDIANNESS == 321 || defined(__DOXYGEN__)
+#if UROS_ENDIANNESS == 321
 #define urosTcpRosRecvRaw(tcpstp, value) \
   urosTcpRosRecvRev((tcpstp), &(value), sizeof(value))
 #else
@@ -126,7 +126,7 @@ typedef struct UrosTcpRosArray {
  * @return
  *          Error code.
  */
-#if UROS_ENDIANNESS == 321 || defined(__DOXYGEN__)
+#if UROS_ENDIANNESS == 321
 #define urosTcpRosSendRaw(tcpstp, value) \
   urosTcpRosSendRev((tcpstp), &(value), sizeof(value))
 #else
