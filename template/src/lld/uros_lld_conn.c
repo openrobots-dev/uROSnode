@@ -39,9 +39,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* HEADER FILES                                                              */
 /*===========================================================================*/
 
-#include "../../../include/urosBase.h"
-#include "../../../include/urosUser.h"
-#include "../../../include/urosConn.h"
 #include "../../../include/lld/uros_lld_conn.h"
 
 /*===========================================================================*/

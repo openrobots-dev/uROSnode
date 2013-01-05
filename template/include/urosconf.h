@@ -59,6 +59,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /** @brief Default ROS node name, C string.*/
 #define UROS_NODE_NAME                      "/turtlesim"
 
+/** @brief Node thread priorty.*/
+#define UROS_NODE_THREAD_PRIO               1
+
+/** @brief Node thread stack size.*/
+#define UROS_NODE_THREAD_STKSIZE            2048
+
 /** @} */
 /** @} */
 
@@ -100,7 +106,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define UROS_XMLRPC_LISTENER_PORT           33333
 
 /** @brief Maximum concurrent connections for XMLRPC Slave API.*/
-#define UROS_XMLRPC_LISTENER_BACKLOG        8
+#define UROS_XMLRPC_LISTENER_BACKLOG        4
 
 /** @brief XMLRPC listener thread priority.*/
 #define UROS_XMLRPC_LISTENER_PRIO           2
@@ -132,10 +138,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /** @{ */
 
 /** @brief Default timeout for incoming XMLRPC transactions, in milliseconds.*/
-#define UROS_XMLRPC_RECVTIMEOUT             300
+#define UROS_XMLRPC_RECVTIMEOUT             3000
 
 /** @brief Default timeout for outgoing XMLRPC transactions, in milliseconds.*/
-#define UROS_XMLRPC_SENDTIMEOUT             300
+#define UROS_XMLRPC_SENDTIMEOUT             3000
 
 /** @} */
 /** @} */
@@ -162,7 +168,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define UROS_TCPROS_LISTENER_PORT           44444
 
 /** @brief Maximum number of partially set up TCPROS connections.*/
-#define UROS_TCPROS_LISTENER_BACKLOG        8
+#define UROS_TCPROS_LISTENER_BACKLOG        4
 
 /** @brief TCPROS listener thread priority.*/
 #define UROS_TCPROS_LISTENER_PRIO           3
@@ -178,7 +184,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /** @{ */
 
 /** @brief TCPROS Client thread pool size.*/
-#define UROS_TCPROS_CLIENT_POOLSIZE         2
+#define UROS_TCPROS_CLIENT_POOLSIZE         4
 
 /** @brief TCPROS Client thread priority.*/
 #define UROS_TCPROS_CLIENT_PRIO             60
@@ -194,16 +200,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /** @{ */
 
 /** @brief TCPROS Server thread pool size.*/
-#define UROS_TCPROS_SERVER_POOLSIZE         2
+#define UROS_TCPROS_SERVER_POOLSIZE         4
 
 /** @brief TCPROS Server thread priority.*/
 #define UROS_TCPROS_SERVER_PRIO             61
 
 /** @brief TCPROS server thread stack size.*/
 #define UROS_TCPROS_SERVER_STKSIZE          1024
-
-/** @brief Default timeout for TCPROS outgoing transactions, in milliseconds.*/
-#define UROS_TCPROS_SENDTIMEOUT             300
 
 /** @} */
 
@@ -214,6 +217,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /** @brief Reads the message definition, instead of skipping it.*/
 #define UROS_TCPROS_USE_MSGDEF              0
+
+/** @} */
+
+/** @name TCPROS timeouts configuration */
+/** @{ */
+
+/** @brief Default timeout for incoming TCPROS transactions, in milliseconds.*/
+#define UROS_TCPROS_RECVTIMEOUT             500
+
+/** @brief Default timeout for outgoing TCPROS transactions, in milliseconds.*/
+#define UROS_TCPROS_SENDTIMEOUT             500
 
 /** @} */
 /** @} */

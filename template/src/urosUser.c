@@ -67,25 +67,6 @@ void urosUserErrPrintf(const char *formatp, ...) {
 }
 
 /**
- * @brief   Initializes and allocates memory pools.
- * @details Function called at boot time, with platform-dependent stack size
- *          and alignment declarations.
- *
- * @pre     The memory pools of @p np have not been initialized yet.
- *
- * @param[in,out] np
- *          Pointer to an @p UrosNode object being initialized.
- */
-void urosUserAllocMemPools(UrosNode *np) {
-
-  urosAssert(np != NULL);
-
-  /* TODO: Initialize mempools with their description.*/
-  /* TODO: Load the actual memory chunks for worker thread stacks.*/
-  (void)np;
-}
-
-/**
  * @brief   Registers static message types.
  * @details This callback function is called at boot time to initialize the
  *          set of message types recognized by the system.
@@ -95,18 +76,6 @@ void urosUserAllocMemPools(UrosNode *np) {
 void urosUserRegisterStaticMsgTypes(void) {
 
   /* TODO: Register static message types.*/
-}
-
-/**
- * @brief   Creates the listener threads.
- * @details This callback function is called at boot time to create the
- *          listener threads of the middleware.
- *
- * @pre     The listener threads have not been created before.
- */
-void urosUserCreateListeners(void) {
-
-  /* TODO: Create listener threads.*/
 }
 
 /**

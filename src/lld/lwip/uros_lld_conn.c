@@ -805,3 +805,5 @@ const char *uros_lld_conn_lasterrortext(const UrosConn *cp) {
   return "<LWIP_ERROR>";
 #endif
 }
+
+/** @} */

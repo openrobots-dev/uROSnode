@@ -58,8 +58,8 @@ primitive_map = {
 }
 
 tab = '  '
-ROSMSG = '/opt/ros/groovy/bin/rosmsg' # FIXME: Remove
-ROSSRV = '/opt/ros/groovy/bin/rossrv' # FIXME: Remove
+ROSMSG = 'rosmsg'
+ROSSRV = 'rossrv'
 
 nameregex = re.compile('[a-zA-Z][a-zA-Z0-9_]*')
 pathregex = re.compile('[a-zA-Z][a-zA-Z0-9_]*([/][a-zA-Z][a-zA-Z0-9_]*)*')
@@ -90,7 +90,7 @@ def addslashes(text):
     def replace(c):
         return {
             "\\" : "\\\\",
-            "\"" : "\\\\",
+            "\"" : "\\\"",
             "\'" : "\\\'",
             "\n" : "\\n",
             "\r" : "\\r",

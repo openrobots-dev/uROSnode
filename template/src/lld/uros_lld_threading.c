@@ -39,9 +39,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* HEADER FILES                                                              */
 /*===========================================================================*/
 
-#include "../../../include/urosBase.h"
-#include "../../../include/urosUser.h"
-#include "../../../include/urosThreading.h"
 #include "../../../include/lld/uros_lld_threading.h"
 
 /*===========================================================================*/
@@ -174,10 +171,8 @@ uros_cnt_t uros_lld_sem_value(UrosSem *semp) {
  *
  * @param[in,out] mtxp
  *          Pointer to an allocated @p UrosMutex object.
- * @return
- *          Error code.
  */
-uros_err_t uros_lld_mutex_objectinit(UrosMutex *mtxp) {
+void uros_lld_mutex_objectinit(UrosMutex *mtxp) {
 
   urosAssert(mtxp != NULL);
 
@@ -524,6 +519,64 @@ uros_err_t uros_lld_thread_join(UrosThreadId id) {
 
   /* TODO: Join the requested thread to the caller one.*/
   return UROS_ERR_NOTIMPL;
+}
+
+/**
+ * @brief   Sleeps for some seconds.
+ * @details Puts the thread in sleep state for the provided amount of time.
+ *
+ * @param[in] sec
+ *          Number of seconds to sleep.
+ */
+void uros_lld_thread_sleepsec(uint32_t sec) {
+
+  /* TODO: Sleep for @p sec seconds.*/
+  (void)sec;
+}
+
+/**
+ * @brief   Sleeps for some milliseconds.
+ * @details Puts the thread in sleep state for the provided amount of time.
+ *
+ * @param[in] sec
+ *          Number of milliseconds to sleep.
+ */
+void uros_lld_thread_sleepmsec(uint32_t msec) {
+
+  /* TODO: Sleep for @p msec milliseconds.*/
+  (void)msec;
+}
+
+/**
+ * @brief   Sleeps for some microseconds.
+ * @details Puts the thread in sleep state for the provided amount of time.
+ *
+ * @param[in] sec
+ *          Number of microseconds to sleep.
+ */
+void uros_lld_thread_sleepusec(uint32_t usec) {
+
+  /* TODO: Sleep for @p usec microseconds.*/
+  (void)usec;
+}
+
+/**
+ * @brief   Current timestamp in milliseconds.
+ * @note    The resolution is in milliseconds, but the precision may not be.
+ *
+ * @return
+ *          The current timestamp, with a resolution of one millisecond.
+ */
+uint32_t uros_lld_threading_gettimestampmsec(void) {
+
+  struct timeval tv;
+  int err;
+  (void)err;
+
+  err = gettimeofday(&tv, NULL);
+  urosAssert(err == 0);
+
+  return (uint32_t)tv.tv_sec * 1000 + (uint32_t)tv.tv_usec / 1000;
 }
 
 /** @} */

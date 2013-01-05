@@ -982,3 +982,5 @@ const char *uros_lld_conn_lasterrortext(const UrosConn *cp) {
 
   return strerror(errno);
 }
+
+/** @} */
