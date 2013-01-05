@@ -65,6 +65,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define UROS_NOP    (void)(0)
 
 /**
+ * @brief   Endianness of the architecture.
+ * @details By default, it is set to <i>little-endian</i> through the constant
+ *          @p 123. To enable <i>big-endian</i>ness, define it as @p 321.
+ */
+#if !defined(UROS_ENDIANNESS) || defined(__DOXYGEN__)
+#define UROS_ENDIANNESS 123
+#endif
+#if UROS_ENDIANNESS != 123 && UROS_ENDIANNESS != 321
+#error "UROS_ENDIANNESS must be either 123 or 321"
+#endif
+
+/**
  * @brief   Pre-processes @p expr as a ROM string.
  *
  * @param[in] expr

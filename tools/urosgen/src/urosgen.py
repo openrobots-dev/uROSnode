@@ -1292,7 +1292,7 @@ class CodeGen:
                 mode = line.lower()
                 if modes.index(mode) != modeidx + 1:
                     text = 'Sections must be in the order:\n'
-                    for m in modes: text += tab + m
+                    for m in modes: text += tab + m + '\n'
                     raise ValueError(text)
                 modeidx += 1
                 continue

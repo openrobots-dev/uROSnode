@@ -90,6 +90,11 @@ typedef struct UrosTcpRosArray {
 
 /**
  * @brief   Reads a raw value.
+ * @details The raw value is received from a little-endian fashion.
+ * @warning On big endian architectures, be careful not to specify a @p value
+ *          of complex (@e struct or @e union) type, because the @b whole value
+ *          will be received in reverse order, not its primitive fields
+ *          individually as expected.
  *
  * @param[in,out] tcpstp
  *          Pointer to a TCPROS status with a working connection.
@@ -98,11 +103,21 @@ typedef struct UrosTcpRosArray {
  * @return
  *          Error code.
  */
+#if UROS_ENDIANNESS == 321 || defined(__DOXYGEN__)
+#define urosTcpRosRecvRaw(tcpstp, value) \
+  urosTcpRosRecvRev((tcpstp), &(value), sizeof(value))
+#else
 #define urosTcpRosRecvRaw(tcpstp, value) \
   urosTcpRosRecv((tcpstp), &(value), sizeof(value))
+#endif
 
 /**
  * @brief   Writes a raw value.
+ * @details The raw value is sent in a little-endian fashion.
+ * @warning On big endian architectures, be careful not to specify a @p value
+ *          of complex (@e struct or @e union) type, because the @b whole value
+ *          will be sent in reverse order, not its primitive fields
+ *          individually as expected.
  *
  * @param[in,out] tcpstp
  *          Pointer to a TCPROS status with a working connection.
@@ -111,8 +126,13 @@ typedef struct UrosTcpRosArray {
  * @return
  *          Error code.
  */
+#if UROS_ENDIANNESS == 321 || defined(__DOXYGEN__)
+#define urosTcpRosSendRaw(tcpstp, value) \
+  urosTcpRosSendRev((tcpstp), &(value), sizeof(value))
+#else
 #define urosTcpRosSendRaw(tcpstp, value) \
   urosTcpRosSend((tcpstp), &(value), sizeof(value))
+#endif
 
 /**
  * @brief   Generate a variable-length array structure.
@@ -168,10 +188,14 @@ uros_err_t urosTcpRosSkip(UrosTcpRosStatus *tcpstp, size_t length);
 uros_err_t urosTcpRosExpect(UrosTcpRosStatus *tcpstp, void *tokp, size_t toklen);
 uros_err_t urosTcpRosRecv(UrosTcpRosStatus *tcpstp,
                           void *bufp, size_t buflen);
+uros_err_t urosTcpRosRecvRev(UrosTcpRosStatus *tcpstp,
+                             void *bufp, size_t buflen);
 uros_err_t urosTcpRosRecvString(UrosTcpRosStatus *tcpstp,
                                 UrosString *strp);
 uros_err_t urosTcpRosSend(UrosTcpRosStatus *tcpstp,
                           const void *bufp, size_t buflen);
+uros_err_t urosTcpRosSendRev(UrosTcpRosStatus *tcpstp,
+                             const void *bufp, size_t buflen);
 uros_err_t urosTcpRosSendString(UrosTcpRosStatus *tcpstp,
                                 const UrosString *strp);
 uros_err_t urosTcpRosSendStringSZ(UrosTcpRosStatus *tcpstp,

@@ -998,17 +998,65 @@ uros_err_t urosTcpRosRecv(UrosTcpRosStatus *tcpstp,
                   return tcpstp->err,
                   ("Error %s while receiving %zu bytes after [%.*s]\n",
                    urosErrorText(tcpstp->err), nb,
-                   (int)((ptrdiff_t)curp - (ptrdiff_t)bufp), bufp));
+                   (int)(buflen - pending), bufp));
       } else {
         urosError(tcpstp->err != UROS_OK, return tcpstp->err,
                   ("Error %s while receiving %zu bytes after [%.*s]\n",
                    urosErrorText(tcpstp->err), nb,
-                   (int)((ptrdiff_t)curp - (ptrdiff_t)bufp), bufp));
+                   (int)(buflen - pending), bufp));
       }
     }
     memcpy(curp, recvp, nb);
     pending -= nb;
     curp += nb;
+  }
+  return tcpstp->err = UROS_OK;
+}
+
+/**
+ * @brief   Reads some data from the incoming TCPROS stream.
+ * @details Data is read in a reversed (per-byte) fashion.
+ *
+ * @param[in,out] tcpstp
+ *          Pointer to a TCPROS status with a working connection.
+ * @param[in] bufp
+ *          Pointer to the read buffer.
+ * @param[in] buflen
+ *          Length of the data to be read, in bytes. Can be @p 0.
+ * @return
+ *          Error code.
+ */
+uros_err_t urosTcpRosRecvRev(UrosTcpRosStatus *tcpstp,
+                             void *bufp, size_t buflen) {
+
+  uint8_t *recvp, *curp;
+  size_t pending;
+
+  urosAssert(tcpstp != NULL);
+  urosAssert(urosConnIsValid(tcpstp->csp));
+  urosAssert(!(buflen > 0) || bufp != NULL);
+
+  curp = (uint8_t*)bufp + buflen;
+  pending = buflen;
+  while (pending > 0) {
+    size_t nb = pending;
+    tcpstp->err = urosConnRecv(tcpstp->csp, (void**)&recvp, &nb);
+    if (tcpstp->err != UROS_OK) {
+      if (tcpstp->err == UROS_ERR_EOF && nb < pending) {
+        urosError(tcpstp->err == UROS_ERR_EOF && nb < pending,
+                  return tcpstp->err,
+                  ("Error %s while receiving %zu bytes\n",
+                   urosErrorText(tcpstp->err), nb));
+      } else {
+        urosError(tcpstp->err != UROS_OK, return tcpstp->err,
+                  ("Error %s while receiving %zu bytes\n",
+                   urosErrorText(tcpstp->err), nb));
+      }
+    }
+    while (nb-- > 0) {
+      *--curp = *recvp++;
+      --pending;
+    }
   }
   return tcpstp->err = UROS_OK;
 }
@@ -1083,6 +1131,36 @@ uros_err_t urosTcpRosSend(UrosTcpRosStatus *tcpstp,
 }
 
 /**
+ * @brief   Writes some data to the outgoing TCPROS stream.
+ * @details Data is written in a reversed (per-byte) fashion.
+ *
+ * @param[in,out] tcpstp
+ *          Pointer to a TCPROS status with a working connection.
+ * @param[in] bufp
+ *          Pointer to the buffered data to be written.
+ * @param[in] buflen
+ *          Length of the data to be written, in bytes. Can be @p 0.
+ * @return
+ *          Error code.
+ */
+uros_err_t urosTcpRosSendRev(UrosTcpRosStatus *tcpstp,
+                             const void *bufp, size_t buflen) {
+
+  urosAssert(tcpstp != NULL);
+  urosAssert(tcpstp->csp != NULL);
+  urosAssert(!(buflen > 0) || bufp != NULL);
+
+  for (; buflen > 0; --buflen) {
+    tcpstp->err = urosConnSend(tcpstp->csp, bufp, 1);
+    urosError(tcpstp->err != UROS_OK, return tcpstp->err,
+              ("Error %s while sending [%*.s]\n",
+               urosErrorText(tcpstp->err), (int)buflen, bufp));
+    bufp = (const void *)((const uint8_t *)bufp + 1);
+  }
+  return tcpstp->err = UROS_OK;
+}
+
+/**
  * @brief   Writes a string to the outgoing TCPROS stream.
  *
  * @param[in,out] tcpstp
@@ -1102,7 +1180,7 @@ uros_err_t urosTcpRosSendString(UrosTcpRosStatus *tcpstp,
 
   /* Write the string length.*/
   size = (uint32_t)strp->length;
-  urosTcpRosSend(tcpstp, &size, sizeof(uint32_t));
+  urosTcpRosSendRaw(tcpstp, size);
   if (tcpstp->err != UROS_OK) { return tcpstp->err; }
 
   /* Write the string data.*/
@@ -1131,7 +1209,7 @@ uros_err_t urosTcpRosSendStringSZ(UrosTcpRosStatus *tcpstp,
 
   /* Write the string length.*/
   size = (strp != NULL) ? (uint32_t)strlen(strp) : 0;
-  urosTcpRosSend(tcpstp, &size, sizeof(uint32_t));
+  urosTcpRosSendRaw(tcpstp, size);
   if (tcpstp->err != UROS_OK) { return tcpstp->err; }
 
   /* Write the string data.*/
@@ -1331,16 +1409,6 @@ uros_err_t urosTcpRosServerThread(UrosConn *csp) {
       handler = tcpstp->topicp->procf;
     }
     urosMutexUnlock(&urosNode.status.pubServiceListLock);
-    if (err != UROS_OK) {
-      /* Write the error byte and string.*/
-      uint32_t length = 0;
-      tcpstp->errstr = urosStringCloneZ(urosErrorText(err));
-      urosTcpRosSend(tcpstp, &length, 1);
-      length = (uint32_t)tcpstp->errstr.length;
-      urosTcpRosSend(tcpstp, &length, sizeof(length));
-      urosTcpRosSend(tcpstp, tcpstp->errstr.datap, length);
-      goto _finally;
-    }
   } else {
     /* TCPROS topic connection header.*/
     urosMutexLock(&urosNode.status.pubTopicListLock);
@@ -1349,12 +1417,12 @@ uros_err_t urosTcpRosServerThread(UrosConn *csp) {
       handler = tcpstp->topicp->procf;
     }
     urosMutexUnlock(&urosNode.status.pubTopicListLock);
-    if (err != UROS_OK) {
-      /* Send an error message.*/
-      tcpstp->errstr = urosStringCloneZ(urosErrorText(err));
-      urosTcpRosSendError(tcpstp);
-      goto _finally;
-    }
+  }
+  if (err != UROS_OK) {
+    /* Send an error message.*/
+    tcpstp->errstr = urosStringCloneZ(urosErrorText(err));
+    urosTcpRosSendError(tcpstp);
+    goto _finally;
   }
 
   /* Send the response header.*/
