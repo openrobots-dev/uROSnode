@@ -41,22 +41,22 @@ when developing a node which should gather data from sensors, or control
 actuators, with the need of a RTOS or the availability of industrial-grade
 computers/microcontrollers.
 
-Sometimes there is no way to use <i>Python</i> code, or even a realiable
-<i>C++</i> compiler for such platforms. By choosing <i>ANSI C</i>, we are sure
-the code will always work as expected, because compilers have mature support
-for this language. If the application needs higher abstraction, <i>ANSI C</i>
+Sometimes there is no way to use @e Python code, or even a realiable <i>C++</i>
+compiler for such platforms. By choosing <i>ANSI C</i>, we are sure the code
+will work as it should, because compilers have mature support for this
+language. If the application needs higher abstraction, <i>ANSI C</i>
 is still compatible with the more advanced <i>C++</i> or <i>Objective C</i>, or
 there is at least a way to natively interface with libraries written in C
-(<i>JNI</i>, <i>C#</i> @p Dllimport, <i>Python</i> @p ctypes, ...).
+(@e JNI, @e C# @p Dllimport, @e Python @p ctypes, ...).
 
 Sometimes it is also preferrable not to introduce a centralized (un)marshalling
 middleware like with <a href="http://www.ros.org/wiki/rosserial">rosserial</a>.
-With @e centralized we mean that the <i>star</i> network topology is often
-common when using <i>rosserial</i> to interface microcontrollers. This happens
-when a set of microcontrollers are connected to the same native ROS machine,
-running several istances of <i>rosserial</i> virtual nodes only to (un)marshal
+With @e centralized we mean that the @e star network topology is common when
+using @e rosserial to interface microcontrollers. This happens when a set of
+microcontrollers are connected to the same native ROS machine,
+running several istances of @e rosserial virtual nodes only to (un)marshal
 messages. Depending on the application domain, centralized topologies may be
-discouraged. &mu;ROSnode still allows any <i>mesh</i> topologies, just like ROS
+discouraged. &mu;ROSnode still allows any @e mesh topologies, just like ROS
 itself.
 
 With the idea of an embedded system of today in mind, &mu;ROSnode was designed
@@ -76,20 +76,21 @@ optimizations enabled.
 @section sec_info_folders Folders
 
 The structure of the source package folders is the following:
-- <b>/</b>: Root folder, which contains Makefile sources to be included for your
-  platform
 - @b demos: This folder contains some usage examples, developed for different
   target platform
   - demo_xxx ...
 - @b doc: Documentation stuff
-  - @b doxygen: Resources for Doxygen processing
-    - @b dot: Graphviz <tt>.dot</tt> files
-    - @b dox: Doxygen <tt>.dox</tt> text-only files
+  - @b doxygen: Resource files for documentation generation by
+    <a href="http://www.doxygen.org/">Doxygen</a>
+    - @b dot: <tt>.dot</tt> files for <a href="http://www.graphviz.org/">Graphviz</a>,
+      and <tt>.msc</tt> files for <a href="http://www.mcternan.me.uk/mscgen/">Mscgen</a>
+    - @b dox: <tt>.dox</tt> text files for Doxygen
     - @b img: Images to be included in the documentation
   - @b html: HTML user manual
 - @b include: Header files
   - @b lld: Low-level driver headers
 - @b misc: Miscellaneous stuff, for experimental purposes
+- @b mk: Makefile scripts to be included by the Makefile of the user project
 - @b src: Source code files
   - @b lld: Low-level driver platform-specific sources
     - driver_xxx ...
@@ -228,7 +229,7 @@ simple, for example the following is for the <i>POSIX</i> port:
 <span class="comment"># Makefile include for uROSnode</span>
 &nbsp;
 <span class="preprocessor">ifeq</span> (@$(<span class="paramname">UROS</span>),)
-  @$(<span class="preprocessor">error</span> <span class="stringliteral">Please define <UROS> so that it points to the uROSnode root folder!</span>)
+  @$(<span class="preprocessor">error</span> <span class="stringliteral">Please define &lt;UROS&gt; so that it points to the uROSnode root folder!</span>)
 <span class="preprocessor">endif</span>
 &nbsp;
 <span class="comment"># Low Level Driver bindings for POSIX</span>
