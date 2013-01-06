@@ -30,36 +30,69 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /** @page pag_info General info
 
-@section sec_info_intro Introduction
-
-<b>uROSnode</b> is a middleware targeted to embedded systems which need to
+<b>&mu;ROSnode</b> is a middleware targeted to embedded systems which need to
 communicate with <a href="http://www.ros.org">ROS</a>, in a lightweight and
 fast way. It is developed in pure ANSI C, which makes it easily portable
 and optimizable by almost all the embedded system compilers.
 
-TODO
+The main idea is to enable the use of native ROS communication by embedded
+systems, without the need of a true ROS environment. This is especially true
+when developing a node which should gather data from sensors, or control
+actuators, with the need of a RTOS or the availability of industrial-grade
+computers/microcontrollers.
+
+Sometimes there is no way to use <i>Python</i> code, or even a realiable
+<i>C++</i> compiler for such platforms. By choosing <i>ANSI C</i>, we are sure
+the code will always work as expected, because compilers have mature support
+for this language. If the application needs higher abstraction, <i>ANSI C</i>
+is still compatible with the more advanced <i>C++</i> or <i>Objective C</i>, or
+there is at least a way to natively interface with libraries written in C
+(<i>JNI</i>, <i>C#</i> @p Dllimport, <i>Python</i> @p ctypes, ...).
+
+Sometimes it is also preferrable not to introduce a centralized (un)marshalling
+middleware like with <a href="http://www.ros.org/wiki/rosserial">rosserial</a>.
+With @e centralized we mean that the <i>star</i> network topology is often
+common when using <i>rosserial</i> to interface microcontrollers. This happens
+when a set of microcontrollers are connected to the same native ROS machine,
+running several istances of <i>rosserial</i> virtual nodes only to (un)marshal
+messages. Depending on the application domain, centralized topologies may be
+discouraged. &mu;ROSnode still allows any <i>mesh</i> topologies, just like ROS
+itself.
+
+With the idea of an embedded system of today in mind, &mu;ROSnode was designed
+to have a relatively small footprint, both for code and RAM. Preprocessor
+switches allow the user to generate machine code or allocate memory only for
+the needed features. In the fields of embedded systems and robotics,
+functionalities and communication patterns are frequently known in advance, so
+that it is possible to save and calibrate resource usage with a reasonable
+configuration. Even by enabling all the features it is still possible to
+generate binaries for high-end microcontrollers. For example, the whole
+@ref sec_demos_chibilwip "turtlesim-chibios+posix demo" binary (&mu;ROSnode +
+ChibiOS/RT + LWIP + turtlesim_node app + misc stuff) requires around
+300&nbsp;kB in the worst case, and around 130&nbsp;kB with all the
+optimizations enabled.
 
 
-@section sec_info_pkg Package structure
+@section sec_info_folders Folders
 
-@subsection Folders
 The structure of the source package folders is the following:
 - <b>/</b>: Root folder, which contains Makefile sources to be included for your
   platform
 - @b demos: This folder contains some usage examples, developed for different
   target platform
-  - demo-xxx ...
+  - demo_xxx ...
 - @b doc: Documentation stuff
-  - @b doxygen: Resources for Doxygen generation
+  - @b doxygen: Resources for Doxygen processing
     - @b dot: Graphviz <tt>.dot</tt> files
     - @b dox: Doxygen <tt>.dox</tt> text-only files
     - @b img: Images to be included in the documentation
   - @b html: HTML user manual
 - @b include: Header files
+  - @b lld: Low-level driver headers
 - @b misc: Miscellaneous stuff, for experimental purposes
 - @b src: Source code files
-  - @b lld: Low-level drivers
-    - driver-xxx ...
+  - @b lld: Low-level driver platform-specific sources
+    - driver_xxx ...
 - @b template: Template files
   - @b include: Template header files
   - @b src: Template source files
@@ -69,7 +102,9 @@ The structure of the source package folders is the following:
     - @b src: Source files
     - @b template: Template files
 
-@subsection Modules
+
+@section sec_info_modules Modules
+
 The software is written in a modular fashion. The logical subdivision is the
 following, based on the abbreviated names:
 - @b urosBase: Basic data types and features (e.g. memory management)
@@ -100,11 +135,109 @@ libraries, or callbacks for the project application:
 
 @section sec_info_usage Integration with user software
 
-TODO
+&mu;ROSnode is designed to be easily integrated with the user software. In the
+following, a generic integration procedure is proposed.
+
+@subsection sec_info_usage_makefile Makefile scripts
+Let us suppose the target platform is already supported. In order to compile
+the middleware along with the user application, it suffices to include the
+<tt>common.mk</tt> makefile script, and the one for the target platform
+(e.g. <tt>chibios+lwip.mk</tt>). They will list the core and the low-level
+driver makefile source and include files.
+
+The @p UROS makefile variable must point to the &mu;ROSnode root folder before
+inclusion. After inclusion, the following makefile variables are available:
+- @p UROSSRC: list of core source files
+- @p UROSLLDSRC: list of low-level driver source files
+- @p UROSINC: list of header files.
+
+If the platform is not supported, the <tt>common.mk</tt> Makefile script will
+only set @p UROSSRC and @p UROSINC, provided @p UROS. Please refer to the
+@ref sec_info_lld "next section" to know how to include source file list for
+custom low-level drivers.
+
+@subsection sec_info_usage_callbacks User callbacks
+Then, it is time to define a few callbacks required by the middleware. These
+callbacks are grouped by the <tt>urosUser.c</tt> template source file. They
+allow the core to know how to:
+- print error messages
+- handle a @p shutdown() notification
+- register static ROS types
+- manage topic (un)registrations
+- manage service (un)registrations
+- manage parameter (un)registrations
+- handle a @p paramUpdate() notification.
+
+@subsection sec_info_usage_urosgen Code generation
+Writing (un)marshalling code is tedious and error-prone. Also, some tasks like
+topic and service handlers share a common structure. A code generator can help
+the user by @e automagically creating clean code with correct syntax
+out-of-the-box. Then, the user can build the application on top of the
+generated code, with some modifications only where needed (see below).
+
+An appropriate configuration file has to be provided to
+<tt>urosgen.py</tt>. Please refer to the
+<a href="https://github.com/openrobots-dev/uROSnode/blob/master/tools/urosgen/templates/demo_urosgen.cfg">template</a>
+for more information.
+By running the code generator with the given configuration, it will produce:
+- message/service type definitions, sorted by dependency
+- message/service (un)marshalling functions
+- message/service static type registration functions
+- published/subscribed topic handlers
+- published service handlers
+- topic/service (un)registration functions.
+
+Some of the generated functions can be called directly by user callbacks, for
+example the static type registration. Instead, other functions must be reworked
+to meet the application goals. In fact, it is common for topics with different
+names to share the same handler implementation. For example, the
+<tt>turtleX/pose</tt> published topic of the
+<a href="http://www.ros.org/wiki/turtlesim#turtlesim_node">turtlesim_node</a>
+can have <tt>turtleX</tt> replaced by the turtle name, but the topic handler
+will be the same among all the turtles. See the <i>turtlesim</i> demos for
+some examples which involve all of these issues.
+
+@subsection sec_info_usage_build Application building
+It is now time to customize the generated code to integrate the user
+application witb the &mu;ROSnode middleware. There are  comments labeled with
+the @e TODO placeholder, which tell the user what is expected to do, along with
+standard function API comments.
 
 
 @section sec_info_lld Low-level drivers
 
-TODO
+&mu;ROSnode was written to be portable among different target platforms. The
+package comes with some ports, but they may not be what the user is looking
+for. In the following, a low-level drivers generation procedure is proposed.
+
+@subsection sec_info_lld_files Source files
+
+The user should create low-level drivers for those LLD modules missing from
+the list seen in the @ref sec_info_modules "Modules section". The user is
+suggested to make use of the templates provided with &mu;ROSnode package. They
+contain comments labeled with the @e TODO placeholder, which tell the user
+what is expected to do, along with standard function API comments.
+
+@subsection sec_info_lld_makefile Makefile script
+
+A makefile script for LLD files should be created, so that it becomes easier
+to integrate them with the project Makefile. Generally the script is very
+simple, for example the following is for the <i>POSIX</i> port:
+<pre class="fragment">
+<span class="comment"># Makefile include for uROSnode</span>
+&nbsp;
+<span class="preprocessor">ifeq</span> (@$(<span class="paramname">UROS</span>),)
+  @$(<span class="preprocessor">error</span> <span class="stringliteral">Please define <UROS> so that it points to the uROSnode root folder!</span>)
+<span class="preprocessor">endif</span>
+&nbsp;
+<span class="comment"># Low Level Driver bindings for POSIX</span>
+<span class="paramname">UROSLLDSRC</span> = @$(<span class="paramname">UROS</span>)<span class="stringliteral">/src/lld/posix/uros_lld_base.c</span> \
+             @$(<span class="paramname">UROS</span>)<span class="stringliteral">/src/lld/posix/uros_lld_conn.c</span> \
+             @$(<span class="paramname">UROS</span>)<span class="stringliteral">/src/lld/posix/uros_lld_node.c</span> \
+             @$(<span class="paramname">UROS</span>)<span class="stringliteral">/src/lld/posix/uros_lld_threading.c</span>
+</pre>
+As a rule of thumb, the script should require the @p UROS makefile variable
+for input, and export the @p UROSLLDSRC makefile variable, which lists the
+custom LLD source files.
 
 */

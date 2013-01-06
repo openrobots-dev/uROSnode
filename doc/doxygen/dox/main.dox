@@ -34,7 +34,9 @@ This is the documentation of the <b>&mu;ROSnode</b> middleware. <b>This is an
 alpha release. This documentation may not be synchronized with the actual code.
 It is only a brief overview of the features being developed.</b>
 
-@par License
+
+@section sec_main_license License
+
 Copyright &copy; 2012-2013, <a href="http://www.polimi.it/">Politecnico di Milano</a>.
 All rights reserved.
 
