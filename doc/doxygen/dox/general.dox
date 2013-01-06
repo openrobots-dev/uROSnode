@@ -201,7 +201,7 @@ some examples which involve all of these issues.
 
 @subsection sec_info_usage_build Application building
 It is now time to customize the generated code to integrate the user
-application witb the &mu;ROSnode middleware. There are  comments labeled with
+application with the &mu;ROSnode middleware. There are  comments labeled with
 the @e TODO placeholder, which tell the user what is expected to do, along with
 standard function API comments.
 
@@ -209,8 +209,9 @@ standard function API comments.
 @section sec_info_lld Low-level drivers
 
 &mu;ROSnode was written to be portable among different target platforms. The
-package comes with some ports, but they may not be what the user is looking
-for. In the following, a low-level drivers generation procedure is proposed.
+package comes with some ports, but they may not be the ones the user is
+looking for. In the following, a low-level drivers generation procedure is
+proposed.
 
 @subsection sec_info_lld_files Source files
 

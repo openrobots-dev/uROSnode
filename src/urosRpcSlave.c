@@ -932,42 +932,45 @@ uros_err_t uros_rpcslave_method_shutdown(UrosRpcStreamer *sp,
  * @pre     There are no duplicates inside the publishers list.
  * @pre     The publishers exist.
  *
- * @param[in] topicp
- *          Pointer to a non-empty string which names the related topic.
+ * @param[in] namep
+ *          Pointer to a non-empty string which names the related topic or
+ *          service.
  * @param[in] addrlstp
  *          Pointer to a valid list of publisher URIs.
  * @return
  *          Error code.
  */
-uros_err_t urosRpcSlaveConnectToPublishers(const UrosString *topicp,
+uros_err_t urosRpcSlaveConnectToPublishers(const UrosString *namep,
                                            const UrosList *addrlstp) {
 
   static UrosNodeStatus *const stp = &urosNode.status;
+  static const uros_topicflags_t flags = {
+    UROS_FALSE, UROS_FALSE, UROS_FALSE, UROS_FALSE, UROS_FALSE, UROS_FALSE
+  };
 
   const UrosListNode *nodep;
-  uros_err_t err;
-  (void)err;
 
-  urosAssert(urosStringNotEmpty(topicp));
+  urosAssert(urosStringNotEmpty(namep));
   urosAssert(addrlstp != NULL);
 
   /* Connect to each publisher.*/
   for (nodep = addrlstp->headp; nodep != NULL; nodep = nodep->nextp) {
-    uros_tcpcliargs_t *parp = urosNew(uros_tcpcliargs_t);
+    uros_err_t err;
+    uros_tcpcliargs_t *parp;
+
+    parp = urosNew(uros_tcpcliargs_t);
     if (parp == NULL) { return UROS_ERR_NOMEM; }
-    parp->topicName = urosStringClone(topicp);
+    parp->topicName = urosStringClone(namep);
+    parp->topicFlags = flags;
     parp->remoteAddr = *(const UrosAddr *)nodep->datap;
 
     /* Start the TCPROS Client thread.*/
     err = urosThreadPoolStartWorker(&stp->tcpcliThdPool, (void*)parp);
 
     /* Check if anything went wrong.*/
-    if (err != UROS_OK) {
-      urosTopicSubParamsDelete(parp);
-    }
-    urosError(err != UROS_OK, UROS_NOP,
+    urosError(err != UROS_OK, urosTopicSubParamsDelete(parp),
               ("Error %s while connecting to publisher of topic [%.*s]",
-               urosErrorText(err), UROS_STRARG(topicp)));
+               urosErrorText(err), UROS_STRARG(namep)));
   }
   return UROS_OK;
 }

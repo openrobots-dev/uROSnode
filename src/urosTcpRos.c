@@ -542,7 +542,95 @@ _finally:
   return tcpstp->err;
 }
 
-uros_err_t uros_tcpcli_topicsubscription(const UrosString *topicnamep,
+uros_err_t uros_tcpros_resolvepublisher(const uros_tcpcliargs_t *argsp,
+                                        UrosAddr *pubaddrp) {
+
+  static const UrosRpcParamNode tcprosnode = {
+    { UROS_RPCP_STRING, {{ 6, "TCPROS" }} }, NULL
+  };
+  static const UrosRpcParamList tcproslist = {
+    (UrosRpcParamNode*)&tcprosnode, (UrosRpcParamNode*)&tcprosnode, 1
+  };
+  static const UrosRpcParamNode protonode = {
+    { UROS_RPCP_ARRAY, {{ (size_t)&tcproslist, NULL }} }, NULL
+  };
+  static const UrosRpcParamList protolist = {
+    (UrosRpcParamNode*)&protonode, (UrosRpcParamNode*)&protonode, 1
+  };
+
+  uros_err_t err;
+  UrosRpcParamNode *nodep;
+  UrosRpcParam *paramp;
+  UrosRpcResponse response;
+
+  urosAssert(argsp != NULL);
+  urosAssert(argsp->topicName.length > 0);
+  urosAssert(argsp->topicName.datap != NULL);
+  urosAssert(pubaddrp != NULL);
+#define _ERR    { err = UROS_ERR_BADPARAM; goto _finally; }
+
+  /* Request the topic to the publisher.*/
+  urosRpcResponseObjectInit(&response);
+  err = urosRpcCallRequestTopic(
+    &argsp->remoteAddr,
+    &urosNode.config.nodeName,
+    &argsp->topicName,
+    &protolist,
+    &response
+  );
+
+  /* Check for valid values. */
+  if (err != UROS_OK) { goto _finally; }
+  urosError(response.httpcode != 200, _ERR,
+            ("The HTTP response code is %lu, expecting 200\n",
+             response.httpcode));
+  if (response.code != UROS_RPCC_SUCCESS) { _ERR }
+  urosError(response.valuep->class != UROS_RPCP_ARRAY, _ERR,
+            ("Response value class is %d, expecting %d (UROS_RPCP_ARRAY)\n",
+             (int)response.valuep->class, (int)UROS_RPCP_ARRAY));
+  urosAssert(response.valuep->value.listp != NULL);
+  urosError(response.valuep->value.listp->length != 3, _ERR,
+            ("Response value array length %lu, expected 3",
+             response.valuep->value.listp->length));
+  nodep = response.valuep->value.listp->headp;
+
+  /* Check the protocol string.*/
+  paramp = &nodep->param; nodep = nodep->nextp;
+  urosError(paramp->class != UROS_RPCP_STRING, _ERR,
+            ("Response value class is %d, expecting %d (UROS_RPCP_STRING)\n",
+             (int)paramp->class, (int)UROS_RPCP_STRING));
+  urosError(0 != urosStringCmp(&tcprosnode.param.value.string,
+                               &paramp->value.string), _ERR,
+            ("Response protocol is [%.*s], expected [TCPROS]\n",
+             UROS_STRARG(&tcprosnode.param.value.string)));
+
+  /* Check the node hostname string.*/
+  paramp = &nodep->param; nodep = nodep->nextp;
+  urosError(paramp->class != UROS_RPCP_STRING, _ERR,
+            ("Response value class is %d, expecting %d (UROS_RPCP_STRING)\n",
+             (int)paramp->class, (int)UROS_RPCP_STRING));
+  err = urosHostnameToIp(&paramp->value.string, &pubaddrp->ip);
+  urosError(err != UROS_OK, goto _finally,
+            ("Cannot resolve hostname [%.*s]",
+             UROS_STRARG(&paramp->value.string)));
+
+  /* Check the node port number.*/
+  paramp = &nodep->param;
+  urosError(paramp->class != UROS_RPCP_INT, _ERR,
+            ("Response value class is %d, expecting %d (UROS_RPCP_INT)\n",
+             (int)paramp->class, (int)UROS_RPCP_INT));
+  urosError(paramp->value.int32 < 0 || paramp->value.int32 > 65535, _ERR,
+            ("Port number %ld outside range\n", paramp->value.int32));
+  pubaddrp->port = (uint16_t)paramp->value.int32;
+
+  err = UROS_OK;
+_finally:
+  urosRpcResponseClean(&response);
+  return err;
+#undef _ERR
+}
+
+uros_err_t uros_tcpcli_topicsubscription(const UrosString *namep,
                                          const UrosAddr *pubaddrp) {
 
   uros_err_t err;
@@ -552,22 +640,23 @@ uros_err_t uros_tcpcli_topicsubscription(const UrosString *topicnamep,
   UrosTopic *topicp;
   uros_proc_f handler;
 
-  urosAssert(urosStringNotEmpty(topicnamep));
+  urosAssert(urosStringNotEmpty(namep));
   urosAssert(pubaddrp != NULL);
 #define _CHKOK  { if (err != UROS_OK) { goto _error; } }
 
   /* Get topic features.*/
   urosMutexLock(&urosNode.status.subTopicListLock);
   topicnodep = urosTopicListFindByName(&urosNode.status.subTopicList,
-                                       topicnamep);
+                                       namep);
   if (topicnodep != NULL) {
     topicp = (UrosTopic*)topicnodep->datap;
     urosTopicRefInc(topicp);
+    tcpst.flags = topicp->flags;
     handler = topicp->procf;
   }
   urosMutexUnlock(&urosNode.status.subTopicListLock);
   urosError(topicnodep == NULL, return UROS_ERR_BADPARAM,
-            ("Topic [%.*s] not found\n", UROS_STRARG(topicnamep)));
+            ("Topic [%.*s] not found\n", UROS_STRARG(namep)));
 
   /* Connect to the publisher.*/
   urosConnObjectInit(&conn);
@@ -604,90 +693,13 @@ uros_err_t uros_tcpcli_topicsubscription(const UrosString *topicnamep,
 
   urosError(err != UROS_OK, goto _error,
             ("Topic [%.*s] client handler returned %s\n",
-             UROS_STRARG(topicnamep), urosErrorText(err)));
+             UROS_STRARG(namep), urosErrorText(err)));
   return urosConnClose(&conn);
 
 _error:
   urosConnClose(&conn);
   return err;
 #undef _CHKOK
-}
-
-uros_err_t uros_tcpros_resolvepublisher(const uros_tcpcliargs_t *parp,
-                                        UrosAddr *pubaddrp) {
-
-  static const UrosRpcParamNode tcprosnode = {
-    { UROS_RPCP_STRING, {{ 6, "TCPROS" }} }, NULL
-  };
-  static const UrosRpcParamList tcproslist = {
-    (UrosRpcParamNode*)&tcprosnode, (UrosRpcParamNode*)&tcprosnode, 1
-  };
-  static const UrosRpcParamNode protonode = {
-    { UROS_RPCP_ARRAY, {{ (size_t)&tcproslist, NULL }} }, NULL
-  };
-  static const UrosRpcParamList protolist = {
-    (UrosRpcParamNode*)&protonode, (UrosRpcParamNode*)&protonode, 1
-  };
-
-  uros_err_t err;
-  UrosRpcParamList *parlistp;
-  UrosRpcParamNode *nodep;
-  UrosRpcParam *str1, *str2, *int3;
-  UrosRpcResponse response;
-
-  urosAssert(parp != NULL);
-  urosAssert(parp->topicName.length > 0);
-  urosAssert(parp->topicName.datap != NULL);
-  urosAssert(pubaddrp != NULL);
-#define _ERR    { err = UROS_ERR_BADPARAM; goto _finally; }
-
-  /* Request the topic to the publisher.*/
-  urosRpcResponseObjectInit(&response);
-  err = urosRpcCallRequestTopic(
-    &parp->remoteAddr,
-    &urosNode.config.nodeName,
-    &parp->topicName,
-    &protolist,
-    &response
-  );
-
-  /* Check for valid values. */
-  if (err != UROS_OK) { goto _finally; }
-  urosError(response.httpcode != 200, _ERR,
-            ("The HTTP response code is %lu, expecting 200\n",
-             response.httpcode));
-  if (response.code != UROS_RPCC_SUCCESS) { _ERR };
-  urosError(response.valuep->class != UROS_RPCP_ARRAY, _ERR,
-            ("Response calue class is %d, expecting %d (UROS_RPCP_ARRAY)\n",
-             (int)response.valuep->class, (int)UROS_RPCP_ARRAY));
-  parlistp = response.valuep->value.listp;
-  urosAssert(parlistp != NULL);
-  if (parlistp->length != 3) { _ERR }
-  nodep = parlistp->headp;
-  str1 = &nodep->param; nodep = nodep->nextp;
-  str2 = &nodep->param; nodep = nodep->nextp;
-  int3 = &nodep->param;
-  urosError(str1->class != UROS_RPCP_STRING, _ERR,
-            ("Response calue class is %d, expecting %d (UROS_RPCP_STRING)\n",
-             (int)str1->class, (int)UROS_RPCP_STRING));
-  urosError(str2->class != UROS_RPCP_STRING, _ERR,
-            ("Response calue class is %d, expecting %d (UROS_RPCP_STRING)\n",
-             (int)str2->class, (int)UROS_RPCP_STRING));
-  urosError(int3->class != UROS_RPCP_INT, _ERR,
-            ("Response calue class is %d, expecting %d (UROS_RPCP_INT)\n",
-             (int)int3->class, (int)UROS_RPCP_INT));
-  if (0 != urosStringCmp(&tcprosnode.param.value.string,
-                         &str1->value.string)) { _ERR }
-  err = urosHostnameToIp(&str2->value.string, &pubaddrp->ip);
-  if (err != UROS_OK) { goto _finally; }
-  if (int3->value.int32 < 0 || int3->value.int32 > 65535) { _ERR }
-  pubaddrp->port = (uint16_t)int3->value.int32;
-
-  err = UROS_OK;
-_finally:
-  urosRpcResponseClean(&response);
-  return err;
-#undef _ERR
 }
 
 /*===========================================================================*/
@@ -1479,10 +1491,13 @@ uros_err_t urosTcpRosClientThread(uros_tcpcliargs_t *argsp) {
   err = uros_tcpros_resolvepublisher(argsp, &pubaddr);
   if (err != UROS_OK) { goto _finally; }
 
-  /* TODO: Dispatch between topics and services.*/
-  /* Start a new TCPROS topic subscriber connection.*/
-  err = uros_tcpcli_topicsubscription(&argsp->topicName, &pubaddr);
-  if (err != UROS_OK) { goto _finally; }
+  if (argsp->topicFlags.service) {
+    /* TODO: Add service subscribptions and their handlers.*/
+  } else {
+    /* Start a new TCPROS topic subscripion.*/
+    err = uros_tcpcli_topicsubscription(&argsp->topicName, &pubaddr);
+    if (err != UROS_OK) { goto _finally; }
+  }
 
   err = UROS_OK;
 _finally:

@@ -4,7 +4,7 @@ ifeq ($(UROS),)
     $(error Please define <UROS> so that it points to the uROSnode root folder!)
 endif
 ifneq ($(UROSLLDSRC),)
-    $(error <UROSLLDSRC> not empty; please include urosnode.mk BEFORE makefile scripts for low-level sources)
+    $(error <UROSLLDSRC> not empty; please include uros.mk BEFORE makefile scripts for low-level sources)
 endif
 
 # List of all the related source files

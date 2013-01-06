@@ -98,27 +98,27 @@ and the application will exit.
 
 This demo uses a combination of the <a href="http://www.chibios.org/">ChibiOS/RT</a>
 RTOS and the <a href="http://savannah.nongnu.org/projects/lwip/">LWIP</a>
-network stack, and can run on an <a href="http://www.arm.com/products/processors/cortex-m/cortex-m4-processor.php">
+network stack, and can run on an 
+<a href="http://www.arm.com/products/processors/cortex-m/cortex-m4-processor.php">
 ARM Cortex M4</a> core.
 Specifically, it was tested with <i>ChibiOS/RT</i> 2.5.2 and <i>LWIP</i> 1.4.1.
 The processor is a <a href="http://www.st.com/stm32f4">STM32F407</a> on
 a <a href="https://github.com/openrobots-dev/R2P_GW_module">custom board</a>
 with Ethernet capabilities, by using a
-<a href="http://www.ti.com/product/dp83848c">DP83848</a> PHY in <i>RMII</i>
-mode.
+<a href="http://www.ti.com/product/dp83848c">DP83848</a> PHY in @e RMII mode.
 The board also exposes an UART, a CAN, and an USB-FS ports. Only the USB port
 is used, as a serial port terminal/shell emulator.
 
 It can be compiled by running the canonical @p make command inside the root
-folder of the demo. The generated executable <tt>ch.bin</tt> can be found inside
-the @p build directory. It is best if the &mu;ROSnode root folder is located at
-the <tt>chibios/ext/uros</tt> folder of
+folder of the demo. The generated executable <tt>turtlesim.bin</tt> can be
+found inside the @p build directory. It is best if the &mu;ROSnode root folder
+is located at the <tt>chibios/ext/uros</tt> folder of
 <a href="http://sourceforge.net/projects/chibios/files/ChibiStudio/">ChibiStudio</a>,
 so that the entire <a href="https://launchpad.net/gcc-arm-embedded">GCC ARM
 embedded</a> toolchain environment is set for free. An experimental
 <a href="http://forum.chibios.org/phpbb/viewtopic.php?f=13&t=624">version for
-<i>Linux</i></a> is available, and is the one used by the &mu;ROSnode
-developers. A pair of <tt>.launch</tt> files provide the
+Linux</a> is available, and is the one used by the &mu;ROSnode developers.
+A pair of <tt>.launch</tt> files provide the
 <a href="http://openocd.sourceforge.net/">OpenOCD</a> hardware debug
 configurations (<i>flash then run</i>, and <i>run only</i>).
 

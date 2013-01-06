@@ -57,8 +57,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * @brief   TCPROS Client thread creation arguments.
  */
 typedef struct uros_tcpcliargs_t {
-  UrosString    topicName;          /**< @brief Topic or service name.*/
-  UrosAddr      remoteAddr;         /**< @brief Remote connection address.*/
+  UrosString        topicName;      /**< @brief Topic or service name.*/
+  uros_topicflags_t topicFlags;     /**< @brief Topic/service flags.*/
+  UrosAddr          remoteAddr;     /**< @brief Remote connection address.*/
 } uros_tcpcliargs_t;
 
 /**
