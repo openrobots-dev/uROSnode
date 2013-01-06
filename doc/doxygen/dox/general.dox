@@ -141,18 +141,19 @@ following, a generic integration procedure is proposed.
 @subsection sec_info_usage_makefile Makefile scripts
 Let us suppose the target platform is already supported. In order to compile
 the middleware along with the user application, it suffices to include the
-<tt>common.mk</tt> makefile script, and the one for the target platform
-(e.g. <tt>chibios+lwip.mk</tt>). They will list the core and the low-level
-driver makefile source and include files.
+<tt>uros.mk</tt> makefile script from the <tt>mk</tt> folder, followed by
+those for the target platform (e.g. <tt>chibios.mk</tt> and <tt>lwip.mk</tt>).
+They will list the core and the low-level driver makefile source and include
+files.
 
 The @p UROS makefile variable must point to the &mu;ROSnode root folder before
 inclusion. After inclusion, the following makefile variables are available:
 - @p UROSSRC: list of core source files
-- @p UROSLLDSRC: list of low-level driver source files
+- @p UROSLLDSRC: list of low-level source files
 - @p UROSINC: list of header files.
 
-If the platform is not supported, the <tt>common.mk</tt> Makefile script will
-only set @p UROSSRC and @p UROSINC, provided @p UROS. Please refer to the
+If the platform is not supported, the <tt>uros.mk</tt> Makefile script will
+only populate @p UROSSRC and @p UROSINC, provided @p UROS. Please refer to the
 @ref sec_info_lld "next section" to know how to include source file list for
 custom low-level drivers.
 
@@ -172,7 +173,7 @@ allow the core to know how to:
 Writing (un)marshalling code is tedious and error-prone. Also, some tasks like
 topic and service handlers share a common structure. A code generator can help
 the user by @e automagically creating clean code with correct syntax
-out-of-the-box. Then, the user can build the application on top of the
+out of the box. Then, the user can build the application on top of the
 generated code, with some modifications only where needed (see below).
 
 An appropriate configuration file has to be provided to
@@ -231,13 +232,13 @@ simple, for example the following is for the <i>POSIX</i> port:
 <span class="preprocessor">endif</span>
 &nbsp;
 <span class="comment"># Low Level Driver bindings for POSIX</span>
-<span class="paramname">UROSLLDSRC</span> = @$(<span class="paramname">UROS</span>)<span class="stringliteral">/src/lld/posix/uros_lld_base.c</span> \
-             @$(<span class="paramname">UROS</span>)<span class="stringliteral">/src/lld/posix/uros_lld_conn.c</span> \
-             @$(<span class="paramname">UROS</span>)<span class="stringliteral">/src/lld/posix/uros_lld_node.c</span> \
-             @$(<span class="paramname">UROS</span>)<span class="stringliteral">/src/lld/posix/uros_lld_threading.c</span>
+<span class="paramname">UROSLLDSRC</span> += @$(<span class="paramname">UROS</span>)<span class="stringliteral">/src/lld/posix/uros_lld_base.c</span> \
+              @$(<span class="paramname">UROS</span>)<span class="stringliteral">/src/lld/posix/uros_lld_conn.c</span> \
+              @$(<span class="paramname">UROS</span>)<span class="stringliteral">/src/lld/posix/uros_lld_node.c</span> \
+              @$(<span class="paramname">UROS</span>)<span class="stringliteral">/src/lld/posix/uros_lld_threading.c</span>
 </pre>
 As a rule of thumb, the script should require the @p UROS makefile variable
-for input, and export the @p UROSLLDSRC makefile variable, which lists the
-custom LLD source files.
+for input, and append the list of LLD source files to the @p UROSLLDSRC
+variable.
 
 */
