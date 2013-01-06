@@ -73,20 +73,8 @@ void urosUserErrPrintf(const char *formatp, ...) {
   urosAssert(formatp != NULL);
 
   va_start(args, formatp);
-  /* TODO */
+  vfprintf(stderr, formatp, args);
   va_end(args);
-}
-
-/**
- * @brief   Registers static message types.
- * @details This callback function is called at boot time to initialize the
- *          set of message types recognized by the system.
- *
- * @pre     The global static message type set has not been initialized yet.
- */
-void urosUserRegisterStaticTypes(void) {
-
-  urosTcpRosRegStaticTypes();
 }
 
 /**
@@ -159,6 +147,18 @@ uros_err_t urosUserShutdown(const UrosString *msgp) {
   }
 
   return UROS_OK;
+}
+
+/**
+ * @brief   Registers static message types.
+ * @details This callback function is called at boot time to initialize the
+ *          set of message types recognized by the system.
+ *
+ * @pre     The global static message type set has not been initialized yet.
+ */
+void urosUserRegisterStaticTypes(void) {
+
+  urosTcpRosRegStaticTypes();
 }
 
 /**

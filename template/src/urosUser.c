@@ -67,18 +67,6 @@ void urosUserErrPrintf(const char *formatp, ...) {
 }
 
 /**
- * @brief   Registers static message types.
- * @details This callback function is called at boot time to initialize the
- *          set of message types recognized by the system.
- *
- * @pre     The global static message type set has not been initialized yet.
- */
-void urosUserRegisterStaticMsgTypes(void) {
-
-  /* TODO: Register static message types.*/
-}
-
-/**
  * @brief   Shutdown callback function.
  * @details This callback function notifies the user that a @p shutdown()
  *          XMLRPC call was issued by the Master node, and has to be handled.
@@ -96,6 +84,90 @@ uros_err_t urosUserShutdown(const UrosString *msgp) {
   /* TODO: Handle the shutdown() call and message.*/
   (void)msgp;
   return UROS_OK;
+}
+
+/**
+ * @brief   Registers static message types.
+ * @details This callback function is called at boot time to initialize the
+ *          set of message types recognized by the system.
+ *
+ * @pre     The global static message type set has not been initialized yet.
+ */
+void urosUserRegisterStaticMsgTypes(void) {
+
+  /* TODO: Register static message types.*/
+}
+
+/**
+ * @brief   Registers all the published topics to the Master node.
+ * @note    Should be called at node initialization.
+ */
+void urosUserPublishTopics(void) {
+
+  /* TODO: Publish topics.*/
+}
+
+/**
+ * @brief   Unregisters all the published topics to the Master node.
+ * @note    Should be called at node shutdown.
+ */
+void urosUserUnpublishTopics(void) {
+
+  /* TODO: Unpublish topics.*/
+}
+
+/**
+ * @brief   Registers all the subscribed topics to the Master node.
+ * @note    Should be called at node initialization.
+ */
+void urosUserSubscribeTopics(void) {
+
+  /* TODO: Subscribe to topics.*/
+}
+
+/**
+ * @brief   Unregisters all the subscribed topics to the Master node.
+ * @note    Should be called at node shutdown.
+ */
+void urosUserUnsubscribeTopics(void) {
+
+  /* TODO: Unsubscribe from topics.*/
+}
+
+/**
+ * @brief   Registers all the published services to the Master node.
+ * @note    Should be called at node initialization.
+ */
+void urosUserPublishServices(void) {
+
+  /* TODO: Publish services.*/
+}
+
+/**
+ * @brief   Unregisters all the published services to the Master node.
+ * @note    Should be called at node shutdown.
+ */
+void urosUserUnpublishServices(void) {
+
+  /* TODO: Unpublish services.*/
+}
+
+/**
+ * @brief   Registers all the subscribed parameters to the Master node.
+ * @note    Should be called at node initialization.
+ */
+void urosUserSubscribeParams(void) {
+
+  /* TODO: Subscribe to parameters.*/
+}
+
+/**
+ * @brief   Unregisters all the subscribed parameters to the Master node.
+ * @note    Should be called at node shutdown.
+ */
+void urosUserUnsubscribeParams(void) {
+
+  /* TODO: Unsubscribe from parameters.*/
 }
 
 /**

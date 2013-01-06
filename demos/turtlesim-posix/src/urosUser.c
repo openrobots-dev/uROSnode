@@ -78,18 +78,6 @@ void urosUserErrPrintf(const char *formatp, ...) {
 }
 
 /**
- * @brief   Registers static message types.
- * @details This callback function is called at boot time to initialize the
- *          set of message types recognized by the system.
- *
- * @pre     The global static message type set has not been initialized yet.
- */
-void urosUserRegisterStaticTypes(void) {
-
-  urosTcpRosRegStaticTypes();
-}
-
-/**
  * @brief   Shutdown callback function.
  * @details This callback function notifies the user that a @p shutdown()
  *          XMLRPC call was issued by the Master node, and has to be handled.
@@ -159,6 +147,18 @@ uros_err_t urosUserShutdown(const UrosString *msgp) {
   }
 
   return UROS_OK;
+}
+
+/**
+ * @brief   Registers static message types.
+ * @details This callback function is called at boot time to initialize the
+ *          set of message types recognized by the system.
+ *
+ * @pre     The global static message type set has not been initialized yet.
+ */
+void urosUserRegisterStaticTypes(void) {
+
+  urosTcpRosRegStaticTypes();
 }
 
 /**

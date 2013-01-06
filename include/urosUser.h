@@ -56,9 +56,9 @@ extern "C" {
 
 void urosUserErrPrintf(const char *formatp, ...);
 
-void urosUserRegisterStaticTypes(void);
-
 uros_err_t urosUserShutdown(const UrosString *msgp);
+
+void urosUserRegisterStaticTypes(void);
 
 uros_err_t urosUserPublishTopics(void);
 uros_err_t urosUserUnpublishTopics(void);
