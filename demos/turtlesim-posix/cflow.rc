@@ -1,0 +1,20 @@
+# GNU cflow configuration file for turtlesim
+
+--format=gnu        # GNU syntax is cleaner
+--cpp               # C preprocessor enabled
+--no-number         # Silly numbers...
+--omit-symbol-names # Do not repeat the symbol name
+--omit-arguments    # Do not care about arguments
+--depth=2           # List only direct calls
+
+# GCC symbols
+--symbol __inline:=inline
+--symbol __inline__:=inline
+--symbol __const__:=const
+--symbol __const:=const
+--symbol __restrict:=restrict
+--symbol __extension__:qualifier
+--symbol __attribute__:wrapper
+--symbol __asm__:wrapper
+--symbol __nonnull:wrapper
+--symbol __wur:wrapper

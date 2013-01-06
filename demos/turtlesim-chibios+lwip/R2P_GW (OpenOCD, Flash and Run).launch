@@ -5,7 +5,7 @@
 <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.doReset" value="true"/>
 <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.imageFileName" value=""/>
 <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.imageOffset" value=""/>
-<stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.initCommands" value="set remotetimeout 20&#13;&#10;monitor reset init&#13;&#10;monitor sleep 200&#13;&#10;monitor halt 2000&#13;&#10;monitor sleep 200&#13;&#10;monitor flash write_image erase ${project_loc}/build/ch.bin 0x08000000 bin&#13;&#10;monitor sleep 200&#13;&#10;monitor reset init&#13;&#10;"/>
+<stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.initCommands" value="set remotetimeout 20&#13;&#10;monitor reset init&#13;&#10;monitor sleep 200&#13;&#10;monitor halt 2000&#13;&#10;monitor sleep 200&#13;&#10;monitor flash write_image erase ${project_loc}/build/turtlesim.bin 0x08000000 bin&#13;&#10;monitor sleep 200&#13;&#10;monitor reset init&#13;&#10;"/>
 <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.ipAddress" value="localhost"/>
 <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.jtagDevice" value="Generic TCP/IP"/>
 <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.loadImage" value="false"/>
@@ -35,7 +35,7 @@
 <stringAttribute key="org.eclipse.cdt.launch.FORMAT" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&lt;contentList&gt;&lt;content id=&quot;objp-urosMemPoolFree-(cast)&quot; val=&quot;void **&quot;/&gt;&lt;content id=&quot;err-uros_tcpros_resolvepublisher-(cast)&quot; val=&quot;enum uros_err_t&quot;/&gt;&lt;content id=&quot;datap-uros_lld_conn_recv-(cast)&quot; val=&quot;char *&quot;/&gt;&lt;content id=&quot;datap-headp-newpubsp-urosNodeFindNewPublishers-(cast)&quot; val=&quot;UrosAddr *&quot;/&gt;&lt;content id=&quot;mp_object_size-stackPoolp-poolp-urosThreadPoolWorkerThread-(format)&quot; val=&quot;4&quot;/&gt;&lt;content id=&quot;err-app_set_params-(cast)&quot; val=&quot;enum uros_err_t&quot;/&gt;&lt;/contentList&gt;"/>
 <stringAttribute key="org.eclipse.cdt.launch.GLOBAL_VARIABLES" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;globalVariableList&gt;&#10;&lt;globalVariable name=&quot;rlist&quot; path=&quot;&quot;/&gt;&#10;&lt;globalVariable name=&quot;ETHD1&quot; path=&quot;&quot;/&gt;&#10;&lt;/globalVariableList&gt;&#10;"/>
 <stringAttribute key="org.eclipse.cdt.launch.MEMORY_BLOCKS" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;memoryBlockExpressionList/&gt;&#10;"/>
-<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="./build/ch.elf"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="./build/turtlesim.elf"/>
 <stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="turtlesim-chibios+lwip"/>
 <booleanAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_AUTO_ATTR" value="true"/>
 <stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="cdt.managedbuild.toolchain.gnu.base.1437498008"/>

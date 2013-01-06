@@ -1,13 +1,13 @@
 # Makefile include for uROSnode
 
-# Remember to define <UROSLLDSRC> to load low-level, library dependent files.
-
-# Please define <UROS> so that it points to the uROSnode root folder!
 ifeq ($(UROS),)
-  $(error Please define <UROS> so that it points to the uROSnode root folder!)
+    $(error Please define <UROS> so that it points to the uROSnode root folder!)
+endif
+ifneq ($(UROSLLDSRC),)
+    $(error <UROSLLDSRC> not empty; please include urosnode.mk BEFORE makefile scripts for low-level sources)
 endif
 
-# List of all the related source files.
+# List of all the related source files
 UROSSRC = $(UROS)/src/urosBase.c \
           $(UROS)/src/urosConn.c \
           $(UROS)/src/urosNode.c \
@@ -20,3 +20,6 @@ UROSSRC = $(UROS)/src/urosBase.c \
 
 # Required include directories
 UROSINC = $(UROS)/include
+
+# Remember to append to <UROSLLDSRC> to list low-level source files
+UROSLLDSRC = # Do not append here

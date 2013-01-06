@@ -73,7 +73,7 @@ void urosUserErrPrintf(const char *formatp, ...) {
   urosAssert(formatp != NULL);
 
   va_start(args, formatp);
-  vfprintf(stderr, formatp, args);
+  /* TODO */
   va_end(args);
 }
 

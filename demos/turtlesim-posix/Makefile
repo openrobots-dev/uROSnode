@@ -5,7 +5,7 @@
 
 # Compiler options here.
 ifeq ($(USE_OPT),)
-  USE_OPT = -O0 -ggdb -fstack-usage
+  USE_OPT = -O0 -ggdb
 endif
 
 # C specific options here (added to USE_OPT).
@@ -53,21 +53,22 @@ endif
 PROJECT = turtlesim-posix
 
 # Target executable file
-TRGT = turtlesim
+EXEOBJ = turtlesim
 
 # Imported source files and paths
 UROS = ../..
-include $(UROS)/posix.mk
+include $(UROS)/mk/uros.mk
+include $(UROS)/mk/posix.mk
 include ./project.mk
 
-# C sources.
+# C sources
 CSRC = $(UROSSRC) $(UROSLLDSRC) \
        $(PROJSRC)
 
-# C++ sources.
+# C++ sources
 CPPSRC =
 
-# Included directories.
+# Included directories
 INCDIR = $(UROSINC) \
          $(PROJINC)
 
@@ -79,15 +80,16 @@ INCDIR = $(UROSINC) \
 # Compiler settings
 #
 
-CC   = gcc
-CPPC = g++
+CC    = gcc
+CPPC  = g++
 # Enable loading with g++ only if you need C++ runtime support.
 # NOTE: You can use C++ even without C++ support if you are careful. C++
 #       runtime support makes code size explode.
-LD   = gcc
-#LD   = g++
-CP   = objcopy
-OD   = objdump
+LD    = gcc
+#LD    = g++
+CP    = objcopy
+OD    = objdump
+CFLOW = CFLOWRC=cflow.rc cflow
 
 # Define C warning options here
 CWARN = -Wall -Wextra -Wstrict-prototypes
@@ -150,45 +152,51 @@ endif
 ifeq ($(BUILDDIR),.)
   BUILDDIR = build
 endif
-OUTFILES = $(BUILDDIR)/$(TRGT)
+OUTFILES   = $(BUILDDIR)/$(EXEOBJ)
 
 # Automatic compiler options
-OPT				= $(USE_OPT)
-COPT 			= $(USE_COPT)
-CPPOPT 		= $(USE_CPPOPT)
+OPT        = $(USE_OPT)
+COPT       = $(USE_COPT)
+CPPOPT     = $(USE_CPPOPT)
 
 # Source files groups and paths
-SRCPATHS  = $(sort $(dir $(CSRC)$(CPPSRC)))
+SRCPATHS   = $(sort $(dir $(CSRC)$(CPPSRC)))
 
 # Various directories
-OBJDIR    = $(BUILDDIR)/obj
+OBJDIR     = $(BUILDDIR)/obj
+STANDIR    = $(BUILDDIR)/stan
 
 # Object files groups
-COBJS     = $(addprefix $(OBJDIR)/, $(notdir $(CSRC:.c=.o)))
-CPPOBJS   = $(addprefix $(OBJDIR)/, $(notdir $(CPPSRC:.cpp=.o)))
-OBJS	    = $(ASMOBJS) $(COBJS) $(CPPOBJS)
+COBJS      = $(addprefix $(OBJDIR)/, $(notdir $(CSRC:.c=.o)))
+CPPOBJS    = $(addprefix $(OBJDIR)/, $(notdir $(CPPSRC:.cpp=.o)))
+OBJS       = $(ASMOBJS) $(COBJS) $(CPPOBJS)
+
+CFLOWOBJS  = $(addprefix $(STANDIR)/, $(notdir $(CSRC:.c=.cflow)))
+SUOBJS     = $(addprefix $(STANDIR)/, $(notdir $(CSRC:.c=.su)))
+STANOBJS   = $(CFLOWOBJS) $(SUOBJS)
 
 # Paths
-IINCDIR   = $(patsubst %,-I%,$(INCDIR) $(DINCDIR) $(UINCDIR))
-LLIBDIR   = $(patsubst %,-L%,$(DLIBDIR) $(ULIBDIR))
+IINCDIR    = $(patsubst %,-I%,$(INCDIR) $(DINCDIR) $(UINCDIR))
+LLIBDIR    = $(patsubst %,-L%,$(DLIBDIR) $(ULIBDIR))
 
 # Macros
-DEFS      = $(DDEFS) $(UDEFS)
+DEFS       = $(DDEFS) $(UDEFS)
 
 # Libs
-LIBS      = $(DLIBS) $(ULIBS)
+LIBS       = $(DLIBS) $(ULIBS)
 
 # Various settings
-CFLAGS    = $(OPT) $(COPT) $(CWARN) $(DEFS)
-CPPFLAGS  = $(OPT) $(CPPOPT) $(CPPWARN) $(DEFS)
-LDFLAGS 	= 
+CFLAGS     = $(OPT) $(COPT) $(CWARN) $(DEFS)
+CPPFLAGS   = $(OPT) $(CPPOPT) $(CPPWARN) $(DEFS)
+LDFLAGS    = 
 
 # Generate dependency information
-CFLAGS   += -MD -MP -MF .dep/$(@F).d
-CPPFLAGS += -MD -MP -MF .dep/$(@F).d
+CFLAGS     += -MD -MP -MF .dep/$(@F).d
+CPPFLAGS   += -MD -MP -MF .dep/$(@F).d
+CFLOWFLAGS = $(IINCDIR)
 
 # Paths where to search for sources
-VPATH     = $(SRCPATHS)
+VPATH      = $(SRCPATHS)
 
 #
 # Make definitions
@@ -201,20 +209,27 @@ VPATH     = $(SRCPATHS)
 # Make all
 all : $(OBJS) $(OUTFILES) MAKE_ALL_RULE_HOOK
 
+# Static analysis
+static-analysis : $(CFLOWOBJS) $(SUOBJS) MAKE_ALL_RULE_HOOK
+
 # Pre-make script
 MAKE_ALL_RULE_HOOK :
 
 # Folder constraints
-$(OBJS) : | $(BUILDDIR)
+$(OBJS) $(STANOBJS) : | $(BUILDDIR)
 
 # Directories setup
-$(BUILDDIR) $(OBJDIR):
+$(BUILDDIR) $(OBJDIR) $(STANDIR):
 ifneq ($(USE_VERBOSE_COMPILE),yes)
-	@echo Compiler Options
+	@echo === C compiler options ===
 	@echo $(CC) -c $(CFLAGS) $(IINCDIR) main.c -o main.o
+	@echo
+	@echo === cflow options ===
+	@echo $(CFLOW) $(CFLOWFLAGS)
 	@echo
 endif
 	mkdir -p $(OBJDIR)
+	mkdir -p $(STANDIR)
 
 # C++ compiler
 $(CPPOBJS) : $(OBJDIR)/%.o : %.cpp Makefile
@@ -237,13 +252,37 @@ else
 endif
 
 # Target executable linker
-$(BUILDDIR)/$(TRGT) : $(OBJS) $(LDSCRIPT)
+$(BUILDDIR)/$(EXEOBJ) : $(OBJS) $(LDSCRIPT)
 ifeq ($(USE_VERBOSE_COMPILE),yes)
 	@echo
 	$(LD) $(OBJS) $(LDFLAGS) $(LIBS) -o $@
 else
 	@echo Linking $@
 	@$(LD) $(OBJS) $(LDFLAGS) $(LIBS) -o $@
+endif
+
+# Call analysis by cflow
+$(CFLOWOBJS) : $(STANDIR)/%.cflow : %.c Makefile
+ifeq ($(USE_VERBOSE_COMPILE),yes)
+	@echo
+	$(CFLOW) $(CFLOWFLAGS) $< -o $@
+else
+	@echo Call graph $<
+	@$(CFLOW) $(CFLOWFLAGS) $< -o $@
+endif
+
+# Stack analysis by GCC
+$(SUOBJS) : $(STANDIR)/%.su : %.c Makefile
+ifeq ($(USE_VERBOSE_COMPILE),yes)
+	@echo
+	$(CC) -c $(CFLAGS) -fstack-usage $(IINCDIR) $< -o $(STANDIR)/__PHONY__.o
+	-mv $(STANDIR)/__PHONY__.su $@
+	-rm -f $(STANDIR)/__PHONY__.o
+else
+	@echo Stack usage  $<
+	@$(CC) -c $(CFLAGS) -fstack-usage $(IINCDIR) $< -o $(STANDIR)/__PHONY__.o
+	@mv $(STANDIR)/__PHONY__.su $@
+	@rm -f $(STANDIR)/__PHONY__.o
 endif
 
 # Project cleaner
