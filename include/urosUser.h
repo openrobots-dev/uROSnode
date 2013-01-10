@@ -56,6 +56,9 @@ extern "C" {
 
 void urosUserErrPrintf(const char *formatp, ...);
 
+void urosUserNodeConfigLoad(UrosNodeConfig *cfgp);
+void urosUserNodeConfigSave(const UrosNodeConfig *cfgp);
+
 uros_err_t urosUserShutdown(const UrosString *msgp);
 
 void urosUserRegisterStaticTypes(void);

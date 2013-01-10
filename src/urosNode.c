@@ -44,7 +44,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "../include/urosNode.h"
 #include "../include/urosRpcCall.h"
 #include "../include/urosRpcParser.h"
-#include "../include/lld/uros_lld_node.h"
 
 #include <string.h>
 
@@ -489,38 +488,6 @@ void urosNodeConfigLoadDefaults(UrosNodeConfig *cfgp) {
   cfgp->masterUri = urosStringCloneZ(
     "http://"UROS_XMLRPC_MASTER_IP_SZ
     ":"UROS_STRINGIFY2(UROS_XMLRPC_MASTER_PORT));
-}
-
-/**
- * @brief   Loads node configuration.
- * @details Any previously allocated data is freed, then the configuration is
- *          loaded from a static non-volatile memory chunk.
- * @see     uros_lld_nodeconfig_load()
- *
- * @pre     The related @p UrosNode is initialized.
- *
- * @param[in,out] cfgp
- *          Pointer to the target configuration descriptor.
- */
-void urosNodeConfigLoad(UrosNodeConfig *cfgp) {
-
-  uros_lld_nodeconfig_load(cfgp);
-}
-
-/**
- * @brief   Saves the node configuration.
- * @details The node configuration is saved to a static non-volatile memory
- *          chunk.
- * @see     uros_lld_nodeconfig_save()
- *
- * @pre     The related @p UrosNode is initialized.
- *
- * @param[in] cfgp
- *          Pointer to the configuration descriptor to be saved.
- */
-void urosNodeConfigSave(const UrosNodeConfig *cfgp) {
-
-  uros_lld_nodeconfig_save(cfgp);
 }
 
 /**

@@ -37,20 +37,22 @@ maximum number of turtles is bounded by the @p MAX_TURTLES constant.
 The turtle pose is updated at 1&nbsp;kHz, and streamed at 100&nbsp;Hz.
 
 Message types and handlers were first generated with the following
-<tt>urosgen.py</tt> configuration file (also found inside demo folders):
+<tt>urosgen.py</tt> configuration file (also found inside the <tt>misc</tt>
+folder of demos):
 <pre class="fragment"><span class="comment"># urosgen.py configuration file for turtlesim</span>
 &nbsp;
 <span class="preprocessor">[Options]</span>
-<span class="paramname">author</span>          = <span class="stringliteral">Andrea Zoppi &lt;texzk@email.it&gt;</span>
-<span class="paramname">licenseFile</span>     = <span class="stringliteral">../../COPYING</span>
-<span class="paramname">includeDir</span>      = <span class="stringliteral">include</span>
-<span class="paramname">sourceDir</span>       = <span class="stringliteral">src</span>
-<span class="paramname">nodeName</span>        = <span class="stringliteral">turtlesim</span>
-<span class="paramname">fieldComments</span>   = <span class="stringliteral">False</span>
+<span class="paramname">author</span>                      = <span class="stringliteral">Andrea Zoppi &lt;texzk@email.it&gt;</span>
+<span class="paramname">licenseFile</span>                 = <span class="stringliteral">../../../COPYING</span>
+<span class="paramname">includeDir</span>                  = <span class="stringliteral">../include</span>
+<span class="paramname">sourceDir</span>                   = <span class="stringliteral">../src</span>
+<span class="paramname">nodeName</span>                    = <span class="stringliteral">turtlesim</span>
+<span class="paramname">fieldComments</span>               = <span class="stringliteral">false</span>
 &nbsp;
 <span class="preprocessor">[PubTopics]</span>
-<span class="paramname">rosout</span>          = <span class="stringliteral">rosgraph_msgs/Log</span>
-<span class="paramname">turtleX/pose</span>    = <span class="stringliteral">turtlesim/Pose</span>
+<span class="paramname">rosout</span>                      = <span class="stringliteral">rosgraph_msgs/Log</span>
+<span class="paramname">turtleX/pose</span>                = <span class="stringliteral">turtlesim/Pose</span>
+<span class="paramname">turtleX/color_sensor</span>        = <span class="stringliteral">turtlesim/Color</span>
 &nbsp;
 <span class="preprocessor">[SubTopics]</span>
 <span class="paramname">turtleX/command_velocity</span>    = <span class="stringliteral">turtlesim/Velocity</span>
@@ -62,6 +64,9 @@ Message types and handlers were first generated with the following
 <span class="paramname">turtleX/set_pen</span>             = <span class="stringliteral">turtlesim/SetPen</span>
 <span class="paramname">turtleX/teleport_absolute</span>   = <span class="stringliteral">turtlesim/TeleportAbsolute</span>
 <span class="paramname">turtleX/teleport_relative</span>   = <span class="stringliteral">turtlesim/TeleportRelative</span>
+&nbsp;
+<span class="preprocessor">[CallServices]</span>
+&nbsp;
 </pre>
 Since the name of <tt>turtleX/*</tt> topics and services changes with the
 turtle, their creation and deletion were moved to the application (<i>app</i>)

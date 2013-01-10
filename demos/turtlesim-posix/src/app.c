@@ -325,6 +325,7 @@ turtle_t *turtle_spawn(const UrosString *namep,
   name = urosStringClone(namep);
   if (name.datap == NULL) { return NULL; }
   urosStringObjectInit(&posname);
+  urosStringObjectInit(&colsenname);
   urosStringObjectInit(&velname);
   urosStringObjectInit(&setpenname);
   urosStringObjectInit(&telabsname);
@@ -376,7 +377,7 @@ turtle_t *turtle_spawn(const UrosString *namep,
   /* Assign the new attributes.*/
   turtlep->name = urosStringClone(namep);
   turtlep->poseTopic = posname;
-  turtlep->colsenTopic = posname;
+  turtlep->colsenTopic = colsenname;
   turtlep->velTopic = velname;
   turtlep->setpenService = setpenname;
   turtlep->telabsService = telabsname;

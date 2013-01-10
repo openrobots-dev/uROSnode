@@ -159,11 +159,6 @@
 			<locationURI>PARENT-1-ECLIPSE_HOME/chibios/ext/uros/include/lld/uros_lld_conn.h</locationURI>
 		</link>
 		<link>
-			<name>uros/include/lld/uros_lld_node.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-ECLIPSE_HOME/chibios/ext/uros/include/lld/uros_lld_node.h</locationURI>
-		</link>
-		<link>
 			<name>uros/include/lld/uros_lld_threading.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-ECLIPSE_HOME/chibios/ext/uros/include/lld/uros_lld_threading.h</locationURI>
@@ -182,11 +177,6 @@
 			<name>uros/src/lld/posix/uros_lld_conn.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/src/lld/posix/uros_lld_conn.c</locationURI>
-		</link>
-		<link>
-			<name>uros/src/lld/posix/uros_lld_node.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/lld/posix/uros_lld_node.c</locationURI>
 		</link>
 		<link>
 			<name>uros/src/lld/posix/uros_lld_threading.c</name>

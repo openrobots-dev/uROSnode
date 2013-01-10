@@ -78,6 +78,48 @@ void urosUserErrPrintf(const char *formatp, ...) {
 }
 
 /**
+ * @brief   Loads node configuration.
+ * @details Any previously allocated data is freed, then the configuration is
+ *          loaded from a static non-volatile memory chunk.
+ * @see     uros_lld_nodeconfig_load()
+ *
+ * @pre     The related @p UrosNode is initialized.
+ *
+ * @param[in,out] cfgp
+ *          Pointer to the target configuration descriptor.
+ */
+void urosUserNodeConfigLoad(UrosNodeConfig *cfgp) {
+
+  urosAssert(cfgp != NULL);
+
+  /* Clean any allocated variables.*/
+  urosStringClean(&cfgp->nodeName);
+  urosStringClean(&cfgp->xmlrpcUri);
+  urosStringClean(&cfgp->tcprosUri);
+  urosStringClean(&cfgp->masterUri);
+
+  /* TODO: Load from EEPROM.*/
+  urosNodeConfigLoadDefaults(cfgp);
+}
+
+/**
+ * @brief   Saves the node configuration.
+ * @details The node configuration is saved to a static non-volatile memory
+ *          chunk.
+ * @see     uros_lld_nodeconfig_save()
+ *
+ * @pre     The related @p UrosNode is initialized.
+ *
+ * @param[in] cfgp
+ *          Pointer to the configuration descriptor to be saved.
+ */
+void urosUserNodeConfigSave(const UrosNodeConfig *cfgp) {
+
+  /* TODO: Save to EEPROM.*/
+  (void)cfgp;
+}
+
+/**
  * @brief   Shutdown callback function.
  * @details This callback function notifies the user that a @p shutdown()
  *          XMLRPC call was issued by the Master node, and has to be handled.

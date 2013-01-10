@@ -7,5 +7,4 @@ endif
 # Low Level Driver bindings for POSIX
 UROSLLDSRC += $(UROS)/src/lld/posix/uros_lld_base.c \
               $(UROS)/src/lld/posix/uros_lld_conn.c \
-              $(UROS)/src/lld/posix/uros_lld_node.c \
               $(UROS)/src/lld/posix/uros_lld_threading.c

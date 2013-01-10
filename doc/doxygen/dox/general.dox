@@ -49,7 +49,7 @@ is still compatible with the more advanced <i>C++</i> or <i>Objective C</i>, or
 there is at least a way to natively interface with libraries written in C
 (@e JNI, @e C# @p Dllimport, @e Python @p ctypes, ...).
 
-Sometimes it is also preferrable not to introduce a centralized (un)marshalling
+Other times, it is preferable not to introduce a centralized (un)marshalling
 middleware like with <a href="http://www.ros.org/wiki/rosserial">rosserial</a>.
 With @e centralized we mean that the @e star network topology is common when
 using @e rosserial to interface microcontrollers. This happens when a set of
@@ -123,7 +123,6 @@ Additionally, some modules need low-level bindings to platform-dependent
 libraries, or callbacks for the project application:
 - @b uros_lld_base: Platform-dependent memory management features
 - @b uros_lld_conn: Bindings to the chosen low-level connectivity library
-- @b uros_lld_node: Node configuration load/save to non-volatile memory
 - @b uros_lld_threading: Bindings to the multithreading features of the chosen
   operating system
 - @b urosUser: User callbacks, application-specific
@@ -140,6 +139,7 @@ libraries, or callbacks for the project application:
 following, a generic integration procedure is proposed.
 
 @subsection sec_info_usage_makefile Makefile scripts
+
 Let us suppose the target platform is already supported. In order to compile
 the middleware along with the user application, it suffices to include the
 <tt>uros.mk</tt> makefile script from the <tt>mk</tt> folder, followed by
@@ -159,10 +159,12 @@ only populate @p UROSSRC and @p UROSINC, provided @p UROS. Please refer to the
 custom low-level drivers.
 
 @subsection sec_info_usage_callbacks User callbacks
+
 Then, it is time to define a few callbacks required by the middleware. These
 callbacks are grouped by the <tt>urosUser.c</tt> template source file. They
 allow the core to know how to:
 - print error messages
+- load/save a node configuration
 - handle a @p shutdown() notification
 - register static ROS types
 - manage topic (un)registrations
@@ -171,6 +173,7 @@ allow the core to know how to:
 - handle a @p paramUpdate() notification.
 
 @subsection sec_info_usage_urosgen Code generation
+
 Writing (un)marshalling code is tedious and error-prone. Also, some tasks like
 topic and service handlers share a common structure. A code generator can help
 the user by @e automagically creating clean code with correct syntax
@@ -186,7 +189,7 @@ By running the code generator with the given configuration, it will produce:
 - message/service (un)marshalling functions
 - message/service static type registration functions
 - published/subscribed topic handlers
-- published service handlers
+- published/called service handlers
 - topic/service (un)registration functions.
 
 Some of the generated functions can be called directly by user callbacks, for
@@ -200,6 +203,7 @@ will be the same among all the turtles. See the <i>turtlesim</i> demos for
 some examples which involve all of these issues.
 
 @subsection sec_info_usage_build Application building
+
 It is now time to customize the generated code to integrate the user
 application with the &mu;ROSnode middleware. There are  comments labeled with
 the @e TODO placeholder, which tell the user what is expected to do, along with
@@ -236,7 +240,6 @@ simple, for example the following is for the <i>POSIX</i> port:
 <span class="comment"># Low Level Driver bindings for POSIX</span>
 <span class="paramname">UROSLLDSRC</span> += @$(<span class="paramname">UROS</span>)<span class="stringliteral">/src/lld/posix/uros_lld_base.c</span> \
               @$(<span class="paramname">UROS</span>)<span class="stringliteral">/src/lld/posix/uros_lld_conn.c</span> \
-              @$(<span class="paramname">UROS</span>)<span class="stringliteral">/src/lld/posix/uros_lld_node.c</span> \
               @$(<span class="paramname">UROS</span>)<span class="stringliteral">/src/lld/posix/uros_lld_threading.c</span>
 </pre>
 As a rule of thumb, the script should require the @p UROS makefile variable

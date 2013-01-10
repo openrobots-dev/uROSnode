@@ -115,7 +115,7 @@ void urosInit(void) {
 
   /* Initialize the Node module.*/
   urosNodeObjectInit(&urosNode);
-  urosNodeConfigLoad((UrosNodeConfig*)&urosNode.config);
+  urosUserNodeConfigLoad((UrosNodeConfig*)&urosNode.config);
 
   /* Register static types.*/
   urosListObjectInit(&urosMsgTypeList);

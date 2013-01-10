@@ -8,5 +8,4 @@ endif
 
 # Low Level Driver bindings for ChibiOS/RT
 UROSLLDSRC += $(UROS)/src/lld/chibios/uros_lld_base.c \
-              $(UROS)/src/lld/chibios/uros_lld_node.c \
               $(UROS)/src/lld/chibios/uros_lld_threading.c

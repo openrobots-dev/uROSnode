@@ -39,15 +39,96 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* HEADER FILES                                                              */
 /*===========================================================================*/
 
-#include <urosBase.h>
-#include <urosNode.h>
-#include <urosRpcCall.h>
+#include <urosUser.h>
 #include <urosRpcSlave.h>
 #include <urosTcpRos.h>
 #include <stdarg.h>
 
 #include "urosTcpRosTypes.h"
 #include "app.h"
+
+/*===========================================================================*/
+/* TYPES & MACROS                                                            */
+/*===========================================================================*/
+
+/** @brief   File where the Node configuration is stored. */
+#define UROS_NODECONFIG_FILENAME    "urosNode.config"
+
+/*===========================================================================*/
+/* LOCAL FUNCTIONS                                                           */
+/*===========================================================================*/
+
+static void uros_nodeconfig_readstring(UrosString *strp, FILE *fp) {
+
+  size_t length, n;
+  char *datap;
+
+  urosAssert(strp != NULL);
+  urosAssert(fp != NULL);
+
+  /* Read the string length.*/
+  n = fread(&length, sizeof(size_t), 1, fp);
+  urosError(n < 1, return,
+            ("Cannot read string length at offset 0x%.8lX\n", ftell(fp)));
+
+  /* Read the string data.*/
+  datap = (char*)urosAlloc(length);
+  urosAssert(datap != NULL);
+  n = fread(datap, length, 1, fp);
+  urosError(n < 1, return,
+            ("Cannot read string data (%zu bytes) at offset 0x%.8lX\n",
+             length, ftell(fp)));
+
+  /* Assign the data back.*/
+  strp->length = length;
+  strp->datap = datap;
+}
+
+static void uros_nodeconfig_writestring(const UrosString *strp, FILE *fp) {
+
+  size_t n;
+
+  urosAssert(strp != NULL);
+  urosAssert(fp != NULL);
+
+  /* Write the string length.*/
+  n = fwrite(&strp->length, sizeof(size_t), 1, fp);
+  urosError(n < 1, return,
+            ("Cannot write string length (%zu bytes) at offset 0x%.8lX\n",
+             strp->length, ftell(fp)));
+
+  /* Write the string data.*/
+  n = fwrite(strp->datap, strp->length, 1, fp);
+  urosError(n < 1, return,
+            ("Cannot write string data [%.*s] at offset 0x%.8lX\n",
+             UROS_STRARG(strp), ftell(fp)));
+}
+
+static void uros_nodeconfig_readaddr(UrosAddr *addrp, FILE *fp) {
+
+  size_t n;
+
+  urosAssert(addrp != NULL);
+  urosAssert(fp != NULL);
+
+  n = fread(addrp, sizeof(UrosAddr), 1, fp);
+  urosError(n < 1, return,
+            ("Cannot read connection address at offset 0x%.8lX\n", ftell(fp)));
+}
+
+static void uros_nodeconfig_writeaddr(const UrosAddr *addrp, FILE *fp) {
+
+  size_t n;
+
+  urosAssert(addrp != NULL);
+  urosAssert(fp != NULL);
+
+  n = fwrite(addrp, sizeof(UrosAddr), 1, fp);
+  urosError(n < 1, return,
+            ("Cannot write connection address ("UROS_ADDRFMT
+             ") at offset 0x%.8lX\n",
+             UROS_ADDRARG(addrp), ftell(fp)));
+}
 
 /*===========================================================================*/
 /* GLOBAL FUNCTIONS                                                          */
@@ -75,6 +156,86 @@ void urosUserErrPrintf(const char *formatp, ...) {
   va_start(args, formatp);
   vfprintf(stderr, formatp, args);
   va_end(args);
+}
+
+/**
+ * @brief   Loads node configuration.
+ * @details Any previously allocated data is freed, then the configuration is
+ *          loaded from a static non-volatile memory chunk.
+ * @see     uros_lld_nodeconfig_load()
+ *
+ * @pre     The related @p UrosNode is initialized.
+ *
+ * @param[in,out] cfgp
+ *          Pointer to the target configuration descriptor.
+ */
+void urosUserNodeConfigLoad(UrosNodeConfig *cfgp) {
+
+  FILE *fp;
+
+  urosAssert(cfgp != NULL);
+
+  /* Clean any allocated variables.*/
+  urosStringClean(&cfgp->nodeName);
+  urosStringClean(&cfgp->xmlrpcUri);
+  urosStringClean(&cfgp->tcprosUri);
+  urosStringClean(&cfgp->masterUri);
+
+  /* Read from file.*/
+  fp = fopen(UROS_NODECONFIG_FILENAME, "rb");
+  if (fp == NULL) {
+    /* File not found, load default values and save them.*/
+    urosError(fp == NULL, UROS_NOP,
+              ("Cannot open file ["UROS_NODECONFIG_FILENAME"] for reading\n"
+               "  (The default configuration will be written there if possible)\n"));
+    urosNodeConfigLoadDefaults(cfgp);
+    urosUserNodeConfigSave(cfgp);
+    return;
+  }
+
+  uros_nodeconfig_readstring(&cfgp->nodeName, fp);
+  uros_nodeconfig_readaddr  (&cfgp->xmlrpcAddr, fp);
+  uros_nodeconfig_readstring(&cfgp->xmlrpcUri, fp);
+  uros_nodeconfig_readaddr  (&cfgp->tcprosAddr, fp);
+  uros_nodeconfig_readstring(&cfgp->tcprosUri, fp);
+  uros_nodeconfig_readaddr  (&cfgp->masterAddr, fp);
+  uros_nodeconfig_readstring(&cfgp->masterUri, fp);
+
+  fclose(fp);
+}
+
+/**
+ * @brief   Saves the node configuration.
+ * @details The node configuration is saved to a static non-volatile memory
+ *          chunk.
+ * @see     uros_lld_nodeconfig_save()
+ *
+ * @pre     The related @p UrosNode is initialized.
+ *
+ * @param[in] cfgp
+ *          Pointer to the configuration descriptor to be saved.
+ */
+void urosUserNodeConfigSave(const UrosNodeConfig *cfgp) {
+
+  FILE *fp;
+
+  urosAssert(cfgp != NULL);
+
+  /* Write to file.*/
+  fp = fopen(UROS_NODECONFIG_FILENAME, "wb");
+  urosError(fp == NULL, return,
+            ("Cannot open file ["UROS_NODECONFIG_FILENAME"] for writing\n"));
+
+  uros_nodeconfig_writestring(&cfgp->nodeName, fp);
+  uros_nodeconfig_writeaddr  (&cfgp->xmlrpcAddr, fp);
+  uros_nodeconfig_writestring(&cfgp->xmlrpcUri, fp);
+  uros_nodeconfig_writeaddr  (&cfgp->tcprosAddr, fp);
+  uros_nodeconfig_writestring(&cfgp->tcprosUri, fp);
+  uros_nodeconfig_writeaddr  (&cfgp->masterAddr, fp);
+  uros_nodeconfig_writestring(&cfgp->masterUri, fp);
+
+  fflush(fp);
+  fclose(fp);
 }
 
 /**
@@ -164,62 +325,82 @@ void urosUserRegisterStaticTypes(void) {
 /**
  * @brief   Registers all the published topics to the Master node.
  * @note    Should be called at node initialization.
+ *
+ * @return  Error code.
  */
-void urosUserPublishTopics(void) {
+uros_err_t urosUserPublishTopics(void) {
 
   urosTcpRosPublishTopics();
+  return UROS_OK;
 }
 
 /**
  * @brief   Unregisters all the published topics to the Master node.
  * @note    Should be called at node shutdown.
+ *
+ * @return  Error code.
  */
-void urosUserUnpublishTopics(void) {
+uros_err_t urosUserUnpublishTopics(void) {
 
   urosTcpRosUnpublishTopics();
+  return UROS_OK;
 }
 
 /**
  * @brief   Registers all the subscribed topics to the Master node.
  * @note    Should be called at node initialization.
+ *
+ * @return  Error code.
  */
-void urosUserSubscribeTopics(void) {
+uros_err_t urosUserSubscribeTopics(void) {
 
   urosTcpRosSubscribeTopics();
+  return UROS_OK;
 }
 
 /**
  * @brief   Unregisters all the subscribed topics to the Master node.
  * @note    Should be called at node shutdown.
+ *
+ * @return  Error code.
  */
-void urosUserUnsubscribeTopics(void) {
+uros_err_t urosUserUnsubscribeTopics(void) {
 
   urosTcpRosUnsubscribeTopics();
+  return UROS_OK;
 }
 
 /**
  * @brief   Registers all the published services to the Master node.
  * @note    Should be called at node initialization.
+ *
+ * @return  Error code.
  */
-void urosUserPublishServices(void) {
+uros_err_t urosUserPublishServices(void) {
 
   urosTcpRosPublishServices();
+  return UROS_OK;
 }
 
 /**
  * @brief   Unregisters all the published services to the Master node.
  * @note    Should be called at node shutdown.
+ *
+ * @return  Error code.
  */
-void urosUserUnpublishServices(void) {
+uros_err_t urosUserUnpublishServices(void) {
 
   urosTcpRosUnpublishServices();
+  return UROS_OK;
 }
 
 /**
  * @brief   Registers all the subscribed parameters to the Master node.
  * @note    Should be called at node initialization.
+ *
+ * @return  Error code.
  */
-void urosUserSubscribeParams(void) {
+uros_err_t urosUserSubscribeParams(void) {
 
   static const UrosNodeConfig *const cfgp = &urosNode.config;
 
@@ -263,13 +444,16 @@ void urosUserSubscribeParams(void) {
 
   urosRpcParamClean(&paramval, UROS_TRUE);
   urosStringClean(&paramname);
+  return UROS_OK;
 }
 
 /**
  * @brief   Unregisters all the subscribed parameters to the Master node.
  * @note    Should be called at node shutdown.
+ *
+ * @return  Error code.
  */
-void urosUserUnsubscribeParams(void) {
+uros_err_t urosUserUnsubscribeParams(void) {
 
   static const UrosNodeConfig *const cfgp = &urosNode.config;
 
@@ -305,6 +489,7 @@ void urosUserUnsubscribeParams(void) {
   urosRpcResponseClean(&res);
 
   urosStringClean(&paramname);
+  return UROS_OK;
 }
 
 /**

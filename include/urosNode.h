@@ -147,8 +147,6 @@ uros_err_t urosNodeCreateThread(void);
 uros_err_t urosNodeThread(void *argp);
 
 void urosNodeConfigLoadDefaults(UrosNodeConfig *cfgp);
-void urosNodeConfigLoad(UrosNodeConfig *cfgp);
-void urosNodeConfigSave(const UrosNodeConfig *cfgp);
 
 uros_err_t urosNodePublishTopic(const UrosString *namep,
                                 const UrosString *typep,
