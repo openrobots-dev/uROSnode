@@ -86,11 +86,12 @@ typedef struct turtle_t {
   UrosMutex         lock;           /**< @brief Guard lock.*/
   unsigned          id;             /**< @brief Turtle ID.*/
   UrosString        name;           /**< @brief Turtle name.*/
-  UrosString        poseTopic;      /**< @brief <tt><i>turtle</i>/pose</tt> topic name.*/
-  UrosString        velTopic;       /**< @brief <tt><i>turtle</i>/command_velocity</tt> topic name.*/
-  UrosString        setpenService;  /**< @brief <tt><i>turtle</i>/set_pen</tt> service name.*/
-  UrosString        telabsService;  /**< @brief <tt><i>turtle</i>/teleport_absolute</tt> service name.*/
-  UrosString        telrelService;  /**< @brief <tt><i>turtle</i>/teleport_relative</tt> service name.*/
+  UrosString        poseTopic;      /**< @brief <code><em>turtle</em>/pose</code> topic name.*/
+  UrosString        colsenTopic;    /**< @brief <code><em>turtle</em>/color_sensor</code> topic name.*/
+  UrosString        velTopic;       /**< @brief <code><em>turtle</em>/command_velocity</code> topic name.*/
+  UrosString        setpenService;  /**< @brief <code><em>turtle</em>/set_pen</code> service name.*/
+  UrosString        telabsService;  /**< @brief <code><em>turtle</em>/teleport_absolute</code> service name.*/
+  UrosString        telrelService;  /**< @brief <code><em>turtle</em>/teleport_relative</code> service name.*/
   struct {
     float x;
     float y;

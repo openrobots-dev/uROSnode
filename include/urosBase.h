@@ -399,7 +399,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /**
  * @brief   Boolean data type.
  */
-typedef uint_fast8_t uros_bool_t;
+typedef uint8_t uros_bool_t;
 
 /**
  * @brief   Unsigned counter data type.
@@ -596,6 +596,9 @@ typedef struct UrosTopic {
 
 extern UrosList urosMsgTypeList;
 extern UrosList urosSrvTypeList;
+
+extern const uros_topicflags_t uros_nulltopicflags;
+extern const uros_topicflags_t uros_nullserviceflags;
 
 /*===========================================================================*/
 /* GLOBAL PROTOTYPES                                                         */

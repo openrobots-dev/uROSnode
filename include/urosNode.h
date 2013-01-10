@@ -88,8 +88,8 @@ typedef struct UrosNodeStatus {
   /* Status variables.*/
   uros_nodestate_t  state;              /**< @brief Current node state.*/
   int32_t           xmlrpcPid;          /**< @brief PID of the XMLRPC Listener process.*/
-  UrosList          subTopicList;       /**< @brief List of topic subscriptions.*/
-  UrosList          pubTopicList;       /**< @brief List of topic publications.*/
+  UrosList          subTopicList;       /**< @brief List of subscribed topics.*/
+  UrosList          pubTopicList;       /**< @brief List of published topics.*/
   UrosList          pubServiceList;     /**< @brief List of published services.*/
   UrosList          subParamList;       /**< @brief List of parameter subscriptions.*/
   UrosList          subTcpList;         /**< @brief Subscribed TCPROS connections.*/
@@ -152,30 +152,49 @@ void urosNodeConfigSave(const UrosNodeConfig *cfgp);
 
 uros_err_t urosNodePublishTopic(const UrosString *namep,
                                 const UrosString *typep,
-                                uros_proc_f procf);
+                                uros_proc_f procf,
+                                uros_topicflags_t flags);
 uros_err_t urosNodePublishTopicSZ(const char *namep,
                                   const char *typep,
-                                  uros_proc_f procf);
+                                  uros_proc_f procf,
+                                  uros_topicflags_t flags);
 uros_err_t urosNodePublishTopicByDesc(UrosTopic *topicp);
 uros_err_t urosNodeUnpublishTopic(const UrosString *namep);
 uros_err_t urosNodeUnpublishTopicSZ(const char *namep);
 
 uros_err_t urosNodeSubscribeTopic(const UrosString *namep,
                                   const UrosString *typep,
-                                  uros_proc_f procf);
+                                  uros_proc_f procf,
+                                  uros_topicflags_t flags);
 uros_err_t urosNodeSubscribeTopicSZ(const char *namep,
                                     const char *typep,
-                                    uros_proc_f procf);
+                                    uros_proc_f procf,
+                                    uros_topicflags_t flags);
 uros_err_t urosNodeSubscribeTopicByDesc(UrosTopic *topicp);
 uros_err_t urosNodeUnsubscribeTopic(const UrosString *namep);
 uros_err_t urosNodeUnsubscribeTopicSZ(const char *namep);
 
+uros_err_t urosNodeCallService(const UrosString *namep,
+                               const UrosString *typep,
+                               uros_tcpsrvcall_t callf,
+                               uros_topicflags_t flags,
+                               void *resobjp);
+uros_err_t urosNodeCallServiceSZ(const char *namep,
+                                 const char *typep,
+                                 uros_tcpsrvcall_t callf,
+                                 uros_topicflags_t flags,
+                                 void *resobjp);
+uros_err_t urosNodeCallServiceByDesc(const UrosTopic *servicep,
+                                     void *resobjp);
+
 uros_err_t urosNodePublishService(const UrosString *namep,
                                   const UrosString *typep,
-                                  uros_proc_f procf);
+                                  uros_proc_f procf,
+                                  uros_topicflags_t flags);
 uros_err_t urosNodePublishServiceSZ(const char *namep,
                                     const char *typep,
-                                    uros_proc_f procf);
+                                    uros_proc_f procf,
+                                    uros_topicflags_t flags);
 uros_err_t urosNodePublishServiceByDesc(const UrosTopic *servicep);
 uros_err_t urosNodeUnpublishService(const UrosString *namep);
 uros_err_t urosNodeUnpublishServiceSZ(const char *namep);
@@ -185,9 +204,14 @@ uros_err_t urosNodeSubscribeParamSZ(const char *namep);
 uros_err_t urosNodeUnsubscribeParam(const UrosString *namep);
 uros_err_t urosNodeUnsubscribeParamSZ(const char *namep);
 
-uros_err_t urosNodeFindNewPublishers(const UrosString *topicnamep,
+uros_err_t urosNodeFindNewTopicPublishers(const UrosString *topicnamep,
                                      const UrosRpcParam *publishersp,
                                      UrosList *newpubsp);
+uros_err_t urosNodeResolveTopicPublisher(const UrosAddr *apiaddrp,
+                                         const UrosString *namep,
+                                         UrosAddr *tcprosaddrp);
+uros_err_t urosNodeResolveServicePublisher(const UrosString *namep,
+                                           UrosAddr *pubaddrp);
 
 #ifdef __cplusplus
 }

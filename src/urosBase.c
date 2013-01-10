@@ -55,6 +55,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define urosAssert(expr)
 #endif
 
+#if UROS_BASE_C_USE_ERROR_MSG == UROS_FALSE && !defined(__DOXYGEN__)
+#undef urosError
+#define urosError(when, action, msgargs) { if (when) { action; } }
+#endif
+
 /*===========================================================================*/
 /* GLOBAL VARIABLES                                                          */
 /*===========================================================================*/
@@ -72,6 +77,14 @@ UrosList urosMsgTypeList;
  *          changed anymore.
  */
 UrosList urosSrvTypeList;
+
+/** @brief Null topic flags.*/
+const uros_topicflags_t uros_nulltopicflags =
+  { UROS_FALSE, UROS_FALSE, UROS_FALSE, UROS_FALSE, UROS_FALSE, UROS_FALSE };
+
+/** @brief Null service flags.*/
+const uros_topicflags_t uros_nullserviceflags =
+  { UROS_TRUE, UROS_FALSE, UROS_FALSE, UROS_FALSE, UROS_FALSE, UROS_FALSE };
 
 /*===========================================================================*/
 /* GLOBAL FUNCTIONS                                                          */

@@ -55,6 +55,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define urosAssert(expr)
 #endif
 
+#if UROS_RPCPARSER_C_USE_ERROR_MSG == UROS_FALSE && !defined(__DOXYGEN__)
+#undef urosError
+#define urosError(when, action, msgargs) { if (when) { action; } }
+#endif
+
 /*===========================================================================*/
 /* LOCAL FUNCTIONS                                                           */
 /*===========================================================================*/

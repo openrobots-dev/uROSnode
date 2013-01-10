@@ -272,16 +272,18 @@ uros_err_t turtle_brain_thread(turtle_t *turtlep) {
 turtle_t *turtle_spawn(const UrosString *namep,
                        float x, float y, float theta) {
 
-  static const char *posend = "/pose";
-  static const char *velend = "/command_velocity";
-  static const char *setpenend = "/set_pen";
-  static const char *telabsend = "/teleport_absolute";
-  static const char *telrelend = "/teleport_relative";
+  static const char *const posend    = "/pose";
+  static const char *const colsenend = "/color_sensor";
+  static const char *const velend    = "/command_velocity";
+  static const char *const setpenend = "/set_pen";
+  static const char *const telabsend = "/teleport_absolute";
+  static const char *const telrelend = "/teleport_relative";
 
   turtle_t *turtlep, *curp;
   unsigned i, numAlive;
   uros_err_t err;
-  UrosString name, posname, velname, setpenname, telabsname, telrelname;
+  UrosString name, posname, colsenname, velname,
+             setpenname, telabsname, telrelname;
 
   urosAssert(urosStringNotEmpty(namep));
 
@@ -330,6 +332,8 @@ turtle_t *turtle_spawn(const UrosString *namep,
 
   posname.length = 1 + namep->length + strlen(posend);
   posname.datap = (char*)urosAlloc(posname.length + 1);
+  colsenname.length = 1 + namep->length + strlen(colsenend);
+  colsenname.datap = (char*)urosAlloc(colsenname.length + 1);
   velname.length = 1 + namep->length + strlen(velend);
   velname.datap = (char*)urosAlloc(velname.length + 1);
   setpenname.length = 1 + namep->length + strlen(setpenend);
@@ -338,10 +342,11 @@ turtle_t *turtle_spawn(const UrosString *namep,
   telabsname.datap = (char*)urosAlloc(telabsname.length + 1);
   telrelname.length = 1 + namep->length + strlen(telrelend);
   telrelname.datap = (char*)urosAlloc(telrelname.length + 1);
-  if (posname.datap == NULL || velname.datap == NULL ||
-      setpenname.datap == NULL || telabsname.datap == NULL ||
-      telrelname.datap == NULL) {
+  if (posname.datap == NULL || colsenname.datap == NULL ||
+      velname.datap == NULL || setpenname.datap == NULL ||
+      telabsname.datap == NULL || telrelname.datap == NULL) {
     urosStringClean(&posname);
+    urosStringClean(&colsenname);
     urosStringClean(&velname);
     urosStringClean(&setpenname);
     urosStringClean(&telabsname);
@@ -350,24 +355,28 @@ turtle_t *turtle_spawn(const UrosString *namep,
   }
 
   posname.datap[0] = '/';
-  memcpy(1 + posname.datap, namep->datap, namep->length);
-  memcpy(1 + posname.datap + namep->length, posend, strlen(posend) + 1);
+  memcpy(1+posname.datap, namep->datap, namep->length);
+  memcpy(1+posname.datap + namep->length, posend, strlen(posend)+1);
+  colsenname.datap[0] = '/';
+  memcpy(1+colsenname.datap, namep->datap, namep->length);
+  memcpy(1+colsenname.datap + namep->length, colsenend, strlen(colsenend)+1);
   velname.datap[0] = '/';
-  memcpy(1 + velname.datap, namep->datap, namep->length);
-  memcpy(1 + velname.datap + namep->length, velend, strlen(velend) + 1);
+  memcpy(1+velname.datap, namep->datap, namep->length);
+  memcpy(1+velname.datap + namep->length, velend, strlen(velend)+1);
   setpenname.datap[0] = '/';
-  memcpy(1 + setpenname.datap, namep->datap, namep->length);
-  memcpy(1 + setpenname.datap + namep->length, setpenend, strlen(setpenend) + 1);
+  memcpy(1+setpenname.datap, namep->datap, namep->length);
+  memcpy(1+setpenname.datap + namep->length, setpenend, strlen(setpenend)+1);
   telabsname.datap[0] = '/';
-  memcpy(1 + telabsname.datap, namep->datap, namep->length);
-  memcpy(1 + telabsname.datap + namep->length, telabsend, strlen(telabsend) + 1);
+  memcpy(1+telabsname.datap, namep->datap, namep->length);
+  memcpy(1+telabsname.datap + namep->length, telabsend, strlen(telabsend)+1);
   telrelname.datap[0] = '/';
-  memcpy(1 + telrelname.datap, namep->datap, namep->length);
-  memcpy(1 + telrelname.datap + namep->length, telrelend, strlen(telrelend) + 1);
+  memcpy(1+telrelname.datap, namep->datap, namep->length);
+  memcpy(1+telrelname.datap + namep->length, telrelend, strlen(telrelend)+1);
 
   /* Assign the new attributes.*/
   turtlep->name = urosStringClone(namep);
   turtlep->poseTopic = posname;
+  turtlep->colsenTopic = posname;
   turtlep->velTopic = velname;
   turtlep->setpenService = setpenname;
   turtlep->telabsService = telabsname;
@@ -383,19 +392,32 @@ turtle_t *turtle_spawn(const UrosString *namep,
   turtlep->status = TURTLE_ALIVE;
   turtlep->refCnt = 1; /* For the brain thread only.*/
 
+
   /* Publish "<turtle>/pose" .*/
   err = urosNodePublishTopicSZ(posname.datap,
                                "turtlesim/Pose",
-                               (uros_proc_f)pub_tpc__turtleX__pose);
+                               (uros_proc_f)pub_tpc__turtleX__pose,
+                               uros_nulltopicflags);
   urosError(err != UROS_OK,
             goto _error,
             ("Error %s while publishing topic [%s]\n",
              urosErrorText(err), posname.datap));
 
+  /* Publish "<turtle>/color_sensor" .*/
+  err = urosNodePublishTopicSZ(colsenname.datap,
+                               "turtlesim/Color",
+                               (uros_proc_f)pub_tpc__turtleX__color_sensor,
+                               uros_nulltopicflags);
+  urosError(err != UROS_OK,
+            goto _error,
+            ("Error %s while publishing topic [%s]\n",
+             urosErrorText(err), colsenname.datap));
+
   /* Subscribe to "<turtle>/command_velocity".*/
   err = urosNodeSubscribeTopicSZ(velname.datap,
                                  "turtlesim/Velocity",
-                                 (uros_proc_f)sub_tpc__turtleX__command_velocity);
+                                 (uros_proc_f)sub_tpc__turtleX__command_velocity,
+                                 uros_nulltopicflags);
   urosError(err != UROS_OK,
             { urosNodeUnpublishTopic(&posname);
               goto _error; },
@@ -405,7 +427,8 @@ turtle_t *turtle_spawn(const UrosString *namep,
   /* Publish "<turtle>/set_pen".*/
   err = urosNodePublishServiceSZ(setpenname.datap,
                                  "turtlesim/SetPen",
-                                 (uros_proc_f)pub_srv__turtleX__set_pen);
+                                 (uros_proc_f)pub_srv__turtleX__set_pen,
+                                 uros_nullserviceflags);
   urosError(err != UROS_OK,
             { urosNodeUnpublishTopic(&posname);
               urosNodeUnpublishTopic(&velname);
@@ -416,7 +439,8 @@ turtle_t *turtle_spawn(const UrosString *namep,
   /* Publish "<turtle>/teleport_absolute".*/
   err = urosNodePublishServiceSZ(telabsname.datap,
                                  "turtlesim/TeleportAbsolute",
-                                 (uros_proc_f)pub_srv__turtleX__teleport_absolute);
+                                 (uros_proc_f)pub_srv__turtleX__teleport_absolute,
+                                 uros_nullserviceflags);
   urosError(err != UROS_OK,
             { urosNodeUnpublishTopic(&posname);
               urosNodeUnpublishTopic(&velname);
@@ -428,7 +452,8 @@ turtle_t *turtle_spawn(const UrosString *namep,
   /* Publish "<turtle>/teleport_relative".*/
   err = urosNodePublishServiceSZ(telrelname.datap,
                                  "turtlesim/TeleportRelative",
-                                 (uros_proc_f)pub_srv__turtleX__teleport_relative);
+                                 (uros_proc_f)pub_srv__turtleX__teleport_relative,
+                                 uros_nullserviceflags);
   urosError(err != UROS_OK,
             { urosNodeUnpublishTopic(&posname);
               urosNodeUnpublishTopic(&velname);
@@ -469,6 +494,12 @@ void turtle_kill(turtle_t *turtlep) {
             ("Error %s while unpublishing topic [%.*s]\n",
              urosErrorText(err), UROS_STRARG(&turtlep->poseTopic)));
 
+  err = urosNodeUnpublishTopic(&turtlep->colsenTopic);
+  urosError(err != UROS_OK, UROS_NOP,
+            ("Error %s while unpublishing topic [%.*s]\n",
+             urosErrorText(err), UROS_STRARG(&turtlep->colsenTopic)));
+
+  /* Unsubscribe its topics.*/
   err = urosNodeUnsubscribeTopic(&turtlep->velTopic);
   urosError(err != UROS_OK, UROS_NOP,
             ("Error %s while unsubscribing topic [%.*s]\n",

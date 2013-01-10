@@ -68,14 +68,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /*~~~ MESSAGE: std_msgs/Header ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Message <tt>std_msgs/Header</tt> */
+/** @name Message <code>std_msgs/Header</code> */
 /** @{ */
 
 /**
- * @brief   Content length of a TCPROS <tt>std_msgs/Header</tt> message.
+ * @brief   Content length of a TCPROS <code>std_msgs/Header</code> message.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct msg__std_msgs__Header</tt> object.
+ *          Pointer to an initialized <code>struct msg__std_msgs__Header</code> object.
  * @return
  *          Length of the TCPROS message contents, in bytes.
  */
@@ -94,10 +94,10 @@ size_t length_msg__std_msgs__Header(
 }
 
 /**
- * @brief   Initializes a TCPROS <tt>std_msgs/Header</tt> message.
+ * @brief   Initializes a TCPROS <code>std_msgs/Header</code> message.
  *
  * @param[in,out] objp
- *          Pointer to an allocated <tt>struct msg__std_msgs__Header</tt> object.
+ *          Pointer to an allocated <code>struct msg__std_msgs__Header</code> object.
  * @return
  *          Error code.
  */
@@ -110,10 +110,10 @@ void init_msg__std_msgs__Header(
 }
 
 /**
- * @brief   Cleans a TCPROS <tt>std_msgs/Header</tt> message.
+ * @brief   Cleans a TCPROS <code>std_msgs/Header</code> message.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct msg__std_msgs__Header</tt> object, or @p NULL.
+ *          Pointer to an initialized <code>struct msg__std_msgs__Header</code> object, or @p NULL.
  * @return
  *          Error code.
  */
@@ -126,12 +126,12 @@ void clean_msg__std_msgs__Header(
 }
 
 /**
- * @brief   Receives a TCPROS <tt>std_msgs/Header</tt> message.
+ * @brief   Receives a TCPROS <code>std_msgs/Header</code> message.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[out] objp
- *          Pointer to an initialized <tt>struct msg__std_msgs__Header</tt> object.
+ *          Pointer to an initialized <code>struct msg__std_msgs__Header</code> object.
  * @return
  *          Error code.
  */
@@ -156,12 +156,12 @@ _error:
 }
 
 /**
- * @brief   Sends a TCPROS <tt>std_msgs/Header</tt> message.
+ * @brief   Sends a TCPROS <code>std_msgs/Header</code> message.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[in] objp
- *          Pointer to an initialized <tt>struct msg__std_msgs__Header</tt> object.
+ *          Pointer to an initialized <code>struct msg__std_msgs__Header</code> object.
  * @return
  *          Error code.
  */
@@ -186,14 +186,14 @@ uros_err_t send_msg__std_msgs__Header(
 
 /*~~~ MESSAGE: rosgraph_msgs/Log ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Message <tt>rosgraph_msgs/Log</tt> */
+/** @name Message <code>rosgraph_msgs/Log</code> */
 /** @{ */
 
 /**
- * @brief   Content length of a TCPROS <tt>rosgraph_msgs/Log</tt> message.
+ * @brief   Content length of a TCPROS <code>rosgraph_msgs/Log</code> message.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct msg__rosgraph_msgs__Log</tt> object.
+ *          Pointer to an initialized <code>struct msg__rosgraph_msgs__Log</code> object.
  * @return
  *          Length of the TCPROS message contents, in bytes.
  */
@@ -222,10 +222,10 @@ size_t length_msg__rosgraph_msgs__Log(
 }
 
 /**
- * @brief   Initializes a TCPROS <tt>rosgraph_msgs/Log</tt> message.
+ * @brief   Initializes a TCPROS <code>rosgraph_msgs/Log</code> message.
  *
  * @param[in,out] objp
- *          Pointer to an allocated <tt>struct msg__rosgraph_msgs__Log</tt> object.
+ *          Pointer to an allocated <code>struct msg__rosgraph_msgs__Log</code> object.
  * @return
  *          Error code.
  */
@@ -248,10 +248,10 @@ void init_msg__rosgraph_msgs__Log(
 }
 
 /**
- * @brief   Cleans a TCPROS <tt>rosgraph_msgs/Log</tt> message.
+ * @brief   Cleans a TCPROS <code>rosgraph_msgs/Log</code> message.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct msg__rosgraph_msgs__Log</tt> object, or @p NULL.
+ *          Pointer to an initialized <code>struct msg__rosgraph_msgs__Log</code> object, or @p NULL.
  * @return
  *          Error code.
  */
@@ -274,12 +274,12 @@ void clean_msg__rosgraph_msgs__Log(
 }
 
 /**
- * @brief   Receives a TCPROS <tt>rosgraph_msgs/Log</tt> message.
+ * @brief   Receives a TCPROS <code>rosgraph_msgs/Log</code> message.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[out] objp
- *          Pointer to an initialized <tt>struct msg__rosgraph_msgs__Log</tt> object.
+ *          Pointer to an initialized <code>struct msg__rosgraph_msgs__Log</code> object.
  * @return
  *          Error code.
  */
@@ -318,12 +318,12 @@ _error:
 }
 
 /**
- * @brief   Sends a TCPROS <tt>rosgraph_msgs/Log</tt> message.
+ * @brief   Sends a TCPROS <code>rosgraph_msgs/Log</code> message.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[in] objp
- *          Pointer to an initialized <tt>struct msg__rosgraph_msgs__Log</tt> object.
+ *          Pointer to an initialized <code>struct msg__rosgraph_msgs__Log</code> object.
  * @return
  *          Error code.
  */
@@ -358,14 +358,14 @@ uros_err_t send_msg__rosgraph_msgs__Log(
 
 /*~~~ MESSAGE: turtlesim/Pose ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Message <tt>turtlesim/Pose</tt> */
+/** @name Message <code>turtlesim/Pose</code> */
 /** @{ */
 
 /**
- * @brief   Content length of a TCPROS <tt>turtlesim/Pose</tt> message.
+ * @brief   Content length of a TCPROS <code>turtlesim/Pose</code> message.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct msg__turtlesim__Pose</tt> object.
+ *          Pointer to an initialized <code>struct msg__turtlesim__Pose</code> object.
  * @return
  *          Length of the TCPROS message contents, in bytes.
  */
@@ -387,10 +387,10 @@ size_t length_msg__turtlesim__Pose(
 }
 
 /**
- * @brief   Initializes a TCPROS <tt>turtlesim/Pose</tt> message.
+ * @brief   Initializes a TCPROS <code>turtlesim/Pose</code> message.
  *
  * @param[in,out] objp
- *          Pointer to an allocated <tt>struct msg__turtlesim__Pose</tt> object.
+ *          Pointer to an allocated <code>struct msg__turtlesim__Pose</code> object.
  * @return
  *          Error code.
  */
@@ -404,10 +404,10 @@ void init_msg__turtlesim__Pose(
 }
 
 /**
- * @brief   Cleans a TCPROS <tt>turtlesim/Pose</tt> message.
+ * @brief   Cleans a TCPROS <code>turtlesim/Pose</code> message.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct msg__turtlesim__Pose</tt> object, or @p NULL.
+ *          Pointer to an initialized <code>struct msg__turtlesim__Pose</code> object, or @p NULL.
  * @return
  *          Error code.
  */
@@ -419,12 +419,12 @@ void clean_msg__turtlesim__Pose(
 }
 
 /**
- * @brief   Receives a TCPROS <tt>turtlesim/Pose</tt> message.
+ * @brief   Receives a TCPROS <code>turtlesim/Pose</code> message.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[out] objp
- *          Pointer to an initialized <tt>struct msg__turtlesim__Pose</tt> object.
+ *          Pointer to an initialized <code>struct msg__turtlesim__Pose</code> object.
  * @return
  *          Error code.
  */
@@ -451,12 +451,12 @@ _error:
 }
 
 /**
- * @brief   Sends a TCPROS <tt>turtlesim/Pose</tt> message.
+ * @brief   Sends a TCPROS <code>turtlesim/Pose</code> message.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[in] objp
- *          Pointer to an initialized <tt>struct msg__turtlesim__Pose</tt> object.
+ *          Pointer to an initialized <code>struct msg__turtlesim__Pose</code> object.
  * @return
  *          Error code.
  */
@@ -481,16 +481,135 @@ uros_err_t send_msg__turtlesim__Pose(
 
 /** @} */
 
-/*~~~ MESSAGE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: turtlesim/Color ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Message <tt>turtlesim/Velocity</tt> */
+/** @name Message <code>turtlesim/Color</code> */
 /** @{ */
 
 /**
- * @brief   Content length of a TCPROS <tt>turtlesim/Velocity</tt> message.
+ * @brief   Content length of a TCPROS <code>turtlesim/Color</code> message.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct msg__turtlesim__Velocity</tt> object.
+ *          Pointer to an initialized <code>struct msg__turtlesim__Color</code> object.
+ * @return
+ *          Length of the TCPROS message contents, in bytes.
+ */
+size_t length_msg__turtlesim__Color(
+  struct msg__turtlesim__Color *objp
+) {
+  size_t length = 0;
+
+  urosAssert(objp != NULL);
+
+  length += sizeof(uint8_t);
+  length += sizeof(uint8_t);
+  length += sizeof(uint8_t);
+
+  (void)objp;
+  return length;
+}
+
+/**
+ * @brief   Initializes a TCPROS <code>turtlesim/Color</code> message.
+ *
+ * @param[in,out] objp
+ *          Pointer to an allocated <code>struct msg__turtlesim__Color</code> object.
+ * @return
+ *          Error code.
+ */
+void init_msg__turtlesim__Color(
+  struct msg__turtlesim__Color *objp
+) {
+  urosAssert(objp != NULL);
+
+  /* Nothing to initialize.*/
+  (void)objp;
+}
+
+/**
+ * @brief   Cleans a TCPROS <code>turtlesim/Color</code> message.
+ *
+ * @param[in,out] objp
+ *          Pointer to an initialized <code>struct msg__turtlesim__Color</code> object, or @p NULL.
+ * @return
+ *          Error code.
+ */
+void clean_msg__turtlesim__Color(
+  struct msg__turtlesim__Color *objp
+) {
+  /* Nothing to clean.*/
+  (void)objp;
+}
+
+/**
+ * @brief   Receives a TCPROS <code>turtlesim/Color</code> message.
+ *
+ * @param[in,out] tcpstp
+ *          Pointer to a working @p UrosTcpRosStatus object.
+ * @param[out] objp
+ *          Pointer to an initialized <code>struct msg__turtlesim__Color</code> object.
+ * @return
+ *          Error code.
+ */
+uros_err_t recv_msg__turtlesim__Color(
+  UrosTcpRosStatus *tcpstp,
+  struct msg__turtlesim__Color *objp
+) {
+  urosAssert(tcpstp != NULL);
+  urosAssert(urosConnIsValid(tcpstp->csp));
+  urosAssert(objp != NULL);
+#define _CHKOK { if (tcpstp->err != UROS_OK) { goto _error; } }
+
+  urosTcpRosRecvRaw(tcpstp, objp->r); _CHKOK
+  urosTcpRosRecvRaw(tcpstp, objp->g); _CHKOK
+  urosTcpRosRecvRaw(tcpstp, objp->b); _CHKOK
+
+  return tcpstp->err = UROS_OK;
+_error:
+  clean_msg__turtlesim__Color(objp);
+  return tcpstp->err;
+#undef _CHKOK
+}
+
+/**
+ * @brief   Sends a TCPROS <code>turtlesim/Color</code> message.
+ *
+ * @param[in,out] tcpstp
+ *          Pointer to a working @p UrosTcpRosStatus object.
+ * @param[in] objp
+ *          Pointer to an initialized <code>struct msg__turtlesim__Color</code> object.
+ * @return
+ *          Error code.
+ */
+uros_err_t send_msg__turtlesim__Color(
+  UrosTcpRosStatus *tcpstp,
+  struct msg__turtlesim__Color *objp
+) {
+  urosAssert(tcpstp != NULL);
+  urosAssert(urosConnIsValid(tcpstp->csp));
+  urosAssert(objp != NULL);
+#define _CHKOK { if (tcpstp->err != UROS_OK) { return tcpstp->err; } }
+
+  urosTcpRosSendRaw(tcpstp, objp->r); _CHKOK
+  urosTcpRosSendRaw(tcpstp, objp->g); _CHKOK
+  urosTcpRosSendRaw(tcpstp, objp->b); _CHKOK
+
+  return tcpstp->err = UROS_OK;
+#undef _CHKOK
+}
+
+/** @} */
+
+/*~~~ MESSAGE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+/** @name Message <code>turtlesim/Velocity</code> */
+/** @{ */
+
+/**
+ * @brief   Content length of a TCPROS <code>turtlesim/Velocity</code> message.
+ *
+ * @param[in,out] objp
+ *          Pointer to an initialized <code>struct msg__turtlesim__Velocity</code> object.
  * @return
  *          Length of the TCPROS message contents, in bytes.
  */
@@ -509,10 +628,10 @@ size_t length_msg__turtlesim__Velocity(
 }
 
 /**
- * @brief   Initializes a TCPROS <tt>turtlesim/Velocity</tt> message.
+ * @brief   Initializes a TCPROS <code>turtlesim/Velocity</code> message.
  *
  * @param[in,out] objp
- *          Pointer to an allocated <tt>struct msg__turtlesim__Velocity</tt> object.
+ *          Pointer to an allocated <code>struct msg__turtlesim__Velocity</code> object.
  * @return
  *          Error code.
  */
@@ -526,10 +645,10 @@ void init_msg__turtlesim__Velocity(
 }
 
 /**
- * @brief   Cleans a TCPROS <tt>turtlesim/Velocity</tt> message.
+ * @brief   Cleans a TCPROS <code>turtlesim/Velocity</code> message.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct msg__turtlesim__Velocity</tt> object, or @p NULL.
+ *          Pointer to an initialized <code>struct msg__turtlesim__Velocity</code> object, or @p NULL.
  * @return
  *          Error code.
  */
@@ -541,12 +660,12 @@ void clean_msg__turtlesim__Velocity(
 }
 
 /**
- * @brief   Receives a TCPROS <tt>turtlesim/Velocity</tt> message.
+ * @brief   Receives a TCPROS <code>turtlesim/Velocity</code> message.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[out] objp
- *          Pointer to an initialized <tt>struct msg__turtlesim__Velocity</tt> object.
+ *          Pointer to an initialized <code>struct msg__turtlesim__Velocity</code> object.
  * @return
  *          Error code.
  */
@@ -570,12 +689,12 @@ _error:
 }
 
 /**
- * @brief   Sends a TCPROS <tt>turtlesim/Velocity</tt> message.
+ * @brief   Sends a TCPROS <code>turtlesim/Velocity</code> message.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[in] objp
- *          Pointer to an initialized <tt>struct msg__turtlesim__Velocity</tt> object.
+ *          Pointer to an initialized <code>struct msg__turtlesim__Velocity</code> object.
  * @return
  *          Error code.
  */
@@ -608,14 +727,14 @@ uros_err_t send_msg__turtlesim__Velocity(
 
 /*~~~ SERVICE: turtlesim/SetPen ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <tt>turtlesim/SetPen</tt> */
+/** @name Service <code>turtlesim/SetPen</code> */
 /** @{ */
 
 /**
- * @brief   Content length of a TCPROS <tt>turtlesim/SetPen</tt> service request.
+ * @brief   Content length of a TCPROS <code>turtlesim/SetPen</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct srv__turtlesim__SetPen</tt> object.
+ *          Pointer to an initialized <code>struct srv__turtlesim__SetPen</code> object.
  * @return
  *          Length of the TCPROS service request contents, in bytes.
  */
@@ -637,10 +756,10 @@ size_t length_in_srv__turtlesim__SetPen(
 }
 
 /**
- * @brief   Initializes a TCPROS <tt>turtlesim/SetPen</tt> service request.
+ * @brief   Initializes a TCPROS <code>turtlesim/SetPen</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an allocated <tt>struct in_srv__turtlesim__SetPen</tt> object.
+ *          Pointer to an allocated <code>struct in_srv__turtlesim__SetPen</code> object.
  * @return
  *          Error code.
  */
@@ -654,10 +773,10 @@ void init_in_srv__turtlesim__SetPen(
 }
 
 /**
- * @brief   Cleans a TCPROS <tt>turtlesim/SetPen</tt> service request.
+ * @brief   Cleans a TCPROS <code>turtlesim/SetPen</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct in_srv__turtlesim__SetPen</tt>object.
+ *          Pointer to an initialized <code>struct in_srv__turtlesim__SetPen</code>object.
  * @return
  *          Error code.
  */
@@ -671,10 +790,10 @@ void clean_in_srv__turtlesim__SetPen(
 }
 
 /**
- * @brief   Content length of a TCPROS <tt>turtlesim/SetPen</tt> service response.
+ * @brief   Content length of a TCPROS <code>turtlesim/SetPen</code> service response.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct srv__turtlesim__SetPen</tt> object.
+ *          Pointer to an initialized <code>struct srv__turtlesim__SetPen</code> object.
  * @return
  *          Length of the TCPROS service response contents, in bytes.
  */
@@ -691,10 +810,10 @@ size_t length_out_srv__turtlesim__SetPen(
 }
 
 /**
- * @brief   Initializes a TCPROS <tt>turtlesim/SetPen</tt> service request.
+ * @brief   Initializes a TCPROS <code>turtlesim/SetPen</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an allocated <tt>struct out_srv__turtlesim__SetPen</tt> object.
+ *          Pointer to an allocated <code>struct out_srv__turtlesim__SetPen</code> object.
  * @return
  *          Error code.
  */
@@ -708,10 +827,10 @@ void init_out_srv__turtlesim__SetPen(
 }
 
 /**
- * @brief   Cleans a TCPROS <tt>turtlesim/SetPen</tt> service request.
+ * @brief   Cleans a TCPROS <code>turtlesim/SetPen</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct out_srv__turtlesim__SetPen</tt> object.
+ *          Pointer to an initialized <code>struct out_srv__turtlesim__SetPen</code> object.
  * @return
  *          Error code.
  */
@@ -725,16 +844,16 @@ void clean_out_srv__turtlesim__SetPen(
 }
 
 /**
- * @brief   Receives a TCPROS <tt>turtlesim/SetPen</tt> service request.
+ * @brief   Receives a TCPROS <code>turtlesim/SetPen</code> service request.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[out] objp
- *          Pointer to an initialized <tt>struct in_srv__turtlesim__SetPen</tt> object.
+ *          Pointer to an initialized <code>struct in_srv__turtlesim__SetPen</code> object.
  * @return
  *          Error code.
  */
-uros_err_t recv_srv__turtlesim__SetPen(
+uros_err_t recv_in_srv__turtlesim__SetPen(
   UrosTcpRosStatus *tcpstp,
   struct in_srv__turtlesim__SetPen *objp
 ) {
@@ -757,16 +876,16 @@ _error:
 }
 
 /**
- * @brief   Sends a TCPROS <tt>turtlesim/SetPen</tt> service response.
+ * @brief   Sends a TCPROS <code>turtlesim/SetPen</code> service response.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[in] objp
- *          Pointer to an initialized <tt>struct out_srv__turtlesim__SetPen</tt> object.
+ *          Pointer to an initialized <code>struct out_srv__turtlesim__SetPen</code> object.
  * @return
  *          Error code.
  */
-uros_err_t send_srv__turtlesim__SetPen(
+uros_err_t send_out_srv__turtlesim__SetPen(
   UrosTcpRosStatus *tcpstp,
   struct out_srv__turtlesim__SetPen *objp
 ) {
@@ -783,14 +902,14 @@ uros_err_t send_srv__turtlesim__SetPen(
 
 /*~~~ SERVICE: turtlesim/Spawn ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <tt>turtlesim/Spawn</tt> */
+/** @name Service <code>turtlesim/Spawn</code> */
 /** @{ */
 
 /**
- * @brief   Content length of a TCPROS <tt>turtlesim/Spawn</tt> service request.
+ * @brief   Content length of a TCPROS <code>turtlesim/Spawn</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct srv__turtlesim__Spawn</tt> object.
+ *          Pointer to an initialized <code>struct srv__turtlesim__Spawn</code> object.
  * @return
  *          Length of the TCPROS service request contents, in bytes.
  */
@@ -810,10 +929,10 @@ size_t length_in_srv__turtlesim__Spawn(
 }
 
 /**
- * @brief   Initializes a TCPROS <tt>turtlesim/Spawn</tt> service request.
+ * @brief   Initializes a TCPROS <code>turtlesim/Spawn</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an allocated <tt>struct in_srv__turtlesim__Spawn</tt> object.
+ *          Pointer to an allocated <code>struct in_srv__turtlesim__Spawn</code> object.
  * @return
  *          Error code.
  */
@@ -826,10 +945,10 @@ void init_in_srv__turtlesim__Spawn(
 }
 
 /**
- * @brief   Cleans a TCPROS <tt>turtlesim/Spawn</tt> service request.
+ * @brief   Cleans a TCPROS <code>turtlesim/Spawn</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct in_srv__turtlesim__Spawn</tt>object.
+ *          Pointer to an initialized <code>struct in_srv__turtlesim__Spawn</code>object.
  * @return
  *          Error code.
  */
@@ -842,10 +961,10 @@ void clean_in_srv__turtlesim__Spawn(
 }
 
 /**
- * @brief   Content length of a TCPROS <tt>turtlesim/Spawn</tt> service response.
+ * @brief   Content length of a TCPROS <code>turtlesim/Spawn</code> service response.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct srv__turtlesim__Spawn</tt> object.
+ *          Pointer to an initialized <code>struct srv__turtlesim__Spawn</code> object.
  * @return
  *          Length of the TCPROS service response contents, in bytes.
  */
@@ -862,10 +981,10 @@ size_t length_out_srv__turtlesim__Spawn(
 }
 
 /**
- * @brief   Initializes a TCPROS <tt>turtlesim/Spawn</tt> service request.
+ * @brief   Initializes a TCPROS <code>turtlesim/Spawn</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an allocated <tt>struct out_srv__turtlesim__Spawn</tt> object.
+ *          Pointer to an allocated <code>struct out_srv__turtlesim__Spawn</code> object.
  * @return
  *          Error code.
  */
@@ -878,10 +997,10 @@ void init_out_srv__turtlesim__Spawn(
 }
 
 /**
- * @brief   Cleans a TCPROS <tt>turtlesim/Spawn</tt> service request.
+ * @brief   Cleans a TCPROS <code>turtlesim/Spawn</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct out_srv__turtlesim__Spawn</tt> object.
+ *          Pointer to an initialized <code>struct out_srv__turtlesim__Spawn</code> object.
  * @return
  *          Error code.
  */
@@ -894,16 +1013,16 @@ void clean_out_srv__turtlesim__Spawn(
 }
 
 /**
- * @brief   Receives a TCPROS <tt>turtlesim/Spawn</tt> service request.
+ * @brief   Receives a TCPROS <code>turtlesim/Spawn</code> service request.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[out] objp
- *          Pointer to an initialized <tt>struct in_srv__turtlesim__Spawn</tt> object.
+ *          Pointer to an initialized <code>struct in_srv__turtlesim__Spawn</code> object.
  * @return
  *          Error code.
  */
-uros_err_t recv_srv__turtlesim__Spawn(
+uros_err_t recv_in_srv__turtlesim__Spawn(
   UrosTcpRosStatus *tcpstp,
   struct in_srv__turtlesim__Spawn *objp
 ) {
@@ -925,16 +1044,16 @@ _error:
 }
 
 /**
- * @brief   Sends a TCPROS <tt>turtlesim/Spawn</tt> service response.
+ * @brief   Sends a TCPROS <code>turtlesim/Spawn</code> service response.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[in] objp
- *          Pointer to an initialized <tt>struct out_srv__turtlesim__Spawn</tt> object.
+ *          Pointer to an initialized <code>struct out_srv__turtlesim__Spawn</code> object.
  * @return
  *          Error code.
  */
-uros_err_t send_srv__turtlesim__Spawn(
+uros_err_t send_out_srv__turtlesim__Spawn(
   UrosTcpRosStatus *tcpstp,
   struct out_srv__turtlesim__Spawn *objp
 ) {
@@ -953,14 +1072,14 @@ uros_err_t send_srv__turtlesim__Spawn(
 
 /*~~~ SERVICE: turtlesim/Kill ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <tt>turtlesim/Kill</tt> */
+/** @name Service <code>turtlesim/Kill</code> */
 /** @{ */
 
 /**
- * @brief   Content length of a TCPROS <tt>turtlesim/Kill</tt> service request.
+ * @brief   Content length of a TCPROS <code>turtlesim/Kill</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct srv__turtlesim__Kill</tt> object.
+ *          Pointer to an initialized <code>struct srv__turtlesim__Kill</code> object.
  * @return
  *          Length of the TCPROS service request contents, in bytes.
  */
@@ -977,10 +1096,10 @@ size_t length_in_srv__turtlesim__Kill(
 }
 
 /**
- * @brief   Initializes a TCPROS <tt>turtlesim/Kill</tt> service request.
+ * @brief   Initializes a TCPROS <code>turtlesim/Kill</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an allocated <tt>struct in_srv__turtlesim__Kill</tt> object.
+ *          Pointer to an allocated <code>struct in_srv__turtlesim__Kill</code> object.
  * @return
  *          Error code.
  */
@@ -993,10 +1112,10 @@ void init_in_srv__turtlesim__Kill(
 }
 
 /**
- * @brief   Cleans a TCPROS <tt>turtlesim/Kill</tt> service request.
+ * @brief   Cleans a TCPROS <code>turtlesim/Kill</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct in_srv__turtlesim__Kill</tt>object.
+ *          Pointer to an initialized <code>struct in_srv__turtlesim__Kill</code>object.
  * @return
  *          Error code.
  */
@@ -1010,10 +1129,10 @@ void clean_in_srv__turtlesim__Kill(
 }
 
 /**
- * @brief   Content length of a TCPROS <tt>turtlesim/Kill</tt> service response.
+ * @brief   Content length of a TCPROS <code>turtlesim/Kill</code> service response.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct srv__turtlesim__Kill</tt> object.
+ *          Pointer to an initialized <code>struct srv__turtlesim__Kill</code> object.
  * @return
  *          Length of the TCPROS service response contents, in bytes.
  */
@@ -1030,10 +1149,10 @@ size_t length_out_srv__turtlesim__Kill(
 }
 
 /**
- * @brief   Initializes a TCPROS <tt>turtlesim/Kill</tt> service request.
+ * @brief   Initializes a TCPROS <code>turtlesim/Kill</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an allocated <tt>struct out_srv__turtlesim__Kill</tt> object.
+ *          Pointer to an allocated <code>struct out_srv__turtlesim__Kill</code> object.
  * @return
  *          Error code.
  */
@@ -1047,10 +1166,10 @@ void init_out_srv__turtlesim__Kill(
 }
 
 /**
- * @brief   Cleans a TCPROS <tt>turtlesim/Kill</tt> service request.
+ * @brief   Cleans a TCPROS <code>turtlesim/Kill</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct out_srv__turtlesim__Kill</tt> object.
+ *          Pointer to an initialized <code>struct out_srv__turtlesim__Kill</code> object.
  * @return
  *          Error code.
  */
@@ -1064,16 +1183,16 @@ void clean_out_srv__turtlesim__Kill(
 }
 
 /**
- * @brief   Receives a TCPROS <tt>turtlesim/Kill</tt> service request.
+ * @brief   Receives a TCPROS <code>turtlesim/Kill</code> service request.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[out] objp
- *          Pointer to an initialized <tt>struct in_srv__turtlesim__Kill</tt> object.
+ *          Pointer to an initialized <code>struct in_srv__turtlesim__Kill</code> object.
  * @return
  *          Error code.
  */
-uros_err_t recv_srv__turtlesim__Kill(
+uros_err_t recv_in_srv__turtlesim__Kill(
   UrosTcpRosStatus *tcpstp,
   struct in_srv__turtlesim__Kill *objp
 ) {
@@ -1092,16 +1211,16 @@ _error:
 }
 
 /**
- * @brief   Sends a TCPROS <tt>turtlesim/Kill</tt> service response.
+ * @brief   Sends a TCPROS <code>turtlesim/Kill</code> service response.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[in] objp
- *          Pointer to an initialized <tt>struct out_srv__turtlesim__Kill</tt> object.
+ *          Pointer to an initialized <code>struct out_srv__turtlesim__Kill</code> object.
  * @return
  *          Error code.
  */
-uros_err_t send_srv__turtlesim__Kill(
+uros_err_t send_out_srv__turtlesim__Kill(
   UrosTcpRosStatus *tcpstp,
   struct out_srv__turtlesim__Kill *objp
 ) {
@@ -1118,14 +1237,14 @@ uros_err_t send_srv__turtlesim__Kill(
 
 /*~~~ SERVICE: turtlesim/TeleportAbsolute ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <tt>turtlesim/TeleportAbsolute</tt> */
+/** @name Service <code>turtlesim/TeleportAbsolute</code> */
 /** @{ */
 
 /**
- * @brief   Content length of a TCPROS <tt>turtlesim/TeleportAbsolute</tt> service request.
+ * @brief   Content length of a TCPROS <code>turtlesim/TeleportAbsolute</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct srv__turtlesim__TeleportAbsolute</tt> object.
+ *          Pointer to an initialized <code>struct srv__turtlesim__TeleportAbsolute</code> object.
  * @return
  *          Length of the TCPROS service request contents, in bytes.
  */
@@ -1145,10 +1264,10 @@ size_t length_in_srv__turtlesim__TeleportAbsolute(
 }
 
 /**
- * @brief   Initializes a TCPROS <tt>turtlesim/TeleportAbsolute</tt> service request.
+ * @brief   Initializes a TCPROS <code>turtlesim/TeleportAbsolute</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an allocated <tt>struct in_srv__turtlesim__TeleportAbsolute</tt> object.
+ *          Pointer to an allocated <code>struct in_srv__turtlesim__TeleportAbsolute</code> object.
  * @return
  *          Error code.
  */
@@ -1162,10 +1281,10 @@ void init_in_srv__turtlesim__TeleportAbsolute(
 }
 
 /**
- * @brief   Cleans a TCPROS <tt>turtlesim/TeleportAbsolute</tt> service request.
+ * @brief   Cleans a TCPROS <code>turtlesim/TeleportAbsolute</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct in_srv__turtlesim__TeleportAbsolute</tt>object.
+ *          Pointer to an initialized <code>struct in_srv__turtlesim__TeleportAbsolute</code>object.
  * @return
  *          Error code.
  */
@@ -1179,10 +1298,10 @@ void clean_in_srv__turtlesim__TeleportAbsolute(
 }
 
 /**
- * @brief   Content length of a TCPROS <tt>turtlesim/TeleportAbsolute</tt> service response.
+ * @brief   Content length of a TCPROS <code>turtlesim/TeleportAbsolute</code> service response.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct srv__turtlesim__TeleportAbsolute</tt> object.
+ *          Pointer to an initialized <code>struct srv__turtlesim__TeleportAbsolute</code> object.
  * @return
  *          Length of the TCPROS service response contents, in bytes.
  */
@@ -1199,10 +1318,10 @@ size_t length_out_srv__turtlesim__TeleportAbsolute(
 }
 
 /**
- * @brief   Initializes a TCPROS <tt>turtlesim/TeleportAbsolute</tt> service request.
+ * @brief   Initializes a TCPROS <code>turtlesim/TeleportAbsolute</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an allocated <tt>struct out_srv__turtlesim__TeleportAbsolute</tt> object.
+ *          Pointer to an allocated <code>struct out_srv__turtlesim__TeleportAbsolute</code> object.
  * @return
  *          Error code.
  */
@@ -1216,10 +1335,10 @@ void init_out_srv__turtlesim__TeleportAbsolute(
 }
 
 /**
- * @brief   Cleans a TCPROS <tt>turtlesim/TeleportAbsolute</tt> service request.
+ * @brief   Cleans a TCPROS <code>turtlesim/TeleportAbsolute</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct out_srv__turtlesim__TeleportAbsolute</tt> object.
+ *          Pointer to an initialized <code>struct out_srv__turtlesim__TeleportAbsolute</code> object.
  * @return
  *          Error code.
  */
@@ -1233,16 +1352,16 @@ void clean_out_srv__turtlesim__TeleportAbsolute(
 }
 
 /**
- * @brief   Receives a TCPROS <tt>turtlesim/TeleportAbsolute</tt> service request.
+ * @brief   Receives a TCPROS <code>turtlesim/TeleportAbsolute</code> service request.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[out] objp
- *          Pointer to an initialized <tt>struct in_srv__turtlesim__TeleportAbsolute</tt> object.
+ *          Pointer to an initialized <code>struct in_srv__turtlesim__TeleportAbsolute</code> object.
  * @return
  *          Error code.
  */
-uros_err_t recv_srv__turtlesim__TeleportAbsolute(
+uros_err_t recv_in_srv__turtlesim__TeleportAbsolute(
   UrosTcpRosStatus *tcpstp,
   struct in_srv__turtlesim__TeleportAbsolute *objp
 ) {
@@ -1263,16 +1382,16 @@ _error:
 }
 
 /**
- * @brief   Sends a TCPROS <tt>turtlesim/TeleportAbsolute</tt> service response.
+ * @brief   Sends a TCPROS <code>turtlesim/TeleportAbsolute</code> service response.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[in] objp
- *          Pointer to an initialized <tt>struct out_srv__turtlesim__TeleportAbsolute</tt> object.
+ *          Pointer to an initialized <code>struct out_srv__turtlesim__TeleportAbsolute</code> object.
  * @return
  *          Error code.
  */
-uros_err_t send_srv__turtlesim__TeleportAbsolute(
+uros_err_t send_out_srv__turtlesim__TeleportAbsolute(
   UrosTcpRosStatus *tcpstp,
   struct out_srv__turtlesim__TeleportAbsolute *objp
 ) {
@@ -1289,14 +1408,14 @@ uros_err_t send_srv__turtlesim__TeleportAbsolute(
 
 /*~~~ SERVICE: std_srvs/Empty ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <tt>std_srvs/Empty</tt> */
+/** @name Service <code>std_srvs/Empty</code> */
 /** @{ */
 
 /**
- * @brief   Content length of a TCPROS <tt>std_srvs/Empty</tt> service request.
+ * @brief   Content length of a TCPROS <code>std_srvs/Empty</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct srv__std_srvs__Empty</tt> object.
+ *          Pointer to an initialized <code>struct srv__std_srvs__Empty</code> object.
  * @return
  *          Length of the TCPROS service request contents, in bytes.
  */
@@ -1313,10 +1432,10 @@ size_t length_in_srv__std_srvs__Empty(
 }
 
 /**
- * @brief   Initializes a TCPROS <tt>std_srvs/Empty</tt> service request.
+ * @brief   Initializes a TCPROS <code>std_srvs/Empty</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an allocated <tt>struct in_srv__std_srvs__Empty</tt> object.
+ *          Pointer to an allocated <code>struct in_srv__std_srvs__Empty</code> object.
  * @return
  *          Error code.
  */
@@ -1330,10 +1449,10 @@ void init_in_srv__std_srvs__Empty(
 }
 
 /**
- * @brief   Cleans a TCPROS <tt>std_srvs/Empty</tt> service request.
+ * @brief   Cleans a TCPROS <code>std_srvs/Empty</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct in_srv__std_srvs__Empty</tt>object.
+ *          Pointer to an initialized <code>struct in_srv__std_srvs__Empty</code>object.
  * @return
  *          Error code.
  */
@@ -1347,10 +1466,10 @@ void clean_in_srv__std_srvs__Empty(
 }
 
 /**
- * @brief   Content length of a TCPROS <tt>std_srvs/Empty</tt> service response.
+ * @brief   Content length of a TCPROS <code>std_srvs/Empty</code> service response.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct srv__std_srvs__Empty</tt> object.
+ *          Pointer to an initialized <code>struct srv__std_srvs__Empty</code> object.
  * @return
  *          Length of the TCPROS service response contents, in bytes.
  */
@@ -1367,10 +1486,10 @@ size_t length_out_srv__std_srvs__Empty(
 }
 
 /**
- * @brief   Initializes a TCPROS <tt>std_srvs/Empty</tt> service request.
+ * @brief   Initializes a TCPROS <code>std_srvs/Empty</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an allocated <tt>struct out_srv__std_srvs__Empty</tt> object.
+ *          Pointer to an allocated <code>struct out_srv__std_srvs__Empty</code> object.
  * @return
  *          Error code.
  */
@@ -1384,10 +1503,10 @@ void init_out_srv__std_srvs__Empty(
 }
 
 /**
- * @brief   Cleans a TCPROS <tt>std_srvs/Empty</tt> service request.
+ * @brief   Cleans a TCPROS <code>std_srvs/Empty</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct out_srv__std_srvs__Empty</tt> object.
+ *          Pointer to an initialized <code>struct out_srv__std_srvs__Empty</code> object.
  * @return
  *          Error code.
  */
@@ -1401,16 +1520,16 @@ void clean_out_srv__std_srvs__Empty(
 }
 
 /**
- * @brief   Receives a TCPROS <tt>std_srvs/Empty</tt> service request.
+ * @brief   Receives a TCPROS <code>std_srvs/Empty</code> service request.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[out] objp
- *          Pointer to an initialized <tt>struct in_srv__std_srvs__Empty</tt> object.
+ *          Pointer to an initialized <code>struct in_srv__std_srvs__Empty</code> object.
  * @return
  *          Error code.
  */
-uros_err_t recv_srv__std_srvs__Empty(
+uros_err_t recv_in_srv__std_srvs__Empty(
   UrosTcpRosStatus *tcpstp,
   struct in_srv__std_srvs__Empty *objp
 ) {
@@ -1424,16 +1543,16 @@ uros_err_t recv_srv__std_srvs__Empty(
 }
 
 /**
- * @brief   Sends a TCPROS <tt>std_srvs/Empty</tt> service response.
+ * @brief   Sends a TCPROS <code>std_srvs/Empty</code> service response.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[in] objp
- *          Pointer to an initialized <tt>struct out_srv__std_srvs__Empty</tt> object.
+ *          Pointer to an initialized <code>struct out_srv__std_srvs__Empty</code> object.
  * @return
  *          Error code.
  */
-uros_err_t send_srv__std_srvs__Empty(
+uros_err_t send_out_srv__std_srvs__Empty(
   UrosTcpRosStatus *tcpstp,
   struct out_srv__std_srvs__Empty *objp
 ) {
@@ -1450,14 +1569,14 @@ uros_err_t send_srv__std_srvs__Empty(
 
 /*~~~ SERVICE: turtlesim/TeleportRelative ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <tt>turtlesim/TeleportRelative</tt> */
+/** @name Service <code>turtlesim/TeleportRelative</code> */
 /** @{ */
 
 /**
- * @brief   Content length of a TCPROS <tt>turtlesim/TeleportRelative</tt> service request.
+ * @brief   Content length of a TCPROS <code>turtlesim/TeleportRelative</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct srv__turtlesim__TeleportRelative</tt> object.
+ *          Pointer to an initialized <code>struct srv__turtlesim__TeleportRelative</code> object.
  * @return
  *          Length of the TCPROS service request contents, in bytes.
  */
@@ -1476,10 +1595,10 @@ size_t length_in_srv__turtlesim__TeleportRelative(
 }
 
 /**
- * @brief   Initializes a TCPROS <tt>turtlesim/TeleportRelative</tt> service request.
+ * @brief   Initializes a TCPROS <code>turtlesim/TeleportRelative</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an allocated <tt>struct in_srv__turtlesim__TeleportRelative</tt> object.
+ *          Pointer to an allocated <code>struct in_srv__turtlesim__TeleportRelative</code> object.
  * @return
  *          Error code.
  */
@@ -1493,10 +1612,10 @@ void init_in_srv__turtlesim__TeleportRelative(
 }
 
 /**
- * @brief   Cleans a TCPROS <tt>turtlesim/TeleportRelative</tt> service request.
+ * @brief   Cleans a TCPROS <code>turtlesim/TeleportRelative</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct in_srv__turtlesim__TeleportRelative</tt>object.
+ *          Pointer to an initialized <code>struct in_srv__turtlesim__TeleportRelative</code>object.
  * @return
  *          Error code.
  */
@@ -1510,10 +1629,10 @@ void clean_in_srv__turtlesim__TeleportRelative(
 }
 
 /**
- * @brief   Content length of a TCPROS <tt>turtlesim/TeleportRelative</tt> service response.
+ * @brief   Content length of a TCPROS <code>turtlesim/TeleportRelative</code> service response.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct srv__turtlesim__TeleportRelative</tt> object.
+ *          Pointer to an initialized <code>struct srv__turtlesim__TeleportRelative</code> object.
  * @return
  *          Length of the TCPROS service response contents, in bytes.
  */
@@ -1530,10 +1649,10 @@ size_t length_out_srv__turtlesim__TeleportRelative(
 }
 
 /**
- * @brief   Initializes a TCPROS <tt>turtlesim/TeleportRelative</tt> service request.
+ * @brief   Initializes a TCPROS <code>turtlesim/TeleportRelative</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an allocated <tt>struct out_srv__turtlesim__TeleportRelative</tt> object.
+ *          Pointer to an allocated <code>struct out_srv__turtlesim__TeleportRelative</code> object.
  * @return
  *          Error code.
  */
@@ -1547,10 +1666,10 @@ void init_out_srv__turtlesim__TeleportRelative(
 }
 
 /**
- * @brief   Cleans a TCPROS <tt>turtlesim/TeleportRelative</tt> service request.
+ * @brief   Cleans a TCPROS <code>turtlesim/TeleportRelative</code> service request.
  *
  * @param[in,out] objp
- *          Pointer to an initialized <tt>struct out_srv__turtlesim__TeleportRelative</tt> object.
+ *          Pointer to an initialized <code>struct out_srv__turtlesim__TeleportRelative</code> object.
  * @return
  *          Error code.
  */
@@ -1564,16 +1683,16 @@ void clean_out_srv__turtlesim__TeleportRelative(
 }
 
 /**
- * @brief   Receives a TCPROS <tt>turtlesim/TeleportRelative</tt> service request.
+ * @brief   Receives a TCPROS <code>turtlesim/TeleportRelative</code> service request.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[out] objp
- *          Pointer to an initialized <tt>struct in_srv__turtlesim__TeleportRelative</tt> object.
+ *          Pointer to an initialized <code>struct in_srv__turtlesim__TeleportRelative</code> object.
  * @return
  *          Error code.
  */
-uros_err_t recv_srv__turtlesim__TeleportRelative(
+uros_err_t recv_in_srv__turtlesim__TeleportRelative(
   UrosTcpRosStatus *tcpstp,
   struct in_srv__turtlesim__TeleportRelative *objp
 ) {
@@ -1593,16 +1712,16 @@ _error:
 }
 
 /**
- * @brief   Sends a TCPROS <tt>turtlesim/TeleportRelative</tt> service response.
+ * @brief   Sends a TCPROS <code>turtlesim/TeleportRelative</code> service response.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
  * @param[in] objp
- *          Pointer to an initialized <tt>struct out_srv__turtlesim__TeleportRelative</tt> object.
+ *          Pointer to an initialized <code>struct out_srv__turtlesim__TeleportRelative</code> object.
  * @return
  *          Error code.
  */
-uros_err_t send_srv__turtlesim__TeleportRelative(
+uros_err_t send_out_srv__turtlesim__TeleportRelative(
   UrosTcpRosStatus *tcpstp,
   struct out_srv__turtlesim__TeleportRelative *objp
 ) {
@@ -1644,6 +1763,10 @@ void urosTcpRosRegStaticTypes(void) {
   /* std_msgs/Header */
   urosRegisterStaticMsgTypeSZ("std_msgs/Header",
                               NULL, "2176decaecbce78abc3b96ef049fabed");
+
+  /* turtlesim/Color */
+  urosRegisterStaticMsgTypeSZ("turtlesim/Color",
+                              NULL, "353891e354491c51aabe32df673fb446");
 
   /* turtlesim/Pose */
   urosRegisterStaticMsgTypeSZ("turtlesim/Pose",

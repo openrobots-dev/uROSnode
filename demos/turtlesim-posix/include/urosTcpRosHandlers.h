@@ -56,6 +56,10 @@ extern "C" {
 
 uros_err_t pub_tpc__rosout(UrosTcpRosStatus *tcpstp);
 
+/*~~~ PUBLISHED TOPIC: /turtleX/color_sensor ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+uros_err_t pub_tpc__turtleX__color_sensor(UrosTcpRosStatus *tcpstp);
+
 /*~~~ PUBLISHED TOPIC: /turtleX/pose ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 uros_err_t pub_tpc__turtleX__pose(UrosTcpRosStatus *tcpstp);

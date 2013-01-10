@@ -57,6 +57,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define urosAssert(expr)
 #endif
 
+#if UROS_RPCSLAVE_C_USE_ERROR_MSG == UROS_FALSE && !defined(__DOXYGEN__)
+#undef urosError
+#define urosError(when, action, msgargs) { if (when) { action; } }
+#endif
+
 /*===========================================================================*/
 /* LOCAL FUNCTIONS                                                           */
 /*===========================================================================*/
@@ -217,7 +222,7 @@ uros_err_t uros_rpcslave_process_publisherupdate(const UrosString *topic,
 
   /* Get new publishers and connect.*/
   urosListObjectInit(&newpubs);
-  err = urosNodeFindNewPublishers(topic, publishers, &newpubs);
+  err = urosNodeFindNewTopicPublishers(topic, publishers, &newpubs);
   urosError(err != UROS_OK, return err,
             ("Error %s while looking for new publishers\n",
              urosErrorText(err)));

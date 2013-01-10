@@ -328,8 +328,8 @@ class MsgType:
         
         maxtype = next_tab(len(tab) + maxtype)
         text = '/**\n'
-        text += ' * @brief   TCPROS <tt>%s</tt> message descriptor.\n' % self.name
-        text += ' * @details MD5 sum: <tt>%s</tt>.\n' % self.md5str
+        text += ' * @brief   TCPROS <code>%s</code> message descriptor.\n' % self.name
+        text += ' * @details MD5 sum: <code>%s</code>.\n' % self.md5str
         text += ' */\n'
         text += '%s {\n' % self.ctype
         if len(self.fields) > 0:
@@ -367,7 +367,7 @@ class MsgType:
             cname = '%s__%s' % (self.cname, c.cname)
             if comments:
                 if c != ints[0]: text += '\n'
-                text += '/** @brief TODO: <tt>%s.%s</tt> description.*/\n' % (self.name, c.name)
+                text += '/** @brief TODO: <code>%s.%s</code> description.*/\n' % (self.name, c.name)
             line = '#define %s ' % cname
             line += ' ' * (maxlen - len(line))
             line += ' ' * (next_tab(len(line)) - len(line))
@@ -384,7 +384,7 @@ class MsgType:
                 cname = '%s__%s' % (self.cname, c.cname)
                 valstr = addslashes(c.value)
                 if comments:
-                    text += '/** @brief TODO: <tt>%s.%s</tt> description.*/\n' % (self.name, c.name)
+                    text += '/** @brief TODO: <code>%s.%s</code> description.*/\n' % (self.name, c.name)
                 text += 'const UrosString %s = \n' % cname
                 text += tab + '{ %d, "%s" };\n\n' % (len(valstr), valstr)
         return text
@@ -432,10 +432,10 @@ class MsgType:
     
     def gen_length(self):
         text = '/**\n'
-        text += ' * @brief   Content length of a TCPROS <tt>%s</tt> message.\n' % self.name
+        text += ' * @brief   Content length of a TCPROS <code>%s</code> message.\n' % self.name
         text += ' *\n'
         text += ' * @param[in,out] objp\n'
-        text += ' *          Pointer to an initialized <tt>%s</tt> object.\n' % self.ctype
+        text += ' *          Pointer to an initialized <code>%s</code> object.\n' % self.ctype
         text += ' * @return\n'
         text += ' *          Length of the TCPROS message contents, in bytes.\n'
         text += ' */\n'
@@ -504,10 +504,10 @@ class MsgType:
                 break
         
         text = '/**\n'
-        text += ' * @brief   Initializes a TCPROS <tt>%s</tt> message.\n' % self.name
+        text += ' * @brief   Initializes a TCPROS <code>%s</code> message.\n' % self.name
         text += ' *\n'
         text += ' * @param[in,out] objp\n'
-        text += ' *          Pointer to an allocated <tt>%s</tt> object.\n' % self.ctype
+        text += ' *          Pointer to an allocated <code>%s</code> object.\n' % self.ctype
         text += ' * @return\n'
         text += ' *          Error code.\n'
         text += ' */\n'
@@ -564,10 +564,10 @@ class MsgType:
     
     def gen_clean(self):
         text = '/**\n'
-        text += ' * @brief   Cleans a TCPROS <tt>%s</tt> message.\n' % self.name
+        text += ' * @brief   Cleans a TCPROS <code>%s</code> message.\n' % self.name
         text += ' *\n'
         text += ' * @param[in,out] objp\n'
-        text += ' *          Pointer to an initialized <tt>%s</tt> object, or @p NULL.\n' % self.ctype
+        text += ' *          Pointer to an initialized <code>%s</code> object, or @p NULL.\n' % self.ctype
         text += ' * @return\n'
         text += ' *          Error code.\n'
         text += ' */\n'
@@ -634,12 +634,12 @@ class MsgType:
     
     def gen_recv(self):
         text = '/**\n'
-        text += ' * @brief   Receives a TCPROS <tt>%s</tt> message.\n' % self.name
+        text += ' * @brief   Receives a TCPROS <code>%s</code> message.\n' % self.name
         text += ' *\n'
         text += ' * @param[in,out] tcpstp\n'
         text += ' *          Pointer to a working @p UrosTcpRosStatus object.\n'
         text += ' * @param[out] objp\n'
-        text += ' *          Pointer to an initialized <tt>%s</tt> object.\n' % self.ctype
+        text += ' *          Pointer to an initialized <code>%s</code> object.\n' % self.ctype
         text += ' * @return\n'
         text += ' *          Error code.\n'
         text += ' */\n'
@@ -710,12 +710,12 @@ class MsgType:
     
     def gen_send(self):
         text = '/**\n'
-        text += ' * @brief   Sends a TCPROS <tt>%s</tt> message.\n' % self.name
+        text += ' * @brief   Sends a TCPROS <code>%s</code> message.\n' % self.name
         text += ' *\n'
         text += ' * @param[in,out] tcpstp\n'
         text += ' *          Pointer to a working @p UrosTcpRosStatus object.\n'
         text += ' * @param[in] objp\n'
-        text += ' *          Pointer to an initialized <tt>%s</tt> object.\n' % self.ctype
+        text += ' *          Pointer to an initialized <code>%s</code> object.\n' % self.ctype
         text += ' * @return\n'
         text += ' *          Error code.\n'
         text += ' */\n'
@@ -845,7 +845,7 @@ class SrvType:
         text = '/**\n'
         line = ' * @brief'
         text += line + ' ' * (next_tab(len(line)) - len(line))
-        text += 'TCPROS <tt>%s</tt> service request descriptor.\n' % self.name
+        text += 'TCPROS <code>%s</code> service request descriptor.\n' % self.name
         text += ' */\n'
         text += '%s {\n' % self.intype.ctype
         if len(self.intype.fields) > 0:
@@ -878,7 +878,7 @@ class SrvType:
         text = '/**\n'
         line = ' * @brief'
         text += line + ' ' * (next_tab(len(line)) - len(line))
-        text += 'TCPROS <tt>%s</tt> service response descriptor.\n' % self.name
+        text += 'TCPROS <code>%s</code> service response descriptor.\n' % self.name
         text += ' */\n'
         text += '%s {\n' % self.outtype.ctype
         if len(self.outtype.fields) > 0:
@@ -897,10 +897,10 @@ class SrvType:
     
     def gen_length_in(self):
         text = '/**\n'
-        text += ' * @brief   Content length of a TCPROS <tt>%s</tt> service request.\n' % self.name
+        text += ' * @brief   Content length of a TCPROS <code>%s</code> service request.\n' % self.name
         text += ' *\n'
         text += ' * @param[in,out] objp\n'
-        text += ' *          Pointer to an initialized <tt>%s</tt> object.\n' % self.ctype
+        text += ' *          Pointer to an initialized <code>%s</code> object.\n' % self.ctype
         text += ' * @return\n'
         text += ' *          Length of the TCPROS service request contents, in bytes.\n'
         text += ' */\n'
@@ -933,10 +933,10 @@ class SrvType:
     
     def gen_length_out(self):
         text = '/**\n'
-        text += ' * @brief   Content length of a TCPROS <tt>%s</tt> service response.\n' % self.name
+        text += ' * @brief   Content length of a TCPROS <code>%s</code> service response.\n' % self.name
         text += ' *\n'
         text += ' * @param[in,out] objp\n'
-        text += ' *          Pointer to an initialized <tt>%s</tt> object.\n' % self.ctype
+        text += ' *          Pointer to an initialized <code>%s</code> object.\n' % self.ctype
         text += ' * @return\n'
         text += ' *          Length of the TCPROS service response contents, in bytes.\n'
         text += ' */\n'
@@ -969,10 +969,10 @@ class SrvType:
     
     def gen_init_in(self):
         text = '/**\n'
-        text += ' * @brief   Initializes a TCPROS <tt>%s</tt> service request.\n' % self.name
+        text += ' * @brief   Initializes a TCPROS <code>%s</code> service request.\n' % self.name
         text += ' *\n'
         text += ' * @param[in,out] objp\n'
-        text += ' *          Pointer to an allocated <tt>%s</tt> object.\n' % self.intype.ctype
+        text += ' *          Pointer to an allocated <code>%s</code> object.\n' % self.intype.ctype
         text += ' * @return\n'
         text += ' *          Error code.\n'
         text += ' */\n'
@@ -995,10 +995,10 @@ class SrvType:
     
     def gen_init_out(self):
         text = '/**\n'
-        text += ' * @brief   Initializes a TCPROS <tt>%s</tt> service request.\n' % self.name
+        text += ' * @brief   Initializes a TCPROS <code>%s</code> service request.\n' % self.name
         text += ' *\n'
         text += ' * @param[in,out] objp\n'
-        text += ' *          Pointer to an allocated <tt>%s</tt> object.\n' % self.outtype.ctype
+        text += ' *          Pointer to an allocated <code>%s</code> object.\n' % self.outtype.ctype
         text += ' * @return\n'
         text += ' *          Error code.\n'
         text += ' */\n'
@@ -1021,10 +1021,10 @@ class SrvType:
     
     def gen_clean_in(self):
         text = '/**\n'
-        text += ' * @brief   Cleans a TCPROS <tt>%s</tt> service request.\n' % self.name
+        text += ' * @brief   Cleans a TCPROS <code>%s</code> service request.\n' % self.name
         text += ' *\n'
         text += ' * @param[in,out] objp\n'
-        text += ' *          Pointer to an initialized <tt>%s</tt>object.\n' % self.intype.ctype
+        text += ' *          Pointer to an initialized <code>%s</code>object.\n' % self.intype.ctype
         text += ' * @return\n'
         text += ' *          Error code.\n'
         text += ' */\n'
@@ -1047,10 +1047,10 @@ class SrvType:
     
     def gen_clean_out(self):
         text = '/**\n'
-        text += ' * @brief   Cleans a TCPROS <tt>%s</tt> service request.\n' % self.name
+        text += ' * @brief   Cleans a TCPROS <code>%s</code> service request.\n' % self.name
         text += ' *\n'
         text += ' * @param[in,out] objp\n'
-        text += ' *          Pointer to an initialized <tt>%s</tt> object.\n' % self.outtype.ctype
+        text += ' *          Pointer to an initialized <code>%s</code> object.\n' % self.outtype.ctype
         text += ' * @return\n'
         text += ' *          Error code.\n'
         text += ' */\n'
@@ -1066,7 +1066,7 @@ class SrvType:
         return text
     
     def gen_recv_sig(self):
-        text = 'uros_err_t recv_%s(\n' % self.cname
+        text = 'uros_err_t recv_%s(\n' % self.intype.cname
         text += tab + 'UrosTcpRosStatus *tcpstp,\n'
         text += tab + '%s *objp\n' % self.intype.ctype
         text += ')'
@@ -1074,12 +1074,12 @@ class SrvType:
     
     def gen_recv(self):
         text = '/**\n'
-        text += ' * @brief   Receives a TCPROS <tt>%s</tt> service request.\n' % self.name
+        text += ' * @brief   Receives a TCPROS <code>%s</code> service request.\n' % self.name
         text += ' *\n'
         text += ' * @param[in,out] tcpstp\n'
         text += ' *          Pointer to a working @p UrosTcpRosStatus object.\n'
         text += ' * @param[out] objp\n'
-        text += ' *          Pointer to an initialized <tt>%s</tt> object.\n' % self.intype.ctype
+        text += ' *          Pointer to an initialized <code>%s</code> object.\n' % self.intype.ctype
         text += ' * @return\n'
         text += ' *          Error code.\n'
         text += ' */\n'
@@ -1106,7 +1106,7 @@ class SrvType:
         return text
     
     def gen_send_sig(self):
-        text = 'uros_err_t send_%s(\n' % self.cname
+        text = 'uros_err_t send_%s(\n' % self.outtype.cname
         text += tab + 'UrosTcpRosStatus *tcpstp,\n'
         text += tab + '%s *objp\n' % self.outtype.ctype
         text += ')'
@@ -1114,12 +1114,12 @@ class SrvType:
     
     def gen_send(self):
         text = '/**\n'
-        text += ' * @brief   Sends a TCPROS <tt>%s</tt> service response.\n' % self.name
+        text += ' * @brief   Sends a TCPROS <code>%s</code> service response.\n' % self.name
         text += ' *\n'
         text += ' * @param[in,out] tcpstp\n'
         text += ' *          Pointer to a working @p UrosTcpRosStatus object.\n'
         text += ' * @param[in] objp\n'
-        text += ' *          Pointer to an initialized <tt>%s</tt> object.\n' % self.outtype.ctype
+        text += ' *          Pointer to an initialized <code>%s</code> object.\n' % self.outtype.ctype
         text += ' * @return\n'
         text += ' *          Error code.\n'
         text += ' */\n'
@@ -1164,8 +1164,11 @@ class CodeGen:
             
             'fieldComments'             : 'True',
             'msgOnStack'                : 'False',
-            'srvOnStack_in'             : 'False',
-            'srvOnStack_out'            : 'False',
+            'inOnStack'                 : 'False',
+            'outOnStack'                : 'False',
+            'msgVarBaseName'            : 'msg',
+            'inVarBaseName'             : 'inmsg',
+            'outVarBaseName'            : 'outmsg',
             
             'regTypesFuncName'          : 'urosTcpRosRegStaticTypes',
             'regPubTopicsFuncName'      : 'urosTcpRosPublishTopics',
@@ -1178,6 +1181,7 @@ class CodeGen:
         self.pubTopics = {}
         self.subTopics = {}
         self.pubServices = {}
+        self.callServices = {}
         
         # Internal objects
         self.configPath = None
@@ -1186,6 +1190,37 @@ class CodeGen:
         self.sortedMsgTypeNames = []
         self.licenseText = ""
     
+    def _add_msgtype(self, deps, rostype):
+        if not rostype in self.msgTypes:
+            msgtype = MsgType(rostype)
+            self.msgTypes[rostype] = msgtype
+            
+            subtypes = msgtype.get_complextypes()
+            for k in subtypes:
+                if not k in self.msgTypes:
+                    self.msgTypes[k] = subtypes[k]
+            
+            msgdeps = msgtype.get_deps()
+            for e in msgdeps:
+                if not e in deps:
+                    deps.append(e)
+    
+    def _add_srvtype(self, deps, rostype):
+        if not rostype in self.srvTypes:
+            srvtype = SrvType(rostype)
+            self.srvTypes[rostype] = srvtype
+            
+            subtypes = srvtype.get_complextypes()
+            print subtypes
+            for k in subtypes:
+                if not k in self.msgTypes:
+                    self.msgTypes[k] = subtypes[k]
+            
+            msgdeps = srvtype.get_deps(True)
+            for e in msgdeps:
+                if not e in deps:
+                    deps.append(e)
+    
     def elaborate(self):
         self.msgTypes = {}
         self.srvTypes = {}
@@ -1193,52 +1228,16 @@ class CodeGen:
         deps = []
         
         for name in self.pubTopics:
-            rostype = self.pubTopics[name]
-            if not rostype in self.msgTypes:
-                msgtype = MsgType(rostype)
-                self.msgTypes[rostype] = msgtype
-                
-                subtypes = msgtype.get_complextypes()
-                for k in subtypes:
-                    if not k in self.msgTypes:
-                        self.msgTypes[k] = subtypes[k]
-                
-                msgdeps = msgtype.get_deps()
-                for e in msgdeps:
-                    if not e in deps:
-                        deps.append(e)
+            self._add_msgtype(deps, self.pubTopics[name])
         
         for name in self.subTopics:
-            rostype = self.subTopics[name]
-            if not rostype in self.msgTypes:
-                msgtype = MsgType(rostype)
-                self.msgTypes[rostype] = msgtype
-                
-                subtypes = msgtype.get_complextypes()
-                for k in subtypes:
-                    if not k in self.msgTypes:
-                        self.msgTypes[k] = subtypes[k]
-                
-                msgdeps = msgtype.get_deps()
-                for e in msgdeps:
-                    if not e in deps:
-                        deps.append(e)
+            self._add_msgtype(deps, self.subTopics[name])
         
         for name in self.pubServices:
-            rostype = self.pubServices[name]
-            if not rostype in self.srvTypes: 
-                srvtype = SrvType(rostype)
-                self.srvTypes[rostype] = srvtype
-                
-                subtypes = srvtype.get_complextypes()
-                for k in subtypes:
-                    if not k in self.msgTypes:
-                        self.msgTypes[k] = subtypes[k]
-                
-                msgdeps = srvtype.get_deps(notSelf=True)
-                for e in msgdeps:
-                    if not e in deps:
-                        deps.append(e)
+            self._add_srvtype(deps, self.pubServices[name])
+        
+        for name in self.callServices:
+            self._add_srvtype(deps, self.callServices[name])
         
         self.sortedMsgTypeNames = sorted_deps(deps)
         for name in self.pubTopics:
@@ -1282,7 +1281,7 @@ class CodeGen:
             with open(configPath, 'r') as f:
                 lines = f.readlines()
         
-        modes = [ '[options]', '[pubtopics]', '[subtopics]', '[pubservices]' ]
+        modes = [ '[options]', '[pubtopics]', '[subtopics]', '[pubservices]', '[callservices]' ]
         mode = None
         modeidx = -1
         for line in lines:
@@ -1326,14 +1325,17 @@ class CodeGen:
                     raise ValueError('[/%s] is not a valid ROS type path' % value)
                 key = '/' + key
                 
-                if mode == '[pubtopics]' and not self.pubTopics.has_key(key):
+                if mode == '[pubtopics]' and not key in self.pubTopics:
                     self.pubTopics[key] = value
                     
-                elif mode == '[subtopics]' and not self.subTopics.has_key(key):
+                elif mode == '[subtopics]' and not key in self.subTopics:
                     self.subTopics[key] = value
                     
-                elif mode == '[pubservices]'and not self.pubServices.has_key(key):
+                elif mode == '[pubservices]' and not key in self.pubServices:
                     self.pubServices[key] = value
+                    
+                elif mode == '[callservices]' and not key in self.callServices:
+                    self.callServices[key] = value
         
         if modeidx != len(modes) - 1:
             raise ValueError('Not all the sections were defined')
@@ -1415,7 +1417,7 @@ class CodeGen:
             decls = msgtype.gen_const_decls(comments)
             if len(decls) > 0:
                 text += banner_small('MESSAGE: ' + msgtype.name) + '\n\n'
-                text += '/** @name Message <tt>%s</tt> */\n/** @{ */\n\n' % msgtype.name
+                text += '/** @name Message <code>%s</code> */\n/** @{ */\n\n' % msgtype.name
                 text += decls
                 text += '/** @} */\n\n'
         
@@ -1429,7 +1431,7 @@ class CodeGen:
             outdecls = srvtype.outtype.gen_const_decls(comments)
             if len(indecls) > 0 or len(outdecls) > 0:
                 text += banner_small('SERVICE: ' + srvtype.name) + '\n\n'
-                text += '/** @name Service <tt>%s</tt> */\n/** @{ */\n\n' % srvtype.name
+                text += '/** @name Service <code>%s</code> */\n/** @{ */\n\n' % srvtype.name
                 text += indecls + outdecls
                 text += '/** @} */\n\n'
         
@@ -1498,7 +1500,7 @@ class CodeGen:
             defs = msgtype.gen_const_defs(comments)
             if len(defs) > 0:
                 text += banner_small('MESSAGE: ' + name) + '\n\n'
-                text += '/** @name Message <tt>%s</tt> */\n/** @{ */\n\n' % name
+                text += '/** @name Message <code>%s</code> */\n/** @{ */\n\n' % name
                 text += defs
                 text += '/** @} */\n\n'
         
@@ -1512,7 +1514,7 @@ class CodeGen:
             outdefs = srvtype.outtype.gen_const_defs(comments)
             if len(indefs) > 0 or len(outdefs) > 0:
                 text += banner_small('SERVICE: ' + name) + '\n\n'
-                text += '/** @name Service <tt>%s</tt> */\n/** @{ */\n\n' % name
+                text += '/** @name Service <code>%s</code> */\n/** @{ */\n\n' % name
                 text += indefs + outdefs
                 text += '/** @} */\n\n'
         
@@ -1523,7 +1525,7 @@ class CodeGen:
         for name in self.sortedMsgTypeNames:
             msgtype = self.msgTypes[name]
             text += banner_small('MESSAGE: ' + name) + '\n\n'
-            text += '/** @name Message <tt>%s</tt> */\n/** @{ */\n\n' % name
+            text += '/** @name Message <code>%s</code> */\n/** @{ */\n\n' % name
             text += msgtype.gen_length() + '\n\n'
             text += msgtype.gen_init() + '\n\n'
             text += msgtype.gen_clean() + '\n\n'
@@ -1538,7 +1540,7 @@ class CodeGen:
         for name in self.srvTypes:
             srvtype = self.srvTypes[name]
             text += banner_small('SERVICE: ' + name) + '\n\n'
-            text += '/** @name Service <tt>%s</tt> */\n/** @{ */\n\n' % name
+            text += '/** @name Service <code>%s</code> */\n/** @{ */\n\n' % name
             text += srvtype.gen_length_in() + '\n\n'
             text += srvtype.gen_init_in() + '\n\n'
             text += srvtype.gen_clean_in() + '\n\n'
@@ -1571,14 +1573,14 @@ class CodeGen:
         msgtype = self.msgTypes[self.pubTopics[name]]
         onstack = str2bool(self.opts['msgOnStack'])
         if onstack:
-            msgdecl = 'msg'
-            msgref = '&msg'
+            msgref = '&' + self.opts['msgVarBaseName']
+            msgshchar = 'S'
         else:
-            msgdecl = '*msgp = NULL'
-            msgref = 'msgp'
+            msgref = self.opts['msgVarBaseName'] + 'p'
+            msgshchar = 'H'
         
         text = '/**\n'
-        text += ' * @brief   TCPROS <tt>%s</tt> published topic handler.\n' % name
+        text += ' * @brief   TCPROS <code>%s</code> published topic handler.\n' % name
         text += ' *\n'
         text += ' * @param[in,out] tcpstp\n'
         text += ' *          Pointer to a working @p UrosTcpRosStatus object.\n'
@@ -1586,35 +1588,22 @@ class CodeGen:
         text += ' *          Error code.\n'
         text += ' */\n'
         text += self.gen_pubtopic_sig(name) + ' {\n\n'
-        text += tab + '%s %s;\n' % (msgtype.ctype, msgdecl)
-        text += tab + 'uint32_t length;\n\n'
-        text += tab + 'urosAssert(tcpstp != NULL);\n'
-        text += tab + 'urosAssert(tcpstp->topicp != NULL);\n'
-        text += tab + 'urosAssert(!tcpstp->topicp->flags.service);\n'
-        text += tab + 'urosAssert(urosConnIsValid(tcpstp->csp));\n\n'
         text += tab + '/* Message allocation and initialization.*/\n'
-        if not onstack:
-            text += tab + 'msgp = urosNew(%s);\n' % msgtype.ctype
-            text += tab + 'if (msgp == NULL) { return UROS_ERR_NOMEM; }\n'
-        text += tab + 'init_%s(%s);\n\n' % (msgtype.cname, msgref)
+        text += tab + 'UROS_TPC_PROLOGUE_%s(%s);\n\n' % (msgshchar, msgtype.cname)
         text += tab + '/* Published messages loop.*/\n'
         text += tab + 'while (!urosTcpRosStatusCheckExit(tcpstp)) {\n'
         text += tab*2 + '/* TODO: Generate the contents of the message.*/\n'
         text += tab*2 + 'urosThreadSleepSec(1); continue; /* TODO: Remove this dummy line.*/\n\n'
         text += tab*2 + '/* Send the message.*/\n'
-        text += tab*2 + 'length = (uint32_t)length_%s(%s);\n' % (msgtype.cname, msgref)
-        text += tab*2 + 'if (urosTcpRosSendRaw(tcpstp, length) != UROS_OK) { goto _finally; }\n'
-        text += tab*2 + 'send_%s(tcpstp, %s);\n' % (msgtype.cname, msgref)
-        text += tab*2 + 'if (tcpstp->err != UROS_OK) { goto _finally; }\n\n'
+        text += tab*2 + 'UROS_MSG_SEND_LENGTH(%s, %s);\n' % (msgref, msgtype.cname)
+        text += tab*2 + 'UROS_MSG_SEND_BODY(%s, %s);\n\n' % (msgref, msgtype.cname)
         text += tab*2 + '/* Dispose the contents of the message.*/\n'
         text += tab*2 + 'clean_%s(%s);\n' % (msgtype.cname, msgref)
         text += tab + '}\n'
         text += tab + 'tcpstp->err = UROS_OK;\n\n'
         text += '_finally:\n'
         text += tab + '/* Message deinitialization and deallocation.*/\n'
-        text += tab + 'clean_%s(%s);\n' % (msgtype.cname, msgref)
-        if not onstack:
-            text += tab + 'urosFree(%s);\n' % msgref
+        text += tab + 'UROS_TPC_EPILOGUE_%s(%s);\n' % (msgshchar, msgtype.cname)
         text += tab + 'return tcpstp->err;\n'
         text += '}'
         return text
@@ -1626,14 +1615,14 @@ class CodeGen:
         msgtype = self.msgTypes[self.subTopics[name]]
         onstack = str2bool(self.opts['msgOnStack'])
         if onstack:
-            msgdecl = 'msg'
-            msgref = '&msg'
+            msgref = '&' + self.opts['msgVarBaseName']
+            msgshchar = 'S'
         else:
-            msgdecl = '*msgp = NULL'
-            msgref = 'msgp'
+            msgref = self.opts['msgVarBaseName'] + 'p'
+            msgshchar = 'H'
         
         text = '/**\n'
-        text += ' * @brief   TCPROS <tt>%s</tt> subscribed topic handler.\n' % name
+        text += ' * @brief   TCPROS <code>%s</code> subscribed topic handler.\n' % name
         text += ' *\n'
         text += ' * @param[in,out] tcpstp\n'
         text += ' *          Pointer to a working @p UrosTcpRosStatus object.\n'
@@ -1641,27 +1630,13 @@ class CodeGen:
         text += ' *          Error code.\n'
         text += ' */\n'
         text += self.gen_subtopic_sig(name) + ' {\n\n'
-        text += tab + '%s %s;\n' % (msgtype.ctype, msgdecl)
-        text += tab + 'uint32_t length;\n\n'
-        text += tab + 'urosAssert(tcpstp != NULL);\n'
-        text += tab + 'urosAssert(tcpstp->topicp != NULL);\n'
-        text += tab + 'urosAssert(!tcpstp->topicp->flags.service);\n'
-        text += tab + 'urosAssert(urosConnIsValid(tcpstp->csp));\n\n'
         text += tab + '/* Message allocation and initialization.*/\n'
-        if not onstack:
-            text += tab + 'msgp = urosNew(%s);\n' % msgtype.ctype
-            text += tab + 'if (msgp == NULL) { return UROS_ERR_NOMEM; }\n'
-        text += tab + 'init_%s(%s);\n\n' % (msgtype.cname, msgref)
+        text += tab + 'UROS_TPC_PROLOGUE_%s(%s);\n\n' % (msgshchar, msgtype.cname)
         text += tab + '/* Subscribed messages loop.*/\n'
         text += tab + 'while (!urosTcpRosStatusCheckExit(tcpstp)) {\n'
         text += tab*2 + '/* Receive the next message.*/\n'
-        text += tab*2 + 'if (urosTcpRosRecvRaw(tcpstp, length) != UROS_OK) { goto _finally; }\n'
-        text += tab*2 + 'recv_%s(tcpstp, %s);\n' % (msgtype.cname, msgref)
-        text += tab*2 + 'if (tcpstp->err != UROS_OK) { goto _finally; }\n'
-        text += tab*2 + 'urosError((size_t)length != length_%s(%s),\n' % (msgtype.cname, msgref)
-        text += tab*2 + '          { tcpstp->err = UROS_ERR_BADPARAM; goto _finally; },\n'
-        text += tab*2 + '          ("Wrong message length %lu, expected %zu\n",\n'
-        text += tab*2 + '           length, length_%s(%s)));\n\n' % (msgtype.cname, msgref)
+        text += tab*2 + 'UROS_MSG_RECV_LENGTH();\n'
+        text += tab*2 + 'UROS_MSG_RECV_BODY(%s, %s);\n\n' % (msgref, msgtype.cname)
         text += tab*2 + '/* TODO: Process the received message.*/\n\n'
         text += tab*2 + '/* Dispose the contents of the message.*/\n'
         text += tab*2 + 'clean_%s(%s);\n' % (msgtype.cname, msgref)
@@ -1669,9 +1644,7 @@ class CodeGen:
         text += tab + 'tcpstp->err = UROS_OK;\n\n'
         text += '_finally:\n'
         text += tab + '/* Message deinitialization and deallocation.*/\n'
-        text += tab + 'clean_%s(%s);\n' % (msgtype.cname, msgref)
-        if not onstack:
-            text += tab + 'urosFree(%s);\n' % msgref
+        text += tab + 'UROS_TPC_EPILOGUE_%s(%s);\n' % (msgshchar, msgtype.cname)
         text += tab + 'return tcpstp->err;\n'
         text += '}'
         return text
@@ -1681,23 +1654,23 @@ class CodeGen:
     
     def gen_pubservice_handler(self, name):
         srvtype = self.srvTypes[self.pubServices[name]]
-        inonstack = str2bool(self.opts['srvOnStack_in'])
+        inonstack = str2bool(self.opts['inOnStack'])
         if inonstack:
-            indecl = 'inmsg'
-            inref = '&inmsg'
+            inref = '&' + self.opts['inVarBaseName']
+            inshchar = 'S'
         else:
-            indecl = '*inmsgp = NULL'
-            inref = 'inmsgp'
-        outonstack = str2bool(self.opts['srvOnStack_out'])
+            inref = self.opts['inVarBaseName'] + 'p'
+            inshchar = 'H'
+        outonstack = str2bool(self.opts['outOnStack'])
         if outonstack:
-            outdecl = 'outmsg'
-            outref = '&outmsg'
+            outref = '&' + self.opts['outVarBaseName']
+            outshchar = 'S'
         else:
-            outdecl = '*outmsgp = NULL'
-            outref = 'outmsgp'
+            outref = self.opts['outVarBaseName'] + 'p'
+            outshchar = 'H'
         
         text = '/**\n'
-        text += ' * @brief   TCPROS <tt>%s</tt> published service handler.\n' % name
+        text += ' * @brief   TCPROS <code>%s</code> published service handler.\n' % name
         text += ' *\n'
         text += ' * @param[in,out] tcpstp\n'
         text += ' *          Pointer to a working @p UrosTcpRosStatus object.\n'
@@ -1705,33 +1678,14 @@ class CodeGen:
         text += ' *          Error code.\n'
         text += ' */\n'
         text += self.gen_pubservice_sig(name) + ' {\n\n'
-        text += tab + '%s %s;\n' % (srvtype.intype.ctype, indecl)
-        text += tab + '%s %s;\n' % (srvtype.outtype.ctype, outdecl)
-        text += tab + 'uint8_t okByte;\n'
-        text += tab + 'uint32_t length;\n\n'
-        text += tab + 'urosAssert(tcpstp != NULL);\n'
-        text += tab + 'urosAssert(tcpstp->topicp != NULL);\n'
-        text += tab + 'urosAssert(tcpstp->topicp->flags.service);\n'
-        text += tab + 'urosAssert(urosConnIsValid(tcpstp->csp));\n\n'
         text += tab + '/* Service messages allocation and initialization.*/\n'
-        if not inonstack:
-            text += tab + 'inmsgp = urosNew(%s);\n' % srvtype.intype.ctype
-            text += tab + 'if (inmsgp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }\n'
-        if not outonstack:
-            text += tab + 'outmsgp = urosNew(%s);\n' % srvtype.outtype.ctype
-            text += tab + 'if (outmsgp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }\n'
-        text += tab + 'init_%s(%s);\n' % (srvtype.intype.cname, inref)
-        text += tab + 'init_%s(%s);\n\n' % (srvtype.outtype.cname, outref)
+        text += tab + 'UROS_SRV_PROLOGUE_%sI%sO(%s,\n' % (inshchar, outshchar, srvtype.intype.cname)
+        text += tab + '                       %s);\n\n' % srvtype.outtype.cname
         text += tab + '/* Service message loop (if the service is persistent).*/\n'
         text += tab + 'do {\n'
         text += tab*2 + '/* Receive the request message.*/\n'
-        text += tab*2 + 'if (urosTcpRosRecvRaw(tcpstp, length) != UROS_OK) { goto _finally; }\n'
-        text += tab*2 + 'recv_%s(tcpstp, %s);\n' % (srvtype.cname, inref)
-        text += tab*2 + 'if (tcpstp->err != UROS_OK) { goto _finally; }\n'
-        text += tab*2 + 'urosError((size_t)length != length_%s(%s),\n' % (srvtype.intype.cname, inref)
-        text += tab*2 + '          { tcpstp->err = UROS_ERR_BADPARAM; goto _finally; },\n'
-        text += tab*2 + '          ("Wrong message length %lu, expected %zu\n",\n'
-        text += tab*2 + '           length, length_%s(%s)));\n\n' % (srvtype.intype.cname, inref)
+        text += tab*2 + 'UROS_MSG_RECV_LENGTH();\n'
+        text += tab*2 + 'UROS_MSG_RECV_BODY(%s, %s);\n\n' % (inref, srvtype.intype.cname)
         text += tab*2 + '/* TODO: Process the request message.*/\n'
         text += tab*2 + 'tcpstp->err = UROS_OK;\n'
         text += tab*2 + 'urosStringClean(&tcpstp->errstr);\n'
@@ -1740,29 +1694,81 @@ class CodeGen:
         text += tab*2 + 'clean_%s(%s);\n\n' % (srvtype.intype.cname, inref)
         text += tab*2 + '/* TODO: Generate the contents of the response message.*/\n\n'
         text += tab*2 + '/* Send the response message.*/\n'
-        text += tab*2 + 'if (urosTcpRosSendRaw(tcpstp, okByte) != UROS_OK) { goto _finally; }\n'
-        text += tab*2 + 'if (okByte == 0) {\n'
-        text += tab*3 + '/* On error, send the tcpstp->errstr error message (cleaned by the user).*/\n'
-        text += tab*3 + 'urosTcpRosSendString(tcpstp, &tcpstp->errstr);\n'
-        text += tab*3 + 'urosStringObjectInit(&tcpstp->errstr);\n'
-        text += tab*3 + 'goto _finally;\n'
-        text += tab*2 + '}\n\n'
-        text += tab*2 + 'length = (uint32_t)length_%s(%s);\n' % (srvtype.outtype.cname, outref)
-        text += tab*2 + 'if (urosTcpRosSendRaw(tcpstp, length) != UROS_OK) { goto _finally; }\n'
-        text += tab*2 + 'send_%s(tcpstp, %s);\n' % (srvtype.cname, outref)
-        text += tab*2 + 'if (tcpstp->err != UROS_OK) { goto _finally; }\n\n'
+        text += tab*2 + 'UROS_MSG_SEND_LENGTH(%s, %s);\n' % (outref, srvtype.outtype.cname)
+        text += tab*2 + 'UROS_SRV_SEND_OKBYTE_ERRSTR();\n'
+        text += tab*2 + 'UROS_MSG_SEND_BODY(%s, %s);\n\n' % (outref, srvtype.outtype.cname)
         text += tab*2 + '/* Dispose the contents of the response message.*/\n'
         text += tab*2 + 'clean_%s(%s);\n' % (srvtype.outtype.cname, outref)
         text += tab + '} while (tcpstp->topicp->flags.persistent && !urosTcpRosStatusCheckExit(tcpstp));\n'
         text += tab + 'tcpstp->err = UROS_OK;\n\n'
         text += '_finally:\n'
         text += tab + '/* Service messages deinitialization and deallocation.*/\n'
-        text += tab + 'clean_%s(%s);\n' % (srvtype.intype.cname, inref)
-        text += tab + 'clean_%s(%s);\n' % (srvtype.outtype.cname, outref)
-        if not inonstack:
-            text += tab + 'urosFree(%s);\n' % inref
-        if not outonstack:
-            text += tab + 'urosFree(%s);\n' % outref
+        text += tab + 'UROS_SRV_EPILOGUE_%sI%sO(%s,\n' % (inshchar, outshchar, srvtype.intype.cname)
+        text += tab + '                       %s);\n' % srvtype.outtype.cname
+        text += tab + 'return tcpstp->err;\n'
+        text += '}'
+        return text
+    
+    def gen_callservice_sig(self, name):
+        srvtype = self.srvTypes[self.pubServices[name]]
+        text =  'uros_err_t call_srv%s(\n' % mangled_name(name)
+        text += tab + 'UrosTcpRosStatus *tcpstp,\n'
+        text += tab + '%s *resobjp\n' % srvtype.outtype.cname
+        text += ')'
+        return text
+    
+    def gen_callservice_handler(self, name):
+        srvtype = self.srvTypes[self.pubServices[name]]
+        inonstack = str2bool(self.opts['inOnStack'])
+        if inonstack:
+            inref = '&' + self.opts['inVarBaseName']
+            inshchar = 'S'
+        else:
+            inref = self.opts['VarBaseName'] + 'p'
+            inshchar = 'H'
+        outonstack = str2bool(self.opts['outOnStack'])
+        if outonstack:
+            outref = '&' + self.opts['outVarBaseName']
+            outshchar = 'S'
+        else:
+            outref = self.opts['outVarBaseName'] + 'p'
+            outshchar = 'H'
+        
+        text = '/**\n'
+        text += ' * @brief   TCPROS <code>%s</code> called service handler.\n' % name
+        text += ' *\n'
+        text += ' * @param[in,out] tcpstp\n'
+        text += ' *          Pointer to a working @p UrosTcpRosStatus object.\n'
+        text += ' * @param[out] resobjp\n'
+        text += ' *          Pointer to the allocated response object. The service result will\n'
+        text += ' *          be written there only if the call is successful.\n'
+        text += ' * @return\n'
+        text += ' *          Error code.\n'
+        text += ' */\n'
+        text += self.gen_callservice_sig(name) + ' {\n\n'
+        text += tab + '/* Service messages allocation and initialization.*/\n'
+        text += tab + 'UROS_SRV_PROLOGUE_%sI%sO(%s,\n' % (inshchar, outshchar, srvtype.intype.cname)
+        text += tab + '                       %s);\n\n' % srvtype.outtype.cname
+        text += tab + 'urosAssert(!tcpstp->topicp->flags.persistent);\n'
+        text += tab + '/* Receive the request message.*/\n'
+        text += tab + 'UROS_MSG_RECV_LENGTH();\n'
+        text += tab + 'UROS_MSG_RECV_BODY(%s, %s);\n\n' % (inref, srvtype.intype.cname)
+        text += tab + '/* TODO: Process the request message.*/\n'
+        text += tab + 'tcpstp->err = UROS_OK;\n'
+        text += tab + 'urosStringClean(&tcpstp->errstr);\n'
+        text += tab + 'okByte = 1;\n\n'
+        text += tab + '/* Dispose the contents of the request message.*/\n'
+        text += tab + 'clean_%s(%s);\n\n' % (srvtype.intype.cname, inref)
+        text += tab + '/* TODO: Generate the contents of the response message.*/\n\n'
+        text += tab + '/* Send the response message.*/\n'
+        text += tab + 'UROS_MSG_SEND_LENGTH(%s, %s);\n' % (outref, srvtype.outtype.cname)
+        text += tab + 'UROS_SRV_SEND_OKBYTE_ERRSTR();\n'
+        text += tab + 'UROS_MSG_SEND_BODY(%s, %s);\n\n' % (outref, srvtype.outtype.cname)
+        text += tab + 'tcpstp->err = UROS_OK;\n\n'
+        text += '_finally:\n'
+        text += tab + '/* Service messages deinitialization and deallocation.*/\n'
+        text += tab + 'UROS_SRV_EPILOGUE_%sI%sO(%s,\n' % (inshchar, outshchar, srvtype.intype.cname)
+        text += tab + '                       %s);\n' % srvtype.outtype.cname
         text += tab + 'return tcpstp->err;\n'
         text += '}'
         return text
@@ -1784,7 +1790,8 @@ class CodeGen:
                 text += tab + 'urosNodePublishTopicSZ(\n'
                 text += tab*2 + '"%s",\n' % name
                 text += tab*2 + '"%s",\n' % rostype
-                text += tab*2 + '(uros_proc_f)pub_tpc%s\n' % mangled_name(name)
+                text += tab*2 + '(uros_proc_f)pub_tpc%s,\n' % mangled_name(name)
+                text += tab*2 + 'uros_nulltopicflags\n'
                 text += tab + ');\n\n'
             text = text[:-1]
         else:
@@ -1833,7 +1840,8 @@ class CodeGen:
                 text += tab + 'urosNodeSubscribeTopicSZ(\n'
                 text += tab*2 + '"%s",\n' % name
                 text += tab*2 + '"%s",\n' % rostype
-                text += tab*2 + '(uros_proc_f)sub_tpc%s\n' % mangled_name(name)
+                text += tab*2 + '(uros_proc_f)sub_tpc%s,\n' % mangled_name(name)
+                text += tab*2 + 'uros_nulltopicflags\n'
                 text += tab + ');\n\n'
             text = text[:-1]
         else:
@@ -1882,7 +1890,8 @@ class CodeGen:
                 text += tab + 'urosNodePublishServiceSZ(\n'
                 text += tab*2 + '"%s",\n' % name
                 text += tab*2 + '"%s",\n' % rostype
-                text += tab*2 + '(uros_proc_f)pub_srv%s\n' % mangled_name(name)
+                text += tab*2 + '(uros_proc_f)pub_srv%s,\n' % mangled_name(name)
+                text += tab*2 + 'uros_nullserviceflags\n'
                 text += tab + ');\n\n'
             text = text[:-1]
         else:
@@ -1980,13 +1989,15 @@ class CodeGen:
         text += ' */\n\n'
         text += banner_big('HEADER FILES') + '\n\n'
         text += '#include "%s.h"\n\n' % self.opts['handlersFilename']
-        text += '#include <urosNode.h>\n\n'
+        text += '#include <urosNode.h>\n'
+        text += '#include <urosTcpRos.h>\n'
+        text += '#include <urosUser.h>\n\n'
         text += banner_big('PUBLISHED TOPIC FUNCTIONS') + '\n\n'
         text += '/** @addtogroup tcpros_pubtopic_funcs */\n/** @{ */\n\n'
         
         for name in sorted(self.pubTopics):
             text += banner_small('PUBLISHED TOPIC: ' + name) + '\n\n'
-            text += '/** @name Topic <tt>%s</tt> publisher */\n/** @{ */\n\n' % name
+            text += '/** @name Topic <code>%s</code> publisher */\n/** @{ */\n\n' % name
             text += self.gen_pubtopic_handler(name) + '\n\n'
             text += '/** @} */\n\n'
         
@@ -1996,7 +2007,7 @@ class CodeGen:
         
         for name in sorted(self.subTopics):
             text += banner_small('SUBSCRIBED TOPIC: ' + name) + '\n\n'
-            text += '/** @name Topic <tt>%s</tt> subscriber */\n/** @{ */\n\n' % name
+            text += '/** @name Topic <code>%s</code> subscriber */\n/** @{ */\n\n' % name
             text += self.gen_subtopic_handler(name) + '\n\n'
             text += '/** @} */\n\n'
         
@@ -2006,7 +2017,7 @@ class CodeGen:
         
         for name in sorted(self.pubServices):
             text += banner_small('PUBLISHED SERVICE: ' + name) + '\n\n'
-            text += '/** @name Service <tt>%s</tt> publisher */\n/** @{ */\n\n' % name
+            text += '/** @name Service <code>%s</code> publisher */\n/** @{ */\n\n' % name
             text += self.gen_pubservice_handler(name) + '\n\n'
             text += '/** @} */\n\n'
         
@@ -2043,6 +2054,7 @@ def print_usage():
     print '\n[PubTopics]\n'
     print '[SubTopics]\n'
     print '[PubServices]\n'
+    sys.stdout.flush()
 
 def main():
     if len(sys.argv) != 2:
@@ -2056,6 +2068,7 @@ def main():
     print 'Configuration file [%s] ...' % ('<stdin>' if cfgpath == '.' else cfgpath),
     gen.load(cfgpath)
     print 'done'
+    sys.stdout.flush()
     
     print 'Configuration:'
     print '\n[Options]'
@@ -2070,13 +2083,19 @@ def main():
     print '\n[PubServices]'
     for name in gen.pubServices:
         print '%s = %s' % (name, gen.pubServices[name])
+    print '\n[CallServices]'
+    for name in gen.callServices:
+        print '%s = %s' % (name, gen.callServices[name])
+    sys.stdout.flush()
 
     print '\nRetrieving data types from ROS ...',
+    sys.stdout.flush()
     gen.elaborate()
     print 'done'
     print 'Message types sorted by dependency:'
     for name in gen.sortedMsgTypeNames:
         print '\t' + name
+    sys.stdout.flush()
 
     print ''    
     if str2bool(gen.opts['genMsgTypesHeader']):
@@ -2084,23 +2103,27 @@ def main():
         msgTypesHeader = gen.gen_msgtypes_header()
         gen.export_msgtypes_header(msgTypesHeader)
         print 'done'
+        sys.stdout.flush()
     
     if str2bool(gen.opts['genMsgTypesSource']):
         print 'Types source file [%s] ...' % gen.msgtypes_source_path(),
         msgTypesSource = gen.gen_msgtypes_source()
         gen.export_msgtypes_source(msgTypesSource)
         print 'done'
+        sys.stdout.flush()
     
     if str2bool(gen.opts['genHandlersHeader']):
         print 'Handlers header file [%s] ...' % gen.handlers_header_path(),
         handlersHeader = gen.gen_handlers_header()
         gen.export_handlers_header(handlersHeader)
         print 'done'
+        sys.stdout.flush()
     
     if str2bool(gen.opts['genHandlersSource']):
         print 'Handlers source file [%s] ...' % gen.handlers_source_path(),
         handlersSource = gen.gen_handlers_source()
         gen.export_handlers_source(handlersSource)
         print 'done'
+        sys.stdout.flush()
 
 main()

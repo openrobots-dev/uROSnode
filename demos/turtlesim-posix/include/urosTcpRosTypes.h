@@ -54,8 +54,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*~~~ MESSAGE: std_msgs/Header ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
- * @brief   TCPROS <tt>std_msgs/Header</tt> message descriptor.
- * @details MD5 sum: <tt>2176decaecbce78abc3b96ef049fabed</tt>.
+ * @brief   TCPROS <code>std_msgs/Header</code> message descriptor.
+ * @details MD5 sum: <code>2176decaecbce78abc3b96ef049fabed</code>.
  */
 struct msg__std_msgs__Header {
   uint32_t      seq;
@@ -66,8 +66,8 @@ struct msg__std_msgs__Header {
 /*~~~ MESSAGE: rosgraph_msgs/Log ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
- * @brief   TCPROS <tt>rosgraph_msgs/Log</tt> message descriptor.
- * @details MD5 sum: <tt>acffd30cd6b6de30f120938c17c593fb</tt>.
+ * @brief   TCPROS <code>rosgraph_msgs/Log</code> message descriptor.
+ * @details MD5 sum: <code>acffd30cd6b6de30f120938c17c593fb</code>.
  */
 struct msg__rosgraph_msgs__Log {
   struct msg__std_msgs__Header  header;
@@ -83,8 +83,8 @@ struct msg__rosgraph_msgs__Log {
 /*~~~ MESSAGE: turtlesim/Pose ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
- * @brief   TCPROS <tt>turtlesim/Pose</tt> message descriptor.
- * @details MD5 sum: <tt>863b248d5016ca62ea2e895ae5265cf9</tt>.
+ * @brief   TCPROS <code>turtlesim/Pose</code> message descriptor.
+ * @details MD5 sum: <code>863b248d5016ca62ea2e895ae5265cf9</code>.
  */
 struct msg__turtlesim__Pose {
   float x;
@@ -94,11 +94,23 @@ struct msg__turtlesim__Pose {
   float angular_velocity;
 };
 
+/*~~~ MESSAGE: turtlesim/Color ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+/**
+ * @brief   TCPROS <code>turtlesim/Color</code> message descriptor.
+ * @details MD5 sum: <code>353891e354491c51aabe32df673fb446</code>.
+ */
+struct msg__turtlesim__Color {
+  uint8_t   r;
+  uint8_t   g;
+  uint8_t   b;
+};
+
 /*~~~ MESSAGE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
- * @brief   TCPROS <tt>turtlesim/Velocity</tt> message descriptor.
- * @details MD5 sum: <tt>9d5c2dcd348ac8f76ce2a4307bd63a13</tt>.
+ * @brief   TCPROS <code>turtlesim/Velocity</code> message descriptor.
+ * @details MD5 sum: <code>9d5c2dcd348ac8f76ce2a4307bd63a13</code>.
  */
 struct msg__turtlesim__Velocity {
   float linear;
@@ -117,7 +129,7 @@ struct msg__turtlesim__Velocity {
 /*~~~ SERVICE: turtlesim/SetPen ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
- * @brief   TCPROS <tt>turtlesim/SetPen</tt> service request descriptor.
+ * @brief   TCPROS <code>turtlesim/SetPen</code> service request descriptor.
  */
 struct in_srv__turtlesim__SetPen {
   uint8_t   r;
@@ -128,7 +140,7 @@ struct in_srv__turtlesim__SetPen {
 };
 
 /**
- * @brief   TCPROS <tt>turtlesim/SetPen</tt> service response descriptor.
+ * @brief   TCPROS <code>turtlesim/SetPen</code> service response descriptor.
  */
 struct out_srv__turtlesim__SetPen {
   /* This message type has no fields.*/
@@ -138,7 +150,7 @@ struct out_srv__turtlesim__SetPen {
 /*~~~ SERVICE: turtlesim/Spawn ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
- * @brief   TCPROS <tt>turtlesim/Spawn</tt> service request descriptor.
+ * @brief   TCPROS <code>turtlesim/Spawn</code> service request descriptor.
  */
 struct in_srv__turtlesim__Spawn {
   float         x;
@@ -148,7 +160,7 @@ struct in_srv__turtlesim__Spawn {
 };
 
 /**
- * @brief   TCPROS <tt>turtlesim/Spawn</tt> service response descriptor.
+ * @brief   TCPROS <code>turtlesim/Spawn</code> service response descriptor.
  */
 struct out_srv__turtlesim__Spawn {
   UrosString    name;
@@ -157,14 +169,14 @@ struct out_srv__turtlesim__Spawn {
 /*~~~ SERVICE: turtlesim/Kill ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
- * @brief   TCPROS <tt>turtlesim/Kill</tt> service request descriptor.
+ * @brief   TCPROS <code>turtlesim/Kill</code> service request descriptor.
  */
 struct in_srv__turtlesim__Kill {
   UrosString    name;
 };
 
 /**
- * @brief   TCPROS <tt>turtlesim/Kill</tt> service response descriptor.
+ * @brief   TCPROS <code>turtlesim/Kill</code> service response descriptor.
  */
 struct out_srv__turtlesim__Kill {
   /* This message type has no fields.*/
@@ -174,7 +186,7 @@ struct out_srv__turtlesim__Kill {
 /*~~~ SERVICE: turtlesim/TeleportAbsolute ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
- * @brief   TCPROS <tt>turtlesim/TeleportAbsolute</tt> service request descriptor.
+ * @brief   TCPROS <code>turtlesim/TeleportAbsolute</code> service request descriptor.
  */
 struct in_srv__turtlesim__TeleportAbsolute {
   float x;
@@ -183,7 +195,7 @@ struct in_srv__turtlesim__TeleportAbsolute {
 };
 
 /**
- * @brief   TCPROS <tt>turtlesim/TeleportAbsolute</tt> service response descriptor.
+ * @brief   TCPROS <code>turtlesim/TeleportAbsolute</code> service response descriptor.
  */
 struct out_srv__turtlesim__TeleportAbsolute {
   /* This message type has no fields.*/
@@ -193,7 +205,7 @@ struct out_srv__turtlesim__TeleportAbsolute {
 /*~~~ SERVICE: std_srvs/Empty ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
- * @brief   TCPROS <tt>std_srvs/Empty</tt> service request descriptor.
+ * @brief   TCPROS <code>std_srvs/Empty</code> service request descriptor.
  */
 struct in_srv__std_srvs__Empty {
   /* This message type has no fields.*/
@@ -201,7 +213,7 @@ struct in_srv__std_srvs__Empty {
 };
 
 /**
- * @brief   TCPROS <tt>std_srvs/Empty</tt> service response descriptor.
+ * @brief   TCPROS <code>std_srvs/Empty</code> service response descriptor.
  */
 struct out_srv__std_srvs__Empty {
   /* This message type has no fields.*/
@@ -211,7 +223,7 @@ struct out_srv__std_srvs__Empty {
 /*~~~ SERVICE: turtlesim/TeleportRelative ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
- * @brief   TCPROS <tt>turtlesim/TeleportRelative</tt> service request descriptor.
+ * @brief   TCPROS <code>turtlesim/TeleportRelative</code> service request descriptor.
  */
 struct in_srv__turtlesim__TeleportRelative {
   float linear;
@@ -219,7 +231,7 @@ struct in_srv__turtlesim__TeleportRelative {
 };
 
 /**
- * @brief   TCPROS <tt>turtlesim/TeleportRelative</tt> service response descriptor.
+ * @brief   TCPROS <code>turtlesim/TeleportRelative</code> service response descriptor.
  */
 struct out_srv__turtlesim__TeleportRelative {
   /* This message type has no fields.*/
@@ -237,7 +249,7 @@ struct out_srv__turtlesim__TeleportRelative {
 
 /*~~~ MESSAGE: rosgraph_msgs/Log ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Message <tt>rosgraph_msgs/Log</tt> */
+/** @name Message <code>rosgraph_msgs/Log</code> */
 /** @{ */
 
 #define msg__rosgraph_msgs__Log__DEBUG      ((uint8_t)1)
@@ -327,6 +339,26 @@ uros_err_t send_msg__turtlesim__Pose(
   struct msg__turtlesim__Pose *objp
 );
 
+/*~~~ MESSAGE: turtlesim/Color ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+size_t length_msg__turtlesim__Color(
+  struct msg__turtlesim__Color *objp
+);
+void init_msg__turtlesim__Color(
+  struct msg__turtlesim__Color *objp
+);
+void clean_msg__turtlesim__Color(
+  struct msg__turtlesim__Color *objp
+);
+uros_err_t recv_msg__turtlesim__Color(
+  UrosTcpRosStatus *tcpstp,
+  struct msg__turtlesim__Color *objp
+);
+uros_err_t send_msg__turtlesim__Color(
+  UrosTcpRosStatus *tcpstp,
+  struct msg__turtlesim__Color *objp
+);
+
 /*~~~ MESSAGE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 size_t length_msg__turtlesim__Velocity(
@@ -371,11 +403,11 @@ void clean_in_srv__turtlesim__SetPen(
 void clean_out_srv__turtlesim__SetPen(
   struct out_srv__turtlesim__SetPen *objp
 );
-uros_err_t recv_srv__turtlesim__SetPen(
+uros_err_t recv_in_srv__turtlesim__SetPen(
   UrosTcpRosStatus *tcpstp,
   struct in_srv__turtlesim__SetPen *objp
 );
-uros_err_t send_srv__turtlesim__SetPen(
+uros_err_t send_out_srv__turtlesim__SetPen(
   UrosTcpRosStatus *tcpstp,
   struct out_srv__turtlesim__SetPen *objp
 );
@@ -400,11 +432,11 @@ void clean_in_srv__turtlesim__Spawn(
 void clean_out_srv__turtlesim__Spawn(
   struct out_srv__turtlesim__Spawn *objp
 );
-uros_err_t recv_srv__turtlesim__Spawn(
+uros_err_t recv_in_srv__turtlesim__Spawn(
   UrosTcpRosStatus *tcpstp,
   struct in_srv__turtlesim__Spawn *objp
 );
-uros_err_t send_srv__turtlesim__Spawn(
+uros_err_t send_out_srv__turtlesim__Spawn(
   UrosTcpRosStatus *tcpstp,
   struct out_srv__turtlesim__Spawn *objp
 );
@@ -429,11 +461,11 @@ void clean_in_srv__turtlesim__Kill(
 void clean_out_srv__turtlesim__Kill(
   struct out_srv__turtlesim__Kill *objp
 );
-uros_err_t recv_srv__turtlesim__Kill(
+uros_err_t recv_in_srv__turtlesim__Kill(
   UrosTcpRosStatus *tcpstp,
   struct in_srv__turtlesim__Kill *objp
 );
-uros_err_t send_srv__turtlesim__Kill(
+uros_err_t send_out_srv__turtlesim__Kill(
   UrosTcpRosStatus *tcpstp,
   struct out_srv__turtlesim__Kill *objp
 );
@@ -458,11 +490,11 @@ void clean_in_srv__turtlesim__TeleportAbsolute(
 void clean_out_srv__turtlesim__TeleportAbsolute(
   struct out_srv__turtlesim__TeleportAbsolute *objp
 );
-uros_err_t recv_srv__turtlesim__TeleportAbsolute(
+uros_err_t recv_in_srv__turtlesim__TeleportAbsolute(
   UrosTcpRosStatus *tcpstp,
   struct in_srv__turtlesim__TeleportAbsolute *objp
 );
-uros_err_t send_srv__turtlesim__TeleportAbsolute(
+uros_err_t send_out_srv__turtlesim__TeleportAbsolute(
   UrosTcpRosStatus *tcpstp,
   struct out_srv__turtlesim__TeleportAbsolute *objp
 );
@@ -487,11 +519,11 @@ void clean_in_srv__std_srvs__Empty(
 void clean_out_srv__std_srvs__Empty(
   struct out_srv__std_srvs__Empty *objp
 );
-uros_err_t recv_srv__std_srvs__Empty(
+uros_err_t recv_in_srv__std_srvs__Empty(
   UrosTcpRosStatus *tcpstp,
   struct in_srv__std_srvs__Empty *objp
 );
-uros_err_t send_srv__std_srvs__Empty(
+uros_err_t send_out_srv__std_srvs__Empty(
   UrosTcpRosStatus *tcpstp,
   struct out_srv__std_srvs__Empty *objp
 );
@@ -516,11 +548,11 @@ void clean_in_srv__turtlesim__TeleportRelative(
 void clean_out_srv__turtlesim__TeleportRelative(
   struct out_srv__turtlesim__TeleportRelative *objp
 );
-uros_err_t recv_srv__turtlesim__TeleportRelative(
+uros_err_t recv_in_srv__turtlesim__TeleportRelative(
   UrosTcpRosStatus *tcpstp,
   struct in_srv__turtlesim__TeleportRelative *objp
 );
-uros_err_t send_srv__turtlesim__TeleportRelative(
+uros_err_t send_out_srv__turtlesim__TeleportRelative(
   UrosTcpRosStatus *tcpstp,
   struct out_srv__turtlesim__TeleportRelative *objp
 );

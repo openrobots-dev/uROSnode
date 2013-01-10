@@ -55,21 +55,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define urosAssert(expr)
 #endif
 
+#if UROS_TCPROS_C_USE_ERROR_MSG == UROS_FALSE && !defined(__DOXYGEN__)
+#undef urosError
+#define urosError(when, action, msgargs) { if (when) { action; } }
+#endif
+
 /*===========================================================================*/
 /* LOCAL VARIABLES                                                           */
 /*===========================================================================*/
 
-static const UrosString calleridfield =   {  8, "callerid" };
-static const UrosString topicfield =      {  5, "topic" };
-static const UrosString servicefield =    {  7, "service" };
-static const UrosString md5field =        {  6, "md5sum" };
-static const UrosString typefield =       {  4, "type" };
-static const UrosString reqtypefield =    { 12, "request_type" };
-static const UrosString restypefield =    { 13, "response_type" };
+static const UrosString calleridfield   = {  8, "callerid" };
+static const UrosString topicfield      = {  5, "topic" };
+static const UrosString servicefield    = {  7, "service" };
+static const UrosString md5field        = {  6, "md5sum" };
+static const UrosString typefield       = {  4, "type" };
+static const UrosString reqtypefield    = { 12, "request_type" };
+static const UrosString restypefield    = { 13, "response_type" };
 static const UrosString persistentfield = { 10, "persistent" };
-static const UrosString latchingfield =   {  8, "latching" };
+static const UrosString latchingfield   = {  8, "latching" };
 static const UrosString tcpnodelayfield = { 11, "tcp_nodelay" };
-static const UrosString errfield =        {  5, "error" };
+static const UrosString errfield        = {  5, "error" };
 
 static const UrosMsgType dummytype = {
   { 0, NULL },
@@ -89,352 +94,9 @@ static const UrosTopic dummytopic = {
 /* LOCAL FUNCTIONS                                                           */
 /*===========================================================================*/
 
-uros_err_t uros_tcpros_sendfieldstring(UrosTcpRosStatus *tcpstp,
-                                        const UrosString *namep,
-                                        const UrosString *valuep) {
-
-  uint32_t hdrlen;
-
-  urosAssert(tcpstp != NULL);
-  urosAssert(urosStringNotEmpty(namep));
-  urosAssert(urosStringIsValid(valuep));
-#define _CHKOK  { if (tcpstp->err != UROS_OK) { return tcpstp->err; } }
-
-  hdrlen = (uint32_t)(namep->length + 1 + valuep->length);
-  urosTcpRosSendRaw(tcpstp, hdrlen); _CHKOK
-  urosTcpRosSend(tcpstp, namep->datap, namep->length); _CHKOK
-  urosTcpRosSend(tcpstp, "=", 1); _CHKOK
-  urosTcpRosSend(tcpstp, valuep->datap, valuep->length); _CHKOK
-
-  return tcpstp->err = UROS_OK;
-#undef _CHKOK
-}
-
-uros_err_t uros_tcpros_sendfieldbool(UrosTcpRosStatus *tcpstp,
-                                      const UrosString *namep,
-                                      uros_bool_t value) {
-
-  uint32_t hdrlen;
-
-  urosAssert(tcpstp != NULL);
-  urosAssert(urosStringNotEmpty(namep));
-#define _CHKOK  { if (tcpstp->err != UROS_OK) { return tcpstp->err; } }
-
-  hdrlen = (uint32_t)(namep->length + 2);
-  urosTcpRosSendRaw(tcpstp, hdrlen); _CHKOK
-  urosTcpRosSend(tcpstp, namep->datap, namep->length); _CHKOK
-  urosTcpRosSend(tcpstp, value ? "=1" : "=0", 2); _CHKOK
-
-  return tcpstp->err = UROS_OK;
-#undef _CHKOK
-}
-
-uros_err_t uros_tcpros_sendheader(UrosTcpRosStatus *tcpstp,
-                                  uros_bool_t thisisclient) {
-
-  size_t hdrlen = 0;
-  uint32_t hdrlen32;
-  const UrosString *calleridstrp, *namestrp, *typestrp, *md5strp;
-
-  urosAssert(tcpstp != NULL);
-  urosAssert(tcpstp->topicp != NULL);
-  urosAssert(tcpstp->topicp->typep != NULL);
-#define _CHKOK  { if (tcpstp->err != UROS_OK) { return tcpstp->err; } }
-
-  calleridstrp = &urosNode.config.nodeName;
-  typestrp = &tcpstp->topicp->typep->name;
-  md5strp = &tcpstp->topicp->typep->md5str;
-
-  hdrlen += 4 + calleridfield.length + 1 + calleridstrp->length;
-  hdrlen += 4 + md5field.length + 1 + md5strp->length;
-  hdrlen += 4 + typefield.length + 1 + typestrp->length;
-  if (thisisclient) {
-    namestrp = &tcpstp->topicp->name;
-    if (tcpstp->flags.service) {
-      hdrlen += 4 + servicefield.length + 1 + namestrp->length;
-      hdrlen += 4 + persistentfield.length + 2;
-    } else {
-      hdrlen += 4 + topicfield.length + 1 + namestrp->length;
-      hdrlen += 4 + tcpnodelayfield.length + 2;
-    }
-  } else {
-    namestrp = NULL;
-    if (tcpstp->flags.service) {
-      hdrlen += 4 + reqtypefield.length + 1 + typestrp->length + 7;
-      hdrlen += 4 + restypefield.length + 1 + typestrp->length + 8;
-    } else {
-      hdrlen += 4 + latchingfield.length + 2;
-    }
-  }
-
-  /* uint32 header_length */
-  hdrlen32 = (uint32_t)hdrlen;
-  urosTcpRosSendRaw(tcpstp, hdrlen32); _CHKOK
-
-  /* uint32 field_length, callerid={str} */
-  uros_tcpros_sendfieldstring(tcpstp, &calleridfield, calleridstrp); _CHKOK
-
-  if (thisisclient) {
-    if (tcpstp->flags.service) {
-      /* uint32 field_length, service={str} */
-      uros_tcpros_sendfieldstring(tcpstp, &servicefield, namestrp); _CHKOK
-    } else {
-      /* uint32 field_length, topic={str} */
-      uros_tcpros_sendfieldstring(tcpstp, &topicfield, namestrp); _CHKOK
-    }
-  }
-
-  /* uint32 field_length, md5sum={str} */
-  uros_tcpros_sendfieldstring(tcpstp, &md5field, md5strp); _CHKOK
-
-  if (tcpstp->flags.service) {
-    /* uint32 field_length, request_type={str} */
-    hdrlen32 = reqtypefield.length + 1 + typestrp->length + 7;
-    urosTcpRosSendRaw(tcpstp, hdrlen32); _CHKOK
-    urosTcpRosSend(tcpstp, reqtypefield.datap, reqtypefield.length); _CHKOK
-    urosTcpRosSend(tcpstp, "=", 1); _CHKOK
-    urosTcpRosSend(tcpstp, typestrp->datap, typestrp->length); _CHKOK
-    urosTcpRosSend(tcpstp, "Request", 7); _CHKOK
-
-    /* uint32 field_length, response_type={str} */
-    hdrlen32 = restypefield.length + 1 + typestrp->length + 8;
-    urosTcpRosSendRaw(tcpstp, hdrlen32); _CHKOK
-    urosTcpRosSend(tcpstp, restypefield.datap, restypefield.length); _CHKOK
-    urosTcpRosSend(tcpstp, "=", 1); _CHKOK
-    urosTcpRosSend(tcpstp, typestrp->datap, typestrp->length); _CHKOK
-    urosTcpRosSend(tcpstp, "Response", 8); _CHKOK
-  }
-
-  /* uint32 field_length, type={str} */
-  uros_tcpros_sendfieldstring(tcpstp, &typefield, typestrp); _CHKOK
-
-  if (thisisclient) {
-    if (tcpstp->flags.service) {
-      /* uint32 field_length, persistent=(0|1) */
-      uros_tcpros_sendfieldbool(tcpstp, &persistentfield,
-                                tcpstp->flags.persistent); _CHKOK
-    } else {
-      /* uint32 field_length, tcp_nodelay=(0|1) */
-      uros_tcpros_sendfieldbool(tcpstp, &tcpnodelayfield,
-                                tcpstp->flags.noDelay); _CHKOK
-    }
-  } else {
-    if (!tcpstp->flags.service) {
-      /* uint32 field_length, latching=(0|1) */
-      uros_tcpros_sendfieldbool(tcpstp, &latchingfield,
-                                tcpstp->flags.latching); _CHKOK
-    }
-  }
-
-  return tcpstp->err = UROS_OK;
-#undef _CHKOK
-}
-
-uros_err_t uros_tcpros_recvheader(UrosTcpRosStatus *tcpstp,
-                                  uros_bool_t thisisclient) {
-
-  uint32_t hdrlen, remlen;
-  uint32_t vallen, fieldlen;
-  char *valp = NULL;
-  UrosTopic *topicp;
-  UrosMsgType *typep;
-  char buf[4];  /* Length matches the shortest field ("type").*/
-
-  urosAssert(tcpstp != NULL);
-#define _CHKOK  { if (tcpstp->err != UROS_OK) { goto _error; } }
-#define _GOT(tokp, toklen) \
-    ((toklen <= 4) \
-     ? (0 == memcmp(buf, tokp, toklen)) \
-     : (0 == memcmp(buf, tokp, 4) && \
-        UROS_OK == urosTcpRosExpect(tcpstp, tokp + 4, toklen - 4)))
-
-  if (!thisisclient) {
-    urosAssert(tcpstp->topicp == NULL);
-    typep = urosNew(UrosMsgType);
-    topicp = urosNew(UrosTopic);
-    if (typep == NULL || topicp == NULL) {
-      urosFree(typep); urosFree(topicp);
-      return tcpstp->err = UROS_ERR_NOMEM;
-    }
-    urosMsgTypeObjectInit(typep);
-    urosTopicObjectInit(topicp);
-    topicp->typep = typep;
-  } else {
-    urosAssert(tcpstp->topicp != NULL);
-    urosAssert(tcpstp->topicp->typep != NULL);
-    topicp = (UrosTopic*)tcpstp->topicp;
-    typep = (UrosMsgType*)topicp->typep;
-  }
-
-  /* Read the header length.*/
-  urosTcpRosRecvRaw(tcpstp, hdrlen); _CHKOK
-
-  /* Get each header field.*/
-  for (remlen = hdrlen; remlen > 0; remlen -= fieldlen) {
-    UrosString *strp = NULL;
-
-    /* Get the field length and check for size consistency.*/
-    if (remlen < 4) { tcpstp->err = UROS_ERR_BADCONN; goto _error; }
-    remlen -= 4;
-    urosTcpRosRecvRaw(tcpstp, fieldlen); _CHKOK
-    if (remlen < fieldlen) { tcpstp->err = UROS_ERR_BADCONN; goto _error; }
-    vallen = fieldlen;
-
-    /* Decode the field name.*/
-    urosTcpRosRecv(tcpstp, buf, 4);    /* Minimum-length field.*/
-    if (_GOT("callerid=", 9)) {
-      /* callerid={str} */
-      strp = &tcpstp->callerId;
-      vallen -= 9;
-    } else if (_GOT("error=", 6)) {
-      /* error={str} */
-      strp = &tcpstp->errstr;
-      vallen -= 6;
-    } else if (_GOT("latching=", 9)) {
-      if (!thisisclient) { tcpstp->err = UROS_ERR_PARSE; goto _error; }
-      if (tcpstp->flags.service) { tcpstp->err = UROS_ERR_PARSE; goto _error; }
-      /* latching=(0|1) */
-      if (vallen == 10) {
-        urosTcpRosRecv(tcpstp, buf, 1);
-        if      (buf[0] == '1') { tcpstp->flags.latching = UROS_TRUE; continue; }
-        else if (buf[0] == '0') { tcpstp->flags.latching = UROS_FALSE; continue; }
-        else { tcpstp->err = UROS_ERR_PARSE; goto _error; }
-      } else { tcpstp->err = UROS_ERR_PARSE; goto _error; }
-    } else if (_GOT("md5sum=", 7)) {
-      /* md5sum={str} */
-      strp = &typep->md5str;
-      vallen -= 7;
-      if (thisisclient) {
-        /* Check if it matches the referenced one.*/
-        if (vallen != strp->length) { tcpstp->err = UROS_ERR_PARSE; goto _error; }
-        urosTcpRosExpect(tcpstp, strp->datap, strp->length);
-        if (tcpstp->err == UROS_OK) { continue; }
-        else { goto _error; }
-      }
-    } else if (_GOT("message_definition=", 19)) {
-      /* message_definition={str} */
-      vallen -= 19;
-#if UROS_TCPROS_USE_MESSAGE_DEFINITION
-      strp = &typep->desc;
-#else
-      urosTcpRosSkip(tcpstp, vallen);
-      continue;
-#endif
-    } else if (_GOT("persistent=", 11)) {
-      if (thisisclient) { tcpstp->err = UROS_ERR_PARSE; goto _error; }
-      if (!tcpstp->flags.service) { tcpstp->err = UROS_ERR_PARSE; goto _error; }
-      /* persistent=(0|1) */
-      if (vallen == 12) {
-        urosTcpRosRecv(tcpstp, buf, 1);
-        if      (buf[0] == '1') { tcpstp->flags.persistent = UROS_TRUE; continue; }
-        else if (buf[0] == '0') { tcpstp->flags.persistent = UROS_FALSE; continue; }
-        else { tcpstp->err = UROS_ERR_PARSE; goto _error; }
-      } else { tcpstp->err = UROS_ERR_PARSE; goto _error; }
-    } else if (_GOT("probe=", 6)) {
-      /* probe=(0|1) */
-      if (vallen == 7) {
-        urosTcpRosRecv(tcpstp, buf, 1);
-        if      (buf[0] == '1') { tcpstp->flags.probe = UROS_TRUE; continue; }
-        else if (buf[0] == '0') { tcpstp->flags.probe = UROS_FALSE; continue; }
-        else { tcpstp->err = UROS_ERR_PARSE; goto _error; }
-      } else { tcpstp->err = UROS_ERR_PARSE; goto _error; }
-    } else if (_GOT("request_type=", 13)) {
-      /* request_type={str} */
-      /* TODO: Type checking (ignoring it now, assuming it is correct).*/
-      vallen -= 13;
-      if (urosTcpRosSkip(tcpstp, vallen) != UROS_OK) { goto _error; }
-      continue;
-    } else if (_GOT("response_type=", 14)) {
-      /* response_type={str} */
-      /* TODO: Type checking (ignoring it now, assuming it is correct).*/
-      vallen -= 14;
-      if (urosTcpRosSkip(tcpstp, vallen) != UROS_OK) { goto _error; }
-      continue;
-    } else if (_GOT("service=", 8)) {
-      if (thisisclient) {
-        /* Check if it matches the referenced one.*/
-        urosTcpRosExpect(tcpstp, topicp->name.datap, topicp->name.length);
-        if (tcpstp->err == UROS_OK) { continue; }
-        else { goto _error; }
-      } else {
-        /* service={str} */
-        strp = &topicp->name;
-        tcpstp->flags.service = UROS_TRUE;
-        vallen -= 8;
-      }
-    } else if (_GOT("topic=", 6)) {
-      if (thisisclient) {
-        /* Check if it matches the referenced one.*/
-        urosTcpRosExpect(tcpstp, topicp->name.datap, topicp->name.length);
-        if (tcpstp->err == UROS_OK) { continue; }
-        else { goto _error; }
-      } else {
-        /* topic={str} */
-        strp = &topicp->name;
-        tcpstp->flags.service = UROS_FALSE;
-        vallen -= 6;
-      }
-    } else if (_GOT("type=", 5)) { /* <<< Minimum-length field.*/
-      /* type={str} */
-      strp = &typep->name;
-      vallen -= 5;
-      if (thisisclient) {
-        /* Check if it matches the referenced one.*/
-        if (vallen != strp->length) { tcpstp->err = UROS_ERR_PARSE; goto _error; }
-        urosTcpRosExpect(tcpstp, strp->datap, strp->length);
-        if (tcpstp->err == UROS_OK) { continue; }
-        else { goto _error; }
-      }
-    } else if (_GOT("tcp_nodelay=", 12)) {
-      if (thisisclient) { tcpstp->err = UROS_ERR_PARSE; goto _error; }
-      if (tcpstp->flags.service) { tcpstp->err = UROS_ERR_PARSE; goto _error; }
-      /* tcp_nodelay=(0|1) */
-      if (vallen == 13) {
-        urosTcpRosRecv(tcpstp, buf, 1);
-        if      (buf[0] == '1') { tcpstp->flags.noDelay = UROS_TRUE; continue; }
-        else if (buf[0] == '0') { tcpstp->flags.noDelay = UROS_FALSE; continue; }
-        else { tcpstp->err = UROS_ERR_PARSE; goto _error; }
-      } else { tcpstp->err = UROS_ERR_PARSE; goto _error; }
-    }
-    _CHKOK
-
-    /* Check if the field is already populated.*/
-    urosAssert(strp != NULL);
-    urosError(strp->length > 0 || strp->datap != NULL,
-              { tcpstp->err = UROS_ERR_BADPARAM; goto _error; },
-              ("Field already populated as [%.*s]\n", UROS_STRARG(strp)));
-
-    /* Allocate and read the value.*/
-    if (vallen > 0) {
-      valp = (char*)urosAlloc(vallen);
-      if (valp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _error; }
-      strp->length = vallen;
-      strp->datap = valp;
-      urosTcpRosRecv(tcpstp, valp, vallen); _CHKOK
-    } else {
-      strp->length = 0;
-      strp->datap = NULL;
-    }
-  }
-
-  if (!thisisclient) {
-    /* Temporarily save the topic information inside the TCPROS status.*/
-    tcpstp->topicp = topicp;
-  }
-
-  return tcpstp->err = UROS_OK;
-
-_error:
-  if (!thisisclient) {
-    urosMsgTypeDelete(typep);
-    urosTopicDelete(topicp);
-  }
-  return tcpstp->err;
-#undef _CHKOK
-#undef _GOTPREFIX
-}
-
 uros_err_t uros_tcpserver_processtopicheader(UrosTcpRosStatus *tcpstp) {
+
+  static UrosNodeStatus *const stp = &urosNode.status;
 
   const UrosListNode *topicnodep;
   UrosListNode *tcpnodep;
@@ -449,7 +111,7 @@ uros_err_t uros_tcpserver_processtopicheader(UrosTcpRosStatus *tcpstp) {
   tcpstp->topicp = NULL;
 
   /* Check if the topic is actually published.*/
-  topicnodep = urosTopicListFindByName(&urosNode.status.pubTopicList,
+  topicnodep = urosTopicListFindByName(&stp->pubTopicList,
                                        &topicp->name);
   urosError(topicnodep == NULL,
             { tcpstp->err = UROS_ERR_BADPARAM; goto _finally; },
@@ -471,9 +133,9 @@ uros_err_t uros_tcpserver_processtopicheader(UrosTcpRosStatus *tcpstp) {
   if (tcpnodep == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
   tcpnodep->datap = tcpstp;
   tcpnodep->nextp = NULL;
-  urosMutexLock(&urosNode.status.pubTcpListLock);
-  urosListAdd(&urosNode.status.pubTcpList, tcpnodep);
-  urosMutexUnlock(&urosNode.status.pubTcpListLock);
+  urosMutexLock(&stp->pubTcpListLock);
+  urosListAdd(&stp->pubTcpList, tcpnodep);
+  urosMutexUnlock(&stp->pubTcpListLock);
 
   tcpstp->err = UROS_OK;
 _finally:
@@ -483,6 +145,8 @@ _finally:
 }
 
 uros_err_t uros_tcpserver_processserviceheader(UrosTcpRosStatus *tcpstp) {
+
+  static UrosNodeStatus *const stp = &urosNode.status;
 
   const UrosListNode *servicenodep;
   UrosListNode *tcpnodep;
@@ -497,7 +161,7 @@ uros_err_t uros_tcpserver_processserviceheader(UrosTcpRosStatus *tcpstp) {
   tcpstp->topicp = NULL;
 
   /* Check if the topic is actually published.*/
-  servicenodep = urosTopicListFindByName(&urosNode.status.pubServiceList,
+  servicenodep = urosTopicListFindByName(&stp->pubServiceList,
                                          &servicep->name);
   if (servicenodep != NULL) {
     urosTopicRefInc((UrosTopic*)servicenodep->datap);
@@ -529,9 +193,9 @@ uros_err_t uros_tcpserver_processserviceheader(UrosTcpRosStatus *tcpstp) {
   if (tcpnodep == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
   tcpnodep->datap = tcpstp;
   tcpnodep->nextp = NULL;
-  urosMutexLock(&urosNode.status.pubTcpListLock);
-  urosListAdd(&urosNode.status.pubTcpList, tcpnodep);
-  urosMutexUnlock(&urosNode.status.pubTcpListLock);
+  urosMutexLock(&stp->pubTcpListLock);
+  urosListAdd(&stp->pubTcpList, tcpnodep);
+  urosMutexUnlock(&stp->pubTcpListLock);
 
 _finally:
   if (tcpstp->err != UROS_OK && servicenodep != NULL) {
@@ -542,119 +206,30 @@ _finally:
   return tcpstp->err;
 }
 
-uros_err_t uros_tcpros_resolvepublisher(const uros_tcpcliargs_t *argsp,
-                                        UrosAddr *pubaddrp) {
-
-  static const UrosRpcParamNode tcprosnode = {
-    { UROS_RPCP_STRING, {{ 6, "TCPROS" }} }, NULL
-  };
-  static const UrosRpcParamList tcproslist = {
-    (UrosRpcParamNode*)&tcprosnode, (UrosRpcParamNode*)&tcprosnode, 1
-  };
-  static const UrosRpcParamNode protonode = {
-    { UROS_RPCP_ARRAY, {{ (size_t)&tcproslist, NULL }} }, NULL
-  };
-  static const UrosRpcParamList protolist = {
-    (UrosRpcParamNode*)&protonode, (UrosRpcParamNode*)&protonode, 1
-  };
-
-  uros_err_t err;
-  UrosRpcParamNode *nodep;
-  UrosRpcParam *paramp;
-  UrosRpcResponse response;
-
-  urosAssert(argsp != NULL);
-  urosAssert(argsp->topicName.length > 0);
-  urosAssert(argsp->topicName.datap != NULL);
-  urosAssert(pubaddrp != NULL);
-#define _ERR    { err = UROS_ERR_BADPARAM; goto _finally; }
-
-  /* Request the topic to the publisher.*/
-  urosRpcResponseObjectInit(&response);
-  err = urosRpcCallRequestTopic(
-    &argsp->remoteAddr,
-    &urosNode.config.nodeName,
-    &argsp->topicName,
-    &protolist,
-    &response
-  );
-
-  /* Check for valid values. */
-  if (err != UROS_OK) { goto _finally; }
-  urosError(response.httpcode != 200, _ERR,
-            ("The HTTP response code is %lu, expecting 200\n",
-             response.httpcode));
-  if (response.code != UROS_RPCC_SUCCESS) { _ERR }
-  urosError(response.valuep->class != UROS_RPCP_ARRAY, _ERR,
-            ("Response value class is %d, expecting %d (UROS_RPCP_ARRAY)\n",
-             (int)response.valuep->class, (int)UROS_RPCP_ARRAY));
-  urosAssert(response.valuep->value.listp != NULL);
-  urosError(response.valuep->value.listp->length != 3, _ERR,
-            ("Response value array length %lu, expected 3",
-             response.valuep->value.listp->length));
-  nodep = response.valuep->value.listp->headp;
-
-  /* Check the protocol string.*/
-  paramp = &nodep->param; nodep = nodep->nextp;
-  urosError(paramp->class != UROS_RPCP_STRING, _ERR,
-            ("Response value class is %d, expecting %d (UROS_RPCP_STRING)\n",
-             (int)paramp->class, (int)UROS_RPCP_STRING));
-  urosError(0 != urosStringCmp(&tcprosnode.param.value.string,
-                               &paramp->value.string), _ERR,
-            ("Response protocol is [%.*s], expected [TCPROS]\n",
-             UROS_STRARG(&tcprosnode.param.value.string)));
-
-  /* Check the node hostname string.*/
-  paramp = &nodep->param; nodep = nodep->nextp;
-  urosError(paramp->class != UROS_RPCP_STRING, _ERR,
-            ("Response value class is %d, expecting %d (UROS_RPCP_STRING)\n",
-             (int)paramp->class, (int)UROS_RPCP_STRING));
-  err = urosHostnameToIp(&paramp->value.string, &pubaddrp->ip);
-  urosError(err != UROS_OK, goto _finally,
-            ("Cannot resolve hostname [%.*s]",
-             UROS_STRARG(&paramp->value.string)));
-
-  /* Check the node port number.*/
-  paramp = &nodep->param;
-  urosError(paramp->class != UROS_RPCP_INT, _ERR,
-            ("Response value class is %d, expecting %d (UROS_RPCP_INT)\n",
-             (int)paramp->class, (int)UROS_RPCP_INT));
-  urosError(paramp->value.int32 < 0 || paramp->value.int32 > 65535, _ERR,
-            ("Port number %ld outside range\n", paramp->value.int32));
-  pubaddrp->port = (uint16_t)paramp->value.int32;
-
-  err = UROS_OK;
-_finally:
-  urosRpcResponseClean(&response);
-  return err;
-#undef _ERR
-}
-
 uros_err_t uros_tcpcli_topicsubscription(const UrosString *namep,
                                          const UrosAddr *pubaddrp) {
+
+  static UrosNodeStatus *const stp = &urosNode.status;
 
   uros_err_t err;
   UrosConn conn;
   UrosTcpRosStatus tcpst;
   UrosListNode *topicnodep;
-  UrosTopic *topicp;
-  uros_proc_f handler;
 
   urosAssert(urosStringNotEmpty(namep));
   urosAssert(pubaddrp != NULL);
 #define _CHKOK  { if (err != UROS_OK) { goto _error; } }
 
   /* Get topic features.*/
-  urosMutexLock(&urosNode.status.subTopicListLock);
-  topicnodep = urosTopicListFindByName(&urosNode.status.subTopicList,
+  urosTcpRosStatusObjectInit(&tcpst, &conn);
+  urosMutexLock(&stp->subTopicListLock);
+  topicnodep = urosTopicListFindByName(&stp->subTopicList,
                                        namep);
   if (topicnodep != NULL) {
-    topicp = (UrosTopic*)topicnodep->datap;
-    urosTopicRefInc(topicp);
-    tcpst.flags = topicp->flags;
-    handler = topicp->procf;
+    tcpst.topicp = (UrosTopic*)topicnodep->datap;
+    urosTopicRefInc(tcpst.topicp);
   }
-  urosMutexUnlock(&urosNode.status.subTopicListLock);
+  urosMutexUnlock(&stp->subTopicListLock);
   urosError(topicnodep == NULL, return UROS_ERR_BADPARAM,
             ("Topic [%.*s] not found\n", UROS_STRARG(namep)));
 
@@ -665,9 +240,6 @@ uros_err_t uros_tcpcli_topicsubscription(const UrosString *namep,
   urosError(err != UROS_OK, goto _error,
             ("Error %s while connecting to "UROS_ADDRFMT"\n",
              urosErrorText(err), UROS_ADDRARG(pubaddrp)));
-  urosTpcRosStatusObjectInit(&tcpst, &conn);
-  tcpst.topicp = topicp;
-  tcpst.flags = topicp->flags;
 
   /* Set timeouts for the spawned connection.*/
   err = urosConnSetRecvTimeout(&conn, UROS_TCPROS_RECVTIMEOUT);
@@ -676,16 +248,16 @@ uros_err_t uros_tcpcli_topicsubscription(const UrosString *namep,
   urosAssert(err == UROS_OK);
 
   /* Send the TCPROS conenction header.*/
-  err = uros_tcpros_sendheader(&tcpst, UROS_TRUE); _CHKOK
+  err = urosTcpRosSendHeader(&tcpst, UROS_TRUE); _CHKOK
 
   /* Receive the TCPROS connection header.*/
-  err = uros_tcpros_recvheader(&tcpst, UROS_TRUE); _CHKOK
+  err = urosTcpRosRecvHeader(&tcpst, UROS_FALSE, UROS_FALSE); _CHKOK
 
   /* Handle the incoming published stream, if not probing.*/
   tcpst.err = UROS_OK;
-  urosAssert(handler != NULL);
-  if (!tcpst.flags.probe) {
-    err = handler(&tcpst);
+  urosAssert(tcpst.topicp->procf != NULL);
+  if (!tcpst.topicp->flags.probe) {
+    err = tcpst.topicp->procf(&tcpst);
   }
 
   /* Release the topic/service descriptor reference.*/
@@ -741,7 +313,7 @@ void urosTopicSubParamsDelete(uros_tcpcliargs_t *parp) {
  * @param[in] csp
  *          Pointer to an allocated connection.
  */
-void urosTpcRosStatusObjectInit(UrosTcpRosStatus *tcpstp, UrosConn *csp) {
+void urosTcpRosStatusObjectInit(UrosTcpRosStatus *tcpstp, UrosConn *csp) {
 
   urosAssert(tcpstp != NULL);
   urosAssert(csp != NULL);
@@ -769,7 +341,7 @@ void urosTpcRosStatusObjectInit(UrosTcpRosStatus *tcpstp, UrosConn *csp) {
  * @param[in] deep
  *          Performs deallocation of private members.
  */
-void urosTpcRosStatusClean(UrosTcpRosStatus *tcpstp, uros_bool_t deep) {
+void urosTcpRosStatusClean(UrosTcpRosStatus *tcpstp, uros_bool_t deep) {
 
   urosAssert(tcpstp != NULL);
 
@@ -795,10 +367,10 @@ void urosTpcRosStatusClean(UrosTcpRosStatus *tcpstp, uros_bool_t deep) {
  * @param[in] deep
  *          Performs deallocation of private members.
  */
-void urosTpcRosStatusDelete(UrosTcpRosStatus *tcpstp, uros_bool_t deep) {
+void urosTcpRosStatusDelete(UrosTcpRosStatus *tcpstp, uros_bool_t deep) {
 
   if (tcpstp != NULL) {
-    urosTpcRosStatusClean(tcpstp, deep);
+    urosTcpRosStatusClean(tcpstp, deep);
     urosFree(tcpstp);
   }
 }
@@ -946,7 +518,8 @@ uros_err_t urosTcpRosSkip(UrosTcpRosStatus *tcpstp, size_t length) {
  * @retval UROS_ERR_PARSE
  *          Token not found.
  */
-uros_err_t urosTcpRosExpect(UrosTcpRosStatus *tcpstp, void *tokp, size_t toklen) {
+uros_err_t urosTcpRosExpect(UrosTcpRosStatus *tcpstp,
+                            void *tokp, size_t toklen) {
 
   uint8_t *curp, *bufp;
   size_t pending, nb;
@@ -1012,10 +585,12 @@ uros_err_t urosTcpRosRecv(UrosTcpRosStatus *tcpstp,
                    urosErrorText(tcpstp->err), nb,
                    (int)(buflen - pending), bufp));
       } else {
-        urosError(tcpstp->err != UROS_OK, return tcpstp->err,
+        urosError(tcpstp->err != UROS_OK && tcpstp->err != UROS_ERR_TIMEOUT,
+                  return tcpstp->err,
                   ("Error %s while receiving %zu bytes after [%.*s]\n",
                    urosErrorText(tcpstp->err), nb,
                    (int)(buflen - pending), bufp));
+        return UROS_ERR_TIMEOUT;
       }
     }
     memcpy(curp, recvp, nb);
@@ -1060,9 +635,11 @@ uros_err_t urosTcpRosRecvRev(UrosTcpRosStatus *tcpstp,
                   ("Error %s while receiving %zu bytes\n",
                    urosErrorText(tcpstp->err), nb));
       } else {
-        urosError(tcpstp->err != UROS_OK, return tcpstp->err,
+        urosError(tcpstp->err != UROS_OK && tcpstp->err != UROS_ERR_TIMEOUT,
+                  return tcpstp->err,
                   ("Error %s while receiving %zu bytes\n",
                    urosErrorText(tcpstp->err), nb));
+        return UROS_ERR_TIMEOUT;
       }
     }
     while (nb-- > 0) {
@@ -1135,9 +712,11 @@ uros_err_t urosTcpRosSend(UrosTcpRosStatus *tcpstp,
 
   if (buflen > 0) {
     tcpstp->err = urosConnSend(tcpstp->csp, bufp, buflen);
-    urosError(tcpstp->err != UROS_OK, return tcpstp->err,
+    urosError(tcpstp->err != UROS_OK && tcpstp->err != UROS_ERR_TIMEOUT,
+              return tcpstp->err,
               ("Error %s while sending [%.*s]\n",
                urosErrorText(tcpstp->err), (int)buflen, bufp));
+    if (tcpstp->err == UROS_ERR_TIMEOUT) { return UROS_ERR_TIMEOUT; }
   }
   return tcpstp->err = UROS_OK;
 }
@@ -1164,9 +743,11 @@ uros_err_t urosTcpRosSendRev(UrosTcpRosStatus *tcpstp,
 
   for (; buflen > 0; --buflen) {
     tcpstp->err = urosConnSend(tcpstp->csp, bufp, 1);
-    urosError(tcpstp->err != UROS_OK, return tcpstp->err,
+    urosError(tcpstp->err != UROS_OK && tcpstp->err != UROS_ERR_TIMEOUT,
+              return tcpstp->err,
               ("Error %s while sending [%*.s]\n",
                urosErrorText(tcpstp->err), (int)buflen, bufp));
+    if (tcpstp->err == UROS_ERR_TIMEOUT) { return UROS_ERR_TIMEOUT; }
     bufp = (const void *)((const uint8_t *)bufp + 1);
   }
   return tcpstp->err = UROS_OK;
@@ -1242,12 +823,20 @@ uros_err_t urosTcpRosSendStringSZ(UrosTcpRosStatus *tcpstp,
  */
 uros_err_t urosTcpRosSendError(UrosTcpRosStatus *tcpstp) {
 
-  size_t hdrlen = 0;
-  uint32_t hdrlen32;
+  uint32_t hdrlen = 0;
   const UrosString *errstrp, *typestrp, *md5strp;
 
   urosAssert(tcpstp != NULL);
 #define _CHKOK  { if (tcpstp->err != UROS_OK) { return tcpstp->err; } }
+
+#define _FIELDSTRING(tcpstp, namep, valuep) { \
+  urosAssert(urosStringNotEmpty(namep)); \
+  urosAssert(valuep != NULL); \
+  hdrlen = (uint32_t)((namep)->length + 1 + (valuep)->length); \
+  urosTcpRosSendRaw(tcpstp, hdrlen); _CHKOK \
+  urosTcpRosSend(tcpstp, (namep)->datap, (namep)->length); _CHKOK \
+  urosTcpRosSend(tcpstp, "=", 1); _CHKOK \
+  urosTcpRosSend(tcpstp, (valuep)->datap, (valuep)->length); _CHKOK }
 
   if (tcpstp->topicp == NULL) {
     typestrp = &dummytype.name;
@@ -1259,25 +848,460 @@ uros_err_t urosTcpRosSendError(UrosTcpRosStatus *tcpstp) {
   }
   errstrp = &tcpstp->errstr;
 
-  hdrlen += errfield.length + 1 + errstrp->length;
-  hdrlen += typefield.length + 1 + typestrp->length;
-  hdrlen += md5field.length + 1 + md5strp->length;
+  hdrlen += (uint32_t)(1 + errfield.length + errstrp->length);
+  hdrlen += (uint32_t)(1 + typefield.length + typestrp->length);
+  hdrlen += (uint32_t)(1 + md5field.length + md5strp->length);
 
   /* uint32 header_length */
-  hdrlen32 = (uint32_t)hdrlen;
-  urosTcpRosSendRaw(tcpstp, hdrlen32); _CHKOK
+  urosTcpRosSendRaw(tcpstp, hdrlen); _CHKOK
 
   /* uint32 field_length, error={str} */
-  uros_tcpros_sendfieldstring(tcpstp, &errfield, errstrp); _CHKOK
+  _FIELDSTRING(tcpstp, &errfield, errstrp);
 
   /* uint32 field_length, type={str} */
-  uros_tcpros_sendfieldstring(tcpstp, &typefield, typestrp); _CHKOK
+  _FIELDSTRING(tcpstp, &typefield, typestrp);
 
   /* uint32 field_length, md5sum={str} */
-  uros_tcpros_sendfieldstring(tcpstp, &md5field, md5strp); _CHKOK
+  _FIELDSTRING(tcpstp, &md5field, md5strp);
 
   return tcpstp->err = UROS_OK;
 #undef _CHKOK
+#undef _FIELDSTRING
+}
+
+/**
+ * @brief   Sends a TCPROS handshake header.
+ * @details The @p isrequest flag tells wether a request or a response header
+ *          will be generated. The topic flags of the topic referenced by
+ *          @p tcpstp will be used. In particular, the @p service flag will
+ *          switch between the @e topic or the @e service header format.
+ *
+ * @param[in,out] tcpstp
+ *          Pointer to a TCPROS status with a working connection.
+ * @param[in] isrequest
+ *          Tells if sending a request handshake header, otherwise a response
+ *          one will be generated.
+ * @return
+ *          Error code.
+ */
+uros_err_t urosTcpRosSendHeader(UrosTcpRosStatus *tcpstp,
+                                uros_bool_t isrequest) {
+
+  uint32_t hdrlen = 0;
+  const UrosString *calleridstrp, *namestrp, *typestrp, *md5strp;
+
+  urosAssert(tcpstp != NULL);
+  urosAssert(tcpstp->topicp != NULL);
+  urosAssert(tcpstp->topicp->typep != NULL);
+#define _CHKOK  { if (tcpstp->err != UROS_OK) { return tcpstp->err; } }
+
+#define _FIELDSTRING(tcpstp, namep, valuep) { \
+  urosAssert(urosStringNotEmpty(namep)); \
+  urosAssert(valuep != NULL); \
+  hdrlen = (uint32_t)((namep)->length + 1 + (valuep)->length); \
+  urosTcpRosSendRaw(tcpstp, hdrlen); _CHKOK \
+  urosTcpRosSend(tcpstp, (namep)->datap, (namep)->length); _CHKOK \
+  urosTcpRosSend(tcpstp, "=", 1); _CHKOK \
+  urosTcpRosSend(tcpstp, (valuep)->datap, (valuep)->length); _CHKOK }
+
+#define _FIELDBOOL(tcpstp, namep, value) { \
+  urosAssert(urosStringNotEmpty(namep)); \
+  hdrlen = (uint32_t)((namep)->length + 2); \
+  urosTcpRosSendRaw(tcpstp, hdrlen); _CHKOK \
+  urosTcpRosSend(tcpstp, (namep)->datap, (namep)->length); _CHKOK \
+  urosTcpRosSend(tcpstp, (value) ? "=1" : "=0", 2); _CHKOK }
+
+  calleridstrp = &urosNode.config.nodeName;
+  typestrp = &tcpstp->topicp->typep->name;
+  md5strp = &tcpstp->topicp->typep->md5str;
+
+  hdrlen += (uint32_t)(5 + calleridfield.length + calleridstrp->length);
+  hdrlen += (uint32_t)(5 + md5field.length + md5strp->length);
+  hdrlen += (uint32_t)(5 + typefield.length + typestrp->length);
+  if (isrequest) {
+    namestrp = &tcpstp->topicp->name;
+    if (tcpstp->topicp->flags.service) {
+      hdrlen += (uint32_t)(5 + servicefield.length + namestrp->length);
+      hdrlen += (uint32_t)(6 + persistentfield.length);
+    } else {
+      hdrlen += (uint32_t)(5 + topicfield.length + namestrp->length);
+      hdrlen += (uint32_t)(6 + tcpnodelayfield.length);
+    }
+  } else {
+    namestrp = NULL;
+    if (tcpstp->topicp->flags.service) {
+      hdrlen += (uint32_t)(12 + reqtypefield.length + typestrp->length);
+      hdrlen += (uint32_t)(13 + restypefield.length + typestrp->length);
+    } else {
+      hdrlen += (uint32_t)(6 + latchingfield.length);
+    }
+  }
+
+  /* uint32 header_length */
+  urosTcpRosSendRaw(tcpstp, hdrlen); _CHKOK
+
+  /* uint32 field_length, callerid={str} */
+  _FIELDSTRING(tcpstp, &calleridfield, calleridstrp);
+
+  if (isrequest) {
+    if (tcpstp->topicp->flags.service) {
+      /* uint32 field_length, service={str} */
+      _FIELDSTRING(tcpstp, &servicefield, namestrp);
+    } else {
+      /* uint32 field_length, topic={str} */
+      _FIELDSTRING(tcpstp, &topicfield, namestrp);
+    }
+  }
+
+  /* uint32 field_length, md5sum={str} */
+  _FIELDSTRING(tcpstp, &md5field, md5strp);
+
+  if (tcpstp->topicp->flags.service) {
+    /* uint32 field_length, request_type={str} */
+    hdrlen = 8 + reqtypefield.length + typestrp->length;
+    urosTcpRosSendRaw(tcpstp, hdrlen); _CHKOK
+    urosTcpRosSend(tcpstp, reqtypefield.datap, reqtypefield.length); _CHKOK
+    urosTcpRosSend(tcpstp, "=", 1); _CHKOK
+    urosTcpRosSend(tcpstp, typestrp->datap, typestrp->length); _CHKOK
+    urosTcpRosSend(tcpstp, "Request", 7); _CHKOK
+
+    /* uint32 field_length, response_type={str} */
+    hdrlen = 9 + restypefield.length + typestrp->length;
+    urosTcpRosSendRaw(tcpstp, hdrlen); _CHKOK
+    urosTcpRosSend(tcpstp, restypefield.datap, restypefield.length); _CHKOK
+    urosTcpRosSend(tcpstp, "=", 1); _CHKOK
+    urosTcpRosSend(tcpstp, typestrp->datap, typestrp->length); _CHKOK
+    urosTcpRosSend(tcpstp, "Response", 8); _CHKOK
+  }
+
+  /* uint32 field_length, type={str} */
+  _FIELDSTRING(tcpstp, &typefield, typestrp);
+
+  if (isrequest) {
+    if (tcpstp->topicp->flags.service) {
+      /* uint32 field_length, persistent=(0|1) */
+      _FIELDBOOL(tcpstp, &persistentfield, tcpstp->topicp->flags.persistent);
+    } else {
+      /* uint32 field_length, tcp_nodelay=(0|1) */
+      _FIELDBOOL(tcpstp, &tcpnodelayfield, tcpstp->topicp->flags.noDelay);
+    }
+  } else {
+    if (!tcpstp->topicp->flags.service) {
+      /* uint32 field_length, latching=(0|1) */
+      _FIELDBOOL(tcpstp, &latchingfield, tcpstp->topicp->flags.latching);
+    }
+  }
+
+  return tcpstp->err = UROS_OK;
+#undef _CHKOK
+#undef _FIELDSTRING
+#undef _FIELDBOOL
+}
+
+/**
+ * @brief   Receives a TCPROS handshake header.
+ * @details The @p isrequest flag tells wether a request or a response header
+ *          is expected to be received. The topic flags of the topic referenced
+ *          by @p tcpstp will be updated or checked. In particular, the
+ *          @p service flag will switch between the @e topic or the @e service
+ *          header format.
+ *          Additionally, there is a different use of the @p topicp pointer of
+ *          the @p tcpstp object, depending on the @p isrequest flag:
+ *          - when @p true, the received topic information is written into a
+ *            newly allocated @ UrosTopic object, which is returned by the
+ *            @p tcpstp->topicp pointer (must be @p NULL at call time);
+ *          - when @p false, the received topic information is compared with
+ *            that of the @p tcpstp->topicp object for correctness.
+ *
+ * @param[in,out] tcpstp
+ *          Pointer to a TCPROS status with a working connection.
+ * @param[in] isrequest
+ *          Tells if receiving a request handshake header, otherwise a response
+ *          one will be expected.
+ * @param[in] isservice
+ *          Tells if the transaction is done by a ROS Service.
+ * @return
+ *          Error code.
+ */
+uros_err_t urosTcpRosRecvHeader(UrosTcpRosStatus *tcpstp,
+                                uros_bool_t isrequest,
+                                uros_bool_t isservice) {
+
+  uint32_t hdrlen, remlen;
+  uint32_t vallen, fieldlen;
+  char *valp = NULL;
+  UrosTopic *topicp;
+  UrosMsgType *typep;
+  char buf[4];
+
+  urosAssert(tcpstp != NULL);
+#define _ERRPARSE   { tcpstp->err = UROS_ERR_PARSE; goto _error; }
+#define _CHKOK      { if (tcpstp->err != UROS_OK) { goto _error; } }
+#define _GOT(tokp, toklen) \
+    ((toklen <= 4) \
+     ? (0 == memcmp(buf, tokp, toklen)) \
+     : (0 == memcmp(buf, tokp, 4) && \
+        UROS_OK == urosTcpRosExpect(tcpstp, tokp + 4, toklen - 4)))
+
+  if (isrequest) {
+    /* The server will receive the remote topic descriptor.*/
+    urosAssert(tcpstp->topicp == NULL);
+    typep = urosNew(UrosMsgType);
+    topicp = urosNew(UrosTopic);
+    if (typep == NULL || topicp == NULL) {
+      urosFree(typep); urosFree(topicp);
+      return tcpstp->err = UROS_ERR_NOMEM;
+    }
+    urosMsgTypeObjectInit(typep);
+    urosTopicObjectInit(topicp);
+    topicp->typep = typep;
+  } else {
+    /* The client will check for correctness of the remote descriptor.*/
+    urosAssert(tcpstp->topicp != NULL);
+    urosAssert(tcpstp->topicp->typep != NULL);
+    topicp = (UrosTopic*)tcpstp->topicp;
+    typep = (UrosMsgType*)topicp->typep;
+  }
+
+  /* Read the header length.*/
+  urosTcpRosRecvRaw(tcpstp, hdrlen); _CHKOK
+
+  /* Get each header field.*/
+  for (remlen = hdrlen; remlen > 0; remlen -= fieldlen) {
+    UrosString *strp = NULL;
+
+    /* Get the field length and check for size consistency.*/
+    urosError(remlen < 4, _ERRPARSE,
+              ("Premature end of header (no field length, %zu bytes left)\n",
+               remlen));
+    remlen -= 4;
+    urosTcpRosRecvRaw(tcpstp, fieldlen); _CHKOK
+    urosError(remlen < fieldlen, _ERRPARSE,
+              ("Premature end of header (%zu bytes left, expected %zu)\n",
+               remlen, fieldlen));
+    vallen = fieldlen;
+
+    /* Decode the field name.*/
+    urosTcpRosRecv(tcpstp, buf, 4);
+    if (_GOT("callerid=", 9)) {
+      /* callerid={str} */
+      strp = &tcpstp->callerId;
+      vallen -= 9;
+    } else if (_GOT("error=", 6)) {
+      /* error={str} */
+      strp = &tcpstp->errstr;
+      vallen -= 6;
+    } else if (_GOT("latching=", 9)) {
+      if (isrequest) { _ERRPARSE }
+      if (isservice) {
+        tcpstp->err = UROS_ERR_PARSE; goto _error;
+      }
+      /* latching=(0|1) */
+      if (vallen == 10) {
+        urosTcpRosRecv(tcpstp, buf, 1);
+        if (buf[0] == '1') {
+          tcpstp->remoteFlags.latching = UROS_TRUE; continue;
+        } else if (buf[0] == '0') {
+          tcpstp->remoteFlags.latching = UROS_FALSE; continue;
+        } else { _ERRPARSE }
+      } else { _ERRPARSE }
+    } else if (_GOT("md5sum=", 7)) {
+      /* md5sum={str} */
+      strp = &typep->md5str;
+      vallen -= 7;
+      if (!isrequest) {
+        /* Check if it matches the referenced one.*/
+        if (vallen != strp->length) { _ERRPARSE }
+        urosTcpRosExpect(tcpstp, strp->datap, strp->length);
+        if (tcpstp->err == UROS_OK) { continue; }
+        else { goto _error; }
+      }
+    } else if (_GOT("message_definition=", 19)) {
+      /* message_definition={str} */
+      vallen -= 19;
+#if UROS_TCPROS_USE_MSGDEF
+      strp = &typep->desc;
+#else
+      urosTcpRosSkip(tcpstp, vallen);
+      continue;
+#endif
+    } else if (_GOT("persistent=", 11)) {
+      if (!isrequest) { _ERRPARSE }
+      if (!tcpstp->remoteFlags.service) {
+        tcpstp->err = UROS_ERR_PARSE; goto _error;
+      }
+      /* persistent=(0|1) */
+      if (vallen == 12) {
+        urosTcpRosRecv(tcpstp, buf, 1);
+        if (buf[0] == '1') {
+          tcpstp->remoteFlags.persistent = UROS_TRUE; continue;
+        } else if (buf[0] == '0') {
+          tcpstp->remoteFlags.persistent = UROS_FALSE; continue;
+        } else { _ERRPARSE }
+      } else { _ERRPARSE }
+    } else if (_GOT("probe=", 6)) {
+      /* probe=(0|1) */
+      if (vallen == 7) {
+        urosTcpRosRecv(tcpstp, buf, 1);
+        if (buf[0] == '1') {
+          tcpstp->remoteFlags.probe = UROS_TRUE; continue;
+        } else if (buf[0] == '0') {
+          tcpstp->remoteFlags.probe = UROS_FALSE; continue;
+        } else { _ERRPARSE }
+      } else { _ERRPARSE }
+    } else if (_GOT("request_type=", 13)) {
+      /* request_type={str} */
+      /* TODO: Type checking (ignoring it now, assuming it is correct).*/
+      vallen -= 13;
+      if (urosTcpRosSkip(tcpstp, vallen) != UROS_OK) { goto _error; }
+      continue;
+    } else if (_GOT("response_type=", 14)) {
+      /* response_type={str} */
+      /* TODO: Type checking (ignoring it now, assuming it is correct).*/
+      vallen -= 14;
+      if (urosTcpRosSkip(tcpstp, vallen) != UROS_OK) { goto _error; }
+      continue;
+    } else if (_GOT("service=", 8)) {
+      if (!isrequest) {
+        /* Check if it matches the referenced one.*/
+        urosTcpRosExpect(tcpstp, topicp->name.datap, topicp->name.length);
+        if (tcpstp->err == UROS_OK) { continue; }
+        else { goto _error; }
+      } else {
+        /* service={str} */
+        strp = &topicp->name;
+        tcpstp->remoteFlags.service = UROS_TRUE;
+        vallen -= 8;
+      }
+    } else if (_GOT("topic=", 6)) {
+      if (!isrequest) {
+        /* Check if it matches the referenced one.*/
+        urosTcpRosExpect(tcpstp, topicp->name.datap, topicp->name.length);
+        if (tcpstp->err == UROS_OK) { continue; }
+        else { goto _error; }
+      } else {
+        /* topic={str} */
+        strp = &topicp->name;
+        tcpstp->remoteFlags.service = UROS_FALSE;
+        vallen -= 6;
+      }
+    } else if (_GOT("type=", 5)) {
+      /* type={str} */
+      strp = &typep->name;
+      vallen -= 5;
+      if (!isrequest) {
+        /* Check if it matches the referenced one.*/
+        if (vallen != strp->length) { _ERRPARSE }
+        urosTcpRosExpect(tcpstp, strp->datap, strp->length);
+        if (tcpstp->err == UROS_OK) { continue; }
+        else { goto _error; }
+      }
+    } else if (_GOT("tcp_nodelay=", 12)) {
+      if (!isrequest) { _ERRPARSE }
+      /* tcp_nodelay=(0|1) */
+      if (vallen == 13) {
+        urosTcpRosRecv(tcpstp, buf, 1);
+        if (buf[0] == '1') {
+          tcpstp->remoteFlags.noDelay = UROS_TRUE; continue;
+        } else if (buf[0] == '0') {
+          tcpstp->remoteFlags.noDelay = UROS_FALSE; continue;
+        } else { _ERRPARSE }
+      } else { _ERRPARSE }
+    }
+    _CHKOK
+
+    /* Check if the field is already populated.*/
+    urosAssert(strp != NULL);
+    urosError(strp->length > 0 || strp->datap != NULL,
+              { tcpstp->err = UROS_ERR_BADPARAM; goto _error; },
+              ("Field already populated as [%.*s]\n", UROS_STRARG(strp)));
+
+    /* Allocate and read the value.*/
+    if (vallen > 0) {
+      valp = (char*)urosAlloc(vallen);
+      if (valp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _error; }
+      strp->length = vallen;
+      strp->datap = valp;
+      urosTcpRosRecv(tcpstp, valp, vallen); _CHKOK
+    } else {
+      strp->length = 0;
+      strp->datap = NULL;
+    }
+  }
+
+  if (isrequest) {
+    /* Temporarily save the remote topic descriptor inside the TCPROS status.*/
+    topicp->flags =  tcpstp->remoteFlags;
+    tcpstp->topicp = topicp;
+  }
+  return tcpstp->err = UROS_OK;
+
+_error:
+  if (isrequest) {
+    urosMsgTypeDelete(typep);
+    urosTopicDelete(topicp);
+  }
+  return tcpstp->err;
+#undef _ERRPARSE
+#undef _CHKOK
+#undef _GOT
+}
+
+/**
+ * @brief   Executes a service call.
+ * @details Gets the service URI from the Master node. If found, it executes
+ *          the service call once, and the result is returned.
+ * @note    Only a @e single call will be executed. Persistent TCPROS service
+ *          connections need custom handlers.
+ *
+ * @pre     @p servicep->procf must address a @p uros_tcpsrvcall_t function.
+ * @pre     The TPCORS @p service flag must be set, @p persistent clear.
+ *
+ * @param[in] pubaddrp
+ *          Pointer to the service publisher address.
+ * @param[in] servicep
+ *          Pointer to the service descriptor.
+ * @param[out] resobjp
+ *          Pointer to the allocated response object. The service result will
+ *          be written there only if the call is successful.
+ * @return
+ *          Error code.
+ */
+uros_err_t urosTcpRosCallService(const UrosAddr *pubaddrp,
+                                 const UrosTopic *servicep,
+                                 void *resobjp) {
+
+  UrosConn conn;
+  UrosTcpRosStatus tcpst;
+
+  urosAssert(pubaddrp != NULL);
+  urosAssert(servicep != NULL);
+  urosAssert(urosStringNotEmpty(&servicep->name));
+  urosAssert(servicep->typep != NULL);
+  urosAssert(urosStringNotEmpty(&servicep->typep->name));
+  urosAssert(servicep->procf != NULL);
+  urosAssert(servicep->flags.service);
+  urosAssert(!servicep->flags.persistent);
+  urosAssert(resobjp != NULL);
+#define _CHKOK  { if (tcpst.err != UROS_OK) { goto _error; } }
+
+  /* Connect to the remote service host.*/
+  urosConnObjectInit(&conn);
+  urosTcpRosStatusObjectInit(&tcpst, &conn);
+  tcpst.err = urosConnCreate(&conn, UROS_PROTO_TCP); _CHKOK
+  tcpst.err = urosConnConnect(&conn, pubaddrp); _CHKOK
+
+  /* Send the TCPROS connection header, and its response.*/
+  urosTcpRosSendHeader(&tcpst, UROS_TRUE); _CHKOK
+  urosTcpRosRecvHeader(&tcpst, UROS_FALSE, UROS_FALSE); _CHKOK
+
+  /* Call the service handler.*/
+  tcpst.err = ((uros_tcpsrvcall_t)servicep->procf)(&tcpst, resobjp); _CHKOK
+  return urosConnClose(&conn);
+
+_error:
+  urosConnClose(&conn);
+  return tcpst.err;
 }
 
 /**
@@ -1300,6 +1324,8 @@ uros_err_t urosTcpRosSendError(UrosTcpRosStatus *tcpstp) {
  *          Error code.
  */
 uros_err_t urosTcpRosListenerThread(void *data) {
+
+  static UrosNodeStatus *const stp = &urosNode.status;
 
   uros_err_t err;
   UrosAddr locaddr;
@@ -1333,17 +1359,17 @@ uros_err_t urosTcpRosListenerThread(void *data) {
               ("Error %s while accepting an incoming TCPROS connection "
                UROS_ADDRFMT"\n",
                urosErrorText(err), UROS_ADDRARG(&spawnedp->remaddr)));
-    urosMutexLock(&urosNode.status.stateLock);
-    if (urosNode.status.exitFlag) {
+    urosMutexLock(&stp->stateLock);
+    if (stp->exitFlag) {
       /* Refuse the connection if the listener has to exit.*/
-      urosMutexUnlock(&urosNode.status.stateLock);
+      urosMutexUnlock(&stp->stateLock);
       if (err == UROS_OK) {
         urosConnClose(spawnedp);
       }
       urosFree(spawnedp);
       break;
     }
-    urosMutexUnlock(&urosNode.status.stateLock);
+    urosMutexUnlock(&stp->stateLock);
     if (err != UROS_OK) {
       urosFree(spawnedp);
       continue;
@@ -1356,8 +1382,7 @@ uros_err_t urosTcpRosListenerThread(void *data) {
     urosAssert(err == UROS_OK);
 
     /* Create the TCPROS Server worker thread.*/
-    err = urosThreadPoolStartWorker(&urosNode.status.tcpsvrThdPool,
-                                    (void*)spawnedp);
+    err = urosThreadPoolStartWorker(&stp->tcpsvrThdPool, (void*)spawnedp);
 
     /* Check if anything went wrong.*/
     if (err != UROS_OK && urosConnIsValid(spawnedp)) {
@@ -1392,6 +1417,8 @@ uros_err_t urosTcpRosListenerThread(void *data) {
  */
 uros_err_t urosTcpRosServerThread(UrosConn *csp) {
 
+  static UrosNodeStatus *const stp = &urosNode.status;
+
   UrosTcpRosStatus *tcpstp;
   uros_err_t err;
   uros_proc_f handler = NULL;
@@ -1400,10 +1427,10 @@ uros_err_t urosTcpRosServerThread(UrosConn *csp) {
 
   tcpstp = urosNew(UrosTcpRosStatus);
   if (tcpstp == NULL) { return UROS_ERR_NOMEM; }
-  urosTpcRosStatusObjectInit(tcpstp, csp);
+  urosTcpRosStatusObjectInit(tcpstp, csp);
 
   /* Receive the connection header.*/
-  err = uros_tcpros_recvheader(tcpstp, UROS_FALSE);
+  err = urosTcpRosRecvHeader(tcpstp, UROS_TRUE, UROS_TRUE);
   if (err != UROS_OK) {
     /* Send the error message.*/
     tcpstp->errstr = urosStringCloneZ(urosErrorText(err));
@@ -1413,22 +1440,22 @@ uros_err_t urosTcpRosServerThread(UrosConn *csp) {
   }
 
   /* Process the received header, to link to the actual topic/service.*/
-  if (tcpstp->flags.service) {
+  if (tcpstp->topicp->flags.service) {
     /* TCPROS service connection header.*/
-    urosMutexLock(&urosNode.status.pubServiceListLock);
+    urosMutexLock(&stp->pubServiceListLock);
     err = uros_tcpserver_processserviceheader(tcpstp);
     if (err == UROS_OK) {
       handler = tcpstp->topicp->procf;
     }
-    urosMutexUnlock(&urosNode.status.pubServiceListLock);
+    urosMutexUnlock(&stp->pubServiceListLock);
   } else {
     /* TCPROS topic connection header.*/
-    urosMutexLock(&urosNode.status.pubTopicListLock);
+    urosMutexLock(&stp->pubTopicListLock);
     err = uros_tcpserver_processtopicheader(tcpstp);
     if (err == UROS_OK) {
       handler = tcpstp->topicp->procf;
     }
-    urosMutexUnlock(&urosNode.status.pubTopicListLock);
+    urosMutexUnlock(&stp->pubTopicListLock);
   }
   if (err != UROS_OK) {
     /* Send an error message.*/
@@ -1438,7 +1465,7 @@ uros_err_t urosTcpRosServerThread(UrosConn *csp) {
   }
 
   /* Send the response header.*/
-  err = uros_tcpros_sendheader(tcpstp, UROS_FALSE);
+  err = urosTcpRosSendHeader(tcpstp, UROS_FALSE);
   if (err != UROS_OK) { goto _finally; }
 
   /* Call the connection handler.*/
@@ -1447,7 +1474,7 @@ uros_err_t urosTcpRosServerThread(UrosConn *csp) {
   err = handler(tcpstp);
 
   /* Release the topic/service descriptor reference.*/
-  if (tcpstp->flags.service) {
+  if (tcpstp->topicp->flags.service) {
     urosTcpRosServiceDone(tcpstp);
   } else {
     urosTcpRosTopicPublisherDone(tcpstp);
@@ -1456,7 +1483,7 @@ uros_err_t urosTcpRosServerThread(UrosConn *csp) {
 _finally:
   /* Close the connection and free the allocated memory.*/
   urosConnClose(csp);
-  urosTpcRosStatusDelete(tcpstp, UROS_TRUE);
+  urosTcpRosStatusDelete(tcpstp, UROS_TRUE);
   return err;
 }
 
@@ -1486,18 +1513,17 @@ uros_err_t urosTcpRosClientThread(uros_tcpcliargs_t *argsp) {
 
   urosAssert(argsp != NULL);
   urosAssert(urosStringNotEmpty(&argsp->topicName));
+  urosAssert(!argsp->topicFlags.service);
 
   /* Resolve the publisher address.*/
-  err = uros_tcpros_resolvepublisher(argsp, &pubaddr);
+  err = urosNodeResolveTopicPublisher(&argsp->remoteAddr,
+                                      &argsp->topicName,
+                                      &pubaddr);
   if (err != UROS_OK) { goto _finally; }
 
-  if (argsp->topicFlags.service) {
-    /* TODO: Add service subscribptions and their handlers.*/
-  } else {
-    /* Start a new TCPROS topic subscripion.*/
-    err = uros_tcpcli_topicsubscription(&argsp->topicName, &pubaddr);
-    if (err != UROS_OK) { goto _finally; }
-  }
+  /* Start a new TCPROS topic subscripion.*/
+  err = uros_tcpcli_topicsubscription(&argsp->topicName, &pubaddr);
+  if (err != UROS_OK) { goto _finally; }
 
   err = UROS_OK;
 _finally:
@@ -1521,19 +1547,21 @@ _finally:
  */
 void urosTcpRosTopicSubscriberDone(UrosTcpRosStatus *tcpstp) {
 
+  static UrosNodeStatus *const stp = &urosNode.status;
+
   urosAssert(tcpstp != NULL);
   urosAssert(tcpstp->topicp != NULL);
 
   /* Decrement the topic reference count.*/
-  urosMutexLock(&urosNode.status.subTopicListLock);
+  urosMutexLock(&stp->subTopicListLock);
   if (0 == urosTopicRefDec(tcpstp->topicp)) {
     /* The topic has been deleted an this is its last reference, free it.*/
-    if (tcpstp->flags.deleted) {
+    if (tcpstp->topicp->flags.deleted) {
       urosTopicDelete(tcpstp->topicp);
       tcpstp->topicp = NULL;
     }
   }
-  urosMutexUnlock(&urosNode.status.subTopicListLock);
+  urosMutexUnlock(&stp->subTopicListLock);
 }
 
 /**
@@ -1552,19 +1580,21 @@ void urosTcpRosTopicSubscriberDone(UrosTcpRosStatus *tcpstp) {
  */
 void urosTcpRosTopicPublisherDone(UrosTcpRosStatus *tcpstp) {
 
+  static UrosNodeStatus *const stp = &urosNode.status;
+
   urosAssert(tcpstp != NULL);
   urosAssert(tcpstp->topicp != NULL);
 
   /* Decrement the topic reference count.*/
-  urosMutexLock(&urosNode.status.pubTopicListLock);
+  urosMutexLock(&stp->pubTopicListLock);
   if (0 == urosTopicRefDec(tcpstp->topicp)) {
     /* The topic has been deleted an this is its last reference, free it.*/
-    if (tcpstp->flags.deleted) {
+    if (tcpstp->topicp->flags.deleted) {
       urosTopicDelete(tcpstp->topicp);
       tcpstp->topicp = NULL;
     }
   }
-  urosMutexUnlock(&urosNode.status.pubTopicListLock);
+  urosMutexUnlock(&stp->pubTopicListLock);
 }
 
 /**
@@ -1582,19 +1612,21 @@ void urosTcpRosTopicPublisherDone(UrosTcpRosStatus *tcpstp) {
  */
 void urosTcpRosServiceDone(UrosTcpRosStatus *tcpstp) {
 
+  static UrosNodeStatus *const stp = &urosNode.status;
+
   urosAssert(tcpstp != NULL);
   urosAssert(tcpstp->topicp != NULL);
 
   /* Decrement the service reference count.*/
-  urosMutexLock(&urosNode.status.pubServiceListLock);
+  urosMutexLock(&stp->pubServiceListLock);
   if (0 == urosTopicRefDec(tcpstp->topicp)) {
     /* The service has been deleted an this is its last reference, free it.*/
-    if (tcpstp->flags.deleted) {
+    if (tcpstp->topicp->flags.deleted) {
       urosTopicDelete(tcpstp->topicp);
       tcpstp->topicp = NULL;
     }
   }
-  urosMutexUnlock(&urosNode.status.pubServiceListLock);
+  urosMutexUnlock(&stp->pubServiceListLock);
 }
 
 /** @} */

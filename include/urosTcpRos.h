@@ -57,8 +57,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * @brief   TCPROS Client thread creation arguments.
  */
 typedef struct uros_tcpcliargs_t {
-  UrosString        topicName;      /**< @brief Topic or service name.*/
-  uros_topicflags_t topicFlags;     /**< @brief Topic/service flags.*/
+  UrosString        topicName;      /**< @brief Topic name.*/
+  uros_topicflags_t topicFlags;     /**< @brief Topic flags.*/
   UrosAddr          remoteAddr;     /**< @brief Remote connection address.*/
 } uros_tcpcliargs_t;
 
@@ -66,11 +66,11 @@ typedef struct uros_tcpcliargs_t {
  * @brief   TCPROS connection status object.
  */
 typedef struct UrosTcpRosStatus {
+  uros_err_t        err;            /**< @brief Last error code.*/
   UrosConn          *csp;           /**< @brief Connection status pointer.*/
   UrosString        callerId;       /**< @brief Caller ID.*/
   UrosTopic         *topicp;        /**< @brief Referenced topic/service.*/
-  uros_err_t        err;            /**< @brief Last error code.*/
-  uros_topicflags_t flags;          /**< @brief Topic/Service flags.*/
+  uros_topicflags_t remoteFlags;    /**< @brief Remote topic/service flags.*/
   uros_bool_t       threadExit;     /**< @brief Thread exit request.*/
   UrosMutex         threadExitMtx;  /**< @brief Thread exit request mutex.*/
   UrosString        errstr;         /**< @brief Error string.*/
@@ -84,9 +84,27 @@ typedef struct UrosTcpRosArray {
   void              *entriesp;      /**< @brief Pointer to the entries chunk.*/
 } UrosTcpRosArray;
 
+/**
+ * @brief   TCPROS Service call handler.
+ *
+ * @param[in,out] tcpstp
+ *          Pointer to a TCPROS statuc with a working connection.
+ * @param[out] resobjp
+ *          Pointer to the allocated object being received.
+ * @return
+ *          Error code.
+ */
+typedef uros_err_t (*uros_tcpsrvcall_t)(UrosTcpRosStatus *tcpstp,
+                                        void *resobjp);
+
 /** @} */
 
 /** @addtogroup tcpros_macros */
+/** @{ */
+
+/*~~~ TCPROS CONNECTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+/** @name TCPROS connection */
 /** @{ */
 
 /**
@@ -135,6 +153,13 @@ typedef struct UrosTcpRosArray {
   urosTcpRosSend((tcpstp), &(value), sizeof(value))
 #endif
 
+/** @} */
+
+/*~~~ TCPROS ARRAY ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+/** @name TCPROS array */
+/** @{ */
+
 /**
  * @brief   Generate a variable-length array structure.
  * @details Generates a structure compatible with @p UrosTcpRosArray, where the
@@ -165,6 +190,548 @@ typedef struct UrosTcpRosArray {
 
 /** @} */
 
+/*~~~ TCPROS HANDLERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+/** @name TCPROS handlers */
+/** @{ */
+
+/**
+ * @brief   Name of the message length variable in TCPROS handlers.
+ */
+#if !defined(UROS_HND_LENGTH) || defined(__DOXYGEN__)
+#define UROS_HND_LENVAR     msglen
+#endif
+
+/**
+ * @brief   Name of the TCPROS status pointer in handlers.
+ */
+#if !defined(UROS_HND_TCPSTP) || defined(__DOXYGEN__)
+#define UROS_HND_TCPSTP     tcpstp
+#endif
+
+/**
+ * @brief   Name of the label called when exiting from a handler.
+ */
+#if !defined(UROS_HND_FINALLY) || defined(__DOXYGEN__)
+#define UROS_HND_FINALLY    _finally
+#endif
+
+/*~~~ TCPROS MESSAGES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+/** @name TCPROS messages */
+/** @{ */
+
+/**
+ * @brief   Message descriptor initialization.
+ * @details Tries to allocate the descriptor on the heap. In unsuccessful,
+ *          goes to @p UROS_HND_FINALLY with an @p UROS_ERR_NOMEM error.
+ *
+ * @param[in] msgvarp
+ *          Pointer to the message.
+ * @param[in] ctypename
+ *          Mangled version of the type name (@p msg_*, @p in_srv_*,
+ *          @p out_srv_*).
+ */
+#define UROS_MSG_INIT_H(msgvarp, ctypename) \
+  { msgvarp = urosNew(struct ctypename); \
+    if (msgvarp == NULL) { \
+      (UROS_HND_TCPSTP)->err = UROS_ERR_NOMEM; goto UROS_HND_FINALLY; } \
+    init_##ctypename(msgvarp); }
+
+/**
+ * @brief   Message descriptor initialization.
+ * @details Initializes a message descriptor located on the stack.
+ *
+ * @param[in] msgvarp
+ *          Pointer to the message.
+ * @param[in] ctypename
+ *          Mangled version of the type name (@p msg_*, @p in_srv_*,
+ *          @p out_srv_*).
+ */
+#define UROS_MSG_INIT_S(msgvarp, ctypename) \
+  { init_##ctypename(msgvarp); }
+
+/**
+ * @brief   Uninitializes a message descriptor located in the heap.
+ * @details The allocated descriptor is deleted from the heap.
+ *
+ * @param[in] msgvarp
+ *          Pointer to the message.
+ * @param[in] ctypename
+ *          Mangled version of the type name (@p msg_*, @p in_srv_*,
+ *          @p out_srv_*).
+ */
+#define UROS_MSG_UNINIT_H(msgvarp, ctypename) \
+  { clean_##ctypename(msgvarp); \
+    urosFree(msgvarp); }
+
+/**
+ * @brief   Uninitializes a message descriptor located on the stack.
+ *
+ * @param[in] msgvarp
+ *          Pointer to the message.
+ * @param[in] ctypename
+ *          Mangled version of the type name (@p msg_*, @p in_srv_*,
+ *          @p out_srv_*).
+ */
+#define UROS_MSG_UNINIT_S(msgvarp, ctypename) \
+  { clean_##ctypename(msgvarp); }
+
+/**
+ * @brief   Sends the length of the message (message header).
+ * @details This macro handles timeouts and errors. If unsuccessful, it goes to
+ *          @p UROS_HND_FINALLY.
+ *
+ * @param[in] msgvarp
+ *          Pointer to an initialized message.
+ * @param[in] ctypename
+ *          Mangled version of the type name (@p msg_*, @p in_srv_*,
+ *          @p out_srv_*).
+ */
+#define UROS_MSG_SEND_LENGTH(msgvarp, ctypename) \
+  { size_t start = (UROS_HND_TCPSTP)->csp->sentlen; \
+    UROS_HND_LENGTH = (uint32_t)length_##ctypename(msgvarp); \
+    while (urosTcpRosSendRaw(UROS_HND_TCPSTP, UROS_HND_LENGTH) != UROS_OK) { \
+      if ((UROS_HND_TCPSTP)->err != UROS_ERR_TIMEOUT || \
+          (UROS_HND_TCPSTP)->csp->sentlen != start || \
+          urosTcpRosStatusCheckExit(UROS_HND_TCPSTP)) { \
+        goto UROS_HND_FINALLY; } } }
+
+/**
+ * @brief   Receives the length of the message (message header).
+ * @details This macro handles timeouts and errors. If unsuccessful, it goes to
+ *          @p UROS_HND_FINALLY.
+ */
+#define UROS_MSG_RECV_LENGTH() \
+  { size_t start = (UROS_HND_TCPSTP)->csp->recvlen; \
+    while (urosTcpRosRecvRaw(UROS_HND_TCPSTP, UROS_HND_LENGTH) != UROS_OK) { \
+      if ((UROS_HND_TCPSTP)->err != UROS_ERR_TIMEOUT || \
+          start != (UROS_HND_TCPSTP)->csp->recvlen || \
+          urosTcpRosStatusCheckExit(UROS_HND_TCPSTP)) { \
+        goto UROS_HND_FINALLY; } } }
+
+/**
+ * @brief   Sends the body of the message.
+ * @details This macro handles timeouts and errors. If unsuccessful, it goes to
+ *          @p UROS_HND_FINALLY.
+ *
+ * @param[in] msgvarp
+ *          Pointer to an initialized message.
+ * @param[in] ctypename
+ *          Mangled version of the type name (@p msg_*, @p in_srv_*,
+ *          @p out_srv_*).
+ */
+#define UROS_MSG_SEND_BODY(msgvarp, ctypename) \
+  { send_##ctypename(UROS_HND_TCPSTP, msgvarp); \
+    if ((UROS_HND_TCPSTP)->err != UROS_OK) { \
+      goto UROS_HND_FINALLY; } }
+
+/**
+ * @brief   Receives the body of the message.
+ * @details This macro handles timeouts and errors. If unsuccessful, it goes to
+ *          @p UROS_HND_FINALLY.
+ *
+ * @param[in] msgvarp
+ *          Pointer to an initialized message.
+ * @param[in] ctypename
+ *          Mangled version of the type name (@p msg_*, @p in_srv_*,
+ *          @p out_srv_*).
+ */
+#define UROS_MSG_RECV_BODY(msgvarp, ctypename) \
+  { recv_##ctypename(UROS_HND_TCPSTP, msgvarp); \
+    if ((UROS_HND_TCPSTP)->err != UROS_OK) { goto UROS_HND_FINALLY; } \
+    urosError((size_t)UROS_HND_LENGTH != length_##ctypename(msgvarp), \
+              { (UROS_HND_TCPSTP)->err = UROS_ERR_BADPARAM; \
+                goto UROS_HND_FINALLY; }, \
+              ("Wrong message length %lu, expected %zu\n", \
+               UROS_HND_LENGTH, length_##ctypename(msgvarp))); }
+
+/** @} */
+
+/*~~~ TCPROS TOPICS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+/** @name TCPROS topics */
+/** @{ */
+
+/**
+ * @brief   Declaration of a topic message in the heap.
+ * @note    To be used inside <code>UROS_TPC_PROLOGUE_H()</code>.
+ */
+#if !defined(UROS_MSG_DECL_H) || defined(__DOXYGEN__)
+#define UROS_TPC_MSGDECL_H  *msgp = NULL
+#endif
+
+/**
+ * @brief   Declaration of a topic message on the stack.
+ * @note    To be used inside <code>UROS_TPC_PROLOGUE_S()</code>.
+ */
+#if !defined(UROS_MSG_DECL_S) || defined(__DOXYGEN__)
+#define UROS_TPC_MSGDECL_S  msg
+#endif
+
+/**
+ * @brief   Pointer to a topic message in the heap.
+ */
+#if !defined(UROS_MSG_PTR_H) || defined(__DOXYGEN__)
+#define UROS_TPC_MSGPTR_H   msgp
+#endif
+
+/**
+ * @brief   Pointer to a topic message on the stack.
+ */
+#if !defined(UROS_MSG_PTR_S) || defined(__DOXYGEN__)
+#define UROS_TPC_MSGPTR_S   (&msg)
+#endif
+
+/**
+ * @brief   Topic handler prologue.
+ * @details This macro defines the following:
+ *          -# declaration of the @p UROS_TPC_MSGDECL_H message pointer and the
+ *             @p UROS_HND_LENGTH variable, used by other macros;
+ *          -# assertions about the @p UROS_HND_TCPSTP object
+ *          -# allocation and initialization of the message descriptor, with
+ *             error checks.
+ * @note    This macro should be placed at the beginning of the handler
+ *          function, just after variable declarations (if any).
+ *
+ * @param[in] ctypename
+ *          Mangled version of the type name (@p msg_*).
+ */
+#define UROS_TPC_PROLOGUE_H(ctypename) \
+  struct ctypename UROS_TPC_MSGDECL_H; \
+  uint32_t UROS_HND_LENGTH; \
+  urosAssert((UROS_HND_TCPSTP) != NULL); \
+  urosAssert((UROS_HND_TCPSTP)->topicp != NULL); \
+  urosAssert(!(UROS_HND_TCPSTP)->topicp->flags.service); \
+  urosAssert(urosConnIsValid((UROS_HND_TCPSTP)->csp)); \
+  UROS_MSG_INIT_H(UROS_TPC_MSGPTR_H, ctypename)
+
+/**
+ * @brief   Topic handler prologue.
+ * @details This macro defines the following:
+ *          -# declaration of the @p UROS_TPC_MSGDECL_S message descriptor and
+ *            the @p UROS_HND_LENGTH variable, used by other macros;
+ *          -# assertions about the @p UROS_HND_TCPSTP object
+ *          -# initialization of the message descriptor.
+ * @note    This macro should be placed at the beginning of the handler
+ *          function, just after variable declarations (if any).
+ *
+ * @param[in] ctypename
+ *          Mangled version of the type name (@p msg_*).
+ */
+#define UROS_TPC_PROLOGUE_S(ctypename) \
+  struct ctypename UROS_TPC_MSGDECL_S; \
+  uint32_t UROS_HND_LENGTH; \
+  urosAssert((UROS_HND_TCPSTP) != NULL); \
+  urosAssert((UROS_HND_TCPSTP)->topicp != NULL); \
+  urosAssert(!(UROS_HND_TCPSTP)->topicp->flags.service); \
+  urosAssert(urosConnIsValid((UROS_HND_TCPSTP)->csp)); \
+  UROS_MSG_INIT_S(UROS_TPC_MSGPTR_S, ctypename)
+
+/**
+ * @brief   Topic handler epilogue.
+ * @details This macro cleans the message descriptor and deallocates it from
+ *          the heap.
+ * @note    This macro should be placed after the @p UROS_HND_FINALLY label.
+ *
+ * @param[in] ctypename
+ *          Mangled version of the type name (@p msg_*, @p in_srv_*,
+ *          @p out_srv_*).
+ */
+#define UROS_TPC_EPILOGUE_H(ctypename) \
+  UROS_MSG_UNINIT_H(UROS_TPC_MSGPTR_H, ctypename);
+
+/**
+ * @brief   Topic handler epilogue.
+ * @details This macro cleans the message descriptor.
+ * @note    This macro should be placed after the @p UROS_HND_FINALLY label.
+ *
+ * @param[in] ctypename
+ *          Mangled version of the type name (@p msg_*, @p in_srv_*,
+ *          @p out_srv_*).
+ */
+#define UROS_TPC_EPILOGUE_S(ctypename) \
+  UROS_MSG_UNINIT_S(UROS_TPC_MSGPTR_S, ctypename);
+
+/** @} */
+
+/*~~~ TCPROS SERVICES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+/** @name TCPROS services */
+/** @{ */
+
+/**
+ * @brief   Declaration of a service request message in the heap.
+ * @note    To be used inside @p UROS_SRV_PROLOGUE_H().
+ */
+#if !defined(UROS_MSG_DECL_H) || defined(__DOXYGEN__)
+#define UROS_SRV_INDECL_H   *inmsgp = NULL
+#endif
+
+/**
+ * @brief   Declaration of a service response message in the heap.
+ * @note    To be used inside @p UROS_SRV_PROLOGUE_H().
+ */
+#if !defined(UROS_MSG_DECL_H) || defined(__DOXYGEN__)
+#define UROS_SRV_OUTDECL_H  *outmsgp = NULL
+#endif
+
+/**
+ * @brief   Declaration of a service request message on the stack.
+ * @note    To be used inside @p UROS_SRV_PROLOGUE_S().
+ */
+#if !defined(UROS_MSG_DECL_S) || defined(__DOXYGEN__)
+#define UROS_SRV_INDECL_S   inmsg
+#endif
+
+/**
+ * @brief   Declaration of a service response message on the stack.
+ * @note    To be used inside @p UROS_SRV_PROLOGUE_S().
+ */
+#if !defined(UROS_MSG_DECL_S) || defined(__DOXYGEN__)
+#define UROS_SRV_OUTDECL_S  outmsg
+#endif
+
+/**
+ * @brief   Pointer to a service request message in the heap.
+ */
+#if !defined(UROS_MSG_PTR_H) || defined(__DOXYGEN__)
+#define UROS_SRV_INPTR_H    inmsgp
+#endif
+
+/**
+ * @brief   Pointer to a service response message in the heap.
+ */
+#if !defined(UROS_MSG_PTR_H) || defined(__DOXYGEN__)
+#define UROS_SRV_OUTPTR_H   outmsgp
+#endif
+
+/**
+ * @brief   Pointer to a service request message on the stack.
+ */
+#if !defined(UROS_MSG_PTR_S) || defined(__DOXYGEN__)
+#define UROS_SRV_INPTR_S    (&inmsg)
+#endif
+
+/**
+ * @brief   Pointer to a service response message on the stack.
+ */
+#if !defined(UROS_MSG_PTR_S) || defined(__DOXYGEN__)
+#define UROS_SRV_OUTPTR_S   (&outmsg)
+#endif
+
+/**
+ * @brief   Name of the <em>OK byte</em> variable in TCPROS service handlers.
+ */
+#if !defined(UROS_SRV_OKVAR) || defined(__DOXYGEN__)
+#define UROS_SRV_OKVAR      okByte
+#endif
+
+/**
+ * @brief   Topic handler prologue.
+ * @details This macro defines the following:
+ *          -# declaration of the @p UROS_SRV_*DECL_* messages and the
+ *             @p UROS_HND_LENVAR variable, used by other macros;
+ *          -# assertions about the @p UROS_HND_TCPSTP object
+ * @note    This macro should be placed at the beginning of the handler
+ *          function, just after variable declarations (if any).
+ *
+ * @param[in] inctypename
+ *          Mangled version of the request type name (@p in_srv_*).
+ * @param[in] indecl
+ *          Declaration of the request message variable:
+ *          - <code>*inmsgp = NULL</code> when in the heap,
+ *          - <code>inmsg</code> when on the stack.
+ * @param[in] outctypename
+ *          Mangled version of the response type name (@p out_srv_*).
+ * @param[in] outdecl
+ *          Declaration of the response message variable:
+ *          - <code>*outmsgp = NULL</code> when in the heap,
+ *          - <code>outmsg</code> when on the stack.
+ */
+#define UROS_SRV_PROLOGUE(inctypename, indecl, \
+                          outctypename, outdecl) \
+  struct inctypename indecl; \
+  struct outctypename outdecl; \
+  uint32_t UROS_HND_LENGTH; \
+  uint8_t UROS_SRV_OKVAR; \
+  urosAssert((UROS_HND_TCPSTP) != NULL); \
+  urosAssert((UROS_HND_TCPSTP)->topicp != NULL); \
+  urosAssert(!(UROS_HND_TCPSTP)->topicp->flags.service); \
+  urosAssert(urosConnIsValid((UROS_HND_TCPSTP)->csp));
+
+/**
+ * @brief   Server request/response initialization.
+ * @details Request and response on the stack.
+ *          This macro defines the following:
+ *          -# declaration of the @p UROS_SRV_INDECL_S and
+ *             @p UROS_SRV_OUTDECL_S messages, and the @p UROS_HND_LENVAR
+ *             variable, used by other macros;
+ *          -# assertions about the @p UROS_HND_TCPSTP object
+ *          -# allocation and initialization of the message descriptors, with
+ *             error checks.
+ * @note    This macro should be placed at the beginning of the handler
+ *          function, just after variable declarations (if any).
+ *
+ * @param[in] inctypename
+ *          Mangled version of the request type name (@p in_srv_*).
+ * @param[in] outctypename
+ *          Mangled version of the response type name (@p out_srv_*).
+ */
+#define UROS_SRV_PROLOGUE_SISO(inctypename, outctypename) \
+  UROS_SRV_PROLOGUE(inctypename, UROS_SRV_INDECL_S, \
+                    outctypename, UROS_SRV_OUTDECL_S) \
+  UROS_MSG_INIT_S(UROS_SRV_INPTR_S, inctypename) \
+  UROS_MSG_INIT_S(UROS_SRV_OUTPTR_S, outctypename)
+
+/**
+ * @brief   Server request/response initialization.
+ * @details Request on the stack, response in the heap.
+ *          This macro defines the following:
+ *          -# declaration of the @p UROS_SRV_INDECL_S and
+ *             @p UROS_SRV_OUTDECL_H messages, and the @p UROS_HND_LENVAR
+ *             variable, used by other macros;
+ *          -# assertions about the @p UROS_HND_TCPSTP object
+ *          -# allocation and initialization of the message descriptors, with
+ *             error checks.
+ * @note    This macro should be placed at the beginning of the handler
+ *          function, just after variable declarations (if any).
+ * @see     UROS_SRV_PROLOGUE()
+ *
+ * @param[in] inctypename
+ *          Mangled version of the request type name (@p in_srv_*).
+ * @param[in] outctypename
+ *          Mangled version of the response type name (@p out_srv_*).
+ */
+#define UROS_SRV_PROLOGUE_SIHO(inctypename, outctypename) \
+  UROS_SRV_PROLOGUE(inctypename, UROS_SRV_INDECL_S, \
+                    outctypename, UROS_SRV_OUTDECL_H) \
+  UROS_MSG_INIT_S(UROS_SRV_INPTR_S, inctypename) \
+  UROS_MSG_INIT_H(UROS_SRV_OUTPTR_H, outctypename)
+
+/**
+ * @brief   Server request/response initialization.
+ * @details Request in the heap, response on the stack.
+ *          This macro defines the following:
+ *          -# declaration of the @p UROS_SRV_INDECL_H and
+ *             @p UROS_SRV_OUTDECL_S messages, and the @p UROS_HND_LENVAR
+ *             variable, used by other macros;
+ *          -# assertions about the @p UROS_HND_TCPSTP object
+ *          -# allocation and initialization of the message descriptors, with
+ *             error checks.
+ * @note    This macro should be placed at the beginning of the handler
+ *          function, just after variable declarations (if any).
+ * @see     UROS_SRV_PROLOGUE()
+ *
+ * @param[in] inctypename
+ *          Mangled version of the request type name (@p in_srv_*).
+ * @param[in] outctypename
+ *          Mangled version of the response type name (@p out_srv_*).
+ */
+#define UROS_SRV_PROLOGUE_HISO(inctypename, outctypename) \
+  UROS_SRV_PROLOGUE(inctypename, UROS_SRV_INDECL_H, \
+                    outctypename, UROS_SRV_OUTDECL_S) \
+  UROS_MSG_INIT_H(UROS_SRV_INPTR_H, inctypename) \
+  UROS_MSG_INIT_S(UROS_SRV_OUTPTR_S, outctypename)
+
+/**
+ * @brief   Server request/response initialization.
+ * @details Request and response in the heap.
+ *          This macro defines the following:
+ *          -# declaration of the @p UROS_SRV_INDECL_H and
+ *             @p UROS_SRV_OUTDECL_H messages, and the @p UROS_HND_LENVAR
+ *             variable, used by other macros;
+ *          -# assertions about the @p UROS_HND_TCPSTP object
+ *          -# allocation and initialization of the message descriptors, with
+ *             error checks.
+ * @note    This macro should be placed at the beginning of the handler
+ *          function, just after variable declarations (if any).
+ * @see     UROS_SRV_PROLOGUE()
+ *
+ * @param[in] inctypename
+ *          Mangled version of the request type name (@p in_srv_*).
+ * @param[in] outctypename
+ *          Mangled version of the response type name (@p out_srv_*).
+ */
+#define UROS_SRV_PROLOGUE_HIHO(inctypename, outctypename) \
+  UROS_SRV_PROLOGUE(inctypename, UROS_SRV_INDECL_H, \
+                    outctypename, UROS_SRV_OUTDECL_H) \
+  UROS_MSG_INIT_H(UROS_SRV_INPTR_H, inctypename) \
+  UROS_MSG_INIT_H(UROS_SRV_OUTPTR_H, outctypename)
+
+/**
+ * @brief   Server request/response uninitialization.
+ * @details Request and response on the stack.
+ * @note    This macro should be placed after the @p UROS_HND_FINALLY label.
+ *
+ * @param[in] inctypename
+ *          Mangled version of the request type name (@p in_srv_*).
+ * @param[in] outctypename
+ *          Mangled version of the response type name (@p out_srv_*).
+ */
+#define UROS_SRV_EPILOGUE_SISO(inctypename, outctypename) \
+  UROS_MSG_UNINIT_S(UROS_SRV_INPTR_S, inctypename) \
+  UROS_MSG_UNINIT_S(UROS_SRV_OUTPTR_S, outctypename)
+
+/**
+ * @brief   Server request/response uninitialization.
+ * @details Request on the stack, response in the heap.
+ * @note    This macro should be placed after the @p UROS_HND_FINALLY label.
+ *
+ * @param[in] inctypename
+ *          Mangled version of the request type name (@p in_srv_*).
+ * @param[in] outctypename
+ *          Mangled version of the response type name (@p out_srv_*).
+ */
+#define UROS_SRV_EPILOGUE_SIHO(inctypename, outctypename) \
+  UROS_MSG_UNINIT_S(UROS_SRV_INPTR_S, inctypename) \
+  UROS_MSG_UNINIT_H(UROS_SRV_OUTPTR_H, outctypename)
+
+/**
+ * @brief   Server request/response uninitialization.
+ * @details Request in the heap, response on the stack.
+ * @note    This macro should be placed after the @p UROS_HND_FINALLY label.
+ *
+ * @param[in] inctypename
+ *          Mangled version of the request type name (@p in_srv_*).
+ * @param[in] outctypename
+ *          Mangled version of the response type name (@p out_srv_*).
+ */
+#define UROS_SRV_EPILOGUE_HISO(inctypename, outctypename) \
+  UROS_MSG_UNINIT_H(UROS_SRV_INPTR_H, inctypename) \
+  UROS_MSG_UNINIT_S(UROS_SRV_OUTPTR_S, outctypename)
+
+/**
+ * @brief   Server request/response uninitialization.
+ * @details Request and response in the heap.
+ * @note    This macro should be placed after the @p UROS_HND_FINALLY label.
+ *
+ * @param[in] inctypename
+ *          Mangled version of the request type name (@p in_srv_*).
+ * @param[in] outctypename
+ *          Mangled version of the response type name (@p out_srv_*).
+ */
+#define UROS_SRV_EPILOGUE_HIHO(inctypename, outctypename) \
+  UROS_MSG_UNINIT_H(UROS_SRV_INPTR_H, inctypename) \
+  UROS_MSG_UNINIT_H(UROS_SRV_OUTPTR_H, outctypename)
+
+/**
+ * @brief   Sends the <em>OK byte</em>, and error string if necessary.
+ * @details If the <em>OK byte</em> is @p 0, it sends the string from
+ *          @p UROS_HND_TCPSTP->errstr error, and it goes to
+ *          @p UROS_HND_FINALLY.
+ */
+#define UROS_SRV_SEND_OKBYTE_ERRSTR() \
+  { urosTcpRosSendRaw(UROS_HND_TCPSTP, UROS_SRV_OKVAR); \
+    if (UROS_SRV_OKVAR == 0) { \
+      urosTcpRosSendString(UROS_HND_TCPSTP, &(UROS_HND_TCPSTP)->errstr); \
+      urosStringObjectInit(&(UROS_HND_TCPSTP)->errstr); \
+      goto UROS_HND_FINALLY; } }
+
+/** @} */
+
+/** @} */
+
 /*===========================================================================*/
 /* GLOBAL PROTOTYPES                                                         */
 /*===========================================================================*/
@@ -175,9 +742,9 @@ extern "C" {
 
 void urosTopicSubParamsDelete(uros_tcpcliargs_t *parp);
 
-void urosTpcRosStatusObjectInit(UrosTcpRosStatus *tcpstp, UrosConn *csp);
-void urosTpcRosStatusClean(UrosTcpRosStatus *tcpstp, uros_bool_t deep);
-void urosTpcRosStatusDelete(UrosTcpRosStatus *tcpstp, uros_bool_t deep);
+void urosTcpRosStatusObjectInit(UrosTcpRosStatus *tcpstp, UrosConn *csp);
+void urosTcpRosStatusClean(UrosTcpRosStatus *tcpstp, uros_bool_t deep);
+void urosTcpRosStatusDelete(UrosTcpRosStatus *tcpstp, uros_bool_t deep);
 void urosTcpRosStatusIssueExit(UrosTcpRosStatus *tcpstp);
 uros_bool_t urosTcpRosStatusCheckExit(UrosTcpRosStatus *tcpstp);
 
@@ -186,7 +753,8 @@ void urosTcpRosArrayClean(UrosTcpRosArray *arrayp);
 void urosTcpRosArrayDelete(UrosTcpRosArray *arrayp, uros_bool_t deep);
 
 uros_err_t urosTcpRosSkip(UrosTcpRosStatus *tcpstp, size_t length);
-uros_err_t urosTcpRosExpect(UrosTcpRosStatus *tcpstp, void *tokp, size_t toklen);
+uros_err_t urosTcpRosExpect(UrosTcpRosStatus *tcpstp,
+                            void *tokp, size_t toklen);
 uros_err_t urosTcpRosRecv(UrosTcpRosStatus *tcpstp,
                           void *bufp, size_t buflen);
 uros_err_t urosTcpRosRecvRev(UrosTcpRosStatus *tcpstp,
@@ -202,9 +770,15 @@ uros_err_t urosTcpRosSendString(UrosTcpRosStatus *tcpstp,
 uros_err_t urosTcpRosSendStringSZ(UrosTcpRosStatus *tcpstp,
                                   const char *strp);
 uros_err_t urosTcpRosSendError(UrosTcpRosStatus *tcpstp);
-uros_err_t urosTcpRosSentMsgLength(UrosTcpRosStatus *tcpstp,
-                                   size_t length);
+uros_err_t urosTcpRosSendHeader(UrosTcpRosStatus *tcpstp,
+                                uros_bool_t isrequest);
+uros_err_t urosTcpRosRecvHeader(UrosTcpRosStatus *tcpstp,
+                                uros_bool_t isrequest,
+                                uros_bool_t isservice);
 
+uros_err_t urosTcpRosCallService(const UrosAddr *pubaddrp,
+                                 const UrosTopic *servicep,
+                                 void *resobjp);
 uros_err_t urosTcpRosListenerThread(void *data);
 uros_err_t urosTcpRosServerThread(UrosConn *csp);
 uros_err_t urosTcpRosClientThread(uros_tcpcliargs_t *argsp);

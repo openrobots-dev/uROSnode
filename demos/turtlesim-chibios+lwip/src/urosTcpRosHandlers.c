@@ -43,14 +43,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "app.h"
 
 #include <urosNode.h>
+#include <urosTcpRos.h>
+#include <urosUser.h>
 #include <math.h>
 
 /*============================================================================*/
 /* TYPES & MACROS                                                             */
 /*============================================================================*/
 
-#define min(a,b)    (((a) <= (b)) ? (a) : (b))
-#define max(a,b)    (((a) >= (b)) ? (a) : (b))
+#define min(a, b)   (((a) <= (b)) ? (a) : (b))
+#define max(a, b)   (((a) >= (b)) ? (a) : (b))
 
 /*============================================================================*/
 /* PUBLISHED TOPIC FUNCTIONS                                                  */
@@ -61,11 +63,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /*~~~ PUBLISHED TOPIC: /rosout ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Topic <tt>/rosout</tt> publisher */
+/** @name Topic <code>/rosout</code> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <tt>/rosout</tt> published topic handler.
+ * @brief   TCPROS <code>/rosout</code> published topic handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -74,14 +76,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 uros_err_t pub_tpc__rosout(UrosTcpRosStatus *tcpstp) {
 
-  struct msg__rosgraph_msgs__Log *msgp = NULL;
-  uint32_t length;
   uros_bool_t constant = UROS_TRUE;
 
-  urosAssert(tcpstp != NULL);
-  urosAssert(tcpstp->topicp != NULL);
-  urosAssert(!tcpstp->topicp->flags.service);
-  urosAssert(urosConnIsValid(tcpstp->csp));
+  /* Message allocation and initialization.*/
+  UROS_TPC_PROLOGUE_H(msg__rosgraph_msgs__Log);
 
   /* Published messages loop.*/
   while (!urosTcpRosStatusCheckExit(tcpstp)) {
@@ -91,10 +89,8 @@ uros_err_t pub_tpc__rosout(UrosTcpRosStatus *tcpstp) {
     msgp->header.frame_id.datap = "0";
 
     /* Send the message.*/
-    length = (uint32_t)length_msg__rosgraph_msgs__Log(msgp);
-    if (urosTcpRosSendRaw(tcpstp, length) != UROS_OK) { goto _finally; }
-    send_msg__rosgraph_msgs__Log(tcpstp, msgp);
-    if (tcpstp->err != UROS_OK) { goto _finally; }
+    UROS_MSG_SEND_LENGTH(msgp, msg__rosgraph_msgs__Log);
+    UROS_MSG_SEND_BODY(msgp, msg__rosgraph_msgs__Log);
 
     /* Deallocate the message if not constant.*/
     if (!constant) {
@@ -114,13 +110,53 @@ _finally:
 
 /** @} */
 
-/*~~~ PUBLISHED TOPIC: /turtleX/pose ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED TOPIC: /turtleX/color_sensor ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Topic <tt>/turtleX/pose</tt> publisher */
+/** @name Topic <code>/turtleX/color_sensor</code> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <tt>/turtleX/pose</tt> published topic handler.
+ * @brief   TCPROS <code>/turtleX/color_sensor</code> published topic handler.
+ *
+ * @param[in,out] tcpstp
+ *          Pointer to a working @p UrosTcpRosStatus object.
+ * @return
+ *          Error code.
+ */
+uros_err_t pub_tpc__turtleX__color_sensor(UrosTcpRosStatus *tcpstp) {
+
+  /* Message allocation and initialization.*/
+  UROS_TPC_PROLOGUE_H(msg__turtlesim__Color);
+
+  /* Published messages loop.*/
+  while (!urosTcpRosStatusCheckExit(tcpstp)) {
+    /* TODO: Generate the contents of the message.*/
+    urosThreadSleepSec(1); continue; /* TODO: Remove this dummy line.*/
+
+    /* Send the message.*/
+    UROS_MSG_SEND_LENGTH(msgp, msg__turtlesim__Color);
+    UROS_MSG_SEND_BODY(msgp, msg__turtlesim__Color);
+
+    /* Dispose the contents of the message.*/
+    clean_msg__turtlesim__Color(msgp);
+  }
+  tcpstp->err = UROS_OK;
+
+_finally:
+  /* Message deinitialization and deallocation.*/
+  UROS_TPC_EPILOGUE_H(msg__turtlesim__Color);
+  return tcpstp->err;
+}
+
+/** @} */
+
+/*~~~ PUBLISHED TOPIC: /turtleX/pose ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+/** @name Topic <code>/turtleX/pose</code> publisher */
+/** @{ */
+
+/**
+ * @brief   TCPROS <code>/turtleX/pose</code> published topic handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -129,23 +165,14 @@ _finally:
  */
 uros_err_t pub_tpc__turtleX__pose(UrosTcpRosStatus *tcpstp) {
 
-  struct msg__turtlesim__Pose *msgp = NULL;
-  uint32_t length;
   turtle_t *turtlep;
 
-  urosAssert(tcpstp != NULL);
-  urosAssert(tcpstp->topicp != NULL);
-  urosAssert(!tcpstp->topicp->flags.service);
-  urosAssert(urosConnIsValid(tcpstp->csp));
+  /* Message allocation and initialization.*/
+  UROS_TPC_PROLOGUE_H(msg__turtlesim__Pose);
 
   /* Get the turtle slot.*/
   turtlep = turtle_refbypath(&tcpstp->topicp->name);
   if (turtlep == NULL) { return UROS_ERR_BADPARAM; }
-
-  /* Message allocation and initialization.*/
-  msgp = urosNew(struct msg__turtlesim__Pose);
-  if (msgp == NULL) { return UROS_ERR_NOMEM; }
-  init_msg__turtlesim__Pose(msgp);
 
   /* Published messages loop.*/
   while (!urosTcpRosStatusCheckExit(tcpstp)) {
@@ -164,10 +191,8 @@ uros_err_t pub_tpc__turtleX__pose(UrosTcpRosStatus *tcpstp) {
     urosMutexUnlock(&turtlep->lock);
 
     /* Send the message.*/
-    length = (uint32_t)length_msg__turtlesim__Pose(msgp);
-    if (urosTcpRosSendRaw(tcpstp, length) != UROS_OK) { goto _finally; }
-    send_msg__turtlesim__Pose(tcpstp, msgp);
-    if (tcpstp->err != UROS_OK) { goto _finally; }
+    UROS_MSG_SEND_LENGTH(msgp, msg__turtlesim__Pose);
+    UROS_MSG_SEND_BODY(msgp, msg__turtlesim__Pose);
 
     /* Dispose the contents of the message.*/
     clean_msg__turtlesim__Pose(msgp);
@@ -179,8 +204,7 @@ uros_err_t pub_tpc__turtleX__pose(UrosTcpRosStatus *tcpstp) {
 
 _finally:
   /* Message deinitialization and deallocation.*/
-  clean_msg__turtlesim__Pose(msgp);
-  urosFree(msgp);
+  UROS_TPC_EPILOGUE_H(msg__turtlesim__Pose);
   return tcpstp->err;
 }
 
@@ -197,11 +221,11 @@ _finally:
 
 /*~~~ SUBSCRIBED TOPIC: /turtleX/command_velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Topic <tt>/turtleX/command_velocity</tt> subscriber */
+/** @name Topic <code>/turtleX/command_velocity</code> subscriber */
 /** @{ */
 
 /**
- * @brief   TCPROS <tt>/turtleX/command_velocity</tt> subscribed topic handler.
+ * @brief   TCPROS <code>/turtleX/command_velocity</code> subscribed topic handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -210,14 +234,10 @@ _finally:
  */
 uros_err_t sub_tpc__turtleX__command_velocity(UrosTcpRosStatus *tcpstp) {
 
-  struct msg__turtlesim__Velocity *msgp = NULL;
-  uint32_t length;
   turtle_t *turtlep;
 
-  urosAssert(tcpstp != NULL);
-  urosAssert(tcpstp->topicp != NULL);
-  urosAssert(!tcpstp->topicp->flags.service);
-  urosAssert(urosConnIsValid(tcpstp->csp));
+  /* Message allocation and initialization.*/
+  UROS_TPC_PROLOGUE_H(msg__turtlesim__Velocity);
 
   /* Get the turtle slot.*/
   turtlep = turtle_refbypath(&tcpstp->topicp->name);
@@ -230,20 +250,11 @@ uros_err_t sub_tpc__turtleX__command_velocity(UrosTcpRosStatus *tcpstp) {
   ++turtlep->refCnt;
   urosMutexUnlock(&turtlep->lock);
 
-  /* Message allocation and initialization.*/
-  msgp = urosNew(struct msg__turtlesim__Velocity);
-  if (msgp == NULL) { return UROS_ERR_NOMEM; }
-  init_msg__turtlesim__Velocity(msgp);
-
   /* Subscribed messages loop.*/
   while (!urosTcpRosStatusCheckExit(tcpstp)) {
     /* Receive the next message.*/
-    if (urosTcpRosRecvRaw(tcpstp, length) != UROS_OK) { goto _finally; }
-    recv_msg__turtlesim__Velocity(tcpstp, msgp);
-    if (tcpstp->err != UROS_OK) { goto _finally; }
-    if ((size_t)length != length_msg__turtlesim__Velocity(msgp)) {
-      tcpstp->err = UROS_ERR_BADPARAM; goto _finally;
-    }
+    UROS_MSG_RECV_LENGTH();
+    UROS_MSG_RECV_BODY(msgp, msg__turtlesim__Velocity);
 
     /* Start a new turtle movement for 1s.*/
     urosMutexLock(&turtlep->lock);
@@ -259,8 +270,7 @@ uros_err_t sub_tpc__turtleX__command_velocity(UrosTcpRosStatus *tcpstp) {
 
 _finally:
   /* Message deinitialization and deallocation.*/
-  clean_msg__turtlesim__Velocity(msgp);
-  urosFree(msgp);
+  UROS_TPC_EPILOGUE_H(msg__turtlesim__Velocity);
   urosMutexLock(&turtlep->lock);
   turtle_unref(turtlep);
   urosMutexUnlock(&turtlep->lock);
@@ -280,11 +290,11 @@ _finally:
 
 /*~~~ PUBLISHED SERVICE: /clear ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <tt>/clear</tt> publisher */
+/** @name Service <code>/clear</code> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <tt>/clear</tt> published service handler.
+ * @brief   TCPROS <code>/clear</code> published service handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -293,33 +303,15 @@ _finally:
  */
 uros_err_t pub_srv__clear(UrosTcpRosStatus *tcpstp) {
 
-  struct in_srv__std_srvs__Empty *inmsgp = NULL;
-  struct out_srv__std_srvs__Empty *outmsgp = NULL;
-  uint8_t okByte;
-  uint32_t length;
-
-  urosAssert(tcpstp != NULL);
-  urosAssert(tcpstp->topicp != NULL);
-  urosAssert(tcpstp->topicp->flags.service);
-  urosAssert(urosConnIsValid(tcpstp->csp));
-
   /* Service messages allocation and initialization.*/
-  inmsgp = urosNew(struct in_srv__std_srvs__Empty);
-  if (inmsgp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
-  outmsgp = urosNew(struct out_srv__std_srvs__Empty);
-  if (outmsgp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
-  init_in_srv__std_srvs__Empty(inmsgp);
-  init_out_srv__std_srvs__Empty(outmsgp);
+  UROS_SRV_PROLOGUE_HIHO(in_srv__std_srvs__Empty,
+                         out_srv__std_srvs__Empty);
 
   /* Service message loop (if the service is persistent).*/
-  while (!urosTcpRosStatusCheckExit(tcpstp)) {
+  do {
     /* Receive the request message.*/
-    if (urosTcpRosRecvRaw(tcpstp, length) != UROS_OK) { goto _finally; }
-    recv_srv__std_srvs__Empty(tcpstp, inmsgp);
-    if (tcpstp->err != UROS_OK) { goto _finally; }
-    if ((size_t)length != length_in_srv__std_srvs__Empty(inmsgp)) {
-      tcpstp->err = UROS_ERR_BADPARAM; goto _finally;
-    }
+    UROS_MSG_RECV_LENGTH();
+    UROS_MSG_RECV_BODY(inmsgp, in_srv__std_srvs__Empty);
 
     /* Process the request message.*/
     tcpstp->err = UROS_OK;
@@ -330,30 +322,19 @@ uros_err_t pub_srv__clear(UrosTcpRosStatus *tcpstp) {
     clean_in_srv__std_srvs__Empty(inmsgp);
 
     /* Send the response message.*/
-    if (urosTcpRosSendRaw(tcpstp, okByte) != UROS_OK) { goto _finally; }
-    if (okByte == 0) {
-      /* On error, send the tcpstp->errstr error message (cleaned by the user).*/
-      urosTcpRosSendString(tcpstp, &tcpstp->errstr);
-      urosStringObjectInit(&tcpstp->errstr);
-      goto _finally;
-    }
-    length = (uint32_t)length_out_srv__std_srvs__Empty(outmsgp);
-    if (urosTcpRosSendRaw(tcpstp, length) != UROS_OK) { goto _finally; }
-    send_srv__std_srvs__Empty(tcpstp, outmsgp);
-    if (tcpstp->err != UROS_OK) { goto _finally; }
+    UROS_MSG_SEND_LENGTH(outmsgp, out_srv__std_srvs__Empty);
+    UROS_SRV_SEND_OKBYTE_ERRSTR();
+    UROS_MSG_SEND_BODY(outmsgp, out_srv__std_srvs__Empty);
 
     /* Dispose the contents of the response message.*/
     clean_out_srv__std_srvs__Empty(outmsgp);
-    if (!tcpstp->topicp->flags.persistent) { break; }
-  }
+  } while (tcpstp->topicp->flags.persistent && !urosTcpRosStatusCheckExit(tcpstp));
   tcpstp->err = UROS_OK;
 
 _finally:
   /* Service messages deinitialization and deallocation.*/
-  clean_in_srv__std_srvs__Empty(inmsgp);
-  clean_out_srv__std_srvs__Empty(outmsgp);
-  urosFree(inmsgp);
-  urosFree(outmsgp);
+  UROS_SRV_EPILOGUE_HIHO(in_srv__std_srvs__Empty,
+                         out_srv__std_srvs__Empty);
   return tcpstp->err;
 }
 
@@ -361,11 +342,11 @@ _finally:
 
 /*~~~ PUBLISHED SERVICE: /kill ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <tt>/kill</tt> publisher */
+/** @name Service <code>/kill</code> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <tt>/kill</tt> published service handler.
+ * @brief   TCPROS <code>/kill</code> published service handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -374,75 +355,43 @@ _finally:
  */
 uros_err_t pub_srv__kill(UrosTcpRosStatus *tcpstp) {
 
-  struct in_srv__turtlesim__Kill *inmsgp = NULL;
-  struct out_srv__turtlesim__Kill *outmsgp = NULL;
-  uint8_t okByte;
-  uint32_t length;
-
-  urosAssert(tcpstp != NULL);
-  urosAssert(tcpstp->topicp != NULL);
-  urosAssert(tcpstp->topicp->flags.service);
-  urosAssert(urosConnIsValid(tcpstp->csp));
+  turtle_t *turtlep;
 
   /* Service messages allocation and initialization.*/
-  inmsgp = urosNew(struct in_srv__turtlesim__Kill);
-  if (inmsgp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
-  outmsgp = urosNew(struct out_srv__turtlesim__Kill);
-  if (outmsgp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
-  init_in_srv__turtlesim__Kill(inmsgp);
-  init_out_srv__turtlesim__Kill(outmsgp);
+  UROS_SRV_PROLOGUE_HIHO(in_srv__turtlesim__Kill,
+                         out_srv__turtlesim__Kill);
 
-  /* Service message loop (if the service is persistent).*/
-  do {
-    turtle_t *turtlep;
+  /* Receive the request message.*/
+  UROS_MSG_RECV_LENGTH();
+  UROS_MSG_RECV_BODY(inmsgp, in_srv__turtlesim__Kill);
 
-    /* Receive the request message.*/
-    if (urosTcpRosRecvRaw(tcpstp, length) != UROS_OK) { goto _finally; }
-    recv_srv__turtlesim__Kill(tcpstp, inmsgp);
-    if (tcpstp->err != UROS_OK) { goto _finally; }
-    if ((size_t)length != length_in_srv__turtlesim__Kill(inmsgp)) {
-      tcpstp->err = UROS_ERR_BADPARAM; goto _finally;
-    }
+  /* Process the request message.*/
+  tcpstp->err = UROS_OK;
+  urosStringClean(&tcpstp->errstr);
+  okByte = 1;
 
-    /* Process the request message.*/
-    tcpstp->err = UROS_OK;
-    urosStringClean(&tcpstp->errstr);
-    okByte = 1;
+  /* Kill the turtle.*/
+  turtlep = turtle_refbyname(&inmsgp->name);
+  if (turtlep == NULL) { return UROS_ERR_BADPARAM; }
+  turtle_kill(turtlep);
+  urosMutexLock(&turtlep->lock);
+  turtle_unref(turtlep);
+  urosMutexUnlock(&turtlep->lock);
 
-    turtlep = turtle_refbyname(&inmsgp->name);
-    if (turtlep == NULL) { return UROS_ERR_BADPARAM; }
-    turtle_kill(turtlep);
-    urosMutexLock(&turtlep->lock);
-    turtle_unref(turtlep);
-    urosMutexUnlock(&turtlep->lock);
+  /* Dispose the contents of the request message.*/
+  clean_in_srv__turtlesim__Kill(inmsgp);
 
-    /* Dispose the contents of the request message.*/
-    clean_in_srv__turtlesim__Kill(inmsgp);
+  /* Send the response message.*/
+  UROS_MSG_SEND_LENGTH(outmsgp, out_srv__turtlesim__Kill);
+  UROS_SRV_SEND_OKBYTE_ERRSTR();
+  UROS_MSG_SEND_BODY(outmsgp, out_srv__turtlesim__Kill);
 
-    /* Send the response message.*/
-    if (urosTcpRosSendRaw(tcpstp, okByte) != UROS_OK) { goto _finally; }
-    if (okByte == 0) {
-      /* On error, send the tcpstp->errstr error message (cleaned by the user).*/
-      urosTcpRosSendString(tcpstp, &tcpstp->errstr);
-      urosStringObjectInit(&tcpstp->errstr);
-      goto _finally;
-    }
-    length = (uint32_t)length_out_srv__turtlesim__Kill(outmsgp);
-    if (urosTcpRosSendRaw(tcpstp, length) != UROS_OK) { goto _finally; }
-    send_srv__turtlesim__Kill(tcpstp, outmsgp);
-    if (tcpstp->err != UROS_OK) { goto _finally; }
-
-    /* Dispose the contents of the response message.*/
-    clean_out_srv__turtlesim__Kill(outmsgp);
-  } while (tcpstp->topicp->flags.persistent && !urosTcpRosStatusCheckExit(tcpstp));
   tcpstp->err = UROS_OK;
 
 _finally:
   /* Service messages deinitialization and deallocation.*/
-  clean_in_srv__turtlesim__Kill(inmsgp);
-  clean_out_srv__turtlesim__Kill(outmsgp);
-  urosFree(inmsgp);
-  urosFree(outmsgp);
+  UROS_SRV_EPILOGUE_HIHO(in_srv__turtlesim__Kill,
+                         out_srv__turtlesim__Kill);
   return tcpstp->err;
 }
 
@@ -450,11 +399,11 @@ _finally:
 
 /*~~~ PUBLISHED SERVICE: /spawn ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <tt>/spawn</tt> publisher */
+/** @name Service <code>/spawn</code> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <tt>/spawn</tt> published service handler.
+ * @brief   TCPROS <code>/spawn</code> published service handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -463,36 +412,19 @@ _finally:
  */
 uros_err_t pub_srv__spawn(UrosTcpRosStatus *tcpstp) {
 
-  struct in_srv__turtlesim__Spawn *inmsgp = NULL;
-  struct out_srv__turtlesim__Spawn *outmsgp = NULL;
-  uint8_t okByte;
-  uint32_t length;
+  turtle_t *turtlep;
   UrosString name;
 
-  urosAssert(tcpstp != NULL);
-  urosAssert(tcpstp->topicp != NULL);
-  urosAssert(tcpstp->topicp->flags.service);
-  urosAssert(urosConnIsValid(tcpstp->csp));
-
   /* Service messages allocation and initialization.*/
-  inmsgp = urosNew(struct in_srv__turtlesim__Spawn);
-  if (inmsgp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
-  outmsgp = urosNew(struct out_srv__turtlesim__Spawn);
-  if (outmsgp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
-  init_in_srv__turtlesim__Spawn(inmsgp);
-  init_out_srv__turtlesim__Spawn(outmsgp);
+  UROS_SRV_PROLOGUE_HIHO(in_srv__turtlesim__Spawn,
+                         out_srv__turtlesim__Spawn);
 
   /* Service message loop (if the service is persistent).*/
   do {
-    turtle_t *turtlep;
 
     /* Receive the request message.*/
-    if (urosTcpRosRecvRaw(tcpstp, length) != UROS_OK) { goto _finally; }
-    recv_srv__turtlesim__Spawn(tcpstp, inmsgp);
-    if (tcpstp->err != UROS_OK) { goto _finally; }
-    if ((size_t)length != length_in_srv__turtlesim__Spawn(inmsgp)) {
-      tcpstp->err = UROS_ERR_BADPARAM; goto _finally;
-    }
+    UROS_MSG_RECV_LENGTH();
+    UROS_MSG_RECV_BODY(inmsgp, in_srv__turtlesim__Spawn);
 
     /* Process the request message.*/
     tcpstp->err = UROS_OK;
@@ -515,17 +447,9 @@ uros_err_t pub_srv__spawn(UrosTcpRosStatus *tcpstp) {
     outmsgp->name = name;
 
     /* Send the response message.*/
-    if (urosTcpRosSendRaw(tcpstp, okByte) != UROS_OK) { goto _finally; }
-    if (okByte == 0) {
-      /* On error, send the tcpstp->errstr error message (cleaned by the user).*/
-      urosTcpRosSendString(tcpstp, &tcpstp->errstr);
-      urosStringClean(&tcpstp->errstr);
-      goto _finally;
-    }
-    length = (uint32_t)length_out_srv__turtlesim__Spawn(outmsgp);
-    if (urosTcpRosSendRaw(tcpstp, length) != UROS_OK) { goto _finally; }
-    send_srv__turtlesim__Spawn(tcpstp, outmsgp);
-    if (tcpstp->err != UROS_OK) { goto _finally; }
+    UROS_MSG_SEND_LENGTH(outmsgp, out_srv__turtlesim__Spawn);
+    UROS_SRV_SEND_OKBYTE_ERRSTR();
+    UROS_MSG_SEND_BODY(outmsgp, out_srv__turtlesim__Spawn);
 
     /* Dispose the contents of the response message.*/
     clean_out_srv__turtlesim__Spawn(outmsgp);
@@ -534,10 +458,8 @@ uros_err_t pub_srv__spawn(UrosTcpRosStatus *tcpstp) {
 
 _finally:
   /* Service messages deinitialization and deallocation.*/
-  clean_in_srv__turtlesim__Spawn(inmsgp);
-  clean_out_srv__turtlesim__Spawn(outmsgp);
-  urosFree(inmsgp);
-  urosFree(outmsgp);
+  UROS_SRV_EPILOGUE_HIHO(in_srv__turtlesim__Spawn,
+                         out_srv__turtlesim__Spawn);
   return tcpstp->err;
 }
 
@@ -545,11 +467,11 @@ _finally:
 
 /*~~~ PUBLISHED SERVICE: /turtleX/set_pen ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <tt>/turtleX/set_pen</tt> publisher */
+/** @name Service <code>/turtleX/set_pen</code> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <tt>/turtleX/set_pen</tt> published service handler.
+ * @brief   TCPROS <code>/turtleX/set_pen</code> published service handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -558,38 +480,21 @@ _finally:
  */
 uros_err_t pub_srv__turtleX__set_pen(UrosTcpRosStatus *tcpstp) {
 
-  struct in_srv__turtlesim__SetPen *inmsgp = NULL;
-  struct out_srv__turtlesim__SetPen *outmsgp = NULL;
-  uint8_t okByte;
-  uint32_t length;
   turtle_t *turtlep;
 
-  urosAssert(tcpstp != NULL);
-  urosAssert(tcpstp->topicp != NULL);
-  urosAssert(tcpstp->topicp->flags.service);
-  urosAssert(urosConnIsValid(tcpstp->csp));
+  /* Service messages allocation and initialization.*/
+  UROS_SRV_PROLOGUE_HIHO(in_srv__turtlesim__SetPen,
+                         out_srv__turtlesim__SetPen);
 
   /* Get the turtle slot.*/
   turtlep = turtle_refbypath(&tcpstp->topicp->name);
   if (turtlep == NULL) { return UROS_ERR_BADPARAM; }
 
-  /* Service messages allocation and initialization.*/
-  inmsgp = urosNew(struct in_srv__turtlesim__SetPen);
-  if (inmsgp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
-  outmsgp = urosNew(struct out_srv__turtlesim__SetPen);
-  if (outmsgp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
-  init_in_srv__turtlesim__SetPen(inmsgp);
-  init_out_srv__turtlesim__SetPen(outmsgp);
-
   /* Service message loop (if the service is persistent).*/
   do {
     /* Receive the request message.*/
-    if (urosTcpRosRecvRaw(tcpstp, length) != UROS_OK) { goto _finally; }
-    recv_srv__turtlesim__SetPen(tcpstp, inmsgp);
-    if (tcpstp->err != UROS_OK) { goto _finally; }
-    if ((size_t)length != length_in_srv__turtlesim__SetPen(inmsgp)) {
-      tcpstp->err = UROS_ERR_BADPARAM; goto _finally;
-    }
+    UROS_MSG_RECV_LENGTH();
+    UROS_MSG_RECV_BODY(inmsgp, in_srv__turtlesim__SetPen);
 
     /* Process the request message.*/
     tcpstp->err = UROS_OK;
@@ -607,18 +512,12 @@ uros_err_t pub_srv__turtleX__set_pen(UrosTcpRosStatus *tcpstp) {
     /* Dispose the contents of the request message.*/
     clean_in_srv__turtlesim__SetPen(inmsgp);
 
+    /* TODO: Generate the contents of the response message.*/
+
     /* Send the response message.*/
-    if (urosTcpRosSendRaw(tcpstp, okByte) != UROS_OK) { goto _finally; }
-    if (okByte == 0) {
-      /* On error, send the tcpstp->errstr error message (cleaned by the user).*/
-      urosTcpRosSendString(tcpstp, &tcpstp->errstr);
-      urosStringObjectInit(&tcpstp->errstr);
-      goto _finally;
-    }
-    length = (uint32_t)length_out_srv__turtlesim__SetPen(outmsgp);
-    if (urosTcpRosSendRaw(tcpstp, length) != UROS_OK) { goto _finally; }
-    send_srv__turtlesim__SetPen(tcpstp, outmsgp);
-    if (tcpstp->err != UROS_OK) { goto _finally; }
+    UROS_MSG_SEND_LENGTH(outmsgp, out_srv__turtlesim__SetPen);
+    UROS_SRV_SEND_OKBYTE_ERRSTR();
+    UROS_MSG_SEND_BODY(outmsgp, out_srv__turtlesim__SetPen);
 
     /* Dispose the contents of the response message.*/
     clean_out_srv__turtlesim__SetPen(outmsgp);
@@ -627,10 +526,8 @@ uros_err_t pub_srv__turtleX__set_pen(UrosTcpRosStatus *tcpstp) {
 
 _finally:
   /* Service messages deinitialization and deallocation.*/
-  clean_in_srv__turtlesim__SetPen(inmsgp);
-  clean_out_srv__turtlesim__SetPen(outmsgp);
-  urosFree(inmsgp);
-  urosFree(outmsgp);
+  UROS_SRV_EPILOGUE_HIHO(in_srv__turtlesim__SetPen,
+                         out_srv__turtlesim__SetPen);
   urosMutexLock(&turtlep->lock);
   turtle_unref(turtlep);
   urosMutexUnlock(&turtlep->lock);
@@ -641,11 +538,11 @@ _finally:
 
 /*~~~ PUBLISHED SERVICE: /turtleX/teleport_absolute ~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <tt>/turtleX/teleport_absolute</tt> publisher */
+/** @name Service <code>/turtleX/teleport_absolute</code> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <tt>/turtleX/teleport_absolute</tt> published service handler.
+ * @brief   TCPROS <code>/turtleX/teleport_absolute</code> published service handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -654,46 +551,30 @@ _finally:
  */
 uros_err_t pub_srv__turtleX__teleport_absolute(UrosTcpRosStatus *tcpstp) {
 
-  struct in_srv__turtlesim__TeleportAbsolute *inmsgp = NULL;
-  struct out_srv__turtlesim__TeleportAbsolute *outmsgp = NULL;
-  uint8_t okByte;
-  uint32_t length;
   turtle_t *turtlep;
   struct msg__turtlesim__Pose *posep;
 
-  urosAssert(tcpstp != NULL);
-  urosAssert(tcpstp->topicp != NULL);
-  urosAssert(tcpstp->topicp->flags.service);
-  urosAssert(urosConnIsValid(tcpstp->csp));
+  /* Service messages allocation and initialization.*/
+  UROS_SRV_PROLOGUE_HIHO(in_srv__turtlesim__TeleportAbsolute,
+                         out_srv__turtlesim__TeleportAbsolute);
 
   /* Get the turtle slot.*/
   turtlep = turtle_refbypath(&tcpstp->topicp->name);
   if (turtlep == NULL) { return UROS_ERR_BADPARAM; }
   posep = (struct msg__turtlesim__Pose *)&turtlep->pose;
 
-  /* Service messages allocation and initialization.*/
-  inmsgp = urosNew(struct in_srv__turtlesim__TeleportAbsolute);
-  if (inmsgp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
-  outmsgp = urosNew(struct out_srv__turtlesim__TeleportAbsolute);
-  if (outmsgp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
-  init_in_srv__turtlesim__TeleportAbsolute(inmsgp);
-  init_out_srv__turtlesim__TeleportAbsolute(outmsgp);
-
   /* Service message loop (if the service is persistent).*/
   do {
     /* Receive the request message.*/
-    if (urosTcpRosRecvRaw(tcpstp, length) != UROS_OK) { goto _finally; }
-    recv_srv__turtlesim__TeleportAbsolute(tcpstp, inmsgp);
-    if (tcpstp->err != UROS_OK) { goto _finally; }
-    if ((size_t)length != length_in_srv__turtlesim__TeleportAbsolute(inmsgp)) {
-      tcpstp->err = UROS_ERR_BADPARAM; goto _finally;
-    }
+    UROS_MSG_RECV_LENGTH();
+    UROS_MSG_RECV_BODY(inmsgp, in_srv__turtlesim__TeleportAbsolute);
 
     /* Process the request message.*/
     tcpstp->err = UROS_OK;
     urosStringClean(&tcpstp->errstr);
     okByte = 1;
 
+    /* Set the new pose.*/
     urosMutexLock(&turtlep->lock);
     posep->x = inmsgp->x;
     posep->y = inmsgp->y;
@@ -714,18 +595,12 @@ uros_err_t pub_srv__turtleX__teleport_absolute(UrosTcpRosStatus *tcpstp) {
     /* Dispose the contents of the request message.*/
     clean_in_srv__turtlesim__TeleportAbsolute(inmsgp);
 
+    /* TODO: Generate the contents of the response message.*/
+
     /* Send the response message.*/
-    if (urosTcpRosSendRaw(tcpstp, okByte) != UROS_OK) { goto _finally; }
-    if (okByte == 0) {
-      /* On error, send the tcpstp->errstr error message (cleaned by the user).*/
-      urosTcpRosSendString(tcpstp, &tcpstp->errstr);
-      urosStringObjectInit(&tcpstp->errstr);
-      goto _finally;
-    }
-    length = (uint32_t)length_out_srv__turtlesim__TeleportAbsolute(outmsgp);
-    if (urosTcpRosSendRaw(tcpstp, length) != UROS_OK) { goto _finally; }
-    send_srv__turtlesim__TeleportAbsolute(tcpstp, outmsgp);
-    if (tcpstp->err != UROS_OK) { goto _finally; }
+    UROS_MSG_SEND_LENGTH(outmsgp, out_srv__turtlesim__TeleportAbsolute);
+    UROS_SRV_SEND_OKBYTE_ERRSTR();
+    UROS_MSG_SEND_BODY(outmsgp, out_srv__turtlesim__TeleportAbsolute);
 
     /* Dispose the contents of the response message.*/
     clean_out_srv__turtlesim__TeleportAbsolute(outmsgp);
@@ -734,10 +609,8 @@ uros_err_t pub_srv__turtleX__teleport_absolute(UrosTcpRosStatus *tcpstp) {
 
 _finally:
   /* Service messages deinitialization and deallocation.*/
-  clean_in_srv__turtlesim__TeleportAbsolute(inmsgp);
-  clean_out_srv__turtlesim__TeleportAbsolute(outmsgp);
-  urosFree(inmsgp);
-  urosFree(outmsgp);
+  UROS_SRV_EPILOGUE_HIHO(in_srv__turtlesim__TeleportAbsolute,
+                         out_srv__turtlesim__TeleportAbsolute);
   urosMutexLock(&turtlep->lock);
   turtle_unref(turtlep);
   urosMutexUnlock(&turtlep->lock);
@@ -748,11 +621,11 @@ _finally:
 
 /*~~~ PUBLISHED SERVICE: /turtleX/teleport_relative ~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <tt>/turtleX/teleport_relative</tt> publisher */
+/** @name Service <code>/turtleX/teleport_relative</code> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <tt>/turtleX/teleport_relative</tt> published service handler.
+ * @brief   TCPROS <code>/turtleX/teleport_relative</code> published service handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -761,46 +634,30 @@ _finally:
  */
 uros_err_t pub_srv__turtleX__teleport_relative(UrosTcpRosStatus *tcpstp) {
 
-  struct in_srv__turtlesim__TeleportRelative *inmsgp = NULL;
-  struct out_srv__turtlesim__TeleportRelative *outmsgp = NULL;
-  uint8_t okByte;
-  uint32_t length;
   turtle_t *turtlep;
   struct msg__turtlesim__Pose *posep;
 
-  urosAssert(tcpstp != NULL);
-  urosAssert(tcpstp->topicp != NULL);
-  urosAssert(tcpstp->topicp->flags.service);
-  urosAssert(urosConnIsValid(tcpstp->csp));
+  /* Service messages allocation and initialization.*/
+  UROS_SRV_PROLOGUE_HIHO(in_srv__turtlesim__TeleportRelative,
+                         out_srv__turtlesim__TeleportRelative);
 
   /* Get the turtle slot.*/
   turtlep = turtle_refbypath(&tcpstp->topicp->name);
   if (turtlep == NULL) { return UROS_ERR_BADPARAM; }
   posep = (struct msg__turtlesim__Pose *)&turtlep->pose;
 
-  /* Service messages allocation and initialization.*/
-  inmsgp = urosNew(struct in_srv__turtlesim__TeleportRelative);
-  if (inmsgp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
-  outmsgp = urosNew(struct out_srv__turtlesim__TeleportRelative);
-  if (outmsgp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
-  init_in_srv__turtlesim__TeleportRelative(inmsgp);
-  init_out_srv__turtlesim__TeleportRelative(outmsgp);
-
   /* Service message loop (if the service is persistent).*/
   do {
     /* Receive the request message.*/
-    if (urosTcpRosRecvRaw(tcpstp, length) != UROS_OK) { goto _finally; }
-    recv_srv__turtlesim__TeleportRelative(tcpstp, inmsgp);
-    if (tcpstp->err != UROS_OK) { goto _finally; }
-    if ((size_t)length != length_in_srv__turtlesim__TeleportRelative(inmsgp)) {
-      tcpstp->err = UROS_ERR_BADPARAM; goto _finally;
-    }
+    UROS_MSG_RECV_LENGTH();
+    UROS_MSG_RECV_BODY(inmsgp, in_srv__turtlesim__TeleportRelative);
 
     /* Process the request message.*/
     tcpstp->err = UROS_OK;
     urosStringClean(&tcpstp->errstr);
     okByte = 1;
 
+    /* Move to the new pose.*/
     urosMutexLock(&turtlep->lock);
     posep->theta += inmsgp->angular;
     while (posep->theta < 0)         { posep->theta += 2 * M_PI; }
@@ -821,18 +678,12 @@ uros_err_t pub_srv__turtleX__teleport_relative(UrosTcpRosStatus *tcpstp) {
     /* Dispose the contents of the request message.*/
     clean_in_srv__turtlesim__TeleportRelative(inmsgp);
 
+    /* TODO: Generate the contents of the response message.*/
+
     /* Send the response message.*/
-    if (urosTcpRosSendRaw(tcpstp, okByte) != UROS_OK) { goto _finally; }
-    if (okByte == 0) {
-      /* On error, send the tcpstp->errstr error message (cleaned by the user).*/
-      urosTcpRosSendString(tcpstp, &tcpstp->errstr);
-      urosStringObjectInit(&tcpstp->errstr);
-      goto _finally;
-    }
-    length = (uint32_t)length_out_srv__turtlesim__TeleportRelative(outmsgp);
-    if (urosTcpRosSendRaw(tcpstp, length) != UROS_OK) { goto _finally; }
-    send_srv__turtlesim__TeleportRelative(tcpstp, outmsgp);
-    if (tcpstp->err != UROS_OK) { goto _finally; }
+    UROS_MSG_SEND_LENGTH(outmsgp, out_srv__turtlesim__TeleportRelative);
+    UROS_SRV_SEND_OKBYTE_ERRSTR();
+    UROS_MSG_SEND_BODY(outmsgp, out_srv__turtlesim__TeleportRelative);
 
     /* Dispose the contents of the response message.*/
     clean_out_srv__turtlesim__TeleportRelative(outmsgp);
@@ -841,10 +692,8 @@ uros_err_t pub_srv__turtleX__teleport_relative(UrosTcpRosStatus *tcpstp) {
 
 _finally:
   /* Service messages deinitialization and deallocation.*/
-  clean_in_srv__turtlesim__TeleportRelative(inmsgp);
-  clean_out_srv__turtlesim__TeleportRelative(outmsgp);
-  urosFree(inmsgp);
-  urosFree(outmsgp);
+  UROS_SRV_EPILOGUE_HIHO(in_srv__turtlesim__TeleportRelative,
+                         out_srv__turtlesim__TeleportRelative);
   urosMutexLock(&turtlep->lock);
   turtle_unref(turtlep);
   urosMutexUnlock(&turtlep->lock);
@@ -872,7 +721,8 @@ void urosTcpRosPublishTopics(void) {
   urosNodePublishTopicSZ(
     "/rosout",
     "rosgraph_msgs/Log",
-    (uros_proc_f)pub_tpc__rosout
+    (uros_proc_f)pub_tpc__rosout,
+    uros_nulltopicflags
   );
 }
 
@@ -916,21 +766,24 @@ void urosTcpRosPublishServices(void) {
   urosNodePublishServiceSZ(
     "/clear",
     "std_srvs/Empty",
-    (uros_proc_f)pub_srv__clear
+    (uros_proc_f)pub_srv__clear,
+    uros_nullserviceflags
   );
 
   /* /kill */
   urosNodePublishServiceSZ(
     "/kill",
     "turtlesim/Kill",
-    (uros_proc_f)pub_srv__kill
+    (uros_proc_f)pub_srv__kill,
+    uros_nullserviceflags
   );
 
   /* /spawn */
   urosNodePublishServiceSZ(
     "/spawn",
     "turtlesim/Spawn",
-    (uros_proc_f)pub_srv__spawn
+    (uros_proc_f)pub_srv__spawn,
+    uros_nullserviceflags
   );
 
   /* All the remaining services are turtle-specific.*/
@@ -957,7 +810,20 @@ void urosTcpRosUnpublishServices(void) {
     "/spawn"
   );
 
-  /* All the remaining services are turtle-specific.*/
+  /* /turtleX/set_pen */
+  urosNodeUnpublishServiceSZ(
+    "/turtleX/set_pen"
+  );
+
+  /* /turtleX/teleport_absolute */
+  urosNodeUnpublishServiceSZ(
+    "/turtleX/teleport_absolute"
+  );
+
+  /* /turtleX/teleport_relative */
+  urosNodeUnpublishServiceSZ(
+    "/turtleX/teleport_relative"
+  );
 }
 
 /** @} */
