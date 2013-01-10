@@ -35,10 +35,16 @@ alpha release. This documentation may not be synchronized with the actual code.
 It is only a brief overview of the features being developed.</b>
 
 
-@section sec_main_license License
+@section sec_main_license Disclaimer
 
 Copyright &copy; 2012-2013, <a href="http://www.polimi.it/">Politecnico di Milano</a>.
 All rights reserved.
+
+Andrea Zoppi &lt;texzk@email.it&gt;<br/>
+Martino Migliavacca &lt;martino.migliavacca@gmail.com&gt;
+
+<a href="http://airlab.elet.polimi.it/">http://airlab.elet.polimi.it/</a><br/>
+<a href="http://www.openrobots.com/">http://www.openrobots.com/</a>
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -58,16 +64,6 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-<b>Main contributors:</b>
-- Andrea Zoppi \<texzk@email.it\>
-  @ <a href="http://airlab.elet.polimi.it/">AIRLab</a>
-- Martino Migliavacca \<martino.migliavacca@gmail.com\>
-  @ <a href="http://airlab.elet.polimi.it/">AIRLab</a>
-
-Developed at the <a href="http://airlab.elet.polimi.it/">
-Artificial Intelligence and Robotics Laboratory</a> of the
-<a href="http://www.polimi.it/">Politecnico di Milano</a>.
 
 */
 
