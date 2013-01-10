@@ -152,8 +152,10 @@ uros_err_t urosRpcStreamerFlush(UrosRpcStreamer *sp) {
   /* Send buffered data.*/
   sp->err = urosConnSend(sp->csp, sp->bufp, sp->buflen - sp->free);
   urosError(sp->err != UROS_OK, return sp->err,
-            ("Error %s while streaming data chunk [%.*s]\n",
-             urosErrorText(sp->err), (int)sp->buflen, sp->bufp));
+            ("Error %s while streaming data chunk [%.*s], remote "
+             UROS_ADDRFMT"\n",
+             urosErrorText(sp->err), (int)sp->buflen, sp->bufp,
+             UROS_ADDRARG(&sp->csp->remaddr)));
   sp->free = sp->buflen;
   sp->curp = sp->bufp;
   return sp->err = UROS_OK;
@@ -203,9 +205,11 @@ uros_err_t urosRpcStreamerWrite(UrosRpcStreamer *sp,
       /* Flush the buffered data and continue.*/
       urosRpcStreamerFlush(sp);
       urosError(sp->err != UROS_OK, return sp->err,
-                ("Error %s while flushing chunk [%.*s]\n",
+                ("Error %s while flushing chunk [%.*s], remote "
+                 UROS_ADDRFMT"\n",
                  urosErrorText(sp->err),
-                 (int)(sp->buflen - sp->free), sp->bufp));
+                 (int)(sp->buflen - sp->free), sp->bufp,
+                 UROS_ADDRARG(&sp->csp->remaddr)));
     }
   }
   /* Unreachable code.*/
@@ -238,7 +242,8 @@ uros_err_t urosRpcStreamerUint32(UrosRpcStreamer *sp, uint32_t value) {
   } while (value != 0);
 
   /* Stream the value.*/
-  return urosRpcStreamerWrite(sp, ptr, (size_t)((ptrdiff_t)strbuf - (ptrdiff_t)ptr + 10));
+  return urosRpcStreamerWrite(sp, ptr,
+                              (ptrdiff_t)strbuf - (ptrdiff_t)ptr + 10);
 }
 
 /**
@@ -912,7 +917,7 @@ uros_err_t urosRpcStreamerParam(UrosRpcStreamer *sp,
     break;
   }
   case UROS_RPCP_STRING: {
-#if UROS_RPCSTREAMER_USE_STRING_TAG != UROS_FALSE
+#if UROS_RPCSTREAMER_USE_STRING_TAG
     urosRpcStreamerXmlTagOpen(sp, "string", 6); _CHKOK
     urosRpcStreamerParamValueString(sp, paramp); _CHKOK
     urosRpcStreamerXmlTagClose(sp, "string", 6); _CHKOK
