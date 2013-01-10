@@ -106,6 +106,7 @@ uros_err_t urosRpcParserExpectWs(UrosRpcParser *pp);
 uros_err_t urosRpcParserUint32(UrosRpcParser *pp, uint32_t *valuep);
 uros_err_t urosRpcParserInt32(UrosRpcParser *pp, int32_t *valuep);
 uros_err_t urosRpcParserDouble(UrosRpcParser *pp, double *valuep);
+uros_err_t urosRpcParserFixStringChars(UrosString *strp);
 
 uros_err_t urosRpcParserHttpRequest(UrosRpcParser *pp);
 uros_err_t urosRpcParserHttpResponse(UrosRpcParser *pp, uint32_t *codep);

@@ -981,6 +981,51 @@ uros_err_t urosRpcParserDouble(UrosRpcParser *pp, double *valuep) {
 }
 
 /**
+ * @brief   Replaces XMLRPC special characters from their expanded value.
+ * @details In-place replacement of any occurrences of <tt>"&amp;amp;"</tt>
+ *          with <tt>'&amp;'</tt>, and <tt>"&amp;lt;"</tt> with
+ *          <tt>'&lt;'</tt>. The string length is adjusted.
+ * @warning A <tt>'&amp;'</tt> character @b must be either part of
+ *          <tt>&amp;amp;</tt> or <tt>&amp;lt;</tt>. No other tokens can
+ *          contain the <tt>'&amp;'</tt> character.
+ *
+ * @return
+ *          Error code.
+ * @retval UROS_ERR_BADPARAM
+ *          Malformed string.
+ */
+uros_err_t urosRpcParserFixStringChars(UrosString *strp) {
+
+  char *srcp, *dstp;
+  size_t pending;
+
+  urosAssert(urosStringIsValid(strp));
+
+  for (srcp = dstp = strp->datap, pending = strp->length; pending > 0;) {
+    if (srcp[0] != '&') {
+      *dstp++ = *srcp++; --pending;
+    } else if (pending >= 5 &&
+               srcp[1] == 'a' &&
+               srcp[2] == 'm' &&
+               srcp[3] == 'p' &&
+               srcp[4] == ';') {
+      *dstp++ = '&'; srcp += 5;
+      strp->length -= 4; pending -= 5;
+    } else if (pending >= 4 &&
+               srcp[1] == 'l' &&
+               srcp[2] == 't' &&
+               srcp[3] == ';') {
+      *dstp++ = '<'; srcp += 4;
+      strp->length -= 3; pending -= 4;
+    } else {
+      /* Malformed string.*/
+      return UROS_ERR_BADPARAM;
+    }
+  }
+  return UROS_OK;
+}
+
+/**
  * @brief   Parses an incoming HTTP header section for an XMLRPC request.
  * @details Receives the HTTP header section of a POST request at the root,
  *          which is in the form:
@@ -1519,8 +1564,8 @@ uros_err_t urosRpcParserParamValueBoolean(UrosRpcParser *pp,
 uros_err_t urosRpcParserParamValueString(UrosRpcParser *pp,
                                          UrosRpcParam *paramp) {
 
-  char *strp = NULL;
   size_t strlen = 0;
+  char *strp = NULL;
 
   urosAssert(pp != NULL);
   urosAssert(paramp != NULL);
@@ -1558,9 +1603,10 @@ uros_err_t urosRpcParserParamValueString(UrosRpcParser *pp,
              UROS_ADDRFMT"\n",
              urosErrorText(pp->err), UROS_ADDRARG(&pp->csp->remaddr)));
 
+  /* Build the parameter string, and fix special characters.*/
   paramp->value.string.length = strlen;
   paramp->value.string.datap = strp;
-  return pp->err = UROS_OK;
+  return pp->err = urosRpcParserFixStringChars(&paramp->value.string);
 }
 
 /**
