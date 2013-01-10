@@ -147,7 +147,7 @@
  * a lot of data that needs to be copied, this should be set high.
  */
 #ifndef MEM_SIZE
-#define MEM_SIZE                        4000
+#define MEM_SIZE                        8000
 #endif
 
 /**
@@ -971,7 +971,7 @@
  * an upper limit on the MSS advertised by the remote host.
  */
 #ifndef TCP_MSS
-#define TCP_MSS                         536
+#define TCP_MSS                         1460
 #endif
 
 /**

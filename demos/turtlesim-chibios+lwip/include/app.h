@@ -43,7 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*===========================================================================*/
 
 #include <urosBase.h>
-#include "urosTcpRosHandlers.h"
+#include "urosHandlers.h"
 
 /*===========================================================================*/
 /* TYPES & MACROS                                                            */
@@ -86,12 +86,12 @@ typedef struct turtle_t {
   UrosMutex         lock;           /**< @brief Guard lock.*/
   unsigned          id;             /**< @brief Turtle ID.*/
   UrosString        name;           /**< @brief Turtle name.*/
-  UrosString        poseTopic;      /**< @brief <code><em>turtle</i>/pose</code> topic name.*/
+  UrosString        poseTopic;      /**< @brief <code><em>turtle</em>/pose</code> topic name.*/
   UrosString        colsenTopic;    /**< @brief <code><em>turtle</em>/color_sensor</code> topic name.*/
-  UrosString        velTopic;       /**< @brief <code><em>turtle</i>/command_velocity</code> topic name.*/
-  UrosString        setpenService;  /**< @brief <code><em>turtle</i>/set_pen</code> service name.*/
-  UrosString        telabsService;  /**< @brief <code><em>turtle</i>/teleport_absolute</code> service name.*/
-  UrosString        telrelService;  /**< @brief <code><em>turtle</i>/teleport_relative</code> service name.*/
+  UrosString        velTopic;       /**< @brief <code><em>turtle</em>/command_velocity</code> topic name.*/
+  UrosString        setpenService;  /**< @brief <code><em>turtle</em>/set_pen</code> service name.*/
+  UrosString        telabsService;  /**< @brief <code><em>turtle</em>/teleport_absolute</code> service name.*/
+  UrosString        telrelService;  /**< @brief <code><em>turtle</em>/teleport_relative</code> service name.*/
   struct {
     float x;
     float y;

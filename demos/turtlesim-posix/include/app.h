@@ -43,7 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*===========================================================================*/
 
 #include <urosBase.h>
-#include "urosTcpRosHandlers.h"
+#include "urosHandlers.h"
 
 /*===========================================================================*/
 /* TYPES & MACROS                                                            */

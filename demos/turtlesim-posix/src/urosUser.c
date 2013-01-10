@@ -44,7 +44,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <urosTcpRos.h>
 #include <stdarg.h>
 
-#include "urosTcpRosTypes.h"
+#include "urosHandlers.h"
 #include "app.h"
 
 /*===========================================================================*/
@@ -319,7 +319,7 @@ uros_err_t urosUserShutdown(const UrosString *msgp) {
  */
 void urosUserRegisterStaticTypes(void) {
 
-  urosTcpRosRegStaticTypes();
+  urosMsgTypesRegStaticTypes();
 }
 
 /**
@@ -330,7 +330,7 @@ void urosUserRegisterStaticTypes(void) {
  */
 uros_err_t urosUserPublishTopics(void) {
 
-  urosTcpRosPublishTopics();
+  urosHandlersPublishTopics();
   return UROS_OK;
 }
 
@@ -342,7 +342,7 @@ uros_err_t urosUserPublishTopics(void) {
  */
 uros_err_t urosUserUnpublishTopics(void) {
 
-  urosTcpRosUnpublishTopics();
+  urosHandlersUnpublishTopics();
   return UROS_OK;
 }
 
@@ -354,7 +354,7 @@ uros_err_t urosUserUnpublishTopics(void) {
  */
 uros_err_t urosUserSubscribeTopics(void) {
 
-  urosTcpRosSubscribeTopics();
+  urosHandlersSubscribeTopics();
   return UROS_OK;
 }
 
@@ -366,7 +366,7 @@ uros_err_t urosUserSubscribeTopics(void) {
  */
 uros_err_t urosUserUnsubscribeTopics(void) {
 
-  urosTcpRosUnsubscribeTopics();
+  urosHandlersUnsubscribeTopics();
   return UROS_OK;
 }
 
@@ -378,7 +378,7 @@ uros_err_t urosUserUnsubscribeTopics(void) {
  */
 uros_err_t urosUserPublishServices(void) {
 
-  urosTcpRosPublishServices();
+  urosHandlersPublishServices();
   return UROS_OK;
 }
 
@@ -390,7 +390,7 @@ uros_err_t urosUserPublishServices(void) {
  */
 uros_err_t urosUserUnpublishServices(void) {
 
-  urosTcpRosUnpublishServices();
+  urosHandlersUnpublishServices();
   return UROS_OK;
 }
 

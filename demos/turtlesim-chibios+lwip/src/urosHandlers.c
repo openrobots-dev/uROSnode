@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 /**
- * @file    urosTcpRosHandlers.c
+ * @file    urosHandlers.c
  * @author  Andrea Zoppi <texzk@email.it>
  *
  * @brief   TCPROS topic and service handlers.
@@ -39,7 +39,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* HEADER FILES                                                               */
 /*============================================================================*/
 
-#include "urosTcpRosHandlers.h"
+#include "urosHandlers.h"
 #include "app.h"
 
 #include <urosNode.h>
@@ -63,11 +63,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /*~~~ PUBLISHED TOPIC: /rosout ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Topic <code>/rosout</code> publisher */
+/** @name Topic <tt>/rosout</tt> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <code>/rosout</code> published topic handler.
+ * @brief   TCPROS <tt>/rosout</tt> published topic handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -79,7 +79,7 @@ uros_err_t pub_tpc__rosout(UrosTcpRosStatus *tcpstp) {
   uros_bool_t constant = UROS_TRUE;
 
   /* Message allocation and initialization.*/
-  UROS_TPC_PROLOGUE_H(msg__rosgraph_msgs__Log);
+  UROS_TPC_INIT_H(msg__rosgraph_msgs__Log);
 
   /* Published messages loop.*/
   while (!urosTcpRosStatusCheckExit(tcpstp)) {
@@ -112,11 +112,11 @@ _finally:
 
 /*~~~ PUBLISHED TOPIC: /turtleX/color_sensor ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Topic <code>/turtleX/color_sensor</code> publisher */
+/** @name Topic <tt>/turtleX/color_sensor</tt> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <code>/turtleX/color_sensor</code> published topic handler.
+ * @brief   TCPROS <tt>/turtleX/color_sensor</tt> published topic handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -126,7 +126,7 @@ _finally:
 uros_err_t pub_tpc__turtleX__color_sensor(UrosTcpRosStatus *tcpstp) {
 
   /* Message allocation and initialization.*/
-  UROS_TPC_PROLOGUE_H(msg__turtlesim__Color);
+  UROS_TPC_INIT_H(msg__turtlesim__Color);
 
   /* Published messages loop.*/
   while (!urosTcpRosStatusCheckExit(tcpstp)) {
@@ -144,7 +144,7 @@ uros_err_t pub_tpc__turtleX__color_sensor(UrosTcpRosStatus *tcpstp) {
 
 _finally:
   /* Message deinitialization and deallocation.*/
-  UROS_TPC_EPILOGUE_H(msg__turtlesim__Color);
+  UROS_TPC_UNINIT_H(msg__turtlesim__Color);
   return tcpstp->err;
 }
 
@@ -152,11 +152,11 @@ _finally:
 
 /*~~~ PUBLISHED TOPIC: /turtleX/pose ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Topic <code>/turtleX/pose</code> publisher */
+/** @name Topic <tt>/turtleX/pose</tt> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <code>/turtleX/pose</code> published topic handler.
+ * @brief   TCPROS <tt>/turtleX/pose</tt> published topic handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -168,7 +168,7 @@ uros_err_t pub_tpc__turtleX__pose(UrosTcpRosStatus *tcpstp) {
   turtle_t *turtlep;
 
   /* Message allocation and initialization.*/
-  UROS_TPC_PROLOGUE_H(msg__turtlesim__Pose);
+  UROS_TPC_INIT_H(msg__turtlesim__Pose);
 
   /* Get the turtle slot.*/
   turtlep = turtle_refbypath(&tcpstp->topicp->name);
@@ -204,7 +204,7 @@ uros_err_t pub_tpc__turtleX__pose(UrosTcpRosStatus *tcpstp) {
 
 _finally:
   /* Message deinitialization and deallocation.*/
-  UROS_TPC_EPILOGUE_H(msg__turtlesim__Pose);
+  UROS_TPC_UNINIT_H(msg__turtlesim__Pose);
   return tcpstp->err;
 }
 
@@ -221,11 +221,11 @@ _finally:
 
 /*~~~ SUBSCRIBED TOPIC: /turtleX/command_velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Topic <code>/turtleX/command_velocity</code> subscriber */
+/** @name Topic <tt>/turtleX/command_velocity</tt> subscriber */
 /** @{ */
 
 /**
- * @brief   TCPROS <code>/turtleX/command_velocity</code> subscribed topic handler.
+ * @brief   TCPROS <tt>/turtleX/command_velocity</tt> subscribed topic handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -237,7 +237,7 @@ uros_err_t sub_tpc__turtleX__command_velocity(UrosTcpRosStatus *tcpstp) {
   turtle_t *turtlep;
 
   /* Message allocation and initialization.*/
-  UROS_TPC_PROLOGUE_H(msg__turtlesim__Velocity);
+  UROS_TPC_INIT_H(msg__turtlesim__Velocity);
 
   /* Get the turtle slot.*/
   turtlep = turtle_refbypath(&tcpstp->topicp->name);
@@ -270,7 +270,7 @@ uros_err_t sub_tpc__turtleX__command_velocity(UrosTcpRosStatus *tcpstp) {
 
 _finally:
   /* Message deinitialization and deallocation.*/
-  UROS_TPC_EPILOGUE_H(msg__turtlesim__Velocity);
+  UROS_TPC_UNINIT_H(msg__turtlesim__Velocity);
   urosMutexLock(&turtlep->lock);
   turtle_unref(turtlep);
   urosMutexUnlock(&turtlep->lock);
@@ -290,11 +290,11 @@ _finally:
 
 /*~~~ PUBLISHED SERVICE: /clear ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <code>/clear</code> publisher */
+/** @name Service <tt>/clear</tt> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <code>/clear</code> published service handler.
+ * @brief   TCPROS <tt>/clear</tt> published service handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -304,8 +304,8 @@ _finally:
 uros_err_t pub_srv__clear(UrosTcpRosStatus *tcpstp) {
 
   /* Service messages allocation and initialization.*/
-  UROS_SRV_PROLOGUE_HIHO(in_srv__std_srvs__Empty,
-                         out_srv__std_srvs__Empty);
+  UROS_SRV_INIT_HIHO(in_srv__std_srvs__Empty,
+                     out_srv__std_srvs__Empty);
 
   /* Service message loop (if the service is persistent).*/
   do {
@@ -322,8 +322,8 @@ uros_err_t pub_srv__clear(UrosTcpRosStatus *tcpstp) {
     clean_in_srv__std_srvs__Empty(inmsgp);
 
     /* Send the response message.*/
-    UROS_MSG_SEND_LENGTH(outmsgp, out_srv__std_srvs__Empty);
     UROS_SRV_SEND_OKBYTE_ERRSTR();
+    UROS_MSG_SEND_LENGTH(outmsgp, out_srv__std_srvs__Empty);
     UROS_MSG_SEND_BODY(outmsgp, out_srv__std_srvs__Empty);
 
     /* Dispose the contents of the response message.*/
@@ -333,8 +333,8 @@ uros_err_t pub_srv__clear(UrosTcpRosStatus *tcpstp) {
 
 _finally:
   /* Service messages deinitialization and deallocation.*/
-  UROS_SRV_EPILOGUE_HIHO(in_srv__std_srvs__Empty,
-                         out_srv__std_srvs__Empty);
+  UROS_SRV_UNINIT_HIHO(in_srv__std_srvs__Empty,
+                       out_srv__std_srvs__Empty);
   return tcpstp->err;
 }
 
@@ -342,11 +342,11 @@ _finally:
 
 /*~~~ PUBLISHED SERVICE: /kill ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <code>/kill</code> publisher */
+/** @name Service <tt>/kill</tt> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <code>/kill</code> published service handler.
+ * @brief   TCPROS <tt>/kill</tt> published service handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -358,8 +358,8 @@ uros_err_t pub_srv__kill(UrosTcpRosStatus *tcpstp) {
   turtle_t *turtlep;
 
   /* Service messages allocation and initialization.*/
-  UROS_SRV_PROLOGUE_HIHO(in_srv__turtlesim__Kill,
-                         out_srv__turtlesim__Kill);
+  UROS_SRV_INIT_HIHO(in_srv__turtlesim__Kill,
+                     out_srv__turtlesim__Kill);
 
   /* Receive the request message.*/
   UROS_MSG_RECV_LENGTH();
@@ -381,17 +381,17 @@ uros_err_t pub_srv__kill(UrosTcpRosStatus *tcpstp) {
   /* Dispose the contents of the request message.*/
   clean_in_srv__turtlesim__Kill(inmsgp);
 
-  /* Send the response message.*/
-  UROS_MSG_SEND_LENGTH(outmsgp, out_srv__turtlesim__Kill);
-  UROS_SRV_SEND_OKBYTE_ERRSTR();
-  UROS_MSG_SEND_BODY(outmsgp, out_srv__turtlesim__Kill);
+    /* Send the response message.*/
+    UROS_SRV_SEND_OKBYTE_ERRSTR();
+    UROS_MSG_SEND_LENGTH(outmsgp, out_srv__turtlesim__Kill);
+    UROS_MSG_SEND_BODY(outmsgp, out_srv__turtlesim__Kill);
 
   tcpstp->err = UROS_OK;
 
 _finally:
   /* Service messages deinitialization and deallocation.*/
-  UROS_SRV_EPILOGUE_HIHO(in_srv__turtlesim__Kill,
-                         out_srv__turtlesim__Kill);
+  UROS_SRV_UNINIT_HIHO(in_srv__turtlesim__Kill,
+                       out_srv__turtlesim__Kill);
   return tcpstp->err;
 }
 
@@ -399,11 +399,11 @@ _finally:
 
 /*~~~ PUBLISHED SERVICE: /spawn ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <code>/spawn</code> publisher */
+/** @name Service <tt>/spawn</tt> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <code>/spawn</code> published service handler.
+ * @brief   TCPROS <tt>/spawn</tt> published service handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -416,12 +416,11 @@ uros_err_t pub_srv__spawn(UrosTcpRosStatus *tcpstp) {
   UrosString name;
 
   /* Service messages allocation and initialization.*/
-  UROS_SRV_PROLOGUE_HIHO(in_srv__turtlesim__Spawn,
-                         out_srv__turtlesim__Spawn);
+  UROS_SRV_INIT_HIHO(in_srv__turtlesim__Spawn,
+                     out_srv__turtlesim__Spawn);
 
   /* Service message loop (if the service is persistent).*/
   do {
-
     /* Receive the request message.*/
     UROS_MSG_RECV_LENGTH();
     UROS_MSG_RECV_BODY(inmsgp, in_srv__turtlesim__Spawn);
@@ -447,8 +446,8 @@ uros_err_t pub_srv__spawn(UrosTcpRosStatus *tcpstp) {
     outmsgp->name = name;
 
     /* Send the response message.*/
-    UROS_MSG_SEND_LENGTH(outmsgp, out_srv__turtlesim__Spawn);
     UROS_SRV_SEND_OKBYTE_ERRSTR();
+    UROS_MSG_SEND_LENGTH(outmsgp, out_srv__turtlesim__Spawn);
     UROS_MSG_SEND_BODY(outmsgp, out_srv__turtlesim__Spawn);
 
     /* Dispose the contents of the response message.*/
@@ -458,8 +457,8 @@ uros_err_t pub_srv__spawn(UrosTcpRosStatus *tcpstp) {
 
 _finally:
   /* Service messages deinitialization and deallocation.*/
-  UROS_SRV_EPILOGUE_HIHO(in_srv__turtlesim__Spawn,
-                         out_srv__turtlesim__Spawn);
+  UROS_SRV_UNINIT_HIHO(in_srv__turtlesim__Spawn,
+                       out_srv__turtlesim__Spawn);
   return tcpstp->err;
 }
 
@@ -467,11 +466,11 @@ _finally:
 
 /*~~~ PUBLISHED SERVICE: /turtleX/set_pen ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <code>/turtleX/set_pen</code> publisher */
+/** @name Service <tt>/turtleX/set_pen</tt> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <code>/turtleX/set_pen</code> published service handler.
+ * @brief   TCPROS <tt>/turtleX/set_pen</tt> published service handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -483,8 +482,8 @@ uros_err_t pub_srv__turtleX__set_pen(UrosTcpRosStatus *tcpstp) {
   turtle_t *turtlep;
 
   /* Service messages allocation and initialization.*/
-  UROS_SRV_PROLOGUE_HIHO(in_srv__turtlesim__SetPen,
-                         out_srv__turtlesim__SetPen);
+  UROS_SRV_INIT_HIHO(in_srv__turtlesim__SetPen,
+                     out_srv__turtlesim__SetPen);
 
   /* Get the turtle slot.*/
   turtlep = turtle_refbypath(&tcpstp->topicp->name);
@@ -512,11 +511,9 @@ uros_err_t pub_srv__turtleX__set_pen(UrosTcpRosStatus *tcpstp) {
     /* Dispose the contents of the request message.*/
     clean_in_srv__turtlesim__SetPen(inmsgp);
 
-    /* TODO: Generate the contents of the response message.*/
-
     /* Send the response message.*/
-    UROS_MSG_SEND_LENGTH(outmsgp, out_srv__turtlesim__SetPen);
     UROS_SRV_SEND_OKBYTE_ERRSTR();
+    UROS_MSG_SEND_LENGTH(outmsgp, out_srv__turtlesim__SetPen);
     UROS_MSG_SEND_BODY(outmsgp, out_srv__turtlesim__SetPen);
 
     /* Dispose the contents of the response message.*/
@@ -526,8 +523,8 @@ uros_err_t pub_srv__turtleX__set_pen(UrosTcpRosStatus *tcpstp) {
 
 _finally:
   /* Service messages deinitialization and deallocation.*/
-  UROS_SRV_EPILOGUE_HIHO(in_srv__turtlesim__SetPen,
-                         out_srv__turtlesim__SetPen);
+  UROS_SRV_UNINIT_HIHO(in_srv__turtlesim__SetPen,
+                       out_srv__turtlesim__SetPen);
   urosMutexLock(&turtlep->lock);
   turtle_unref(turtlep);
   urosMutexUnlock(&turtlep->lock);
@@ -538,11 +535,11 @@ _finally:
 
 /*~~~ PUBLISHED SERVICE: /turtleX/teleport_absolute ~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <code>/turtleX/teleport_absolute</code> publisher */
+/** @name Service <tt>/turtleX/teleport_absolute</tt> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <code>/turtleX/teleport_absolute</code> published service handler.
+ * @brief   TCPROS <tt>/turtleX/teleport_absolute</tt> published service handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -555,8 +552,8 @@ uros_err_t pub_srv__turtleX__teleport_absolute(UrosTcpRosStatus *tcpstp) {
   struct msg__turtlesim__Pose *posep;
 
   /* Service messages allocation and initialization.*/
-  UROS_SRV_PROLOGUE_HIHO(in_srv__turtlesim__TeleportAbsolute,
-                         out_srv__turtlesim__TeleportAbsolute);
+  UROS_SRV_INIT_HIHO(in_srv__turtlesim__TeleportAbsolute,
+                     out_srv__turtlesim__TeleportAbsolute);
 
   /* Get the turtle slot.*/
   turtlep = turtle_refbypath(&tcpstp->topicp->name);
@@ -595,11 +592,9 @@ uros_err_t pub_srv__turtleX__teleport_absolute(UrosTcpRosStatus *tcpstp) {
     /* Dispose the contents of the request message.*/
     clean_in_srv__turtlesim__TeleportAbsolute(inmsgp);
 
-    /* TODO: Generate the contents of the response message.*/
-
     /* Send the response message.*/
-    UROS_MSG_SEND_LENGTH(outmsgp, out_srv__turtlesim__TeleportAbsolute);
     UROS_SRV_SEND_OKBYTE_ERRSTR();
+    UROS_MSG_SEND_LENGTH(outmsgp, out_srv__turtlesim__TeleportAbsolute);
     UROS_MSG_SEND_BODY(outmsgp, out_srv__turtlesim__TeleportAbsolute);
 
     /* Dispose the contents of the response message.*/
@@ -609,8 +604,8 @@ uros_err_t pub_srv__turtleX__teleport_absolute(UrosTcpRosStatus *tcpstp) {
 
 _finally:
   /* Service messages deinitialization and deallocation.*/
-  UROS_SRV_EPILOGUE_HIHO(in_srv__turtlesim__TeleportAbsolute,
-                         out_srv__turtlesim__TeleportAbsolute);
+  UROS_SRV_UNINIT_HIHO(in_srv__turtlesim__TeleportAbsolute,
+                       out_srv__turtlesim__TeleportAbsolute);
   urosMutexLock(&turtlep->lock);
   turtle_unref(turtlep);
   urosMutexUnlock(&turtlep->lock);
@@ -621,11 +616,11 @@ _finally:
 
 /*~~~ PUBLISHED SERVICE: /turtleX/teleport_relative ~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/** @name Service <code>/turtleX/teleport_relative</code> publisher */
+/** @name Service <tt>/turtleX/teleport_relative</tt> publisher */
 /** @{ */
 
 /**
- * @brief   TCPROS <code>/turtleX/teleport_relative</code> published service handler.
+ * @brief   TCPROS <tt>/turtleX/teleport_relative</tt> published service handler.
  *
  * @param[in,out] tcpstp
  *          Pointer to a working @p UrosTcpRosStatus object.
@@ -638,8 +633,8 @@ uros_err_t pub_srv__turtleX__teleport_relative(UrosTcpRosStatus *tcpstp) {
   struct msg__turtlesim__Pose *posep;
 
   /* Service messages allocation and initialization.*/
-  UROS_SRV_PROLOGUE_HIHO(in_srv__turtlesim__TeleportRelative,
-                         out_srv__turtlesim__TeleportRelative);
+  UROS_SRV_INIT_HIHO(in_srv__turtlesim__TeleportRelative,
+                     out_srv__turtlesim__TeleportRelative);
 
   /* Get the turtle slot.*/
   turtlep = turtle_refbypath(&tcpstp->topicp->name);
@@ -678,11 +673,9 @@ uros_err_t pub_srv__turtleX__teleport_relative(UrosTcpRosStatus *tcpstp) {
     /* Dispose the contents of the request message.*/
     clean_in_srv__turtlesim__TeleportRelative(inmsgp);
 
-    /* TODO: Generate the contents of the response message.*/
-
     /* Send the response message.*/
-    UROS_MSG_SEND_LENGTH(outmsgp, out_srv__turtlesim__TeleportRelative);
     UROS_SRV_SEND_OKBYTE_ERRSTR();
+    UROS_MSG_SEND_LENGTH(outmsgp, out_srv__turtlesim__TeleportRelative);
     UROS_MSG_SEND_BODY(outmsgp, out_srv__turtlesim__TeleportRelative);
 
     /* Dispose the contents of the response message.*/
@@ -692,8 +685,8 @@ uros_err_t pub_srv__turtleX__teleport_relative(UrosTcpRosStatus *tcpstp) {
 
 _finally:
   /* Service messages deinitialization and deallocation.*/
-  UROS_SRV_EPILOGUE_HIHO(in_srv__turtlesim__TeleportRelative,
-                         out_srv__turtlesim__TeleportRelative);
+  UROS_SRV_UNINIT_HIHO(in_srv__turtlesim__TeleportRelative,
+                       out_srv__turtlesim__TeleportRelative);
   urosMutexLock(&turtlep->lock);
   turtle_unref(turtlep);
   urosMutexUnlock(&turtlep->lock);
@@ -701,6 +694,17 @@ _finally:
 }
 
 /** @} */
+
+/** @} */
+
+/*============================================================================*/
+/* CALLED SERVICE FUNCTIONS                                                   */
+/*============================================================================*/
+
+/** @addtogroup tcpros_callservice_funcs */
+/** @{ */
+
+/* There are no called services.*/
 
 /** @} */
 
@@ -715,7 +719,7 @@ _finally:
  * @brief   Registers all the published topics to the Master node.
  * @note    Should be called at node initialization.
  */
-void urosTcpRosPublishTopics(void) {
+void urosHandlersPublishTopics(void) {
 
   /* /rosout */
   urosNodePublishTopicSZ(
@@ -724,25 +728,29 @@ void urosTcpRosPublishTopics(void) {
     (uros_proc_f)pub_tpc__rosout,
     uros_nulltopicflags
   );
+
+  /* All the remaining topics are turtle-specific.*/
 }
 
 /**
  * @brief   Unregisters all the published topics to the Master node.
  * @note    Should be called at node shutdown.
  */
-void urosTcpRosUnpublishTopics(void) {
+void urosHandlersUnpublishTopics(void) {
 
   /* /rosout */
   urosNodeUnpublishTopicSZ(
     "/rosout"
   );
+
+  /* All the remaining topics are turtle-specific.*/
 }
 
 /**
  * @brief   Registers all the subscribed topics to the Master node.
  * @note    Should be called at node initialization.
  */
-void urosTcpRosSubscribeTopics(void) {
+void urosHandlersSubscribeTopics(void) {
 
   /* No topics to subscribe to.*/
 }
@@ -751,7 +759,7 @@ void urosTcpRosSubscribeTopics(void) {
  * @brief   Unregisters all the subscribed topics to the Master node.
  * @note    Should be called at node shutdown.
  */
-void urosTcpRosUnsubscribeTopics(void) {
+void urosHandlersUnsubscribeTopics(void) {
 
   /* No topics to unsubscribe from.*/
 }
@@ -760,7 +768,7 @@ void urosTcpRosUnsubscribeTopics(void) {
  * @brief   Registers all the published services to the Master node.
  * @note    Should be called at node initialization.
  */
-void urosTcpRosPublishServices(void) {
+void urosHandlersPublishServices(void) {
 
   /* /clear */
   urosNodePublishServiceSZ(
@@ -793,7 +801,7 @@ void urosTcpRosPublishServices(void) {
  * @brief   Unregisters all the published services to the Master node.
  * @note    Should be called at node shutdown.
  */
-void urosTcpRosUnpublishServices(void) {
+void urosHandlersUnpublishServices(void) {
 
   /* /clear */
   urosNodeUnpublishServiceSZ(
@@ -809,6 +817,8 @@ void urosTcpRosUnpublishServices(void) {
   urosNodeUnpublishServiceSZ(
     "/spawn"
   );
+
+  /* All the remaining services are turtle-specific.*/
 }
 
 /** @} */

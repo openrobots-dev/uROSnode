@@ -178,7 +178,7 @@ int main(void) {
   usbStart(serusbcfg.usbp, &usbcfg);
   usbConnectBus(serusbcfg.usbp);
 
-  /* Force the PHY to wake up.*/
+  /* Make the PHY to wake up.*/
   palSetPad(GPIOC, GPIOC_ETH_NOT_PWRDN);
 
   /*

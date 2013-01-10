@@ -46,7 +46,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <urosTcpRos.h>
 #include <stdarg.h>
 
-#include "urosTcpRosTypes.h"
+#include "urosMsgTypes.h"
 #include "app.h"
 
 /*===========================================================================*/
@@ -200,61 +200,79 @@ uros_err_t urosUserShutdown(const UrosString *msgp) {
  */
 void urosUserRegisterStaticTypes(void) {
 
-  urosTcpRosRegStaticTypes();
+  urosMsgTypesRegStaticTypes();
 }
 
 /**
  * @brief   Registers all the published topics to the Master node.
  * @note    Should be called at node initialization.
+ *
+ * @return  Error code.
  */
-void urosUserPublishTopics(void) {
+uros_err_t urosUserPublishTopics(void) {
 
-  urosTcpRosPublishTopics();
+  urosHandlersPublishTopics();
+  return UROS_OK;
 }
 
 /**
  * @brief   Unregisters all the published topics to the Master node.
  * @note    Should be called at node shutdown.
+ *
+ * @return  Error code.
  */
-void urosUserUnpublishTopics(void) {
+uros_err_t urosUserUnpublishTopics(void) {
 
-  urosTcpRosUnpublishTopics();
+  urosHandlersUnpublishTopics();
+  return UROS_OK;
 }
 
 /**
  * @brief   Registers all the subscribed topics to the Master node.
  * @note    Should be called at node initialization.
+ *
+ * @return  Error code.
  */
-void urosUserSubscribeTopics(void) {
+uros_err_t urosUserSubscribeTopics(void) {
 
-  urosTcpRosSubscribeTopics();
+  urosHandlersSubscribeTopics();
+  return UROS_OK;
 }
 
 /**
  * @brief   Unregisters all the subscribed topics to the Master node.
  * @note    Should be called at node shutdown.
+ *
+ * @return  Error code.
  */
-void urosUserUnsubscribeTopics(void) {
+uros_err_t urosUserUnsubscribeTopics(void) {
 
-  urosTcpRosUnsubscribeTopics();
+  urosHandlersUnsubscribeTopics();
+  return UROS_OK;
 }
 
 /**
  * @brief   Registers all the published services to the Master node.
  * @note    Should be called at node initialization.
+ *
+ * @return  Error code.
  */
-void urosUserPublishServices(void) {
+uros_err_t urosUserPublishServices(void) {
 
-  urosTcpRosPublishServices();
+  urosHandlersPublishServices();
+  return UROS_OK;
 }
 
 /**
  * @brief   Unregisters all the published services to the Master node.
  * @note    Should be called at node shutdown.
+ *
+ * @return  Error code.
  */
-void urosUserUnpublishServices(void) {
+uros_err_t urosUserUnpublishServices(void) {
 
-  urosTcpRosUnpublishServices();
+  urosHandlersUnpublishServices();
+  return UROS_OK;
 }
 
 /**

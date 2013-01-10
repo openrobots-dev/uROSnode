@@ -810,20 +810,7 @@ void urosTcpRosUnpublishServices(void) {
     "/spawn"
   );
 
-  /* /turtleX/set_pen */
-  urosNodeUnpublishServiceSZ(
-    "/turtleX/set_pen"
-  );
-
-  /* /turtleX/teleport_absolute */
-  urosNodeUnpublishServiceSZ(
-    "/turtleX/teleport_absolute"
-  );
-
-  /* /turtleX/teleport_relative */
-  urosNodeUnpublishServiceSZ(
-    "/turtleX/teleport_relative"
-  );
+  /* All the remaining services are turtle-specific.*/
 }
 
 /** @} */

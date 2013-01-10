@@ -427,7 +427,7 @@
                                      PIN_PUPDR_PULLUP(GPIOB_PIN1) |         \
                                      PIN_PUPDR_PULLUP(GPIOB_PIN2) |         \
                                      PIN_PUPDR_FLOATING(GPIOB_JTDO) |       \
-                                     PIN_PUPDR_FLOATING(GPIOB_JTRST) |      \
+                                     PIN_PUPDR_PULLUP(GPIOB_JTRST) |      \
                                      PIN_PUPDR_PULLUP(GPIOB_PIN5) |         \
                                      PIN_PUPDR_FLOATING(GPIOB_USART1_TX) |  \
                                      PIN_PUPDR_PULLUP(GPIOB_USART1_RX) |    \

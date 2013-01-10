@@ -29,20 +29,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 /**
- * @file    urosTcpRosHandlers.h
+ * @file    urosHandlers.h
  * @author  Andrea Zoppi <texzk@email.it>
  *
  * @brief   TCPROS topic and service handlers.
  */
 
-#ifndef _UROSTCPROSHANDLERS_H_
-#define _UROSTCPROSHANDLERS_H_
+#ifndef _UROSHANDLERS_H_
+#define _UROSHANDLERS_H_
 
 /*============================================================================*/
 /* HEADER FILES                                                               */
 /*============================================================================*/
 
-#include "urosTcpRosTypes.h"
+#include "urosMsgTypes.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -101,21 +101,27 @@ uros_err_t pub_srv__turtleX__teleport_absolute(UrosTcpRosStatus *tcpstp);
 uros_err_t pub_srv__turtleX__teleport_relative(UrosTcpRosStatus *tcpstp);
 
 /*============================================================================*/
+/* CALLED SERVICE PROTOTYPES                                                  */
+/*============================================================================*/
+
+/* There are no called services.*/
+
+/*============================================================================*/
 /* GLOBAL PROTOTYPES                                                          */
 /*============================================================================*/
 
-void urosTcpRosPublishTopics(void);
-void urosTcpRosUnpublishTopics(void);
+void urosHandlersPublishTopics(void);
+void urosHandlersUnpublishTopics(void);
 
-void urosTcpRosSubscribeTopics(void);
-void urosTcpRosUnsubscribeTopics(void);
+void urosHandlersSubscribeTopics(void);
+void urosHandlersUnsubscribeTopics(void);
 
-void urosTcpRosPublishServices(void);
-void urosTcpRosUnpublishServices(void);
+void urosHandlersPublishServices(void);
+void urosHandlersUnpublishServices(void);
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
-#endif /* _UROSTCPROSHANDLERS_H_ */
+#endif /* _UROSHANDLERS_H_ */
 
