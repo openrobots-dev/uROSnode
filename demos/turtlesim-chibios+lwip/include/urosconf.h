@@ -226,10 +226,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /** @{ */
 
 /** @brief Default timeout for incoming TCPROS transactions, in milliseconds.*/
-#define UROS_TCPROS_RECVTIMEOUT             500
+#define UROS_TCPROS_RECVTIMEOUT             1000
 
 /** @brief Default timeout for outgoing TCPROS transactions, in milliseconds.*/
-#define UROS_TCPROS_SENDTIMEOUT             500
+#define UROS_TCPROS_SENDTIMEOUT             1000
 
 /** @} */
 /** @} */
@@ -247,7 +247,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /** @{ */
 
 /** @brief Default length of the reading buffer.*/
-#define UROS_RPCPARSER_RDBUFLEN             128
+#define UROS_RPCPARSER_RDBUFLEN             256
 
 /** @brief Reads the status message, instead of skipping it.*/
 #define UROS_RPCPARSER_USE_STATMSG          0
@@ -317,7 +317,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define UROS_NODE_C_USE_ASSERT              1
 
 /** @brief Enables assertions for <tt>urosRpcCall.c</tt>.*/
-#define UROS_RPC_CALL_C_USE_ASSERT          1
+#define UROS_RPCCALL_C_USE_ASSERT           1
 
 /** @brief Enables assertions for <tt>urosRpcParser.c</tt>.*/
 #define UROS_RPCPARSER_C_USE_ASSERT         1

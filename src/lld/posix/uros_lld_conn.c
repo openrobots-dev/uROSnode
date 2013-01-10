@@ -101,7 +101,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * @retval 0
  *          Connection closed by peer.
  * @retval -1
- *          Socket error, see @p errno. It <i>will</i> raise @p EAGAIN or
+ *          Socket error, see @p errno. It @e will raise @p EAGAIN or
  *          @p EWOULDBLOCK when expected by a non-blocking socket.
  * @retval -2
  *          Operation timed out.
@@ -130,7 +130,7 @@ ssize_t recv_to(int sock, void *bufp, size_t buflen, int flags,
     if (iof != -1) { fcntl(sock, F_SETFL, iof | O_NONBLOCK); }
     nb = recv(sock, bufp, buflen, flags);
     if (iof != -1) { fcntl(sock, F_SETFL, iof); }
-    return nb;
+    return (nb >= 0) ? nb : -1;
   }
   return -2;
 }
@@ -543,10 +543,7 @@ uros_err_t uros_lld_conn_recv(UrosConn *cp,
             ("Socket error [%s] while receiving at most %zu bytes from "
              UROS_ADDRFMT"\n",
              strerror(errno), *buflenp, UROS_ADDRARG(&cp->remaddr)));
-  urosError(nb == -2, return UROS_ERR_TIMEOUT,
-            ("Socket timed out %lums while receiving at most %zu bytes from "
-             UROS_ADDRFMT"\n",
-             cp->recvtimeout, *buflenp, UROS_ADDRARG(&cp->remaddr)));
+  if (nb == -2) { return UROS_ERR_TIMEOUT; }
 
   *bufpp = cp->recvbufp;
   *buflenp = (size_t)nb;
@@ -630,11 +627,7 @@ uros_err_t uros_lld_conn_send(UrosConn *cp,
                UROS_ADDRFMT"\n",
                strerror(errno), (int)buflen, bufp, buflen,
                UROS_ADDRARG(&cp->remaddr)));
-    urosError(nb == -2, return UROS_ERR_TIMEOUT,
-              ("Socket timed out %lums while sending [%.*s] (%zu bytes) to "
-               UROS_ADDRFMT"\n",
-               cp->sendtimeout, (int)buflen, bufp, buflen,
-               UROS_ADDRARG(&cp->remaddr)));
+    if (nb == -2) { return UROS_ERR_TIMEOUT; }
 
     buflen -= (size_t)nb;
     bufp = (const void *)((const uint8_t *)bufp + (ptrdiff_t)nb);

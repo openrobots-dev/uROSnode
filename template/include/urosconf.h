@@ -315,7 +315,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define UROS_NODE_C_USE_ASSERT              1
 
 /** @brief Enables assertions for <tt>urosRpcCall.c</tt>.*/
-#define UROS_RPC_CALL_C_USE_ASSERT          1
+#define UROS_RPCCALL_C_USE_ASSERT           1
 
 /** @brief Enables assertions for <tt>urosRpcParser.c</tt>.*/
 #define UROS_RPCPARSER_C_USE_ASSERT         1
