@@ -122,6 +122,12 @@ extern UrosThreadPool turtlesThreadPool;
 extern uros_bool_t turtleCanSpawn;
 extern UrosMutex turtleCanSpawnLock;
 
+extern UrosString backcolparnameR;
+extern UrosString backcolparnameG;
+extern UrosString backcolparnameB;
+extern struct msg__turtlesim__Color backgroundColor;
+extern UrosMutex backgroundColorLock;
+
 /*===========================================================================*/
 /* GLOBAL PROTOTYPES                                                         */
 /*===========================================================================*/

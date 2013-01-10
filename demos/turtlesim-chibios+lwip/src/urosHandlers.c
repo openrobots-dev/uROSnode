@@ -130,8 +130,10 @@ uros_err_t pub_tpc__turtleX__color_sensor(UrosTcpRosStatus *tcpstp) {
 
   /* Published messages loop.*/
   while (!urosTcpRosStatusCheckExit(tcpstp)) {
-    /* TODO: Generate the contents of the message.*/
-    urosThreadSleepSec(1); continue; /* TODO: Remove this dummy line.*/
+    /* Let us suppose that all the turtles see the same color.*/
+    urosMutexLock(&backgroundColorLock);
+    *msgp = backgroundColor;
+    urosMutexUnlock(&backgroundColorLock);
 
     /* Send the message.*/
     UROS_MSG_SEND_LENGTH(msgp, msg__turtlesim__Color);
@@ -139,6 +141,9 @@ uros_err_t pub_tpc__turtleX__color_sensor(UrosTcpRosStatus *tcpstp) {
 
     /* Dispose the contents of the message.*/
     clean_msg__turtlesim__Color(msgp);
+
+    /* Send at most at 100Hz.*/
+    urosThreadSleepMsec(10);
   }
   tcpstp->err = UROS_OK;
 
@@ -197,7 +202,7 @@ uros_err_t pub_tpc__turtleX__pose(UrosTcpRosStatus *tcpstp) {
     /* Dispose the contents of the message.*/
     clean_msg__turtlesim__Pose(msgp);
 
-    /* Send the next pose every 10ms.*/
+    /* Send at most at 100Hz.*/
     urosThreadSleepMsec(10);
   }
   tcpstp->err = UROS_OK;

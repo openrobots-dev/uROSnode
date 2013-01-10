@@ -8,7 +8,6 @@ LEGEND:
 JOB QUEUE:
 ?!  Client service calls
 -   Avoid recursion, use lists as stacks instead
-*   turtleX/color_sensor published topic in turtlesim demo
 +   Advanced logger for ChibiOS (side project)
 +   Support for BASE64 encoding for XMLRPC parameters
 +   Support for struct/map for XMLRPC parameters

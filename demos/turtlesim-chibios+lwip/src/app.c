@@ -71,6 +71,12 @@ UrosThreadPool turtlesThreadPool;
 uros_bool_t turtleCanSpawn = UROS_FALSE;
 UrosMutex turtleCanSpawnLock;
 
+UrosString backcolparnameR;
+UrosString backcolparnameG;
+UrosString backcolparnameB;
+struct msg__turtlesim__Color backgroundColor = { 123, 132, 213 };
+UrosMutex backgroundColorLock;
+
 /*===========================================================================*/
 /* GLOBAL FUNCTIONS                                                          */
 /*===========================================================================*/
@@ -166,14 +172,34 @@ void rosout_fetch(struct msg__rosgraph_msgs__Log **msgpp) {
 void app_initialize(void) {
 
   static const UrosString turtle1 = { 7, "turtle1" };
+  static const UrosNodeConfig *const cfgp = &urosNode.config;
 
   unsigned i;
 
   /* Initialize the uROS system.*/
   urosInit();
-
-  /* Initialize the /rosout queue.*/
   fifo_init(&rosoutQueue, 8);
+
+  /* Initialize variables related to the background color.*/
+  urosMutexObjectInit(&backgroundColorLock);
+
+  backcolparnameR.length = cfgp->nodeName.length + 13;
+  backcolparnameR.datap = (char*)urosAlloc(backcolparnameR.length);
+  urosAssert(backcolparnameR.datap != NULL);
+  memcpy(backcolparnameR.datap, cfgp->nodeName.datap, cfgp->nodeName.length);
+  memcpy(backcolparnameR.datap + cfgp->nodeName.length, "/background_r", 13);
+
+  backcolparnameG.length = cfgp->nodeName.length + 13;
+  backcolparnameG.datap = (char*)urosAlloc(backcolparnameG.length);
+  urosAssert(backcolparnameG.datap != NULL);
+  memcpy(backcolparnameG.datap, cfgp->nodeName.datap, cfgp->nodeName.length);
+  memcpy(backcolparnameG.datap + cfgp->nodeName.length, "/background_g", 13);
+
+  backcolparnameB.length = cfgp->nodeName.length + 13;
+  backcolparnameB.datap = (char*)urosAlloc(backcolparnameB.length);
+  urosAssert(backcolparnameB.datap != NULL);
+  memcpy(backcolparnameB.datap, cfgp->nodeName.datap, cfgp->nodeName.length);
+  memcpy(backcolparnameB.datap + cfgp->nodeName.length, "/background_b", 13);
 
   /* Initialize the turtle slots.*/
   urosMutexObjectInit(&turtleCanSpawnLock);

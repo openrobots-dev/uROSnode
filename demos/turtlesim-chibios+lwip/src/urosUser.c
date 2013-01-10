@@ -39,14 +39,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* HEADER FILES                                                              */
 /*===========================================================================*/
 
-#include <urosBase.h>
-#include <urosNode.h>
-#include <urosRpcCall.h>
+#include <urosUser.h>
 #include <urosRpcSlave.h>
 #include <urosTcpRos.h>
 #include <stdarg.h>
 
-#include "urosMsgTypes.h"
+#include "urosHandlers.h"
 #include "app.h"
 
 /*===========================================================================*/
@@ -278,93 +276,79 @@ uros_err_t urosUserUnpublishServices(void) {
 /**
  * @brief   Registers all the subscribed parameters to the Master node.
  * @note    Should be called at node initialization.
+ *
+ * @return  Error code.
  */
-void urosUserSubscribeParams(void) {
+uros_err_t urosUserSubscribeParams(void) {
 
   static const UrosNodeConfig *const cfgp = &urosNode.config;
 
-  UrosString paramname;
   UrosRpcParam paramval;
   UrosRpcResponse res;
 
-  paramname.length = cfgp->nodeName.length + 13;
-  paramname.datap = (char*)urosAlloc(paramname.length);
-  urosAssert(paramname.datap != NULL);
-  memcpy(paramname.datap, cfgp->nodeName.datap, cfgp->nodeName.length);
-  memcpy(paramname.datap + cfgp->nodeName.length, "/background_?", 13);
   urosRpcResponseObjectInit(&res);
   urosRpcParamObjectInit(&paramval, UROS_RPCP_INT);
 
   /* Red component set and subscribed to.*/
-  paramname.datap[paramname.length - 1] = 'r';
   paramval.value.int32 = 123;
   urosRpcCallSetParam(&cfgp->masterAddr, &cfgp->nodeName,
-                      &paramname, &paramval, &res);
+                      &backcolparnameR, &paramval, &res);
   urosRpcResponseClean(&res);
-  urosNodeSubscribeParam(&paramname);
+  urosNodeSubscribeParam(&backcolparnameR);
 
   /* Green component set and subscribed to.*/
-  paramname.datap[paramname.length - 1] = 'g';
   urosRpcResponseObjectInit(&res);
   paramval.value.int32 = 132;
   urosRpcCallSetParam(&cfgp->masterAddr, &cfgp->nodeName,
-                      &paramname, &paramval, &res);
+                      &backcolparnameG, &paramval, &res);
   urosRpcResponseClean(&res);
-  urosNodeSubscribeParam(&paramname);
+  urosNodeSubscribeParam(&backcolparnameG);
 
   /* Blue component set and subscribed to.*/
-  paramname.datap[paramname.length - 1] = 'b';
   urosRpcResponseObjectInit(&res);
   paramval.value.int32 = 213;
   urosRpcCallSetParam(&cfgp->masterAddr, &cfgp->nodeName,
-                      &paramname, &paramval, &res);
+                      &backcolparnameB, &paramval, &res);
   urosRpcResponseClean(&res);
-  urosNodeSubscribeParam(&paramname);
+  urosNodeSubscribeParam(&backcolparnameB);
 
   urosRpcParamClean(&paramval, UROS_TRUE);
-  urosStringClean(&paramname);
+  return UROS_OK;
 }
 
 /**
  * @brief   Unregisters all the subscribed parameters to the Master node.
  * @note    Should be called at node shutdown.
+ *
+ * @return  Error code.
  */
-void urosUserUnsubscribeParams(void) {
+uros_err_t urosUserUnsubscribeParams(void) {
 
   static const UrosNodeConfig *const cfgp = &urosNode.config;
 
-  UrosString paramname;
   UrosRpcResponse res;
 
-  paramname.length = cfgp->nodeName.length + 13;
-  paramname.datap = (char*)urosAlloc(paramname.length);
-  urosAssert(paramname.datap != NULL);
-  memcpy(paramname.datap, cfgp->nodeName.datap, cfgp->nodeName.length);
-  memcpy(paramname.datap + cfgp->nodeName.length, "/background_?", 13);
   urosRpcResponseObjectInit(&res);
 
   /* Red component unsubscribed from and deleted.*/
-  paramname.datap[paramname.length - 1] = 'r';
-  urosNodeUnsubscribeParam(&paramname);
+  urosNodeUnsubscribeParam(&backcolparnameR);
   urosRpcCallDeleteParam(&cfgp->masterAddr, &cfgp->nodeName,
-                         &paramname, &res);
+                         &backcolparnameR, &res);
   urosRpcResponseClean(&res);
 
   /* Green component unsubscribed from and deleted.*/
-  paramname.datap[paramname.length - 1] = 'g';
-  urosNodeUnsubscribeParam(&paramname);
+  urosNodeUnsubscribeParam(&backcolparnameG);
   urosRpcCallDeleteParam(&cfgp->masterAddr, &cfgp->nodeName,
-                         &paramname, &res);
+                         &backcolparnameG, &res);
   urosRpcResponseClean(&res);
 
   /* Blue component unsubscribed from and deleted.*/
-  paramname.datap[paramname.length - 1] = 'b';
-  urosNodeUnsubscribeParam(&paramname);
+  urosNodeUnsubscribeParam(&backcolparnameB);
   urosRpcCallDeleteParam(&cfgp->masterAddr, &cfgp->nodeName,
-                         &paramname, &res);
+                         &backcolparnameB, &res);
   urosRpcResponseClean(&res);
 
-  urosStringClean(&paramname);
+  return UROS_OK;
 }
 
 /**
@@ -385,10 +369,53 @@ uros_err_t urosUserParamUpdate(const UrosString *keyp,
   urosAssert(urosStringNotEmpty(keyp));
   urosAssert(paramp != NULL);
 
-  /* TODO: Handle the new parameter value.*/
-  (void)keyp;
-  (void)paramp;
-  return UROS_OK;
+  /* Check if [<node>/background_r].*/
+  if (0 == urosStringCmp(keyp, &backcolparnameR)) {
+    urosError(paramp->class != UROS_RPCP_INT, return UROS_ERR_BADPARAM,
+              ("Parameter [%.*s] class id %d, expected %d (UROS_RPCP_INT)\n",
+               UROS_STRARG(keyp), (int)paramp->class, (int)UROS_RPCP_INT));
+    urosError(paramp->value.int32 < 0 || paramp->value.int32 > 255,
+              return UROS_ERR_BADPARAM,
+              ("Parameter [%.*s] value %d outside [0..255]\n",
+               UROS_STRARG(keyp), paramp->value.int32));
+    urosMutexLock(&backgroundColorLock);
+    backgroundColor.r = (uint8_t)paramp->value.int32;
+    urosMutexUnlock(&backgroundColorLock);
+    return UROS_OK;
+  }
+
+  /* Check if [<node>/background_g].*/
+  if (0 == urosStringCmp(keyp, &backcolparnameG)) {
+    urosError(paramp->class != UROS_RPCP_INT, return UROS_ERR_BADPARAM,
+              ("Parameter [%.*s] class id %d, expected %d (UROS_RPCP_INT)\n",
+               UROS_STRARG(keyp), (int)paramp->class, (int)UROS_RPCP_INT));
+    urosError(paramp->value.int32 < 0 || paramp->value.int32 > 255,
+              return UROS_ERR_BADPARAM,
+              ("Parameter [%.*s] value %d outside [0..255]\n",
+               UROS_STRARG(keyp), paramp->value.int32));
+    urosMutexLock(&backgroundColorLock);
+    backgroundColor.g = (uint8_t)paramp->value.int32;
+    urosMutexUnlock(&backgroundColorLock);
+    return UROS_OK;
+  }
+
+  /* Check if [<node>/background_b].*/
+  if (0 == urosStringCmp(keyp, &backcolparnameB)) {
+    urosError(paramp->class != UROS_RPCP_INT, return UROS_ERR_BADPARAM,
+              ("Parameter [%.*s] class id %d, expected %d (UROS_RPCP_INT)\n",
+               UROS_STRARG(keyp), (int)paramp->class, (int)UROS_RPCP_INT));
+    urosError(paramp->value.int32 < 0 || paramp->value.int32 > 255,
+              return UROS_ERR_BADPARAM,
+              ("Parameter [%.*s] value %d outside [0..255]\n",
+               UROS_STRARG(keyp), paramp->value.int32));
+    urosMutexLock(&backgroundColorLock);
+    backgroundColor.b = (uint8_t)paramp->value.int32;
+    urosMutexUnlock(&backgroundColorLock);
+    return UROS_OK;
+  }
+
+  /* Unknown parameter name.*/
+  return UROS_ERR_BADPARAM;
 }
 
 /** @} */
