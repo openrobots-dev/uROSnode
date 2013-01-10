@@ -72,6 +72,9 @@ CPPSRC =
 INCDIR = $(UROSINC) \
          $(PROJINC)
 
+# Configuration file for cflow
+CFLOWCFG = misc/cflow.rc
+
 #
 # Project, sources and paths
 ##############################################################################
@@ -89,7 +92,7 @@ LD    = gcc
 #LD    = g++
 CP    = objcopy
 OD    = objdump
-CFLOW = CFLOWRC=cflow.rc cflow
+CFLOW = CFLOWRC=$(CFLOWCFG) cflow
 
 # Define C warning options here
 CWARN = -Wall -Wextra -Wstrict-prototypes

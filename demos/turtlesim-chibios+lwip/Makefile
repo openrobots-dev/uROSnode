@@ -105,7 +105,7 @@ CPPSRC =
 
 # C sources to be compiled in ARM mode regardless of the global setting.
 # NOTE: Mixing ARM and THUMB mode enables the -mthumb-interwork compiler
-#       option that results in lower performance and larger code size.
+:#       option that results in lower performance and larger code size.
 ACSRC =
 
 # C++ sources to be compiled in ARM mode regardless of the global setting.
@@ -133,6 +133,9 @@ INCDIR = $(PORTINC) $(KERNINC) $(TESTINC) \
          $(UROSINC) \
          $(PROJINC)
 
+# Configuration file for cflow
+CFLOWCFG = misc/cflow.rc
+
 #
 # Project, sources and paths
 ##############################################################################
@@ -157,7 +160,7 @@ AS    = $(TRGT)gcc -x assembler-with-cpp
 OD    = $(TRGT)objdump
 HEX   = $(CP) -O ihex
 BIN   = $(CP) -O binary
-CFLOW = CFLOWRC=cflow.rc cflow
+CFLOW = CFLOWRC=$(CFLOWCFG) cflow
 
 # ARM-specific options here
 AOPT =
