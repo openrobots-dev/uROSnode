@@ -181,8 +181,8 @@ generated code, with some modifications only where needed (see below).
 
 An appropriate configuration file has to be provided to
 <tt>urosgen.py</tt>. Please refer to the
-<a href="https://github.com/openrobots-dev/uROSnode/blob/master/tools/urosgen/templates/demo_urosgen.cfg">template</a>
-for more information.
+<a href="https://github.com/openrobots-dev/uROSnode/blob/master/tools/urosgen/demos/urosgen_demo.cfg">
+demo configuration file</a> for further information.
 By running the code generator with the given configuration, it will produce:
 - message/service type definitions, sorted by dependency
 - message/service (un)marshalling functions
