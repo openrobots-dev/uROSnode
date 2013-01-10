@@ -989,6 +989,8 @@ uros_err_t urosRpcParserDouble(UrosRpcParser *pp, double *valuep) {
  *          <tt>&amp;amp;</tt> or <tt>&amp;lt;</tt>. No other tokens can
  *          contain the <tt>'&amp;'</tt> character.
  *
+ * @param[in,out] strp
+ *          Pointer to the string to be fixed.
  * @return
  *          Error code.
  * @retval UROS_ERR_BADPARAM

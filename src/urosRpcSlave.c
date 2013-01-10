@@ -643,6 +643,7 @@ uros_err_t uros_rpcslave_method_paramupdate(UrosRpcStreamer *sp,
 
   const UrosRpcParamNode *paramnodep;
   const UrosRpcParam *caller_id, *parameter_key, *parameter_value;
+  UrosString keystr;
   uros_err_t err;
 
   urosAssert(sp != NULL);
@@ -662,10 +663,11 @@ uros_err_t uros_rpcslave_method_paramupdate(UrosRpcStreamer *sp,
   paramnodep = paramnodep->nextp;
   urosError(paramnodep == NULL, return sp->err = UROS_ERR_BADPARAM,
             ("Expecting a further parameter\n"));
-  parameter_key = &paramnodep->param;
+  parameter_key = (UrosRpcParam*)&paramnodep->param;
   urosError(parameter_key->class != UROS_RPCP_STRING,
             return sp->err = UROS_ERR_BADPARAM,
-            ("Class id of [parameter_key] is %d, expected %d (UROS_RPCP_STRING)\n",
+            ("Class id of [parameter_key] is %d, expected %d "
+             "(UROS_RPCP_STRING)\n",
              (int)parameter_key->class, (int)UROS_RPCP_STRING));
 
   paramnodep = paramnodep->nextp;
@@ -673,11 +675,16 @@ uros_err_t uros_rpcslave_method_paramupdate(UrosRpcStreamer *sp,
             ("Expecting a further parameter\n"));
   parameter_value = &paramnodep->param;
 
+  /* Fix the key length, if there is a trailing '/'.*/
+  keystr = parameter_key->value.string;
+  if (keystr.length > 0 && keystr.datap[keystr.length - 1] == '/') {
+    --keystr.length;
+  }
+
   /* Update the parameter value.*/
-  err = urosUserParamUpdate(&parameter_key->value.string, parameter_value);
+  err = urosUserParamUpdate(&keystr, parameter_value);
   urosError(err != UROS_OK, UROS_NOP,
-            ("Cannot update param [%.*s]\n",
-             UROS_STRARG(&parameter_key->value.string)));
+            ("Cannot update param [%.*s]\n", UROS_STRARG(&keystr)));
 
   /* Generate the HTTP response.*/
   uros_rpcslave_methodresponse_prologue(sp); _CHKOK
