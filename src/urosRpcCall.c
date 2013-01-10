@@ -57,6 +57,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define urosAssert(expr)
 #endif
 
+#if UROS_RPCCALL_C_USE_ERROR_MSG == UROS_FALSE && !defined(__DOXYGEN__)
+#undef urosError
+#define urosError(when, action, msgargs) { if (when) { action; } }
+#endif
+
 /** @addtogroup rpc_types */
 /** @{ */
 
@@ -71,6 +76,7 @@ typedef struct uros_rpcpcallctx_t {
     UrosRpcParser   parser;     /**< @brief XMLRPC parser.*/
     UrosRpcStreamer streamer;   /**< @brief XMLRPC streamer.*/
   } x;                          /**< @brief Parser/Streamer, mutually exclusive.*/
+  uros_bool_t       parsing;    /**< @brief Parser/Streamer switch.*/
 } uros_rpcpcallctx_t;
 
 /** @} */
@@ -110,6 +116,7 @@ uros_err_t uros_rpcpcall_buildctx(uros_rpcpcallctx_t *ctxp,
   urosAssert(addrp != NULL);
 
   ctxp->addrp = addrp;
+  ctxp->parsing = UROS_FALSE;
 
   /* Connect to the target interface.*/
   urosConnObjectInit(&ctxp->conn);
@@ -137,8 +144,12 @@ uros_err_t uros_rpcpcall_cleanctx(uros_rpcpcallctx_t *ctxp) {
 
   urosAssert(ctxp != NULL);
 
-  /* Dispose the parser.*/
-  urosRpcParserClean(&ctxp->x.parser, UROS_TRUE);
+  /* Dispose the current XMLRPC agent.*/
+  if (ctxp->parsing) {
+    urosRpcParserClean(&ctxp->x.parser, UROS_TRUE);
+  } else {
+    urosRpcStreamerClean(&ctxp->x.streamer, UROS_TRUE);
+  }
 
   /* Close the connection.*/
   urosConnClose(&ctxp->conn);
@@ -158,6 +169,7 @@ uros_err_t uros_rpccall_waitresponsestart(uros_rpcpcallctx_t *ctxp) {
   /* Initialize the parser.*/
   rdbufp = (char*)urosAlloc(UROS_RPCPARSER_RDBUFLEN);
   if (rdbufp == NULL) { return ctxp->x.err = UROS_ERR_NOMEM; }
+  ctxp->parsing = UROS_TRUE;
   urosRpcParserObjectInit(&ctxp->x.parser, &ctxp->conn,
                           rdbufp, UROS_RPCPARSER_RDBUFLEN);
 
