@@ -49,24 +49,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /** @{ */
 
 /**
- * @brief   Prints a formatted error message.
- * @details User-defined callback function to print an error message on the
- *          desired output stream.
- *
- * @param[in] formatp
- *          Format string.
- * @param[in] ...
- *          @p printf() style arguments.
- */
-void urosUserErrPrintf(const char *formatp, ...) {
-
-  urosAssert(formatp != NULL);
-
-  /* TODO: Print a formatted error message.*/
-  (void)formatp;
-}
-
-/**
  * @brief   Loads node configuration.
  * @details Any previously allocated data is freed, then the configuration is
  *          loaded from a static non-volatile memory chunk.

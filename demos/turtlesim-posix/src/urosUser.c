@@ -42,7 +42,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <urosUser.h>
 #include <urosRpcSlave.h>
 #include <urosTcpRos.h>
-#include <stdarg.h>
 
 #include "urosHandlers.h"
 #include "app.h"
@@ -76,8 +75,8 @@ static void uros_nodeconfig_readstring(UrosString *strp, FILE *fp) {
   urosAssert(datap != NULL);
   n = fread(datap, length, 1, fp);
   urosError(n < 1, return,
-            ("Cannot read string data (%zu bytes) at offset 0x%.8lX\n",
-             length, ftell(fp)));
+            ("Cannot read string data (%u bytes) at offset 0x%.8lX\n",
+             (unsigned)length, ftell(fp)));
 
   /* Assign the data back.*/
   strp->length = length;
@@ -94,8 +93,8 @@ static void uros_nodeconfig_writestring(const UrosString *strp, FILE *fp) {
   /* Write the string length.*/
   n = fwrite(&strp->length, sizeof(size_t), 1, fp);
   urosError(n < 1, return,
-            ("Cannot write string length (%zu bytes) at offset 0x%.8lX\n",
-             strp->length, ftell(fp)));
+            ("Cannot write string length (%u bytes) at offset 0x%.8lX\n",
+             (unsigned)strp->length, ftell(fp)));
 
   /* Write the string data.*/
   n = fwrite(strp->datap, strp->length, 1, fp);
@@ -136,27 +135,6 @@ static void uros_nodeconfig_writeaddr(const UrosAddr *addrp, FILE *fp) {
 
 /** @addtogroup user_funcs */
 /** @{ */
-
-/**
- * @brief   Prints a formatted error message.
- * @details User-defined callback function to print an error message on the
- *          desired output stream.
- *
- * @param[in] formatp
- *          Format string.
- * @param[in] ...
- *          @p printf() style arguments.
- */
-void urosUserErrPrintf(const char *formatp, ...) {
-
-  va_list args;
-
-  urosAssert(formatp != NULL);
-
-  va_start(args, formatp);
-  vfprintf(stderr, formatp, args);
-  va_end(args);
-}
 
 /**
  * @brief   Loads node configuration.

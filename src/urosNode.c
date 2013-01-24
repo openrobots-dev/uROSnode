@@ -1746,10 +1746,11 @@ uros_err_t urosNodeUnsubscribeParam(const UrosString *namep) {
   urosError(res.code != UROS_RPCC_SUCCESS,
             { err = UROS_ERR_BADPARAM; goto _finally; },
             ("Response code %ld, expected %d\n",
-             res.code, UROS_RPCC_SUCCESS));
+             (long int)res.code, UROS_RPCC_SUCCESS));
   urosError(res.httpcode != 200,
             { err = UROS_ERR_BADPARAM; goto _finally; },
-            ("Response HTTP code %ld, expected 200\n", res.httpcode));
+            ("Response HTTP code %ld, expected 200\n",
+             (long int)res.httpcode));
 
   /* Remove from the subscribed topics list and delete.*/
   nodep = urosListRemove(&np->status.subParamList, nodep);
@@ -1941,7 +1942,7 @@ uros_err_t urosNodeResolveTopicPublisher(const UrosAddr *apiaddrp,
   if (err != UROS_OK) { goto _finally; }
   urosError(res.httpcode != 200, _ERR,
             ("The HTTP response code is %lu, expected 200\n",
-             res.httpcode));
+             (long unsigned int)res.httpcode));
   if (res.code != UROS_RPCC_SUCCESS) { _ERR }
   urosError(res.valuep->class != UROS_RPCP_ARRAY, _ERR,
             ("Response value class is %d, expected %d (UROS_RPCP_ARRAY)\n",
@@ -1949,7 +1950,7 @@ uros_err_t urosNodeResolveTopicPublisher(const UrosAddr *apiaddrp,
   urosAssert(res.valuep->value.listp != NULL);
   urosError(res.valuep->value.listp->length != 3, _ERR,
             ("Response value array length %lu, expected 3",
-             res.valuep->value.listp->length));
+             (long unsigned int)res.valuep->value.listp->length));
   nodep = res.valuep->value.listp->headp;
 
   /* Check the protocol string.*/
@@ -1978,7 +1979,8 @@ uros_err_t urosNodeResolveTopicPublisher(const UrosAddr *apiaddrp,
             ("Response value class is %d, expected %d (UROS_RPCP_INT)\n",
              (int)paramp->class, (int)UROS_RPCP_INT));
   urosError(paramp->value.int32 < 0 || paramp->value.int32 > 65535, _ERR,
-            ("Port number %ld outside range\n", paramp->value.int32));
+            ("Port number %ld outside range\n",
+             (long int)paramp->value.int32));
   tcprosaddrp->port = (uint16_t)paramp->value.int32;
 
   err = UROS_OK;
@@ -2026,7 +2028,7 @@ uros_err_t urosNodeResolveServicePublisher(const UrosString *namep,
   if (err != UROS_OK) { goto _finally; }
   urosError(res.httpcode != 200, _ERR,
             ("The HTTP response code is %lu, expected 200\n",
-             res.httpcode));
+             (long unsigned int)res.httpcode));
   urosError(res.code != UROS_RPCC_SUCCESS, _ERR,
             ("Cannot find a provider for service [%.*s]\n",
              UROS_STRARG(namep)));

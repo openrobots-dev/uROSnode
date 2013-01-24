@@ -761,8 +761,8 @@ uros_err_t urosThreadJoin(UrosThreadId id) {
   uros_err_t err;
   err = uros_lld_thread_join(id);
   urosError(err != UROS_OK, UROS_NOP,
-            ("Error %s while joining the thread %p\n",
-             urosErrorText(err), (uintptr_t)id));
+            ("Error %s while joining the thread %u\n",
+             urosErrorText(err), (unsigned)id));
   return UROS_OK;
 }
 

@@ -239,7 +239,7 @@ _finally:
  */
 uros_err_t sub_tpc__turtleX__command_velocity(UrosTcpRosStatus *tcpstp) {
 
-  turtle_t *turtlep;
+  turtle_t *turtlep = NULL;
 
   /* Message allocation and initialization.*/
   UROS_TPC_INIT_H(msg__turtlesim__Velocity);
@@ -484,7 +484,7 @@ _finally:
  */
 uros_err_t pub_srv__turtleX__set_pen(UrosTcpRosStatus *tcpstp) {
 
-  turtle_t *turtlep;
+  turtle_t *turtlep = NULL;
 
   /* Service messages allocation and initialization.*/
   UROS_SRV_INIT_HIHO(in_srv__turtlesim__SetPen,
@@ -553,8 +553,8 @@ _finally:
  */
 uros_err_t pub_srv__turtleX__teleport_absolute(UrosTcpRosStatus *tcpstp) {
 
-  turtle_t *turtlep;
-  struct msg__turtlesim__Pose *posep;
+  turtle_t *turtlep = NULL;
+  struct msg__turtlesim__Pose *posep = NULL;
 
   /* Service messages allocation and initialization.*/
   UROS_SRV_INIT_HIHO(in_srv__turtlesim__TeleportAbsolute,
@@ -634,8 +634,8 @@ _finally:
  */
 uros_err_t pub_srv__turtleX__teleport_relative(UrosTcpRosStatus *tcpstp) {
 
-  turtle_t *turtlep;
-  struct msg__turtlesim__Pose *posep;
+  turtle_t *turtlep = NULL;
+  struct msg__turtlesim__Pose *posep = NULL;
 
   /* Service messages allocation and initialization.*/
   UROS_SRV_INIT_HIHO(in_srv__turtlesim__TeleportRelative,

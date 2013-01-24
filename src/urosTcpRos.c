@@ -496,8 +496,8 @@ uros_err_t urosTcpRosSkip(UrosTcpRosStatus *tcpstp, size_t length) {
     size_t nb = length;
     tcpstp->err = urosConnRecv(tcpstp->csp, &bufp, &nb);
     urosError(tcpstp->err != UROS_OK, return tcpstp->err,
-              ("Error %s while skipping %zu bytes from the current position\n",
-               urosErrorText(tcpstp->err), length));
+              ("Error %s while skipping %u bytes from the current position\n",
+               urosErrorText(tcpstp->err), (unsigned)length));
     length -= nb;
   }
   return tcpstp->err = UROS_OK;
@@ -534,16 +534,18 @@ uros_err_t urosTcpRosExpect(UrosTcpRosStatus *tcpstp,
     nb = pending;
     tcpstp->err = urosConnRecv(tcpstp->csp, (void**)&bufp, &nb);
     urosError(tcpstp->err != UROS_OK, return tcpstp->err,
-              ("Error %s while receiving %zu bytes after [%.*s]\n",
-               urosErrorText(tcpstp->err), nb,
-               (int)((ptrdiff_t)curp - (ptrdiff_t)tokp), tokp));
+              ("Error %s while receiving %u bytes after [%.*s]\n",
+               urosErrorText(tcpstp->err), (unsigned)nb,
+               (unsigned)((ptrdiff_t)curp - (ptrdiff_t)tokp),
+               (const char *)tokp));
     urosError(0 != memcmp(curp, bufp, nb),
               return tcpstp->err = UROS_ERR_PARSE,
               ("Found [%.*s], expected [%.*s] after [%.*s] in token [%.*s])\n",
-               (int)nb, curp,
-               (int)nb, bufp,
-               (int)((ptrdiff_t)curp - (ptrdiff_t)tokp), tokp,
-               (int)toklen, tokp));
+               (unsigned)nb, curp,
+               (unsigned)nb, bufp,
+               (unsigned)((ptrdiff_t)curp - (ptrdiff_t)tokp),
+               (const char *)tokp,
+               (unsigned)toklen, (const char *)tokp));
     pending -= nb;
     curp += nb;
   }
@@ -581,15 +583,15 @@ uros_err_t urosTcpRosRecv(UrosTcpRosStatus *tcpstp,
       if (tcpstp->err == UROS_ERR_EOF && nb < pending) {
         urosError(tcpstp->err == UROS_ERR_EOF && nb < pending,
                   return tcpstp->err,
-                  ("Error %s while receiving %zu bytes after [%.*s]\n",
-                   urosErrorText(tcpstp->err), nb,
-                   (int)(buflen - pending), bufp));
+                  ("Error %s while receiving %u bytes after [%.*s]\n",
+                   urosErrorText(tcpstp->err), (unsigned)nb,
+                   (unsigned)(buflen - pending), (const char *)bufp));
       } else {
         urosError(tcpstp->err != UROS_OK && tcpstp->err != UROS_ERR_TIMEOUT,
                   return tcpstp->err,
-                  ("Error %s while receiving %zu bytes after [%.*s]\n",
-                   urosErrorText(tcpstp->err), nb,
-                   (int)(buflen - pending), bufp));
+                  ("Error %s while receiving %u bytes after [%.*s]\n",
+                   urosErrorText(tcpstp->err), (unsigned)nb,
+                   (unsigned)(buflen - pending), (const char *)bufp));
         return UROS_ERR_TIMEOUT;
       }
     }
@@ -632,13 +634,13 @@ uros_err_t urosTcpRosRecvRev(UrosTcpRosStatus *tcpstp,
       if (tcpstp->err == UROS_ERR_EOF && nb < pending) {
         urosError(tcpstp->err == UROS_ERR_EOF && nb < pending,
                   return tcpstp->err,
-                  ("Error %s while receiving %zu bytes\n",
-                   urosErrorText(tcpstp->err), nb));
+                  ("Error %s while receiving %u bytes\n",
+                   urosErrorText(tcpstp->err), (unsigned)nb));
       } else {
         urosError(tcpstp->err != UROS_OK && tcpstp->err != UROS_ERR_TIMEOUT,
                   return tcpstp->err,
-                  ("Error %s while receiving %zu bytes\n",
-                   urosErrorText(tcpstp->err), nb));
+                  ("Error %s while receiving %u bytes\n",
+                   urosErrorText(tcpstp->err), (unsigned)nb));
         return UROS_ERR_TIMEOUT;
       }
     }
@@ -715,7 +717,7 @@ uros_err_t urosTcpRosSend(UrosTcpRosStatus *tcpstp,
     urosError(tcpstp->err != UROS_OK && tcpstp->err != UROS_ERR_TIMEOUT,
               return tcpstp->err,
               ("Error %s while sending [%.*s]\n",
-               urosErrorText(tcpstp->err), (int)buflen, bufp));
+               urosErrorText(tcpstp->err), (int)buflen, (const char *)bufp));
     if (tcpstp->err == UROS_ERR_TIMEOUT) { return UROS_ERR_TIMEOUT; }
   }
   return tcpstp->err = UROS_OK;
@@ -746,7 +748,7 @@ uros_err_t urosTcpRosSendRev(UrosTcpRosStatus *tcpstp,
     urosError(tcpstp->err != UROS_OK && tcpstp->err != UROS_ERR_TIMEOUT,
               return tcpstp->err,
               ("Error %s while sending [%*.s]\n",
-               urosErrorText(tcpstp->err), (int)buflen, bufp));
+               urosErrorText(tcpstp->err), (int)buflen, (const char *)bufp));
     if (tcpstp->err == UROS_ERR_TIMEOUT) { return UROS_ERR_TIMEOUT; }
     bufp = (const void *)((const uint8_t *)bufp + 1);
   }
@@ -1072,13 +1074,13 @@ uros_err_t urosTcpRosRecvHeader(UrosTcpRosStatus *tcpstp,
 
     /* Get the field length and check for size consistency.*/
     urosError(remlen < 4, _ERRPARSE,
-              ("Premature end of header (no field length, %zu bytes left)\n",
-               remlen));
+              ("Premature end of header (no field length, %u bytes left)\n",
+               (unsigned)remlen));
     remlen -= 4;
     urosTcpRosRecvRaw(tcpstp, fieldlen); _CHKOK
     urosError(remlen < fieldlen, _ERRPARSE,
-              ("Premature end of header (%zu bytes left, expected %zu)\n",
-               remlen, fieldlen));
+              ("Premature end of header (%u bytes left, expected %u)\n",
+               (unsigned)remlen, (unsigned)fieldlen));
     vallen = fieldlen;
 
     /* Decode the field name.*/

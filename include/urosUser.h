@@ -54,8 +54,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 extern "C" {
 #endif
 
-void urosUserErrPrintf(const char *formatp, ...);
-
 void urosUserNodeConfigLoad(UrosNodeConfig *cfgp);
 void urosUserNodeConfigSave(const UrosNodeConfig *cfgp);
 

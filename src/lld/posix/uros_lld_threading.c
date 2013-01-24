@@ -443,20 +443,23 @@ uros_err_t uros_lld_thread_createstatic(UrosThreadId *idp, const char *namep,
 
   err = pthread_attr_setstack(&attr, stackp, stacksize);
   urosError(err != 0, goto _error,
-            ("Error [%s] while setting thread stack (%zu bytes at 0x%.*X)\n",
-             strerror(err), stacksize, 2*(int)sizeof(uintptr_t), stackp));
+            ("Error [%s] while setting thread stack (%u bytes at 0x%.*X)\n",
+             strerror(err), (unsigned)stacksize,
+             (unsigned)(2*sizeof(uintptr_t)),
+             (unsigned)(uintptr_t)stackp));
 
   /* Create the thread.*/
   err = pthread_create(idp, &attr, (void*(*)(void*))routine, (void*)argp);
   urosError(err != 0, goto _error,
             ("Error [%s] while creating thread (routine at 0x%.*X)\n",
-             strerror(err), 2*(int)sizeof(uintptr_t), (uintptr_t)routine));
+             strerror(err), (unsigned)(2*sizeof(uintptr_t)),
+             (unsigned)(uintptr_t)routine));
 
 #ifdef __USE_GNU
   err = pthread_setname_np(*idp, namep);
   urosError(err != 0, goto _error,
             ("Error [%s] while setting the thread name [%s]\n",
-             strerror(err), namp));
+             strerror(err), namep));
 #endif
 
   pthread_attr_destroy(&attr);
@@ -578,8 +581,8 @@ uros_err_t uros_lld_thread_join(UrosThreadId id) {
 
   err = pthread_join(id, (void**)&msg);
   urosError(err != 0, return UROS_ERR_BADPARAM,
-            ("Error [%s] while joining thread id %d\n",
-             strerror(err), id));
+            ("Error [%s] while joining thread id %u\n",
+             strerror(err), (unsigned)id));
   return msg;
 }
 

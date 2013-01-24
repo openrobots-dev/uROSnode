@@ -106,7 +106,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *          prints
  *          @verbatim The IP address is: 192.168.1.1@endverbatim
  */
-#define UROS_IPFMT      "%hhu.%hhu.%hhu.%hhu"
+#define UROS_IPFMT      "%u.%u.%u.%u"
 
 /**
  * @brief   @p printf() compatible format string for a connection address.
@@ -122,7 +122,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *          prints
  *          @verbatim The TCP/IP address is: 192.168.1.1:12345@endverbatim
  */
-#define UROS_ADDRFMT    UROS_IPFMT":%hu"
+#define UROS_ADDRFMT    UROS_IPFMT":%u"
 
 /**
  * @brief   Makes the formatted parameters for an IP address.
@@ -139,10 +139,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *          See @ref conn_ex_ipfmt "UROS_IPFMT example".
  */
 #define UROS_IPARG(ipp) \
-  ((ipp)->fields.field1), \
-  ((ipp)->fields.field2), \
-  ((ipp)->fields.field3), \
-  ((ipp)->fields.field4)
+  (unsigned)((ipp)->fields.field1), \
+  (unsigned)((ipp)->fields.field2), \
+  (unsigned)((ipp)->fields.field3), \
+  (unsigned)((ipp)->fields.field4)
 
 /**
  * @brief   Makes the formatted parameters for a connection address.
@@ -159,7 +159,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *          See @ref conn_ex_addrfmt "UROS_IPFMT example".
  */
 #define UROS_ADDRARG(addrp) \
-  UROS_IPARG(&(addrp)->ip), ((addrp)->port)
+  UROS_IPARG(&(addrp)->ip), (unsigned)((addrp)->port)
 
 /** @} */
 /** @} */

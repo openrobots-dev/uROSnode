@@ -90,7 +90,7 @@ uros_err_t urosRpcParserRead(UrosRpcParser *pp,
 uros_err_t urosRpcParserExpect(UrosRpcParser *pp,
                                const char *tokp, size_t toklen);
 uros_err_t urosRpcParserExpectQuiet(UrosRpcParser *pp,
-                                   const char *tokp, size_t toklen);
+                                    const char *tokp, size_t toklen);
 uros_err_t urosRpcParserExpectNoCase(UrosRpcParser *pp,
                                      const char *tokp, size_t toklen);
 uros_err_t urosRpcParserExpectNoCaseQuiet(UrosRpcParser *pp,

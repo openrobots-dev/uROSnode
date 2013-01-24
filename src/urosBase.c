@@ -173,7 +173,8 @@ void *urosAlloc(size_t size) {
 #if UROS_BASE_C_USE_ERROR_MSG
   void *chunk = uros_lld_alloc(size);
   urosError(chunk == NULL, return NULL,
-            ("Not enough free heap memory to allocate %zu bytes\n", size));
+            ("Not enough free heap memory to allocate %u bytes\n",
+             (unsigned)size));
   return chunk;
 #else
   return uros_lld_alloc(size);

@@ -35,8 +35,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * @brief   TCPROS features of the middleware.
  */
 
-#ifndef _UROSTCP_H_
-#define _UROSTCP_H_
+#ifndef _UROSTCPROS_H_
+#define _UROSTCPROS_H_
 
 /*===========================================================================*/
 /* HEADER FILES                                                              */
@@ -343,8 +343,9 @@ typedef uros_err_t (*uros_tcpsrvcall_t)(UrosTcpRosStatus *tcpstp,
     urosError((size_t)UROS_HND_LENVAR != length_##ctypename(msgvarp), \
               { (UROS_HND_TCPSTP)->err = UROS_ERR_BADPARAM; \
                 goto UROS_HND_FINALLY; }, \
-              ("Wrong message length %lu, expected %zu\n", \
-                UROS_HND_LENVAR, length_##ctypename(msgvarp))); }
+              ("Wrong message length %u, expected %u\n", \
+                (unsigned)UROS_HND_LENVAR, \
+                (unsigned)length_##ctypename(msgvarp))); }
 
 /** @} */
 
@@ -826,4 +827,4 @@ void urosTcpRosServiceDone(UrosTcpRosStatus *tcpstp);
 #ifdef __cplusplus
 }
 #endif
-#endif /* _UROSTCP_H_ */
+#endif /* _UROSTCPROS_H_ */

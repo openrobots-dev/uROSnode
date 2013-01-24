@@ -352,7 +352,7 @@ uros_err_t urosRpcStreamerHttpStatus(UrosRpcStreamer *sp, uint32_t code) {
   case 503: { txtp = "Service Unavailable"; break; }
   default: {
     urosError(UROS_ERR_BADPARAM, UROS_NOP,
-              ("Unhandled HTTP code %lu", code));
+              ("Unhandled HTTP code %lu", (long unsigned int)code));
     return sp->err = UROS_ERR_BADPARAM;
   }
   }

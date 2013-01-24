@@ -65,7 +65,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define UROS_NODE_THREAD_PRIO               LOWPRIO
 
 /** @brief Node thread stack size.*/
-#define UROS_NODE_THREAD_STKSIZE            2048
+#define UROS_NODE_THREAD_STKSIZE            1536
 
 /** @} */
 /** @} */
@@ -114,7 +114,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define UROS_XMLRPC_LISTENER_PRIO           (LOWPRIO + 1)
 
 /** @brief XMLRPC listener thread stack size.*/
-#define UROS_XMLRPC_LISTENER_STKSIZE        1024
+#define UROS_XMLRPC_LISTENER_STKSIZE        1536
 
 /** @} */
 
@@ -130,7 +130,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define UROS_XMLRPC_SLAVE_PRIO              (LOWPRIO + 3)
 
 /** @brief XMLRPC Slave server thread stack size.*/
-#define UROS_XMLRPC_SLAVE_STKSIZE           1024
+#define UROS_XMLRPC_SLAVE_STKSIZE           1536
 
 /** @} */
 
@@ -192,7 +192,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define UROS_TCPROS_CLIENT_PRIO             (NORMALPRIO + 1)
 
 /** @brief TCPROS Client thread stack size.*/
-#define UROS_TCPROS_CLIENT_STKSIZE          1024
+#define UROS_TCPROS_CLIENT_STKSIZE          1536
 
 /** @} */
 
@@ -208,7 +208,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define UROS_TCPROS_SERVER_PRIO             (NORMALPRIO + 2)
 
 /** @brief TCPROS server thread stack size.*/
-#define UROS_TCPROS_SERVER_STKSIZE          1024
+#define UROS_TCPROS_SERVER_STKSIZE          1536
 
 /** @} */
 
@@ -298,7 +298,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define UROS_USE_ASSERT                     1
 
 /** @brief Enables error messages.*/
-#define UROS_USE_ERROR_MSG                  1
+#define UROS_USE_ERROR_MSG                  0
 
 /** @} */
 
@@ -397,12 +397,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* msgargs as ("format", ...) */
 #define urosError(when, action, msgargs) \
   { if (when) { \
-      urosUserErrPrintf("Error at %s:%d\n" \
-                        "  function: %s\n" \
-                        "  reason:   %s\n" \
-                        "  message:  ", \
-                        __FILE__, __LINE__, __PRETTY_FUNCTION__, #when); \
-      urosUserErrPrintf msgargs ; \
+      chprintf("Error at %s:%d\n" \
+               "  function: %s\n" \
+               "  reason:   %s\n" \
+               "  message:  ", \
+               __FILE__, __LINE__, __PRETTY_FUNCTION__, #when); \
+      /*chprintf msgargs ;*/ \
       { action; } } }
 
 #endif /* !defined(__DOXYGEN__) */

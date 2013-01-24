@@ -139,7 +139,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *          @verbatim I'll print: Hello World!@endverbatim
  */
 #define UROS_STRARG(stringp) \
-  ((int)((stringp)->length)), ((stringp)->datap)
+  ((unsigned)((stringp)->length)), ((stringp)->datap)
 
 #if !defined(UROS_STACK_BLKSIZE) || defined(__DOXYGEN__)
 /**

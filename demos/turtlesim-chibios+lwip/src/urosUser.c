@@ -42,7 +42,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <urosUser.h>
 #include <urosRpcSlave.h>
 #include <urosTcpRos.h>
-#include <stdarg.h>
 
 #include "urosHandlers.h"
 #include "app.h"
@@ -53,27 +52,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /** @addtogroup user_funcs */
 /** @{ */
-
-/**
- * @brief   Prints a formatted error message.
- * @details User-defined callback function to print an error message on the
- *          desired output stream.
- *
- * @param[in] formatp
- *          Format string.
- * @param[in] ...
- *          @p printf() style arguments.
- */
-void urosUserErrPrintf(const char *formatp, ...) {
-
-  va_list args;
-
-  urosAssert(formatp != NULL);
-
-  va_start(args, formatp);
-  /* TODO */
-  va_end(args);
-}
 
 /**
  * @brief   Loads node configuration.

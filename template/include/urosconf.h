@@ -382,12 +382,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* msgargs as ("format", ...) */
 #define urosError(when, action, msgargs) \
   { if (when) { \
-      urosUserErrPrintf("Error at %s:%d\n" \
-                        "  function: %s\n" \
-                        "  reason:   %s\n" \
-                        "  message:  ", \
-                        __FILE__, __LINE__, __PRETTY_FUNCTION__, #when); \
-      urosUserErrPrintf msgargs ; \
+      printf("Error at %s:%d\n" \
+             "  function: %s\n" \
+             "  reason:   %s\n" \
+             "  message:  ", \
+             __FILE__, __LINE__, __PRETTY_FUNCTION__, #when); \
+      printf msgargs ; \
       { action; } } }
 
 #endif /* !defined(__DOXYGEN__) */

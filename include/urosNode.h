@@ -203,8 +203,8 @@ uros_err_t urosNodeUnsubscribeParam(const UrosString *namep);
 uros_err_t urosNodeUnsubscribeParamSZ(const char *namep);
 
 uros_err_t urosNodeFindNewTopicPublishers(const UrosString *topicnamep,
-                                     const UrosRpcParam *publishersp,
-                                     UrosList *newpubsp);
+                                          const UrosRpcParam *publishersp,
+                                          UrosList *newpubsp);
 uros_err_t urosNodeResolveTopicPublisher(const UrosAddr *apiaddrp,
                                          const UrosString *namep,
                                          UrosAddr *tcprosaddrp);

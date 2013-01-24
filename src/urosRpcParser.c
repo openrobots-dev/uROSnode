@@ -399,10 +399,11 @@ uros_err_t urosRpcParserExpect(UrosRpcParser *pp,
         return pp->err = UROS_OK;
       } else {
         urosError(UROS_ERR_PARSE, return pp->err = UROS_ERR_PARSE,
-                  ("Found [%.*s], expected [%.*s], stream offset %zu, "
+                  ("Found [%.*s], expected [%.*s], stream offset %u, "
                    "remote "UROS_ADDRFMT"\n",
-                   (int)pending, pp->curp, (int)pending, curp,
-                   pp->total, UROS_ADDRARG(&pp->csp->remaddr)));
+                   (unsigned)pending, pp->curp,
+                   (unsigned)pending, curp,
+                   (unsigned)pp->total, UROS_ADDRARG(&pp->csp->remaddr)));
       }
     } else {
       /* The token may fit only partially.*/
@@ -417,10 +418,11 @@ uros_err_t urosRpcParserExpect(UrosRpcParser *pp,
         if (pp->err != UROS_OK) { return pp->err; }
       } else {
         urosError(UROS_ERR_PARSE, return pp->err = UROS_ERR_PARSE,
-                  ("Found [%.*s], expected [%.*s], stream offset %zu, "
+                  ("Found [%.*s], expected [%.*s], stream offset %u, "
                    "remote "UROS_ADDRFMT"\n",
-                   (int)pp->pending, pp->curp, (int)pp->pending, curp,
-                   pp->total, UROS_ADDRARG(&pp->csp->remaddr)));
+                   (unsigned)pp->pending, pp->curp,
+                   (unsigned)pp->pending, curp,
+                   (unsigned)pp->total, UROS_ADDRARG(&pp->csp->remaddr)));
       }
     }
   }
@@ -466,10 +468,11 @@ uros_err_t urosRpcParserExpectNoCase(UrosRpcParser *pp,
         return pp->err = UROS_OK;
       } else {
         urosError(UROS_ERR_PARSE, return pp->err = UROS_ERR_PARSE,
-                  ("Found [%.*s], expected [%.*s], stream offset %zu, "
+                  ("Found [%.*s], expected [%.*s], stream offset %u, "
                    "no case, remote "UROS_ADDRFMT"\n",
-                   (int)pending, pp->curp, (int)pending, curp,
-                   pp->total, UROS_ADDRARG(&pp->csp->remaddr)));
+                   (unsigned)pending, pp->curp,
+                   (unsigned)pending, curp,
+                   (unsigned)pp->total, UROS_ADDRARG(&pp->csp->remaddr)));
       }
     } else {
       /* The token may fit only partially.*/
@@ -484,10 +487,11 @@ uros_err_t urosRpcParserExpectNoCase(UrosRpcParser *pp,
         if (pp->err != UROS_OK) { return pp->err; }
       } else {
         urosError(UROS_ERR_PARSE, return pp->err = UROS_ERR_PARSE,
-                  ("Found [%.*s], expected [%.*s], stream offset %zu, "
+                  ("Found [%.*s], expected [%.*s], stream offset %u, "
                    "no case, remote "UROS_ADDRFMT"\n",
-                   (int)pp->pending, pp->curp, (int)pp->pending, curp,
-                   pp->total, UROS_ADDRARG(&pp->csp->remaddr)));
+                   (unsigned)pp->pending, pp->curp,
+                   (unsigned)pp->pending, curp,
+                   (unsigned)pp->total, UROS_ADDRARG(&pp->csp->remaddr)));
       }
     }
   }
@@ -574,9 +578,10 @@ uros_err_t urosRpcParserLookAhead(UrosRpcParser *pp, char c) {
 
   urosRpcParserLookAheadQuiet(pp, c);
   urosError(pp->err == UROS_ERR_PARSE, return UROS_ERR_PARSE,
-            ("Look-ahead '%c', expected '%c', stream offset %zu, "
+            ("Look-ahead '%c', expected '%c', stream offset %u, "
              "remote "UROS_ADDRFMT"\n",
-             pp->curp[0], c, pp->total, UROS_ADDRARG(&pp->csp->remaddr)));
+             pp->curp[0], c, (unsigned)pp->total,
+             UROS_ADDRARG(&pp->csp->remaddr)));
   return pp->err;
 }
 
@@ -791,8 +796,9 @@ uros_err_t urosRpcParserExpectWs(UrosRpcParser *pp) {
             ("Error %s while skipping whitespace, remote "UROS_ADDRFMT"\n",
              urosErrorText(pp->err), UROS_ADDRARG(&pp->csp->remaddr)));
   urosError(oldcnt == pp->total, return pp->err = UROS_ERR_PARSE,
-            ("No whitespace found at stream offset %zu, remote "
-             UROS_ADDRFMT"\n", pp->total, UROS_ADDRARG(&pp->csp->remaddr)));
+            ("No whitespace found at stream offset %u, remote "
+             UROS_ADDRFMT"\n", (unsigned)pp->total,
+             UROS_ADDRARG(&pp->csp->remaddr)));
   return pp->err = UROS_OK;
 }
 
@@ -1106,9 +1112,9 @@ uros_err_t urosRpcParserHttpRequest(UrosRpcParser *pp) {
     urosRpcParserSkipAfter(pp, "\r\n", 2); _CHKOK
   }
   urosError(pp->err != UROS_OK, return pp->err,
-            ("Error %s while scanning for HTTP headers at stream offset %zu, "
-             "remote "UROS_ADDRFMT"\n", urosErrorText(pp->err), pp->total,
-             UROS_ADDRARG(&pp->csp->remaddr)));
+            ("Error %s while scanning for HTTP headers at stream offset %u, "
+             "remote "UROS_ADDRFMT"\n", urosErrorText(pp->err),
+             (unsigned)pp->total, UROS_ADDRARG(&pp->csp->remaddr)));
 
   return pp->err = UROS_OK;
 #undef _CHKOK
@@ -1193,9 +1199,9 @@ uros_err_t urosRpcParserHttpResponse(UrosRpcParser *pp, uint32_t *codep) {
     urosRpcParserSkipAfter(pp, "\r\n", 2); _CHKOK
   }
   urosError(pp->err != UROS_OK, return pp->err,
-            ("Error %s while scanning for HTTP headers at stream offset %zu, "
-             "remote "UROS_ADDRFMT"\n", urosErrorText(pp->err), pp->total,
-             UROS_ADDRARG(&pp->csp->remaddr)));
+            ("Error %s while scanning for HTTP headers at stream offset %u, "
+             "remote "UROS_ADDRFMT"\n", urosErrorText(pp->err),
+             (unsigned)pp->total, UROS_ADDRARG(&pp->csp->remaddr)));
 
   return pp->err = UROS_OK;
 #undef _CHKOK
@@ -1246,9 +1252,10 @@ uros_err_t urosRpcParserXmlAttrWVal(UrosRpcParser *pp,
     return pp->err = UROS_OK;
   }
   urosError(pp->err != UROS_OK, return pp->err,
-            ("Error %s while scanning for XML attribute, stream offset %zu, "
+            ("Error %s while scanning for XML attribute, stream offset %u, "
              "pending [%.*s], remote "UROS_ADDRFMT"\n",
-             urosErrorText(pp->err), pp->total, (int)pp->pending, pp->curp,
+             urosErrorText(pp->err), (unsigned)pp->total,
+             (unsigned)pp->pending, pp->curp,
              UROS_ADDRARG(&pp->csp->remaddr)));
 
   return pp->err = UROS_OK;
@@ -1288,9 +1295,10 @@ uros_err_t urosRpcParserXmlTagBeginNoName(UrosRpcParser *pp) {
       urosRpcParserSkipWs(pp); _CHKOK
     }
     urosError(pp->err != UROS_OK, return pp->err,
-              ("Error %s while scanning for '<', stream offset %zu, "
+              ("Error %s while scanning for '<', stream offset %u, "
                "pending [%.*s], remote "UROS_ADDRFMT"\n",
-               urosErrorText(pp->err), pp->total, (int)pp->pending, pp->curp,
+               urosErrorText(pp->err), (unsigned)pp->total,
+               (unsigned)pp->pending, pp->curp,
                UROS_ADDRARG(&pp->csp->remaddr)));
   }
   return pp->err = UROS_OK;
@@ -1482,9 +1490,10 @@ uros_err_t urosRpcParserXmlHeader(UrosRpcParser *pp) {
 
 _error:
   urosError(pp->err != UROS_OK, UROS_NOP,
-            ("Error %s while parsing an XML header, stream offset %zu, "
+            ("Error %s while parsing an XML header, stream offset %u, "
              "pending [%.*s], remote "UROS_ADDRFMT"\n",
-             urosErrorText(pp->err), pp->total, (int)pp->pending, pp->curp,
+             urosErrorText(pp->err), (unsigned)pp->total,
+             (unsigned)pp->pending, pp->curp,
              UROS_ADDRARG(&pp->csp->remaddr)));
   return pp->err;
 #undef _CHKOK
@@ -1542,7 +1551,7 @@ uros_err_t urosRpcParserParamValueBoolean(UrosRpcParser *pp,
   } else {
     urosError(UROS_ERR_PARSE, UROS_NOP,
               ("%ld is not a valid XMLRPC <boolean> value\n",
-               paramp->value.int32));
+               (long int)paramp->value.int32));
     return pp->err = UROS_ERR_PARSE;
   }
   return pp->err = UROS_OK;
@@ -1742,8 +1751,9 @@ uros_err_t urosRpcParserParamValueArray(UrosRpcParser *pp,
     }
     urosError(pp->err != UROS_OK, goto _error,
               ("Error %s while scanning for an array value, "
-               "stream offset %zu, pending [%.*s], remote "UROS_ADDRFMT"\n",
-               urosErrorText(pp->err), pp->total, (int)pp->pending, pp->curp,
+               "stream offset %u, pending [%.*s], remote "UROS_ADDRFMT"\n",
+               urosErrorText(pp->err), (unsigned)pp->total,
+               (unsigned)pp->pending, pp->curp,
                UROS_ADDRARG(&pp->csp->remaddr)));
   }
   return pp->err = UROS_OK;
