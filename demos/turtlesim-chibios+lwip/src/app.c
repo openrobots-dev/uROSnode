@@ -305,11 +305,9 @@ turtle_t *turtle_spawn(const UrosString *namep,
   static const char *const telabsend = "/teleport_absolute";
   static const char *const telrelend = "/teleport_relative";
 
-  turtle_t *turtlep, *curp;
+  turtle_t *turtlep;
   unsigned i, numAlive;
   uros_err_t err;
-  UrosString name, posname, colsenname, velname,
-             setpenname, telabsname, telrelname;
 
   urosAssert(urosStringNotEmpty(namep));
 
@@ -323,91 +321,76 @@ turtle_t *turtle_spawn(const UrosString *namep,
 
   /* Fill an empty slot.*/
   for (turtlep = NULL, numAlive = 0; turtlep == NULL;) {
-    for (i = 0, curp = turtles; i < MAX_TURTLES; ++curp, ++i) {
-      urosMutexLock(&curp->lock);
-      if (curp->status == TURTLE_ALIVE) {
-        urosError(0 == urosStringCmp(&curp->name, namep),
-                  { urosMutexUnlock(&curp->lock); return NULL; },
+    for (i = 0, turtlep = turtles; i < MAX_TURTLES; ++turtlep, ++i) {
+      urosMutexLock(&turtlep->lock);
+      if (turtlep->status == TURTLE_ALIVE) {
+        urosError(0 == urosStringCmp(&turtlep->name, namep),
+                  { urosMutexUnlock(&turtlep->lock); return NULL; },
                   ("A turtle named [%.*s] is alive\n", UROS_STRARG(namep)));
         ++numAlive;
       }
-      if (curp->status == TURTLE_EMPTY) {
-        turtlep = curp;
+      if (turtlep->status == TURTLE_EMPTY) {
         break;
       }
-      urosMutexUnlock(&curp->lock);
+      urosMutexUnlock(&turtlep->lock);
     }
     if (numAlive == MAX_TURTLES) {
       /* All the turtles are alive, sorry.*/
       return NULL;
     }
-    if (turtlep == NULL) {
+    if (i == MAX_TURTLES) {
       /* Wait for 10ms to let referencing threads release a slot.*/
       urosThreadSleepMsec(10);
     }
   }
 
   /* Build the topic names.*/
-  name = urosStringClone(namep);
-  if (name.datap == NULL) { return NULL; }
-  urosStringObjectInit(&posname);
-  urosStringObjectInit(&colsenname);
-  urosStringObjectInit(&velname);
-  urosStringObjectInit(&setpenname);
-  urosStringObjectInit(&telabsname);
-  urosStringObjectInit(&telrelname);
+#define _ALLOCFIELD(field, endsz) \
+  { urosStringObjectInit(&turtlep->field); \
+    turtlep->field.length = 1 + namep->length + strlen(endsz); \
+    turtlep->field.datap = (char*)urosAlloc(turtlep->field.length + 1); }
 
-  posname.length = 1 + namep->length + strlen(posend);
-  posname.datap = (char*)urosAlloc(posname.length + 1);
-  colsenname.length = 1 + namep->length + strlen(colsenend);
-  colsenname.datap = (char*)urosAlloc(colsenname.length + 1);
-  velname.length = 1 + namep->length + strlen(velend);
-  velname.datap = (char*)urosAlloc(velname.length + 1);
-  setpenname.length = 1 + namep->length + strlen(setpenend);
-  setpenname.datap = (char*)urosAlloc(setpenname.length + 1);
-  telabsname.length = 1 + namep->length + strlen(telabsend);
-  telabsname.datap = (char*)urosAlloc(telabsname.length + 1);
-  telrelname.length = 1 + namep->length + strlen(telrelend);
-  telrelname.datap = (char*)urosAlloc(telrelname.length + 1);
-  if (posname.datap == NULL || colsenname.datap == NULL ||
-      velname.datap == NULL || setpenname.datap == NULL ||
-      telabsname.datap == NULL || telrelname.datap == NULL) {
-    urosStringClean(&posname);
-    urosStringClean(&colsenname);
-    urosStringClean(&velname);
-    urosStringClean(&setpenname);
-    urosStringClean(&telabsname);
-    urosStringClean(&telrelname);
+  _ALLOCFIELD(poseTopic, posend);
+  _ALLOCFIELD(colsenTopic, colsenend);
+  _ALLOCFIELD(velTopic, velend);
+  _ALLOCFIELD(setpenService, setpenend);
+  _ALLOCFIELD(telabsService, telabsend);
+  _ALLOCFIELD(telrelService, telrelend);
+
+#undef _ALLOCFIELD
+
+  if (turtlep->poseTopic.datap == NULL ||
+      turtlep->colsenTopic.datap == NULL ||
+      turtlep->velTopic.datap == NULL ||
+      turtlep->setpenService.datap == NULL ||
+      turtlep->telabsService.datap == NULL ||
+      turtlep->telrelService.datap == NULL) {
+    urosStringClean(&turtlep->poseTopic);
+    urosStringClean(&turtlep->colsenTopic);
+    urosStringClean(&turtlep->velTopic);
+    urosStringClean(&turtlep->setpenService);
+    urosStringClean(&turtlep->telabsService);
+    urosStringClean(&turtlep->telrelService);
+    urosMutexUnlock(&turtlep->lock);
     return NULL;
   }
 
-  posname.datap[0] = '/';
-  memcpy(1+posname.datap, namep->datap, namep->length);
-  memcpy(1+posname.datap + namep->length, posend, strlen(posend)+1);
-  colsenname.datap[0] = '/';
-  memcpy(1+colsenname.datap, namep->datap, namep->length);
-  memcpy(1+colsenname.datap + namep->length, colsenend, strlen(colsenend)+1);
-  velname.datap[0] = '/';
-  memcpy(1+velname.datap, namep->datap, namep->length);
-  memcpy(1+velname.datap + namep->length, velend, strlen(velend)+1);
-  setpenname.datap[0] = '/';
-  memcpy(1+setpenname.datap, namep->datap, namep->length);
-  memcpy(1+setpenname.datap + namep->length, setpenend, strlen(setpenend)+1);
-  telabsname.datap[0] = '/';
-  memcpy(1+telabsname.datap, namep->datap, namep->length);
-  memcpy(1+telabsname.datap + namep->length, telabsend, strlen(telabsend)+1);
-  telrelname.datap[0] = '/';
-  memcpy(1+telrelname.datap, namep->datap, namep->length);
-  memcpy(1+telrelname.datap + namep->length, telrelend, strlen(telrelend)+1);
+#define _BUILDFIELD(field, endsz) \
+  { turtlep->poseTopic.datap[0] = '/'; \
+    memcpy(1 + turtlep->field.datap, namep->datap, namep->length); \
+    memcpy(1 + turtlep->field.datap + namep->length, endsz, strlen(endsz) + 1); }
+
+  _BUILDFIELD(poseTopic, posend);
+  _BUILDFIELD(colsenTopic, colsenend);
+  _BUILDFIELD(velTopic, velend);
+  _BUILDFIELD(setpenService, setpenend);
+  _BUILDFIELD(telabsService, telabsend);
+  _BUILDFIELD(telrelService, telrelend);
+
+#undef _BUILDFIELD
 
   /* Assign the new attributes.*/
   turtlep->name = urosStringClone(namep);
-  turtlep->poseTopic = posname;
-  turtlep->colsenTopic = colsenname;
-  turtlep->velTopic = velname;
-  turtlep->setpenService = setpenname;
-  turtlep->telabsService = telabsname;
-  turtlep->telrelService = telrelname;
   turtlep->pose.x = min(max(0, x), SANDBOX_WIDTH);
   turtlep->pose.y = min(max(0, y), SANDBOX_HEIGHT);
   turtlep->pose.theta = theta;
@@ -419,76 +402,92 @@ turtle_t *turtle_spawn(const UrosString *namep,
   turtlep->status = TURTLE_ALIVE;
   turtlep->refCnt = 1; /* For the brain thread only.*/
 
-
   /* Publish "<turtle>/pose" .*/
-  err = urosNodePublishTopicSZ(posname.datap,
-                               "turtlesim/Pose",
-                               (uros_proc_f)pub_tpc__turtleX__pose,
-                               uros_nulltopicflags);
+  err = urosNodePublishTopicSZ(
+    turtlep->poseTopic.datap,
+    "turtlesim/Pose",
+    (uros_proc_f)pub_tpc__turtleX__pose,
+    uros_nulltopicflags
+  );
   urosError(err != UROS_OK,
             goto _error,
             ("Error %s while publishing topic [%s]\n",
-             urosErrorText(err), posname.datap));
+             urosErrorText(err), turtlep->poseTopic.datap));
 
   /* Publish "<turtle>/color_sensor" .*/
-  err = urosNodePublishTopicSZ(colsenname.datap,
-                               "turtlesim/Color",
-                               (uros_proc_f)pub_tpc__turtleX__color_sensor,
-                               uros_nulltopicflags);
+  err = urosNodePublishTopicSZ(
+    turtlep->colsenTopic.datap,
+    "turtlesim/Color",
+    (uros_proc_f)pub_tpc__turtleX__color_sensor,
+    uros_nulltopicflags
+  );
   urosError(err != UROS_OK,
-            goto _error,
+            { urosNodeUnpublishTopic(&turtlep->poseTopic);
+              goto _error; },
             ("Error %s while publishing topic [%s]\n",
-             urosErrorText(err), colsenname.datap));
+             urosErrorText(err), turtlep->colsenTopic.datap));
 
   /* Subscribe to "<turtle>/command_velocity".*/
-  err = urosNodeSubscribeTopicSZ(velname.datap,
-                                 "turtlesim/Velocity",
-                                 (uros_proc_f)sub_tpc__turtleX__command_velocity,
-                                 uros_nulltopicflags);
+  err = urosNodeSubscribeTopicSZ(
+    turtlep->velTopic.datap,
+    "turtlesim/Velocity",
+    (uros_proc_f)sub_tpc__turtleX__command_velocity,
+    uros_nulltopicflags
+  );
   urosError(err != UROS_OK,
-            { urosNodeUnpublishTopic(&posname);
+            { urosNodeUnpublishTopic(&turtlep->poseTopic);
+              urosNodeUnpublishTopic(&turtlep->colsenTopic);
               goto _error; },
             ("Error %s while subscribing to topic [%s]\n",
-             urosErrorText(err), velname.datap));
+             urosErrorText(err), turtlep->velTopic.datap));
 
   /* Publish "<turtle>/set_pen".*/
-  err = urosNodePublishServiceSZ(setpenname.datap,
-                                 "turtlesim/SetPen",
-                                 (uros_proc_f)pub_srv__turtleX__set_pen,
-                                 uros_nullserviceflags);
+  err = urosNodePublishServiceSZ(
+    turtlep->setpenService.datap,
+    "turtlesim/SetPen",
+    (uros_proc_f)pub_srv__turtleX__set_pen,
+    uros_nullserviceflags
+  );
   urosError(err != UROS_OK,
-            { urosNodeUnpublishTopic(&posname);
-              urosNodeUnpublishTopic(&velname);
+            { urosNodeUnpublishTopic(&turtlep->poseTopic);
+              urosNodeUnpublishTopic(&turtlep->colsenTopic);
+              urosNodeUnpublishTopic(&turtlep->velTopic);
               goto _error; },
             ("Error %s while publishing service [%s]\n",
-             urosErrorText(err), setpenname.datap));
+             urosErrorText(err), turtlep->setpenService.datap));
 
   /* Publish "<turtle>/teleport_absolute".*/
-  err = urosNodePublishServiceSZ(telabsname.datap,
-                                 "turtlesim/TeleportAbsolute",
-                                 (uros_proc_f)pub_srv__turtleX__teleport_absolute,
-                                 uros_nullserviceflags);
+  err = urosNodePublishServiceSZ(
+    turtlep->telabsService.datap,
+    "turtlesim/TeleportAbsolute",
+    (uros_proc_f)pub_srv__turtleX__teleport_absolute,
+    uros_nullserviceflags
+  );
   urosError(err != UROS_OK,
-            { urosNodeUnpublishTopic(&posname);
-              urosNodeUnpublishTopic(&velname);
-              urosNodeUnpublishService(&setpenname);
+            { urosNodeUnpublishTopic(&turtlep->poseTopic);
+              urosNodeUnpublishTopic(&turtlep->colsenTopic);
+              urosNodeUnpublishTopic(&turtlep->velTopic);
+              urosNodeUnpublishService(&turtlep->setpenService);
               goto _error; },
             ("Error %s while publishing service [%s]\n",
-             urosErrorText(err), telabsname.datap));
+             urosErrorText(err), turtlep->telabsService.datap));
 
   /* Publish "<turtle>/teleport_relative".*/
-  err = urosNodePublishServiceSZ(telrelname.datap,
-                                 "turtlesim/TeleportRelative",
-                                 (uros_proc_f)pub_srv__turtleX__teleport_relative,
-                                 uros_nullserviceflags);
+  err = urosNodePublishServiceSZ(
+    turtlep->telrelService.datap,
+    "turtlesim/TeleportRelative",
+    (uros_proc_f)pub_srv__turtleX__teleport_relative,
+    uros_nullserviceflags
+  );
   urosError(err != UROS_OK,
-            { urosNodeUnpublishTopic(&posname);
-              urosNodeUnpublishTopic(&velname);
-              urosNodeUnpublishService(&setpenname);
-              urosNodeUnpublishService(&telabsname);
+            { urosNodeUnpublishTopic(&turtlep->poseTopic);
+              urosNodeUnpublishTopic(&turtlep->colsenTopic);
+              urosNodeUnpublishTopic(&turtlep->velTopic);
+              urosNodeUnpublishService(&turtlep->setpenService);
+              urosNodeUnpublishService(&turtlep->telabsService);
               goto _error; },
             ("Error %s while publishing service [%s]\n",
-             urosErrorText(err), telrelname.datap));
+             urosErrorText(err), turtlep->telrelService.datap));
 
   /* Start its new brain.*/
   err = urosThreadPoolStartWorker(&turtlesThreadPool, (void*)turtlep);
@@ -499,11 +498,12 @@ turtle_t *turtle_spawn(const UrosString *namep,
 _error:
   turtlep->status = TURTLE_EMPTY;
   turtlep->refCnt = 0;
-  urosStringClean(&posname);
-  urosStringClean(&velname);
-  urosStringClean(&setpenname);
-  urosStringClean(&telabsname);
-  urosStringClean(&telrelname);
+  urosStringClean(&turtlep->poseTopic);
+  urosStringClean(&turtlep->colsenTopic);
+  urosStringClean(&turtlep->velTopic);
+  urosStringClean(&turtlep->setpenService);
+  urosStringClean(&turtlep->telabsService);
+  urosStringClean(&turtlep->telrelService);
   urosMutexUnlock(&turtlep->lock);
   return NULL;
 }
@@ -552,6 +552,7 @@ void turtle_kill(turtle_t *turtlep) {
   urosMutexLock(&turtlep->lock);
   urosStringClean(&turtlep->name);
   urosStringClean(&turtlep->poseTopic);
+  urosStringClean(&turtlep->colsenTopic);
   urosStringClean(&turtlep->velTopic);
   urosStringClean(&turtlep->setpenService);
   urosStringClean(&turtlep->telabsService);
