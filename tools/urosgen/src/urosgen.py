@@ -1184,7 +1184,7 @@ class CodeGen:
         self.callServices = {}
         
         # Internal objects
-        self.configPath = None
+        self.cfgPath = None
         self.msgTypes = {}
         self.srvTypes = {}
         self.sortedMsgTypeNames = []
@@ -1248,12 +1248,12 @@ class CodeGen:
             if not rostype in self.sortedMsgTypeNames:
                 self.sortedMsgTypeNames.append(rostype)
     
-        self.configPath = os.sep.join(os.path.split(self.configPath)[:-1])
-        if len(self.configPath) == 0: self.configPath = '.'
+        self.cfgPath = os.sep.join(os.path.split(self.cfgPath)[:-1])
+        if len(self.cfgPath) == 0: self.cfgPath = '.'
         
         self.licenseText = ""
         if len(self.opts['licenseFile']) > 0:
-            licpath = os.path.normpath(self.configPath + os.sep + self.opts['licenseFile'])
+            licpath = os.path.normpath(self.cfgPath + os.sep + self.opts['licenseFile'])
             if os.path.exists(licpath):
                 with open(licpath, 'r') as f:
                     self.licenseText = '/*\n' + (''.join(f.readlines())).strip() + '\n*/\n\n'
@@ -1270,15 +1270,18 @@ class CodeGen:
         if not os.path.exists(cpath):
             raise EnvironmentError('The source output path [%s] does not exist' % cpath)
     
-    def load(self, configPath):
+    def load(self, cfgPath):
         self.__init__()
         
-        self.configPath = configPath
-        if configPath == '.':
+        self.cfgPath = cfgPath
+        if cfgPath == '.':
             lines = sys.stdin.readlines()
         else:
-            with open(configPath, 'r') as f:
-                lines = f.readlines()
+            if os.path.exists(cfgPath):
+                with open(cfgPath, 'r') as f:
+                    lines = f.readlines()
+            else:
+                raise ValueError('Invalid CFG file path: [%s]' % cfgPath)
         
         modes = [ '[options]', '[pubtopics]', '[subtopics]', '[pubservices]', '[callservices]' ]
         mode = None
@@ -1488,7 +1491,7 @@ class CodeGen:
         return text
     
     def msgtypes_header_path(self):
-        path = self.configPath + os.sep + self.opts['includeDir'];
+        path = self.cfgPath + os.sep + self.opts['includeDir'];
         return os.path.normpath(path + os.sep + self.opts['msgTypesFilename'] + '.h')
     
     def export_msgtypes_header(self, text):
@@ -1586,7 +1589,7 @@ class CodeGen:
         return text
     
     def msgtypes_source_path(self):
-        path = self.configPath + os.sep + self.opts['sourceDir'];
+        path = self.cfgPath + os.sep + self.opts['sourceDir'];
         return os.path.normpath(path + os.sep + self.opts['msgTypesFilename'] + '.c')
         
     def export_msgtypes_source(self, text):
@@ -1995,7 +1998,7 @@ class CodeGen:
         return text
     
     def handlers_header_path(self):
-        path = self.configPath + os.sep + self.opts['includeDir'];
+        path = self.cfgPath + os.sep + self.opts['includeDir'];
         return os.path.normpath(path + os.sep + self.opts['handlersFilename'] + '.h')
         
     def export_handlers_header(self, text):
@@ -2075,7 +2078,7 @@ class CodeGen:
         return text
     
     def handlers_source_path(self):
-        path = self.configPath + os.sep + self.opts['sourceDir'];
+        path = self.cfgPath + os.sep + self.opts['sourceDir'];
         return os.path.normpath(path + os.sep + self.opts['handlersFilename'] + '.c')
         
     def export_handlers_source(self, text):
