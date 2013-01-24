@@ -53,7 +53,7 @@ extern "C" {
 #endif
 
 void uros_lld_init(void);
-void *uros_lld_alloc(size_t size);
+void *uros_lld_alloc(UrosMemHeap *heapp, size_t size);
 void uros_lld_free(void *chunkp);
 
 #if UROS_USE_BUILTIN_MEMPOOL == UROS_FALSE

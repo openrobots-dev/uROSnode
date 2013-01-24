@@ -233,7 +233,7 @@ typedef uros_err_t (*uros_tcpsrvcall_t)(UrosTcpRosStatus *tcpstp,
  *          @p out_srv_*).
  */
 #define UROS_MSG_INIT_H(msgvarp, ctypename) \
-  { msgvarp = urosNew(struct ctypename); \
+  { msgvarp = urosNew(NULL, struct ctypename); \
     if (msgvarp == NULL) { \
       (UROS_HND_TCPSTP)->err = UROS_ERR_NOMEM; goto UROS_HND_FINALLY; } \
     init_##ctypename(msgvarp); }

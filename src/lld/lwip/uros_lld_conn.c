@@ -92,7 +92,7 @@ uros_err_t uros_lld_hostnametoip(const UrosString *hostnamep,
   urosAssert(urosStringNotEmpty(hostnamep));
   urosAssert(ipp != NULL);
 
-  hostnameszp = urosAlloc(hostnamep->length + 1);
+  hostnameszp = urosAlloc(NULL, hostnamep->length + 1);
   if (hostnameszp == NULL) { return UROS_ERR_NOMEM; }
   memcpy(hostnameszp, hostnamep->datap, hostnamep->length);
   hostnameszp[hostnamep->length] = 0;

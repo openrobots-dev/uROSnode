@@ -94,7 +94,7 @@ void fifo_init(fifo_t *queuep, unsigned length) {
   queuep->head = 0;
   queuep->tail = 0;
   urosMutexObjectInit(&queuep->slotsMtx);
-  queuep->slots = urosArrayNew(length, void *);
+  queuep->slots = urosArrayNew(NULL, length, void *);
   urosAssert(queuep->slots != NULL);
 }
 
@@ -141,7 +141,7 @@ void rosout_post(UrosString *strp, uros_bool_t costant, uint8_t level,
 
   urosAssert(urosStringIsValid(strp));
 
-  msgp = urosNew(struct msg__rosgraph_msgs__Log);
+  msgp = urosNew(NULL, struct msg__rosgraph_msgs__Log);
   urosAssert(msgp != NULL);
   init_msg__rosgraph_msgs__Log(msgp);
 
@@ -184,19 +184,19 @@ void app_initialize(void) {
   urosMutexObjectInit(&backgroundColorLock);
 
   backcolparnameR.length = cfgp->nodeName.length + 13;
-  backcolparnameR.datap = (char*)urosAlloc(backcolparnameR.length);
+  backcolparnameR.datap = (char*)urosAlloc(NULL, backcolparnameR.length);
   urosAssert(backcolparnameR.datap != NULL);
   memcpy(backcolparnameR.datap, cfgp->nodeName.datap, cfgp->nodeName.length);
   memcpy(backcolparnameR.datap + cfgp->nodeName.length, "/background_r", 13);
 
   backcolparnameG.length = cfgp->nodeName.length + 13;
-  backcolparnameG.datap = (char*)urosAlloc(backcolparnameG.length);
+  backcolparnameG.datap = (char*)urosAlloc(NULL, backcolparnameG.length);
   urosAssert(backcolparnameG.datap != NULL);
   memcpy(backcolparnameG.datap, cfgp->nodeName.datap, cfgp->nodeName.length);
   memcpy(backcolparnameG.datap + cfgp->nodeName.length, "/background_g", 13);
 
   backcolparnameB.length = cfgp->nodeName.length + 13;
-  backcolparnameB.datap = (char*)urosAlloc(backcolparnameB.length);
+  backcolparnameB.datap = (char*)urosAlloc(NULL, backcolparnameB.length);
   urosAssert(backcolparnameB.datap != NULL);
   memcpy(backcolparnameB.datap, cfgp->nodeName.datap, cfgp->nodeName.length);
   memcpy(backcolparnameB.datap + cfgp->nodeName.length, "/background_b", 13);
@@ -348,7 +348,7 @@ turtle_t *turtle_spawn(const UrosString *namep,
 #define _ALLOCFIELD(field, endsz) \
   { urosStringObjectInit(&turtlep->field); \
     turtlep->field.length = 1 + namep->length + strlen(endsz); \
-    turtlep->field.datap = (char*)urosAlloc(turtlep->field.length + 1); }
+    turtlep->field.datap = (char*)urosAlloc(NULL, turtlep->field.length + 1); }
 
   _ALLOCFIELD(poseTopic, posend);
   _ALLOCFIELD(colsenTopic, colsenend);

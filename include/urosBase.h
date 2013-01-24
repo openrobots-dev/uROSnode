@@ -329,6 +329,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *          type.
  * @see     urosAlloc()
  *
+ * @param[in,out] heapp
+ *          Pointer to an initialized @p UrosHeap object, default if @p NULL.
  * @param[in] type
  *          Type of the object to be allocated. To be valid, a valid pointer
  *          type must be obtained by appending a @p * to @p type.
@@ -342,7 +344,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * @par     Example
  *          @code{.c}
  *          int *valuep;
- *          valuep = urosNew(int);
+ *          valuep = urosNew(NULL, int);
  *          if (valuep != NULL) {
  *            *valuep = 123;
  *            printf("%d", *valuep);
@@ -350,14 +352,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *          }
  *          @endcode
  */
-#define urosNew(type) \
-  ((type *)urosAlloc(sizeof(type)))
+#define urosNew(heapp, type) \
+  ((type *)urosAlloc(heapp, sizeof(type)))
 
 /**
  * @brief   Allocates an array.
  * @details Allocates a memory chunk which can hold an array of contiguous
  *          objects of the provided type.
  *
+ * @param[in,out] heapp
+ *          Pointer to an initialized @p UrosHeap object, default if @p NULL.
  * @param[in] n
  *          Number of objects to be allocated.
  * @param[in] type
@@ -370,14 +374,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *          There is not enough contiguous free memory to allocate a memory
  *          block of the requested size.
  */
-#define urosArrayNew(n, type) \
-  ((type *)urosAlloc((size_t)(n) * sizeof(type)))
+#define urosArrayNew(heapp, n, type) \
+  ((type *)urosAlloc(heapp, (size_t)(n) * sizeof(type)))
 
 /**
  * @brief   Allocates an array.
  * @details Allocates a memory chunk which can hold an array of contiguous
  *          chunks with the provided size.
  *
+ * @param[in,out] heapp
+ *          Pointer to an initialized @p UrosHeap object, default if @p NULL.
  * @param[in] n
  *          Number of objects to be allocated.
  * @param[in] size
@@ -388,8 +394,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *          There is not enough contiguous free memory to allocate a memory
  *          block of the requested size.
  */
-#define urosArrayAlloc(n, size) \
-  urosAlloc((size_t)(n) * (size_t)(size))
+#define urosArrayAlloc(heapp, n, size) \
+  urosAlloc(heapp, (size_t)(n) * (size_t)(size))
 
 /** @} */
 
@@ -611,7 +617,7 @@ extern "C" {
 void urosInit(void);
 const char *urosErrorText(uros_err_t err);
 
-void *urosAlloc(size_t size);
+void *urosAlloc(UrosMemHeap *heapp, size_t size);
 void urosFree(void *chunkp);
 
 void urosMemPoolObjectInit(UrosMemPool *poolp, size_t blocksize,
@@ -622,7 +628,6 @@ uros_cnt_t urosMemPoolNumFree(UrosMemPool *poolp);
 void urosMemPoolLoadArray(UrosMemPool *poolp, void *arrayp, uros_cnt_t n);
 size_t urosMemPoolBlockSize(UrosMemPool *poolp);
 
-UrosString *urosStringNew(const char *szp);
 void urosStringObjectInit(UrosString *strp);
 UrosString urosStringAssignN(const char *datap, size_t datalen);
 UrosString urosStringAssignZ(const char *szp);

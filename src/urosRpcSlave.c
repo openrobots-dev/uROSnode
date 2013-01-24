@@ -314,7 +314,7 @@ uros_err_t uros_rpcslave_receive_params(UrosRpcParser *pp,
   urosRpcParserSkipWs(pp); _CHKOK
 
   /* str caller_id always as first parameter.*/
-  str1 = urosNew(UrosRpcParamNode);
+  str1 = urosNew(NULL, UrosRpcParamNode);
   if (str1 == NULL) { return UROS_ERR_NOMEM; }
   urosRpcParamNodeObjectInit(str1, UROS_RPCP_STRING);
   urosRpcParamListAppendNode(parlistp, str1);
@@ -331,8 +331,8 @@ uros_err_t uros_rpcslave_receive_params(UrosRpcParser *pp,
     break;
   }
   case UROS_RPCSM_PARAM_UPDATE: {
-    UrosRpcParamNode *str2 = urosNew(UrosRpcParamNode);
-    UrosRpcParamNode *any3 = urosNew(UrosRpcParamNode);
+    UrosRpcParamNode *str2 = urosNew(NULL, UrosRpcParamNode);
+    UrosRpcParamNode *any3 = urosNew(NULL, UrosRpcParamNode);
     if (str2 == NULL || any3 == NULL) {
       urosFree(str2); urosFree(any3);
       pp->err = UROS_ERR_NOMEM; goto _error;
@@ -355,8 +355,8 @@ uros_err_t uros_rpcslave_receive_params(UrosRpcParser *pp,
   }
   case UROS_RPCSM_PUBLISHER_UPDATE:
   case UROS_RPCSM_REQUEST_TOPIC: {
-    UrosRpcParamNode *str2 = urosNew(UrosRpcParamNode);
-    UrosRpcParamNode *array3 = urosNew(UrosRpcParamNode);
+    UrosRpcParamNode *str2 = urosNew(NULL, UrosRpcParamNode);
+    UrosRpcParamNode *array3 = urosNew(NULL, UrosRpcParamNode);
     if (str2 == NULL || array3 == NULL) {
       urosFree(str2); urosFree(array3);
       pp->err = UROS_ERR_NOMEM; goto _error;
@@ -373,7 +373,7 @@ uros_err_t uros_rpcslave_receive_params(UrosRpcParser *pp,
     break;
   }
   case UROS_RPCSM_SHUTDOWN: {
-    UrosRpcParamNode *str2 = urosNew(UrosRpcParamNode);
+    UrosRpcParamNode *str2 = urosNew(NULL, UrosRpcParamNode);
     if (str2 == NULL) { pp->err = UROS_ERR_NOMEM; goto _error; }
     urosRpcParamNodeObjectInit(str2, UROS_RPCP_STRING);
     urosRpcParamListAppendNode(parlistp, str2);
@@ -970,7 +970,7 @@ uros_err_t urosRpcSlaveConnectToPublishers(const UrosString *namep,
     uros_err_t err;
     uros_tcpcliargs_t *parp;
 
-    parp = urosNew(uros_tcpcliargs_t);
+    parp = urosNew(NULL, uros_tcpcliargs_t);
     if (parp == NULL) { return UROS_ERR_NOMEM; }
     parp->topicName = urosStringClone(namep);
     parp->topicFlags = flags;
@@ -1047,7 +1047,7 @@ uros_err_t urosRpcSlaveListenerThread(void *data) {
     UrosConn *spawnedp;
 
     /* Accept the incoming connection.*/
-    spawnedp = urosNew(UrosConn);
+    spawnedp = urosNew(NULL, UrosConn);
     urosAssert(spawnedp != NULL);
     urosConnObjectInit(spawnedp);
     err = urosConnAccept(&conn, spawnedp);
@@ -1129,12 +1129,12 @@ uros_err_t urosRpcSlaveServerThread(UrosConn *csp) {
   urosAssert(csp != NULL);
 #define _CHKOK  { if (x->err != UROS_OK) { goto _finally; } }
 
-  x = urosNew(union eps);
+  x = urosNew(NULL, union eps);
   if (x == NULL) { return UROS_ERR_NOMEM; }
   urosRpcParamListObjectInit(&parlist);
 
   /* Create the buffer.*/
-  bufp = (char*)urosAlloc(UROS_MTU_SIZE);
+  bufp = (char*)urosAlloc(NULL, UROS_MTU_SIZE);
   if (bufp == NULL) { return UROS_ERR_NOMEM; }
 
   /* Initialize the parser object.*/

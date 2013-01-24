@@ -551,7 +551,7 @@ uros_err_t uros_lld_thread_createfromheap(UrosThreadId *idp, const char *namep,
   urosAssert(routine != NULL);
   urosAssert(stacksize > 0);
 
-  stackp = urosAlloc(stacksize);
+  stackp = urosAlloc(NULL, stacksize);
   if (stackp == NULL) { return UROS_ERR_NOMEM; }
   err = uros_lld_thread_createstatic(idp, namep, priority, routine, argp,
                                      stackp, stacksize);

@@ -67,12 +67,42 @@ void uros_lld_init(void) {
   /* Nothing to initialize.*/
 }
 
-void *uros_lld_alloc(size_t size) {
+/**
+ * @brief   Allocates a memory block.
+ * @details This function tries to allocate a memory block of the required size
+ *          inside the default heap of the operating system.
+ * @see     urosAlloc()
+ *
+ * @pre     There is enough contiguous free space inside the default heap.
+ *
+ * @param[in,out] heapp
+ *          Pointer to an initialized @p UrosMemHeap object, default @p NULL.
+ * @param[in] size
+ *          Size of the memory block to be allocated, in bytes.
+ * @return
+ *          The address of the allocated memory chunk.
+ * @retval NULL
+ *          There is not enough contiguous free memory to allocate a memory
+ *          block of the requested size.
+ */
+void *uros_lld_alloc(UrosMemHeap *heapp, size_t size) {
 
-  /* Default memory block allocation.*/
-  return chHeapAlloc(NULL, size);
+  /* Allocate into the provided heap.*/
+  return chHeapAlloc(heapp, size);
 }
 
+/**
+ * @brief   Deallocates a memory block.
+ * @see     urosFree()
+ *
+ * @pre     The block pointed by @p chunkp must have been allocated with
+ *          @p urosAlloc().
+ * @post    @p chunkp points to an invalid address.
+ *
+ * @param[in] chunkp
+ *          Pointer to the memory block to be deallocated.
+ *          A @p NULL value will simply be ignored.
+ */
 void uros_lld_free(void *chunkp) {
 
   /* Default memory block deallocation.*/

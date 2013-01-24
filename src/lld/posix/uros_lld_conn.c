@@ -228,7 +228,7 @@ uros_err_t uros_lld_hostnametoip(const UrosString *hostnamep,
   memset(&hints, 0, sizeof hints);
   hints.ai_family = AF_INET;
   hints.ai_socktype = SOCK_STREAM;
-  namep = (char*)urosAlloc(hostnamep->length + 1);
+  namep = (char*)urosAlloc(NULL, hostnamep->length + 1);
   memcpy(namep, hostnamep->datap, hostnamep->length);
   namep[hostnamep->length] = 0;
 
@@ -526,7 +526,7 @@ uros_err_t uros_lld_conn_recv(UrosConn *cp,
 
   if (*buflenp == 0) { return UROS_OK; }
   if (cp->recvbufp == NULL) {
-    cp->recvbufp = urosAlloc(UROS_CONN_RECVBUFLEN);
+    cp->recvbufp = urosAlloc(NULL, UROS_CONN_RECVBUFLEN);
     if (cp->recvbufp == NULL) { return UROS_ERR_NOMEM; }
     cp->recvbuflen = UROS_CONN_RECVBUFLEN;
   }

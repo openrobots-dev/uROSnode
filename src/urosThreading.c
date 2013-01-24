@@ -342,7 +342,7 @@ uros_err_t urosThreadPoolObjectInit(UrosThreadPool *poolp,
   poolp->namep = namep;
   poolp->priority = priority;
   poolp->threadsp =
-    (UrosThreadId*)urosArrayAlloc(poolp->size,
+    (UrosThreadId*)urosArrayAlloc(NULL, poolp->size,
                                   urosMemPoolBlockSize(stackpoolp));
   if (poolp->threadsp != NULL) {
     unsigned i;

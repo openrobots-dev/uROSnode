@@ -543,7 +543,7 @@ uros_err_t urosNodePublishTopic(const UrosString *namep,
             ("Topic [%.*s] already published\n", UROS_STRARG(namep)));
 
   /* Create a new topic descriptor.*/
-  topicp = urosNew(UrosTopic);
+  topicp = urosNew(NULL, UrosTopic);
   if (topicp == NULL) { return UROS_ERR_NOMEM; }
   urosTopicObjectInit(topicp);
   topicp->name = urosStringClone(namep);
@@ -664,7 +664,7 @@ uros_err_t urosNodePublishTopicByDesc(UrosTopic *topicp) {
             ("Response HTTP code %d, expected 200\n", res.httpcode));
 
   /* Add to the published topics list.*/
-  nodep = urosNew(UrosListNode);
+  nodep = urosNew(NULL, UrosListNode);
   if (nodep == NULL) { err = UROS_ERR_NOMEM; goto _finally; }
   urosListNodeObjectInit(nodep);
   nodep->datap = (void*)topicp;
@@ -848,7 +848,7 @@ uros_err_t urosNodeSubscribeTopic(const UrosString *namep,
             ("Topic [%.*s] already subscribed\n", UROS_STRARG(namep)));
 
   /* Create a new topic descriptor.*/
-  topicp = urosNew(UrosTopic);
+  topicp = urosNew(NULL, UrosTopic);
   if (topicp == NULL) { return UROS_ERR_NOMEM; }
   urosTopicObjectInit(topicp);
   topicp->name = urosStringClone(namep);
@@ -989,7 +989,7 @@ uros_err_t urosNodeSubscribeTopicByDesc(UrosTopic *topicp) {
              urosErrorText(err), UROS_STRARG(&topicp->name)));
 
   /* Add to the subscribed topics list.*/
-  nodep = urosNew(UrosListNode);
+  nodep = urosNew(NULL, UrosListNode);
   if (nodep == NULL) { err = UROS_ERR_NOMEM; goto _finally; }
   urosListNodeObjectInit(nodep);
   nodep->datap = (void*)topicp;
@@ -1335,7 +1335,7 @@ uros_err_t urosNodePublishService(const UrosString *namep,
             ("Service [%.*s] already published\n", UROS_STRARG(namep)));
 
   /* Create a new topic descriptor.*/
-  servicep = urosNew(UrosTopic);
+  servicep = urosNew(NULL, UrosTopic);
   if (servicep == NULL) { return UROS_ERR_NOMEM; }
   urosTopicObjectInit(servicep);
   servicep->name = urosStringClone(namep);
@@ -1454,7 +1454,7 @@ uros_err_t urosNodePublishServiceByDesc(const UrosTopic *servicep) {
             ("Response HTTP code %d, expected 200\n", res.httpcode));
 
   /* Add to the published topics list.*/
-  nodep = urosNew(UrosListNode);
+  nodep = urosNew(NULL, UrosListNode);
   if (nodep == NULL) { err = UROS_ERR_NOMEM; goto _finally; }
   urosListNodeObjectInit(nodep);
   nodep->datap = (void*)servicep;
@@ -1619,10 +1619,10 @@ uros_err_t urosNodeSubscribeParam(const UrosString *namep) {
             ("Parameter [%.*s] already subscribed\n", UROS_STRARG(namep)));
 
   /* Create the storage data in advance.*/
-  clonednamep = urosNew(UrosString);
+  clonednamep = urosNew(NULL, UrosString);
   if (clonednamep == NULL) { return UROS_ERR_NOMEM; }
   *clonednamep = urosStringClone(namep);
-  nodep = urosNew(UrosListNode);
+  nodep = urosNew(NULL, UrosListNode);
   if (clonednamep->datap == NULL || nodep == NULL) {
     urosStringDelete(clonednamep); urosFree(nodep);
     return UROS_ERR_NOMEM;
@@ -1865,12 +1865,12 @@ uros_err_t urosNodeFindNewTopicPublishers(const UrosString *namep,
       UrosListNode *nodep;
 
       /* New publisher.*/
-      addrp = urosNew(UrosAddr);
+      addrp = urosNew(NULL, UrosAddr);
       if (addrp == NULL) {
         urosMutexUnlock(&np->status.subTcpListLock);
         return UROS_ERR_NOMEM;
       }
-      nodep = urosNew(UrosListNode);
+      nodep = urosNew(NULL, UrosListNode);
       if (nodep == NULL) {
         urosFree(addrp);
         urosMutexUnlock(&np->status.subTcpListLock);

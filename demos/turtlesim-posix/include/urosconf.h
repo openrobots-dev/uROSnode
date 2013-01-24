@@ -410,6 +410,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /** @brief Error type, compatible with thread return type.*/
 typedef int             uros_err_t;
 
+/** @brief Heap type.*/
+typedef void            UrosMemHeap;
+
 /** @brief Memory pool type, platform-dependent.*/
 struct UrosMemPool;
 

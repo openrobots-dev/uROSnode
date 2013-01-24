@@ -1604,7 +1604,7 @@ uros_err_t urosRpcParserParamValueString(UrosRpcParser *pp,
 
     /* Copy from the reading buffer.*/
     if (strlen > 0) {
-      strp = (char*)urosAlloc(strlen);
+      strp = (char*)urosAlloc(NULL, strlen);
       urosAssert(strp != NULL);
       memcpy(strp, pp->rdbufp, strlen);
     }
@@ -1723,7 +1723,7 @@ uros_err_t urosRpcParserParamValueArray(UrosRpcParser *pp,
 #define _CHKOK   { if (pp->err != UROS_OK) { goto _error; } }
 
   paramp->class = UROS_RPCP_ARRAY;
-  paramp->value.listp = urosNew(UrosRpcParamList);
+  paramp->value.listp = urosNew(NULL, UrosRpcParamList);
   if (paramp->value.listp == NULL) { return pp->err = UROS_ERR_NOMEM; }
   urosRpcParamListObjectInit(paramp->value.listp);
 
@@ -1732,7 +1732,7 @@ uros_err_t urosRpcParserParamValueArray(UrosRpcParser *pp,
   urosRpcParserXmlTagOpen(pp, "data", 4); _CHKOK
   while (UROS_TRUE) {
     UrosRpcParamNode *nodep;
-    nodep = urosNew(UrosRpcParamNode);
+    nodep = urosNew(NULL, UrosRpcParamNode);
     if (nodep == NULL) { pp->err = UROS_ERR_NOMEM; goto _error; }
     urosRpcParamNodeObjectInit(nodep, UROS_RPCP__LENGTH);
     urosRpcParamListAppendNode(paramp->value.listp, nodep);
@@ -1976,7 +1976,7 @@ uros_err_t urosRpcParserMethodResponse(UrosRpcParser *pp,
 #define _CHKOK  { if (pp->err != UROS_OK) { return pp->err; } }
 
   urosRpcResponseObjectInit(resp);
-  resp->valuep = urosNew(UrosRpcParam);
+  resp->valuep = urosNew(NULL, UrosRpcParam);
   if (resp->valuep == NULL) { return pp->err = UROS_ERR_NOMEM; }
 
   /* Check the XML header.*/

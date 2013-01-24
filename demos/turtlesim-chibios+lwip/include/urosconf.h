@@ -417,6 +417,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /** @brief Error type, compatible with thread return type.*/
 typedef msg_t           uros_err_t;
 
+/** @brief Heap type.*/
+typedef MemoryHeap      UrosMemHeap;
+
 /** @brief Memory pool type, platform-dependent.*/
 typedef MemoryPool      UrosMemPool;
 

@@ -77,6 +77,8 @@ void uros_lld_init(void) {
  *
  * @pre     There is enough contiguous free space inside the default heap.
  *
+ * @param[in,out] heapp
+ *          Pointer to an initialized @p UrosMemHeap object, default @p NULL.
  * @param[in] size
  *          Size of the memory block to be allocated, in bytes.
  * @return
@@ -85,7 +87,11 @@ void uros_lld_init(void) {
  *          There is not enough contiguous free memory to allocate a memory
  *          block of the requested size.
  */
-void *uros_lld_alloc(size_t size) {
+void *uros_lld_alloc(UrosMemHeap *heapp, size_t size) {
+
+  (void)heapp;
+
+  urosAssert(heapp == NULL);
 
   /* Default memory block allocation.*/
   return malloc(size);

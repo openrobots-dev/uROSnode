@@ -71,7 +71,7 @@ static void uros_nodeconfig_readstring(UrosString *strp, FILE *fp) {
             ("Cannot read string length at offset 0x%.8lX\n", ftell(fp)));
 
   /* Read the string data.*/
-  datap = (char*)urosAlloc(length);
+  datap = (char*)urosAlloc(NULL, length);
   urosAssert(datap != NULL);
   n = fread(datap, length, 1, fp);
   urosError(n < 1, return,

@@ -132,7 +132,7 @@ uros_err_t uros_rpcpcall_buildctx(uros_rpcpcallctx_t *ctxp,
   urosAssert(ctxp->x.err == UROS_OK);
 
   /* Initialize the streamer.*/
-  bufp = (char*)urosAlloc(UROS_MTU_SIZE);
+  bufp = (char*)urosAlloc(NULL, UROS_MTU_SIZE);
   if (bufp == NULL) { return ctxp->x.err = UROS_ERR_NOMEM; }
   urosRpcStreamerObjectInit(&ctxp->x.streamer, &ctxp->conn,
                             bufp, UROS_MTU_SIZE);
@@ -167,7 +167,7 @@ uros_err_t uros_rpccall_waitresponsestart(uros_rpcpcallctx_t *ctxp) {
   urosRpcStreamerClean(&ctxp->x.streamer, UROS_TRUE);
 
   /* Initialize the parser.*/
-  rdbufp = (char*)urosAlloc(UROS_RPCPARSER_RDBUFLEN);
+  rdbufp = (char*)urosAlloc(NULL, UROS_RPCPARSER_RDBUFLEN);
   if (rdbufp == NULL) { return ctxp->x.err = UROS_ERR_NOMEM; }
   ctxp->parsing = UROS_TRUE;
   urosRpcParserObjectInit(&ctxp->x.parser, &ctxp->conn,
@@ -336,7 +336,7 @@ uros_err_t uros_rpccall_registercall(
   urosAssert(urosStringNotEmpty(caller_api));
   urosAssert(resp != NULL);
 
-  ctxp = urosNew(uros_rpcpcallctx_t);
+  ctxp = urosNew(NULL, uros_rpcpcallctx_t);
   if (ctxp == NULL) { return UROS_ERR_NOMEM; }
 
   urosRpcResponseObjectInit(resp);
@@ -388,7 +388,7 @@ uros_err_t uros_rpccall_unregistercall(
   urosAssert(urosStringNotEmpty(api));
   urosAssert(resp != NULL);
 
-  ctxp = urosNew(uros_rpcpcallctx_t);
+  ctxp = urosNew(NULL, uros_rpcpcallctx_t);
   if (ctxp == NULL) { return UROS_ERR_NOMEM; }
 
   urosRpcResponseObjectInit(resp);
@@ -433,7 +433,7 @@ uros_err_t uros_rpccall_simplecall(
   urosAssert(urosStringNotEmpty(caller_id));
   urosAssert(resp != NULL);
 
-  ctxp = urosNew(uros_rpcpcallctx_t);
+  ctxp = urosNew(NULL, uros_rpcpcallctx_t);
   if (ctxp == NULL) { return UROS_ERR_NOMEM; }
 
   urosRpcResponseObjectInit(resp);
@@ -477,7 +477,7 @@ uros_err_t uros_rpccall_stringcall(
   urosAssert(urosStringNotEmpty(caller_id));
   urosAssert(resp != NULL);
 
-  ctxp = urosNew(uros_rpcpcallctx_t);
+  ctxp = urosNew(NULL, uros_rpcpcallctx_t);
   if (ctxp == NULL) { return UROS_ERR_NOMEM; }
 
   urosRpcResponseObjectInit(resp);
@@ -1386,7 +1386,7 @@ uros_err_t urosRpcCallSetParam(
   urosAssert(value != NULL);
   urosAssert(resp != NULL);
 
-  ctxp = urosNew(uros_rpcpcallctx_t);
+  ctxp = urosNew(NULL, uros_rpcpcallctx_t);
   if (ctxp == NULL) { return UROS_ERR_NOMEM; }
 
   urosRpcResponseObjectInit(resp);
@@ -1532,7 +1532,7 @@ uros_err_t urosRpcCallSubscribeParam(
   urosAssert(urosStringNotEmpty(caller_api));
   urosAssert(resp != NULL);
 
-  ctxp = urosNew(uros_rpcpcallctx_t);
+  ctxp = urosNew(NULL, uros_rpcpcallctx_t);
   if (ctxp == NULL) { return UROS_ERR_NOMEM; }
 
   urosRpcResponseObjectInit(resp);
@@ -1894,7 +1894,7 @@ uros_err_t urosRpcCallParamUpdate(
   urosAssert(parameter_value != NULL);
   urosAssert(resp != NULL);
 
-  ctxp = urosNew(uros_rpcpcallctx_t);
+  ctxp = urosNew(NULL, uros_rpcpcallctx_t);
   if (ctxp == NULL) { return UROS_ERR_NOMEM; }
 
   urosRpcResponseObjectInit(resp);
@@ -1953,7 +1953,7 @@ uros_err_t urosRpcCallPublisherUpdate(
   urosAssert(publishers != NULL);
   urosAssert(resp != NULL);
 
-  ctxp = urosNew(uros_rpcpcallctx_t);
+  ctxp = urosNew(NULL, uros_rpcpcallctx_t);
   if (ctxp == NULL) { return UROS_ERR_NOMEM; }
 
   urosRpcResponseObjectInit(resp);
@@ -2020,7 +2020,7 @@ uros_err_t urosRpcCallRequestTopic(
   urosAssert(protocols != NULL);
   urosAssert(resp != NULL);
 
-  ctxp = urosNew(uros_rpcpcallctx_t);
+  ctxp = urosNew(NULL, uros_rpcpcallctx_t);
   if (ctxp == NULL) { return UROS_ERR_NOMEM; }
 
   urosRpcResponseObjectInit(resp);

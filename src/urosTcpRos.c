@@ -129,7 +129,7 @@ uros_err_t uros_tcpserver_processtopicheader(UrosTcpRosStatus *tcpstp) {
   tcpstp->topicp = (UrosTopic*)topicnodep->datap;
 
   /* Add this connection to the active publisher connections list.*/
-  tcpnodep = urosNew(UrosListNode);
+  tcpnodep = urosNew(NULL, UrosListNode);
   if (tcpnodep == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
   tcpnodep->datap = tcpstp;
   tcpnodep->nextp = NULL;
@@ -189,7 +189,7 @@ uros_err_t uros_tcpserver_processserviceheader(UrosTcpRosStatus *tcpstp) {
   tcpstp->topicp = (UrosTopic*)servicenodep->datap;
 
   /* Add this connection to the active publisher connections list.*/
-  tcpnodep = urosNew(UrosListNode);
+  tcpnodep = urosNew(NULL, UrosListNode);
   if (tcpnodep == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _finally; }
   tcpnodep->datap = tcpstp;
   tcpnodep->nextp = NULL;
@@ -679,7 +679,7 @@ uros_err_t urosTcpRosRecvString(UrosTcpRosStatus *tcpstp,
 
   /* Read the string data.*/
   strp->length = (size_t)length;
-  strp->datap = (char*)urosAlloc(strp->length);
+  strp->datap = (char*)urosAlloc(NULL, strp->length);
   if (strp->datap == NULL) {
     strp->length = 0;
     return tcpstp->err = UROS_ERR_NOMEM;
@@ -1048,8 +1048,8 @@ uros_err_t urosTcpRosRecvHeader(UrosTcpRosStatus *tcpstp,
   if (isrequest) {
     /* The server will receive the remote topic descriptor.*/
     urosAssert(tcpstp->topicp == NULL);
-    typep = urosNew(UrosMsgType);
-    topicp = urosNew(UrosTopic);
+    typep = urosNew(NULL, UrosMsgType);
+    topicp = urosNew(NULL, UrosTopic);
     if (typep == NULL || topicp == NULL) {
       urosFree(typep); urosFree(topicp);
       return tcpstp->err = UROS_ERR_NOMEM;
@@ -1220,7 +1220,7 @@ uros_err_t urosTcpRosRecvHeader(UrosTcpRosStatus *tcpstp,
 
     /* Allocate and read the value.*/
     if (vallen > 0) {
-      valp = (char*)urosAlloc(vallen);
+      valp = (char*)urosAlloc(NULL, vallen);
       if (valp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _error; }
       strp->length = vallen;
       strp->datap = valp;
@@ -1353,7 +1353,7 @@ uros_err_t urosTcpRosListenerThread(void *data) {
     UrosConn *spawnedp;
 
     /* Accept the incoming connection.*/
-    spawnedp = urosNew(UrosConn);
+    spawnedp = urosNew(NULL, UrosConn);
     urosAssert(spawnedp != NULL);
     urosConnObjectInit(spawnedp);
     err = urosConnAccept(&conn, spawnedp);
@@ -1427,7 +1427,7 @@ uros_err_t urosTcpRosServerThread(UrosConn *csp) {
 
   urosAssert(csp != NULL);
 
-  tcpstp = urosNew(UrosTcpRosStatus);
+  tcpstp = urosNew(NULL, UrosTcpRosStatus);
   if (tcpstp == NULL) { return UROS_ERR_NOMEM; }
   urosTcpRosStatusObjectInit(tcpstp, csp);
 

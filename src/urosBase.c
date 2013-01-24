@@ -160,6 +160,8 @@ const char *urosErrorText(uros_err_t err) {
  *
  * @pre     There is enough contiguous free space inside the default heap.
  *
+ * @param[in,out] heapp
+ *          Pointer to an initialized @p UrosMemHeap object, default @p NULL.
  * @param[in] size
  *          Size of the memory block to be allocated, in bytes.
  * @return
@@ -168,16 +170,16 @@ const char *urosErrorText(uros_err_t err) {
  *          There is not enough contiguous free memory to allocate a memory
  *          block of the requested size.
  */
-void *urosAlloc(size_t size) {
+void *urosAlloc(UrosMemHeap *heapp, size_t size) {
 
 #if UROS_BASE_C_USE_ERROR_MSG
-  void *chunk = uros_lld_alloc(size);
+  void *chunk = uros_lld_alloc(heapp, size);
   urosError(chunk == NULL, return NULL,
             ("Not enough free heap memory to allocate %u bytes\n",
              (unsigned)size));
   return chunk;
 #else
-  return uros_lld_alloc(size);
+  return uros_lld_alloc(heapp, size);
 #endif
 }
 
@@ -409,29 +411,6 @@ size_t urosMemPoolBlockSize(UrosMemPool *poolp) {
 /** @{ */
 
 /**
- * @brief   Allocates a new string object.
- * @details A new @p UrosString object is allocated on the heap, and its value
- *          is copied from a template null-terminated string.
- *
- * @param[in] szp
- *          Pointer to a template null-terminated string. Can be @p NULL.
- * @return
- *          Pointer to the allocated @p UrosString object.
- * @retval NULL
- *          Not enough free memory.
- */
-UrosString *urosStringNew(const char *szp) {
-
-  UrosString *strp = urosNew(UrosString);
-  if (strp != NULL) {
-    *strp = urosStringCloneZ(szp);
-    return strp;
-  } else {
-    return NULL;
-  }
-}
-
-/**
  * @brief   Initializes a string object.
  * @details The object is set as an empty string.
  *
@@ -514,7 +493,7 @@ UrosString urosStringClone(const UrosString *strp) {
   if (strp != NULL) {
     clone.length = strp->length;
     if (clone.length > 0) {
-      clone.datap = (char*)urosAlloc(clone.length);
+      clone.datap = (char*)urosAlloc(NULL, clone.length);
       urosAssert(clone.datap != NULL);
       memcpy(clone.datap, strp->datap, clone.length);
     } else {
@@ -548,7 +527,7 @@ UrosString urosStringCloneN(const char *datap, size_t datalen) {
 
   if (datalen > 0) {
     clone.length = datalen;
-    clone.datap = (char*)urosAlloc(datalen);
+    clone.datap = (char*)urosAlloc(NULL, datalen);
     urosAssert(clone.datap != NULL);
     memcpy(clone.datap, datap, datalen);
   } else {
@@ -576,7 +555,7 @@ UrosString urosStringCloneZ(const char *szp) {
   if (szp != NULL) {
     clone.length = strlen(szp);
     if (clone.length > 0) {
-      clone.datap = (char*)urosAlloc(clone.length);
+      clone.datap = (char*)urosAlloc(NULL, clone.length);
       urosAssert(clone.datap != NULL);
       memcpy(clone.datap, szp, clone.length);
     } else {
@@ -835,13 +814,13 @@ void urosRegisterStaticMsgType(const UrosString *namep,
   urosAssert(urosStringNotEmpty(namep));
   urosAssert(urosStringNotEmpty(md5sump));
 
-  typep = urosNew(UrosMsgType);
+  typep = urosNew(NULL, UrosMsgType);
   urosAssert(typep != NULL);
   typep->name = *namep;
   typep->desc = *descp;
   typep->md5str = *md5sump;
 
-  nodep = urosNew(UrosListNode);
+  nodep = urosNew(NULL, UrosListNode);
   urosAssert(nodep != NULL);
   urosListNodeObjectInit(nodep);
   nodep->datap = typep;
@@ -880,13 +859,13 @@ void urosRegisterStaticMsgTypeSZ(const char *namep,
   urosAssert(md5sump != NULL);
   urosAssert(md5sump[0] != 0);
 
-  typep = urosNew(UrosMsgType);
+  typep = urosNew(NULL, UrosMsgType);
   urosAssert(typep != NULL);
   typep->name = urosStringAssignZ(namep);
   typep->desc = urosStringAssignZ(descp);
   typep->md5str = urosStringAssignZ(md5sump);
 
-  nodep = urosNew(UrosListNode);
+  nodep = urosNew(NULL, UrosListNode);
   urosAssert(nodep != NULL);
   urosListNodeObjectInit(nodep);
   nodep->datap = typep;
@@ -991,13 +970,13 @@ void urosRegisterStaticSrvType(const UrosString *namep,
   urosAssert(urosStringNotEmpty(namep));
   urosAssert(urosStringNotEmpty(md5sump));
 
-  typep = urosNew(UrosMsgType);
+  typep = urosNew(NULL, UrosMsgType);
   urosAssert(typep != NULL);
   typep->name = *namep;
   typep->desc = *descp;
   typep->md5str = *md5sump;
 
-  nodep = urosNew(UrosListNode);
+  nodep = urosNew(NULL, UrosListNode);
   urosAssert(nodep != NULL);
   urosListNodeObjectInit(nodep);
   nodep->datap = typep;
@@ -1036,13 +1015,13 @@ void urosRegisterStaticSrvTypeSZ(const char *namep,
   urosAssert(md5sump != NULL);
   urosAssert(md5sump[0] != 0);
 
-  typep = urosNew(UrosMsgType);
+  typep = urosNew(NULL, UrosMsgType);
   urosAssert(typep != NULL);
   typep->name = urosStringAssignZ(namep);
   typep->desc = urosStringAssignZ(descp);
   typep->md5str = urosStringAssignZ(md5sump);
 
-  nodep = urosNew(UrosListNode);
+  nodep = urosNew(NULL, UrosListNode);
   urosAssert(nodep != NULL);
   urosListNodeObjectInit(nodep);
   nodep->datap = typep;
