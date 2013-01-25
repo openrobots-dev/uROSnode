@@ -681,6 +681,7 @@ uros_cnt_t urosListLength(const UrosList *lstp);
 uros_bool_t urosListIsValid(const UrosList *lstp);
 uros_bool_t urosListNotEmpty(const UrosList *lstp);
 uros_bool_t urosListContains(const UrosList *lstp, const UrosListNode *np);
+int urosListIndexOf(const UrosList *lstp, const UrosListNode *np);
 UrosListNode *urosListFind(const UrosList *lstp,
                            uros_cmp_f filter, const void *featurep);
 void urosListAdd(UrosList *lstp, UrosListNode *np);

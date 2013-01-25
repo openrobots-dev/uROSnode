@@ -1376,7 +1376,7 @@ uros_bool_t urosListNotEmpty(const UrosList *lstp) {
 }
 
 /**
- * @brief   Checks if the list contains the references node.
+ * @brief   Checks if the list contains the referenced node.
  * @details Scans the list until a node with the requested address is found, or
  *          there are no more entries.
  *
@@ -1385,7 +1385,7 @@ uros_bool_t urosListNotEmpty(const UrosList *lstp) {
  * @param[in] np
  *          Pointer to an @p UrosListNode supposed to belong to the list.
  * @return
- *          @p true if a node with the requested address is found, @p NULL
+ *          @p true if a node with the requested address is found, @p false
  *          otherwise.
  */
 uros_bool_t urosListContains(const UrosList *lstp, const UrosListNode *np) {
@@ -1400,6 +1400,33 @@ uros_bool_t urosListContains(const UrosList *lstp, const UrosListNode *np) {
     }
   }
   return UROS_FALSE;
+}
+
+/**
+ * @brief   Gets the index of the referenced node inside a list.
+ *
+ * @param[in] lstp
+ *          Pointer to an initialized @p UrosList object.
+ * @param[in] np
+ *          Pointer to an @p UrosListNode supposed to belong to the list.
+ * @return
+ *          The index of the node inside the list.
+ * @retval -1
+ *          The list does not contain the addressed node.
+ */
+int urosListIndexOf(const UrosList *lstp, const UrosListNode *np) {
+
+  UrosListNode *curp;
+  int i;
+
+  urosAssert(urosListIsValid(lstp));
+
+  for (curp = lstp->headp, i = 0; curp != NULL; ++i, curp = curp->nextp) {
+    if (curp == np) {
+      return i;
+    }
+  }
+  return -1;
 }
 
 /**

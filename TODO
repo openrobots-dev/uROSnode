@@ -7,8 +7,8 @@ LEGEND:
 
 JOB QUEUE:
 ?!  Client service calls
-*!  Add indexOf() for lists
-*   Fix absolute paths in tools
++   Support for regex in urosstan.py entry point names
++   Support for named dependencies in urosstan.py entry point size
 +   Advanced logger for ChibiOS (side project)
 +   Support for BASE64 encoding for XMLRPC parameters
 +   Support for struct/map for XMLRPC parameters
