@@ -600,7 +600,7 @@ class MsgType:
                     enpstr = 'objp->%s.entriesp' % f.cname
                     text += tab + 'urosTcpRosArrayObjectInit((UrosTcpRosArray *)&objp->%s);\n' % f.cname
                     text += tab + 'urosTcpRosRecvRaw(tcpstp, %s); _CHKOK\n' % lenstr
-                    line = tab + '%s = urosArrayNew(' % enpstr
+                    line = tab + '%s = urosArrayNew(NULL, ' % enpstr
                     text += line + '%s,\n' % lenstr
                     text += ' ' * len(line) + '%s);\n' % f.ctype
                     text += tab + 'if (%s == NULL) { ' % enpstr

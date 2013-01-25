@@ -6,12 +6,9 @@ LEGEND:
     ! High priority
 
 JOB QUEUE:
-+!  Multiple heaps
 ?!  Client service calls
 *!  Add indexOf() for lists
 *   Fix absolute paths in tools
-+   Support for multiple memory heaps (like ChibiOS/RT)
--   Avoid recursion, use lists as stacks instead
 +   Advanced logger for ChibiOS (side project)
 +   Support for BASE64 encoding for XMLRPC parameters
 +   Support for struct/map for XMLRPC parameters
