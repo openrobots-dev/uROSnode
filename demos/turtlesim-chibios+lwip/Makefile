@@ -23,11 +23,6 @@ ifeq ($(USE_LINK_GC),)
   USE_LINK_GC = yes
 endif
 
-# If enabled, this option allows to compile the application in THUMB mode.
-ifeq ($(USE_THUMB),)
-  USE_THUMB = yes
-endif
-
 # Enable this if you want to see the full log while compiling.
 ifeq ($(USE_VERBOSE_COMPILE),)
   USE_VERBOSE_COMPILE = no
@@ -103,16 +98,6 @@ CSRC = $(PORTSRC) \
 # setting.
 CPPSRC =
 
-# C sources to be compiled in ARM mode regardless of the global setting.
-# NOTE: Mixing ARM and THUMB mode enables the -mthumb-interwork compiler
-:#       option that results in lower performance and larger code size.
-ACSRC =
-
-# C++ sources to be compiled in ARM mode regardless of the global setting.
-# NOTE: Mixing ARM and THUMB mode enables the -mthumb-interwork compiler
-#       option that results in lower performance and larger code size.
-ACPPSRC =
-
 # C sources to be compiled in THUMB mode regardless of the global setting.
 # NOTE: Mixing ARM and THUMB mode enables the -mthumb-interwork compiler
 #       option that results in lower performance and larger code size.
@@ -132,9 +117,6 @@ INCDIR = $(PORTINC) $(KERNINC) $(TESTINC) \
          $(CHIBIOS)/os/various \
          $(UROSINC) \
          $(PROJINC)
-
-# Configuration file for cflow
-CFLOWCFG = misc/cflow.rc
 
 #
 # Project, sources and paths
@@ -160,13 +142,6 @@ AS    = $(TRGT)gcc -x assembler-with-cpp
 OD    = $(TRGT)objdump
 HEX   = $(CP) -O ihex
 BIN   = $(CP) -O binary
-CFLOW = CFLOWRC=$(CFLOWCFG) cflow
-
-# ARM-specific options here
-AOPT =
-
-# THUMB-specific options here
-TOPT = -mthumb -DTHUMB
 
 # Define C warning options here
 CWARN = -Wall -Wextra -Wstrict-prototypes
@@ -254,43 +229,35 @@ OUTFILES   = $(BUILDDIR)/$(EXENAME).elf $(BUILDDIR)/$(EXENAME).hex \
 
 # Automatic compiler options
 OPT        = $(USE_OPT)
-COPT       = $(USE_COPT)
-CPPOPT     = $(USE_CPPOPT)
+COPT       = $(USE_COPT) -mthumb -DTHUMB -fstack-usage -fdump-final-insns
+CPPOPT     = $(USE_CPPOPT) -fstack-usage -fdump-final-insns
 ifeq ($(USE_LINK_GC),yes)
   OPT += -ffunction-sections -fdata-sections
 endif
 
 # Source files groups and paths
-ifeq ($(USE_THUMB),yes)
-  TCSRC    += $(CSRC)
-  TCPPSRC  += $(CPPSRC)
-else
-  ACSRC    += $(CSRC)
-  ACPPSRC  += $(CPPSRC)
-endif
-ASRC	     = $(ACSRC)$(ACPPSRC)
-TSRC	     = $(TCSRC)$(TCPPSRC)
-SRCPATHS   = $(sort $(dir $(ASMXSRC)) $(dir $(ASMSRC)) $(dir $(ASRC)) $(dir $(TSRC)))
+SRCPATHS   = $(sort $(dir $(ASMXSRC)) $(dir $(ASMSRC)) $(dir $(CSRC) $(CPPSRC)))
 
 # Various directories
 OBJDIR     = $(BUILDDIR)/obj
 LSTDIR     = $(BUILDDIR)/lst
-STANDIR    = $(BUILDDIR)/stan
 
 # Object files groups
-ACOBJS     = $(addprefix $(OBJDIR)/, $(notdir $(ACSRC:.c=.o)))
-ACPPOBJS   = $(addprefix $(OBJDIR)/, $(notdir $(ACPPSRC:.cpp=.o)))
-TCOBJS     = $(addprefix $(OBJDIR)/, $(notdir $(TCSRC:.c=.o)))
-TCPPOBJS   = $(addprefix $(OBJDIR)/, $(notdir $(TCPPSRC:.cpp=.o)))
+COBJS      = $(addprefix $(OBJDIR)/, $(notdir $(CSRC:.c=.o)))
+CPPOBJS    = $(addprefix $(OBJDIR)/, $(notdir $(CPPSRC:.cpp=.o)))
 ASMOBJS    = $(addprefix $(OBJDIR)/, $(notdir $(ASMSRC:.s=.o)))
 ASMXOBJS   = $(addprefix $(OBJDIR)/, $(notdir $(ASMXSRC:.S=.o)))
-OBJS	    = $(ASMXOBJS) $(ASMOBJS) $(ACOBJS) $(TCOBJS) $(ACPPOBJS) $(TCPPOBJS)
+OBJS	     = $(ASMXOBJS) $(ASMOBJS) $(COBJS) $(CPPOBJS)
 
-ACFLOWOBJS = $(addprefix $(STANDIR)/, $(notdir $(ACSRC:.c=.cflow)))
-TCFLOWOBJS = $(addprefix $(STANDIR)/, $(notdir $(TCSRC:.c=.cflow)))
-ASUOBJS    = $(addprefix $(STANDIR)/, $(notdir $(ACSRC:.c=.su)))
-TSUOBJS    = $(addprefix $(STANDIR)/, $(notdir $(TCSRC:.c=.su)))
-STANOBJS   = $(ACFLOWOBJS) $(TCFLOWOBJS) $(ASUOBJS) $(TSUOBJS)
+CGKDOBJS    = $(addprefix $(OBJDIR)/, $(notdir $(CSRC:.c=.o.gkd)))
+CPPGKDOBJS  = $(addprefix $(OBJDIR)/, $(notdir $(CPPSRC:.cpp=.o.gkd)))
+CSUOBJS     = $(addprefix $(OBJDIR)/, $(notdir $(CSRC:.c=.su)))
+CPPSUOBJS   = $(addprefix $(OBJDIR)/, $(notdir $(CPPSRC:.cpp=.su)))
+CNMOBJS     = $(addprefix $(OBJDIR)/, $(notdir $(CSRC:.c=.o.nm)))
+CPPNMOBJS   = $(addprefix $(OBJDIR)/, $(notdir $(CPPSRC:.cpp=.o.nm)))
+CSTANOBJS   = $(CGKDOBJS) $(CSUOBJS) $(CNMOBJS)
+CPPSTANOBJS = $(CPPGKDOBJS) $(CPPSUOBJS) $(CPPNMOBJS)
+STANOBJS    = $(CSTANOBJS) $(CPPSTANOBJS)
 
 # Paths
 IINCDIR    = $(patsubst %,-I%,$(INCDIR) $(DINCDIR) $(UINCDIR))
@@ -316,36 +283,18 @@ else
   LDFLAGS  = $(MCFLAGS) -nostartfiles -T$(LDSCRIPT) -Wl,-Map=$(BUILDDIR)/$(PROJECT).map,--cref,--no-warn-mismatch $(LLIBDIR)
 endif
 
-# Thumb interwork enabled only if needed because it kills performance.
-ifneq ($(TSRC),)
-  CFLAGS   += -DTHUMB_PRESENT
-  CPPFLAGS += -DTHUMB_PRESENT
-  ASFLAGS  += -DTHUMB_PRESENT
-  ifneq ($(ASRC),)
-    # Mixed ARM and THUMB mode.
-    CFLAGS   += -mthumb-interwork
-    CPPFLAGS += -mthumb-interwork
-    ASFLAGS  += -mthumb-interwork
-    LDFLAGS  += -mthumb-interwork
-  else
-    # Pure THUMB mode, THUMB C code cannot be called by ARM asm code directly.
-    CFLAGS   += -mno-thumb-interwork -DTHUMB_NO_INTERWORKING
-    CPPFLAGS += -mno-thumb-interwork -DTHUMB_NO_INTERWORKING
-    ASFLAGS  += -mno-thumb-interwork -DTHUMB_NO_INTERWORKING -mthumb
-    LDFLAGS  += -mno-thumb-interwork -mthumb
-  endif
-else
-  # Pure ARM mode
-  CFLAGS   += -mno-thumb-interwork
-  CPPFLAGS += -mno-thumb-interwork
-  ASFLAGS  += -mno-thumb-interwork
-  LDFLAGS  += -mno-thumb-interwork
-endif
+# Thumb interwork not enabled because it kills performance.
+CFLAGS   += -DTHUMB_PRESENT
+CPPFLAGS += -DTHUMB_PRESENT
+ASFLAGS  += -DTHUMB_PRESENT
+CFLAGS   += -mno-thumb-interwork -DTHUMB_NO_INTERWORKING
+CPPFLAGS += -mno-thumb-interwork -DTHUMB_NO_INTERWORKING
+ASFLAGS  += -mno-thumb-interwork -DTHUMB_NO_INTERWORKING -mthumb
+LDFLAGS  += -mno-thumb-interwork -mthumb
 
 # Generate dependency information
 CFLAGS     += -MD -MP -MF .dep/$(@F).d
 CPPFLAGS   += -MD -MP -MF .dep/$(@F).d
-CFLOWFLAGS = $(IINCDIR)
 
 # Paths where to search for sources
 VPATH      = $(SRCPATHS)
@@ -358,70 +307,75 @@ VPATH      = $(SRCPATHS)
 # Make targets
 #
 
+# Virtual targets
+.PHONY : MAKE_ALL_RULE_HOOK all clean static-analysis \
+         list-c-src show-cc-cmd \
+         list-cpp-src show-cppc-cmd
+
 # Make all
-all : $(OBJS) $(OUTFILES) MAKE_ALL_RULE_HOOK
+all : MAKE_ALL_RULE_HOOK $(OBJS) $(OUTFILES)
 
 # Static analysis
-static-analysis : $(ACFLOWOBJS) $(TCFLOWOBJS) \
-                  $(ASUOBJS) $(TSUOBJS) \
-                  MAKE_ALL_RULE_HOOK
+static-analysis : MAKE_ALL_RULE_HOOK $(STANOBJS)
+
+# List C source files
+list-c-src :
+	@for f in $(CSRC); do echo $$f; done
+
+# List C++ source files
+list-cpp-src :
+	@for f in $(CPPSRC); do echo $$f; done
+
+# Shows the C compiler command (without source/output file options)
+show-cc-cmd :
+	@echo $(CC) -c $(CFLAGS) $(COPT) -I. $(IINCDIR)
+
+# Shows the C++ compiler command (without source/output file options)
+show-cppc-cmd :
+	@echo $(CPPC) -c $(CPPFLAGS) $(CPPOPT) -I. $(IINCDIR)
 
 # Pre-make script
 MAKE_ALL_RULE_HOOK :
+ifneq ($(USE_VERBOSE_COMPILE),yes)
+	@echo === CC command example ===
+	@echo $(CC) -c $(CFLAGS) $(IINCDIR) main.c -o main.o
+	@echo
+	@echo === CPP command example ===
+	@echo $(CPPC) -c $(CPPFLAGS) $(IINCDIR) main.cpp -o main.o
+	@echo
+endif
 
 # Folder constraints
 $(OBJS) $(STANOBJS) : | $(BUILDDIR)
 
 # Directories setup
-$(BUILDDIR) $(OBJDIR) $(STANDIR):
-ifneq ($(USE_VERBOSE_COMPILE),yes)
-	@echo === C compiler options ===
-	@echo $(CC) -c $(CFLAGS) $(IINCDIR) main.c -o main.o
-	@echo
-	@echo === cflow options ===
-	@echo $(CFLOW) $(CFLOWFLAGS)
-	@echo
-endif
+$(BUILDDIR) $(OBJDIR):
 	mkdir -p $(OBJDIR)
 	mkdir -p $(LSTDIR)
-	mkdir -p $(STANDIR)
+	@echo
 
 # C++ compiler
-$(ACPPOBJS) : $(OBJDIR)/%.o : %.cpp Makefile
+$(CPPOBJS) : $(OBJDIR)/%.o : %.cpp Makefile
 ifeq ($(USE_VERBOSE_COMPILE),yes)
 	@echo
-	$(CPPC) -c $(CPPFLAGS) $(AOPT) -I. $(IINCDIR) $< -o $@
+	$(CPPC) -c $(CPPFLAGS) $(COPT) -I. $(IINCDIR) $< -o $@
+	-nm $@ > $@.nm
 else
 	@echo Compiling $<
-	@$(CPPC) -c $(CPPFLAGS) $(AOPT) -I. $(IINCDIR) $< -o $@
-endif
-
-$(TCPPOBJS) : $(OBJDIR)/%.o : %.cpp Makefile
-ifeq ($(USE_VERBOSE_COMPILE),yes)
-	@echo
-	$(CPPC) -c $(CPPFLAGS) $(TOPT) -I. $(IINCDIR) $< -o $@
-else
-	@echo Compiling $<
-	@$(CPPC) -c $(CPPFLAGS) $(TOPT) -I. $(IINCDIR) $< -o $@
+	@$(CPPC) -c $(CPPFLAGS) $(COPT) -I. $(IINCDIR) $< -o $@
+	@nm $@ > $@.nm
 endif
 
 # C compiler
-$(ACOBJS) : $(OBJDIR)/%.o : %.c Makefile
+$(COBJS) : $(OBJDIR)/%.o : %.c Makefile
 ifeq ($(USE_VERBOSE_COMPILE),yes)
 	@echo
-	$(CC) -c $(CFLAGS) $(AOPT) -I. $(IINCDIR) $< -o $@
+	$(CC) -c $(CFLAGS) $(COPT) -I. $(IINCDIR) $< -o $@
+	-nm $@ > $@.nm
 else
 	@echo Compiling $<
-	@$(CC) -c $(CFLAGS) $(AOPT) -I. $(IINCDIR) $< -o $@
-endif
-
-$(TCOBJS) : $(OBJDIR)/%.o : %.c Makefile
-ifeq ($(USE_VERBOSE_COMPILE),yes)
-	@echo
-	$(CC) -c $(CFLAGS) $(TOPT) -I. $(IINCDIR) $< -o $@
-else
-	@echo Compiling $<
-	@$(CC) -c $(CFLAGS) $(TOPT) -I. $(IINCDIR) $< -o $@
+	@$(CC) -c $(CFLAGS) $(COPT) -I. $(IINCDIR) $< -o $@
+	@nm $@ > $@.nm
 endif
 
 # ASM compiler
@@ -478,51 +432,13 @@ else
 	@echo Done
 endif
 
-# Call analysis by cflow
-$(ACFLOWOBJS) : $(STANDIR)/%.cflow : %.c Makefile
-ifeq ($(USE_VERBOSE_COMPILE),yes)
-	@echo
-	$(CFLOW) $(CFLOWFLAGS) $< -o $@
-else
-	@echo Call graph $<
-	@$(CFLOW) $(CFLOWFLAGS) $< -o $@
-endif
-
-$(TCFLOWOBJS) : $(STANDIR)/%.cflow : %.c Makefile
-ifeq ($(USE_VERBOSE_COMPILE),yes)
-	@echo
-	$(CFLOW) $(CFLOWFLAGS) $< -o $@
-else
-	@echo Call graph $<
-	@$(CFLOW) $(CFLOWFLAGS) $< -o $@
-endif
-
-# Stack analysis by GCC
-$(ASUOBJS) : $(STANDIR)/%.su : %.c Makefile
-ifeq ($(USE_VERBOSE_COMPILE),yes)
-	@echo
-	$(CC) -c $(CFLAGS) -fstack-usage $(AOPT) -I. $(IINCDIR) $< -o $(STANDIR)/__PHONY__.o
-	-mv $(STANDIR)/__PHONY__.su $@
-	-rm -f $(STANDIR)/__PHONY__.o
-else
-	@echo Stack usage  $<
-	@$(CC) -c $(CFLAGS) -fstack-usage $(AOPT) -I. $(IINCDIR) $< -o $(STANDIR)/__PHONY__.o
-	@mv $(STANDIR)/__PHONY__.su $@
-	@rm -f $(STANDIR)/__PHONY__.o
-endif
-
-$(TSUOBJS) : $(STANDIR)/%.su : %.c Makefile
-ifeq ($(USE_VERBOSE_COMPILE),yes)
-	@echo
-	$(CC) -c $(CFLAGS) -fstack-usage $(TOPT) -I. $(IINCDIR) $< -o $(STANDIR)/__PHONY__.o
-	-mv $(STANDIR)/__PHONY__.su $@
-	-rm -f $(STANDIR)/__PHONY__.o
-else
-	@echo Stack usage  $<
-	@$(CC) -c $(CFLAGS) -fstack-usage $(TOPT) -I. $(IINCDIR) $< -o $(STANDIR)/__PHONY__.o
-	@mv $(STANDIR)/__PHONY__.su $@
-	@rm -f $(STANDIR)/__PHONY__.o
-endif
+# Static analysis objects
+$(CGKDOBJS)   : $(OBJDIR)/%.o.gkd : $(OBJDIR)/%.o
+$(CPPGKDOBJS) : $(OBJDIR)/%.o.gkd : $(OBJDIR)/%.o
+$(CSUOBJS)    : $(OBJDIR)/%.su    : $(OBJDIR)/%.o
+$(CPPSUOBJS)  : $(OBJDIR)/%.su    : $(OBJDIR)/%.o
+$(CNMOBJS)    : $(OBJDIR)/%.o.nm  : $(OBJDIR)/%.o
+$(CPPNMOBJS)  : $(OBJDIR)/%.o.nm  : $(OBJDIR)/%.o
 
 # Project cleaner
 clean:

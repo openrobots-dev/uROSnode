@@ -72,9 +72,6 @@ CPPSRC =
 INCDIR = $(UROSINC) \
          $(PROJINC)
 
-# Configuration file for cflow
-CFLOWCFG = misc/cflow.rc
-
 #
 # Project, sources and paths
 ##############################################################################
@@ -92,7 +89,6 @@ LD    = gcc
 #LD    = g++
 CP    = objcopy
 OD    = objdump
-CFLOW = CFLOWRC=$(CFLOWCFG) cflow
 
 # Define C warning options here
 CWARN = -Wall -Wextra -Wstrict-prototypes
@@ -159,24 +155,29 @@ OUTFILES   = $(BUILDDIR)/$(EXEOBJ)
 
 # Automatic compiler options
 OPT        = $(USE_OPT)
-COPT       = $(USE_COPT)
-CPPOPT     = $(USE_CPPOPT)
+COPT       = $(USE_COPT) -fstack-usage -fdump-final-insns
+CPPOPT     = $(USE_CPPOPT) -fstack-usage -fdump-final-insns
 
 # Source files groups and paths
-SRCPATHS   = $(sort $(dir $(CSRC)$(CPPSRC)))
+SRCPATHS   = $(sort $(dir $(CSRC) $(CPPSRC)))
 
 # Various directories
 OBJDIR     = $(BUILDDIR)/obj
-STANDIR    = $(BUILDDIR)/stan
 
 # Object files groups
 COBJS      = $(addprefix $(OBJDIR)/, $(notdir $(CSRC:.c=.o)))
 CPPOBJS    = $(addprefix $(OBJDIR)/, $(notdir $(CPPSRC:.cpp=.o)))
-OBJS       = $(ASMOBJS) $(COBJS) $(CPPOBJS)
+OBJS       = $(COBJS) $(CPPOBJS)
 
-CFLOWOBJS  = $(addprefix $(STANDIR)/, $(notdir $(CSRC:.c=.cflow)))
-SUOBJS     = $(addprefix $(STANDIR)/, $(notdir $(CSRC:.c=.su)))
-STANOBJS   = $(CFLOWOBJS) $(SUOBJS)
+CGKDOBJS    = $(addprefix $(OBJDIR)/, $(notdir $(CSRC:.c=.o.gkd)))
+CPPGKDOBJS  = $(addprefix $(OBJDIR)/, $(notdir $(CPPSRC:.cpp=.o.gkd)))
+CSUOBJS     = $(addprefix $(OBJDIR)/, $(notdir $(CSRC:.c=.su)))
+CPPSUOBJS   = $(addprefix $(OBJDIR)/, $(notdir $(CPPSRC:.cpp=.su)))
+CNMOBJS     = $(addprefix $(OBJDIR)/, $(notdir $(CSRC:.c=.o.nm)))
+CPPNMOBJS   = $(addprefix $(OBJDIR)/, $(notdir $(CPPSRC:.cpp=.o.nm)))
+CSTANOBJS   = $(CGKDOBJS) $(CSUOBJS) $(CNMOBJS)
+CPPSTANOBJS = $(CPPGKDOBJS) $(CPPSUOBJS) $(CPPNMOBJS)
+STANOBJS    = $(CSTANOBJS) $(CPPSTANOBJS)
 
 # Paths
 IINCDIR    = $(patsubst %,-I%,$(INCDIR) $(DINCDIR) $(UINCDIR))
@@ -196,7 +197,6 @@ LDFLAGS    =
 # Generate dependency information
 CFLAGS     += -MD -MP -MF .dep/$(@F).d
 CPPFLAGS   += -MD -MP -MF .dep/$(@F).d
-CFLOWFLAGS = $(IINCDIR)
 
 # Paths where to search for sources
 VPATH      = $(SRCPATHS)
@@ -209,49 +209,74 @@ VPATH      = $(SRCPATHS)
 # Make targets
 #
 
+# Virtual targets
+.PHONY : MAKE_ALL_RULE_HOOK all clean static-analysis \
+         list-c-src show-cc-cmd \
+         list-cpp-src show-cppc-cmd
+
 # Make all
-all : $(OBJS) $(OUTFILES) MAKE_ALL_RULE_HOOK
+all : MAKE_ALL_RULE_HOOK $(OBJS) $(OUTFILES)
 
 # Static analysis
-static-analysis : $(CFLOWOBJS) $(SUOBJS) MAKE_ALL_RULE_HOOK
+static-analysis : MAKE_ALL_RULE_HOOK $(STANOBJS)
+
+# List C source files
+list-c-src :
+	@for f in $(CSRC); do echo $$f; done
+
+# List C++ source files
+list-cpp-src :
+	@for f in $(CPPSRC); do echo $$f; done
+
+# Shows the C compiler command (without source/output file options)
+show-cc-cmd :
+	@echo $(CC) -c $(CFLAGS) $(COPT) -I. $(IINCDIR)
+
+# Shows the C++ compiler command (without source/output file options)
+show-cppc-cmd :
+	@echo $(CPPC) -c $(CPPFLAGS) $(CPPOPT) -I. $(IINCDIR)
 
 # Pre-make script
 MAKE_ALL_RULE_HOOK :
+ifneq ($(USE_VERBOSE_COMPILE),yes)
+	@echo === CC command example ===
+	@echo $(CC) -c $(CFLAGS) $(IINCDIR) main.c -o main.o
+	@echo
+	@echo === CPP command example ===
+	@echo $(CPPC) -c $(CPPFLAGS) $(IINCDIR) main.cpp -o main.o
+	@echo
+endif
 
 # Folder constraints
 $(OBJS) $(STANOBJS) : | $(BUILDDIR)
 
 # Directories setup
-$(BUILDDIR) $(OBJDIR) $(STANDIR):
-ifneq ($(USE_VERBOSE_COMPILE),yes)
-	@echo === C compiler options ===
-	@echo $(CC) -c $(CFLAGS) $(IINCDIR) main.c -o main.o
-	@echo
-	@echo === cflow options ===
-	@echo $(CFLOW) $(CFLOWFLAGS)
-	@echo
-endif
+$(BUILDDIR) $(OBJDIR):
 	mkdir -p $(OBJDIR)
-	mkdir -p $(STANDIR)
+	@echo
 
 # C++ compiler
 $(CPPOBJS) : $(OBJDIR)/%.o : %.cpp Makefile
 ifeq ($(USE_VERBOSE_COMPILE),yes)
 	@echo
-	$(CPPC) -c $(CPPFLAGS) $(IINCDIR) $< -o $@
+	$(CPPC) -c $(CPPFLAGS) $(COPT) -I. $(IINCDIR) $< -o $@
+	-nm $@ > $@.nm
 else
 	@echo Compiling $<
-	@$(CPPC) -c $(CPPFLAGS) $(IINCDIR) $< -o $@
+	@$(CPPC) -c $(CPPFLAGS) $(COPT) -I. $(IINCDIR) $< -o $@
+	@nm $@ > $@.nm
 endif
 
 # C compiler
 $(COBJS) : $(OBJDIR)/%.o : %.c Makefile
 ifeq ($(USE_VERBOSE_COMPILE),yes)
 	@echo
-	$(CC) -c $(CFLAGS) $(IINCDIR) $< -o $@
+	$(CC) -c $(CFLAGS) $(COPT) -I. $(IINCDIR) $< -o $@
+	-nm $@ > $@.nm
 else
 	@echo Compiling $<
-	@$(CC) -c $(CFLAGS) $(IINCDIR) $< -o $@
+	@$(CC) -c $(CFLAGS) $(COPT) -I. $(IINCDIR) $< -o $@
+	@nm $@ > $@.nm
 endif
 
 # Target executable linker
@@ -264,29 +289,13 @@ else
 	@$(LD) $(OBJS) $(LDFLAGS) $(LIBS) -o $@
 endif
 
-# Call analysis by cflow
-$(CFLOWOBJS) : $(STANDIR)/%.cflow : %.c Makefile
-ifeq ($(USE_VERBOSE_COMPILE),yes)
-	@echo
-	$(CFLOW) $(CFLOWFLAGS) $< -o $@
-else
-	@echo Call graph $<
-	@$(CFLOW) $(CFLOWFLAGS) $< -o $@
-endif
-
-# Stack analysis by GCC
-$(SUOBJS) : $(STANDIR)/%.su : %.c Makefile
-ifeq ($(USE_VERBOSE_COMPILE),yes)
-	@echo
-	$(CC) -c $(CFLAGS) -fstack-usage $(IINCDIR) $< -o $(STANDIR)/__PHONY__.o
-	-mv $(STANDIR)/__PHONY__.su $@
-	-rm -f $(STANDIR)/__PHONY__.o
-else
-	@echo Stack usage  $<
-	@$(CC) -c $(CFLAGS) -fstack-usage $(IINCDIR) $< -o $(STANDIR)/__PHONY__.o
-	@mv $(STANDIR)/__PHONY__.su $@
-	@rm -f $(STANDIR)/__PHONY__.o
-endif
+# Static analysis objects
+$(CGKDOBJS)   : $(OBJDIR)/%.o.gkd : $(OBJDIR)/%.o
+$(CPPGKDOBJS) : $(OBJDIR)/%.o.gkd : $(OBJDIR)/%.o
+$(CSUOBJS)    : $(OBJDIR)/%.su    : $(OBJDIR)/%.o
+$(CPPSUOBJS)  : $(OBJDIR)/%.su    : $(OBJDIR)/%.o
+$(CNMOBJS)    : $(OBJDIR)/%.o.nm  : $(OBJDIR)/%.o
+$(CPPNMOBJS)  : $(OBJDIR)/%.o.nm  : $(OBJDIR)/%.o
 
 # Project cleaner
 clean:
