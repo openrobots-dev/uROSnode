@@ -6,6 +6,8 @@ LEGEND:
     ! High priority
 
 JOB QUEUE:
+*!  Service & constants banners
+*!  Rename inmsgp/outmsgp to requestp/responsep in generated service calls
 ?!  Client service calls
 +   Support for regex in urosstan.py entry point names
 +   Support for named dependencies in urosstan.py entry point size

@@ -1,0 +1,1708 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1003.3204"
+   height="786.30127"
+   viewBox="259 -69 554.78251 432.19945"
+   id="svg4938"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="stan_flow.svg">
+  <metadata
+     id="metadata5272">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs5270">
+    <filter
+       inkscape:collect="always"
+       id="filter6459"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.68"
+         id="feGaussianBlur6461" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1280"
+     inkscape:window-height="750"
+     id="namedview5268"
+     showgrid="false"
+     units="mm"
+     fit-margin-top="1"
+     fit-margin-left="1"
+     fit-margin-right="1"
+     fit-margin-bottom="1"
+     inkscape:zoom="0.44853766"
+     inkscape:cx="253.58216"
+     inkscape:cy="374.70107"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4938" />
+  <g
+     id="g5781"
+     transform="translate(12.391259,11.169049)"
+     style="opacity:0.66600001;fill:#000000;filter:url(#filter6459)">
+    <g
+       id="g4940-7"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <rect
+         id="rect4942-5"
+         height="40"
+         width="140"
+         y="20"
+         x="380"
+         style="fill:#000000" />
+      <rect
+         id="rect4944-2"
+         height="40"
+         width="140"
+         y="20"
+         x="380"
+         style="fill:#000000;stroke:#000000;stroke-width:0.40000001" />
+      <text
+         id="text4946-4"
+         y="43.900002"
+         x="450"
+         style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+         font-size="12.8">
+        <tspan
+           id="tspan4948-6"
+           y="43.900002"
+           x="450"
+           style="fill:#000000">GCC toolchain</tspan>
+      </text>
+    </g>
+    <g
+       id="g4950-7"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <rect
+         id="rect4952-3"
+         height="40"
+         width="100"
+         y="20"
+         x="610"
+         style="fill:#000000" />
+      <rect
+         id="rect4954-5"
+         height="40"
+         width="100"
+         y="20"
+         x="610"
+         style="fill:#000000;stroke:#000000;stroke-width:0.40000001" />
+      <text
+         id="text4956-6"
+         y="43.900002"
+         x="660"
+         style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+         font-size="12.8">
+        <tspan
+           id="tspan4958-4"
+           y="43.900002"
+           x="660"
+           style="fill:#000000">GNU nm</tspan>
+      </text>
+    </g>
+    <g
+       id="g4960-9"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <path
+         id="path4962-0"
+         d="m 462.857,300 114.286,0 c 17.143,8 22.857,12 22.857,20 0,8 -5.714,12 -22.857,20 L 462.857,340 440,320 462.857,300 z"
+         style="fill:#000000"
+         inkscape:connector-curvature="0" />
+      <path
+         id="path4964-3"
+         d="m 462.857,300 114.286,0 c 17.143,8 22.857,12 22.857,20 0,8 -5.714,12 -22.857,20 L 462.857,340 440,320 462.857,300"
+         style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+         inkscape:connector-curvature="0" />
+      <text
+         id="text4966-4"
+         y="324"
+         x="520"
+         style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+         font-size="12.8">
+        <tspan
+           id="tspan4968-2"
+           y="324"
+           x="520"
+           style="fill:#000000">Analysis results</tspan>
+      </text>
+    </g>
+    <g
+       id="g4970-6"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <line
+         id="line4972-2"
+         y2="92.975304"
+         x2="367.59399"
+         y1="62.290001"
+         x1="415.327"
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+      <polygon
+         id="polygon4974-6"
+         points="361.285,97.031 366.993,87.4175 367.594,92.9753 372.401,95.8293 "
+         style="fill:#000000" />
+      <polygon
+         id="polygon4976-3"
+         points="366.993,87.4175 367.594,92.9753 372.401,95.8293 361.285,97.031 "
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+    </g>
+    <g
+       id="g4978-1"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <line
+         id="line4980-1"
+         y2="87.180496"
+         x2="450"
+         y1="64.126999"
+         x1="450"
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+      <polygon
+         id="polygon4982-8"
+         points="450,94.6805 445,84.6805 450,87.1805 455,84.6805 "
+         style="fill:#000000" />
+      <polygon
+         id="polygon4984-0"
+         points="445,84.6805 450,87.1805 455,84.6805 450,94.6805 "
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+    </g>
+    <g
+       id="g4986-2"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <line
+         id="line4988-4"
+         y2="92.975304"
+         x2="532.40601"
+         y1="62.290001"
+         x1="484.673"
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+      <polygon
+         id="polygon4990-4"
+         points="538.715,97.031 527.599,95.8293 532.406,92.9753 533.007,87.4175 "
+         style="fill:#000000" />
+      <polygon
+         id="polygon4992-2"
+         points="527.599,95.8293 532.406,92.9753 533.007,87.4175 538.715,97.031 "
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+    </g>
+    <g
+       id="g4994-5"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <line
+         id="line4996-8"
+         y2="70.086998"
+         x2="636.599"
+         y1="96.641197"
+         x1="615.94598"
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+      <polygon
+         id="polygon4998-9"
+         points="641.204,64.1669 639.011,75.1301 636.599,70.087 631.117,68.9907 "
+         style="fill:#000000" />
+      <polygon
+         id="polygon5000-5"
+         points="639.011,75.1301 636.599,70.087 631.117,68.9907 641.204,64.1669 "
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+    </g>
+    <g
+       id="g5002-8"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <line
+         id="line5004-4"
+         y2="89.862"
+         x2="699.02399"
+         y1="63.276901"
+         x1="678.21698"
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+      <polygon
+         id="polygon5006-0"
+         points="703.646,95.7682 693.546,90.9748 699.024,89.862 701.421,84.8116 "
+         style="fill:#000000" />
+      <polygon
+         id="polygon5008-2"
+         points="693.546,90.9748 699.024,89.862 701.421,84.8116 703.646,95.7682 "
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+    </g>
+    <g
+       id="g5010-3"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <rect
+         id="rect5012-7"
+         height="60"
+         width="160"
+         y="200"
+         x="440"
+         style="fill:#000000" />
+      <rect
+         id="rect5014-7"
+         height="60"
+         width="160"
+         y="200"
+         x="440"
+         style="fill:#000000;stroke:#000000;stroke-width:0.40000001" />
+      <text
+         id="text5016-8"
+         y="225.89999"
+         x="520"
+         style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+         font-size="12.8">
+        <tspan
+           id="tspan5018-3"
+           y="225.89999"
+           x="520"
+           style="fill:#000000">Static stack analyzer</tspan>
+        <tspan
+           id="tspan5020-1"
+           y="241.89999"
+           x="520"
+           style="fill:#000000">urosstan.py</tspan>
+      </text>
+    </g>
+    <g
+       id="g5022-0"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <path
+         id="path5024-5"
+         d="m 300,200 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 300,200 z"
+         style="fill:#000000"
+         inkscape:connector-curvature="0" />
+      <path
+         id="path5026-6"
+         d="m 300,200 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 300,200"
+         style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+         inkscape:connector-curvature="0" />
+      <text
+         id="text5028-4"
+         y="217.429"
+         x="350"
+         style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+         font-size="12.8">
+        <tspan
+           id="tspan5030-7"
+           y="217.429"
+           x="350"
+           style="fill:#000000">Configuration</tspan>
+        <tspan
+           id="tspan5032-2"
+           y="233.429"
+           x="350"
+           style="fill:#000000">file</tspan>
+      </text>
+    </g>
+    <g
+       id="g5034-8"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <line
+         id="line5036-5"
+         y2="230"
+         x2="427.186"
+         y1="230"
+         x1="404.17801"
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+      <polygon
+         id="polygon5038-7"
+         points="434.686,230 424.686,235 427.186,230 424.686,225 "
+         style="fill:#000000" />
+      <polygon
+         id="polygon5040-1"
+         points="424.686,235 427.186,230 424.686,225 434.686,230 "
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+    </g>
+    <g
+       id="g5042-7"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <line
+         id="line5044-5"
+         y2="287.38199"
+         x2="520"
+         y1="264.146"
+         x1="520"
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+      <polygon
+         id="polygon5046-1"
+         points="520,294.882 515,284.882 520,287.382 525,284.882 "
+         style="fill:#000000" />
+      <polygon
+         id="polygon5048-9"
+         points="515,284.882 520,287.382 525,284.882 520,294.882 "
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+    </g>
+    <g
+       id="g5050-9"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <g
+         id="g5052-6"
+         style="fill:#000000">
+        <g
+           id="g5054-3"
+           style="fill:#000000">
+          <path
+             id="path5056-7"
+             d="m 268,108 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 268,108 z"
+             style="fill:#000000"
+             inkscape:connector-curvature="0" />
+          <path
+             id="path5058-4"
+             d="m 268,108 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 268,108"
+             style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+             inkscape:connector-curvature="0" />
+          <text
+             id="text5060-2"
+             y="133.429"
+             x="318"
+             style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+             font-size="12.8">
+            <tspan
+               id="tspan5062-2"
+               y="133.429"
+               x="318"
+               style="fill:#000000" />
+          </text>
+        </g>
+        <g
+           id="g5064-2"
+           style="fill:#000000">
+          <path
+             id="path5066-8"
+             d="m 264,104 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 264,104 z"
+             style="fill:#000000"
+             inkscape:connector-curvature="0" />
+          <path
+             id="path5068-2"
+             d="m 264,104 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 264,104"
+             style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+             inkscape:connector-curvature="0" />
+          <text
+             id="text5070-6"
+             y="129.429"
+             x="314"
+             style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+             font-size="12.8">
+            <tspan
+               id="tspan5072-1"
+               y="129.429"
+               x="314"
+               style="fill:#000000" />
+          </text>
+        </g>
+      </g>
+      <g
+         id="g5074-1"
+         style="fill:#000000">
+        <path
+           id="path5076-3"
+           d="m 260,100 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 260,100 z"
+           style="fill:#000000"
+           inkscape:connector-curvature="0" />
+        <path
+           id="path5078-0"
+           d="m 260,100 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 260,100"
+           style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+           inkscape:connector-curvature="0" />
+        <text
+           id="text5080-6"
+           y="117.429"
+           x="310"
+           style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+           font-size="12.8">
+          <tspan
+             id="tspan5082-6"
+             y="117.429"
+             x="310"
+             style="fill:#000000">RTL dumps</tspan>
+          <tspan
+             id="tspan5084-0"
+             y="133.429"
+             x="310"
+             style="fill:#000000">*.gkd</tspan>
+        </text>
+      </g>
+    </g>
+    <g
+       id="g5086-1"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <g
+         id="g5088-2"
+         style="fill:#000000">
+        <g
+           id="g5090-6"
+           style="fill:#000000">
+          <path
+             id="path5092-1"
+             d="m 408,108 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 408,108 z"
+             style="fill:#000000"
+             inkscape:connector-curvature="0" />
+          <path
+             id="path5094-5"
+             d="m 408,108 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 408,108"
+             style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+             inkscape:connector-curvature="0" />
+          <text
+             id="text5096-4"
+             y="133.429"
+             x="458"
+             style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+             font-size="12.8">
+            <tspan
+               id="tspan5098-8"
+               y="133.429"
+               x="458"
+               style="fill:#000000" />
+          </text>
+        </g>
+        <g
+           id="g5100-2"
+           style="fill:#000000">
+          <path
+             id="path5102-5"
+             d="m 404,104 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 404,104 z"
+             style="fill:#000000"
+             inkscape:connector-curvature="0" />
+          <path
+             id="path5104-5"
+             d="m 404,104 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 404,104"
+             style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+             inkscape:connector-curvature="0" />
+          <text
+             id="text5106-0"
+             y="129.429"
+             x="454"
+             style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+             font-size="12.8">
+            <tspan
+               id="tspan5108-9"
+               y="129.429"
+               x="454"
+               style="fill:#000000" />
+          </text>
+        </g>
+      </g>
+      <g
+         id="g5110-6"
+         style="fill:#000000">
+        <path
+           id="path5112-1"
+           d="m 400,100 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 400,100 z"
+           style="fill:#000000"
+           inkscape:connector-curvature="0" />
+        <path
+           id="path5114-5"
+           d="m 400,100 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 400,100"
+           style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+           inkscape:connector-curvature="0" />
+        <text
+           id="text5116-9"
+           y="117.429"
+           x="450"
+           style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+           font-size="12.8">
+          <tspan
+             id="tspan5118-8"
+             y="117.429"
+             x="450"
+             style="fill:#000000">Stack reports</tspan>
+          <tspan
+             id="tspan5120-1"
+             y="133.429"
+             x="450"
+             style="fill:#000000">*.su</tspan>
+        </text>
+      </g>
+    </g>
+    <g
+       id="g5122-3"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <g
+         id="g5124-1"
+         style="fill:#000000">
+        <g
+           id="g5126-6"
+           style="fill:#000000">
+          <path
+             id="path5128-2"
+             d="m 548,108 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 548,108 z"
+             style="fill:#000000"
+             inkscape:connector-curvature="0" />
+          <path
+             id="path5130-5"
+             d="m 548,108 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 548,108"
+             style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+             inkscape:connector-curvature="0" />
+          <text
+             id="text5132-2"
+             y="133.429"
+             x="598"
+             style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+             font-size="12.8">
+            <tspan
+               id="tspan5134-3"
+               y="133.429"
+               x="598"
+               style="fill:#000000" />
+          </text>
+        </g>
+        <g
+           id="g5136-9"
+           style="fill:#000000">
+          <path
+             id="path5138-8"
+             d="m 544,104 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 544,104 z"
+             style="fill:#000000"
+             inkscape:connector-curvature="0" />
+          <path
+             id="path5140-5"
+             d="m 544,104 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 544,104"
+             style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+             inkscape:connector-curvature="0" />
+          <text
+             id="text5142-5"
+             y="129.429"
+             x="594"
+             style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+             font-size="12.8">
+            <tspan
+               id="tspan5144-4"
+               y="129.429"
+               x="594"
+               style="fill:#000000" />
+          </text>
+        </g>
+      </g>
+      <g
+         id="g5146-7"
+         style="fill:#000000">
+        <path
+           id="path5148-9"
+           d="m 540,100 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 540,100 z"
+           style="fill:#000000"
+           inkscape:connector-curvature="0" />
+        <path
+           id="path5150-7"
+           d="m 540,100 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 540,100"
+           style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+           inkscape:connector-curvature="0" />
+        <text
+           id="text5152-5"
+           y="117.429"
+           x="590"
+           style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+           font-size="12.8">
+          <tspan
+             id="tspan5154-0"
+             y="117.429"
+             x="590"
+             style="fill:#000000">Object files</tspan>
+          <tspan
+             id="tspan5156-4"
+             y="133.429"
+             x="590"
+             style="fill:#000000">*.o</tspan>
+        </text>
+      </g>
+    </g>
+    <g
+       id="g5158-1"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <g
+         id="g5160-8"
+         style="fill:#000000">
+        <g
+           id="g5162-8"
+           style="fill:#000000">
+          <path
+             id="path5164-9"
+             d="m 688,108 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 688,108 z"
+             style="fill:#000000"
+             inkscape:connector-curvature="0" />
+          <path
+             id="path5166-6"
+             d="m 688,108 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 688,108"
+             style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+             inkscape:connector-curvature="0" />
+          <text
+             id="text5168-8"
+             y="133.429"
+             x="738"
+             style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+             font-size="12.8">
+            <tspan
+               id="tspan5170-8"
+               y="133.429"
+               x="738"
+               style="fill:#000000" />
+          </text>
+        </g>
+        <g
+           id="g5172-2"
+           style="fill:#000000">
+          <path
+             id="path5174-0"
+             d="m 684,104 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 684,104 z"
+             style="fill:#000000"
+             inkscape:connector-curvature="0" />
+          <path
+             id="path5176-3"
+             d="m 684,104 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 684,104"
+             style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+             inkscape:connector-curvature="0" />
+          <text
+             id="text5178-4"
+             y="129.429"
+             x="734"
+             style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+             font-size="12.8">
+            <tspan
+               id="tspan5180-8"
+               y="129.429"
+               x="734"
+               style="fill:#000000" />
+          </text>
+        </g>
+      </g>
+      <g
+         id="g5182-6"
+         style="fill:#000000">
+        <path
+           id="path5184-7"
+           d="m 680,100 100.875,0 0,51.429 c -20.175,-8.572 -30.263,-8.572 -50.438,0 C 710.262,160 700.175,160 680,151.429 L 680,100 z"
+           style="fill:#000000"
+           inkscape:connector-curvature="0" />
+        <path
+           id="path5186-1"
+           d="m 680,100 100.875,0 0,51.429 c -20.175,-8.572 -30.263,-8.572 -50.438,0 C 710.262,160 700.175,160 680,151.429 L 680,100"
+           style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+           inkscape:connector-curvature="0" />
+        <text
+           id="text5188-2"
+           y="117.429"
+           x="730.43701"
+           style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+           font-size="12.8">
+          <tspan
+             id="tspan5190-1"
+             y="117.429"
+             x="730.43701"
+             style="fill:#000000">Symbol lists</tspan>
+          <tspan
+             id="tspan5192-9"
+             y="133.429"
+             x="730.43701"
+             style="fill:#000000">*.nm</tspan>
+        </text>
+      </g>
+    </g>
+    <g
+       id="g5194-5"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <g
+         id="g5196-7"
+         style="fill:#000000">
+        <path
+           id="path5198-8"
+           d="m 400,-60 100,0 0,51.42857 c -20,-8.57147 -30,-8.57147 -50,0 C 430,0 420,0 400,-8.57143 L 400,-60 z"
+           style="fill:#000000"
+           inkscape:connector-curvature="0" />
+        <path
+           id="path5200-5"
+           d="m 400,-60 100,0 0,51.42857 c -20,-8.57147 -30,-8.57147 -50,0 C 430,0 420,0 400,-8.57143 L 400,-60"
+           style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+           inkscape:connector-curvature="0" />
+        <text
+           id="text5202-2"
+           y="-34.5714"
+           x="450"
+           style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+           font-size="12.8">
+          <tspan
+             id="tspan5204-5"
+             y="-34.5714"
+             x="450"
+             style="fill:#000000" />
+        </text>
+      </g>
+      <g
+         id="g5206-9"
+         style="fill:#000000">
+        <path
+           id="path5208-2"
+           d="m 396,-64 100,0 0,51.4286 c -20,-8.5715 -30,-8.5715 -50,0 -20,8.5714 -30,8.5714 -50,0 L 396,-64 z"
+           style="fill:#000000"
+           inkscape:connector-curvature="0" />
+        <path
+           id="path5210-4"
+           d="m 396,-64 100,0 0,51.4286 c -20,-8.5715 -30,-8.5715 -50,0 -20,8.5714 -30,8.5714 -50,0 L 396,-64"
+           style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+           inkscape:connector-curvature="0" />
+        <text
+           id="text5212-8"
+           y="-38.5714"
+           x="446"
+           style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+           font-size="12.8">
+          <tspan
+             id="tspan5214-7"
+             y="-38.5714"
+             x="446"
+             style="fill:#000000" />
+        </text>
+      </g>
+      <g
+         id="g5216-6"
+         style="fill:#000000">
+        <path
+           id="path5218-2"
+           d="m 392,-68 100,0 0,51.4286 c -20,-8.5715 -30,-8.5715 -50,0 -20,8.5714 -30,8.5714 -50,0 L 392,-68 z"
+           style="fill:#000000"
+           inkscape:connector-curvature="0" />
+        <path
+           id="path5220-9"
+           d="m 392,-68 100,0 0,51.4286 c -20,-8.5715 -30,-8.5715 -50,0 -20,8.5714 -30,8.5714 -50,0 L 392,-68"
+           style="fill:#000000;stroke:#000000;stroke-width:0.40000001"
+           inkscape:connector-curvature="0" />
+        <text
+           id="text5222-5"
+           y="-50.5714"
+           x="442"
+           style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+           font-size="12.8">
+          <tspan
+             id="tspan5224-1"
+             y="-50.5714"
+             x="442"
+             style="fill:#000000">Source code</tspan>
+          <tspan
+             id="tspan5226-8"
+             y="-34.5714"
+             x="442"
+             style="fill:#000000">*.c *.cpp</tspan>
+        </text>
+      </g>
+    </g>
+    <g
+       id="g5228-3"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <line
+         id="line5230-1"
+         y2="194.571"
+         x2="442.211"
+         y1="156.841"
+         x1="359.367"
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+      <polygon
+         id="polygon5232-8"
+         points="449.036,197.68 437.863,198.085 442.211,194.571 442.008,188.985 "
+         style="fill:#000000" />
+      <polygon
+         id="polygon5234-5"
+         points="437.863,198.085 442.211,194.571 442.008,188.985 449.036,197.68 "
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+    </g>
+    <g
+       id="g5236-1"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <line
+         id="line5238-1"
+         y2="189.338"
+         x2="492.59698"
+         y1="158.612"
+         x1="471.89099"
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+      <polygon
+         id="polygon5240-1"
+         points="496.788,195.557 487.054,190.059 492.597,189.338 495.346,184.47 "
+         style="fill:#000000" />
+      <polygon
+         id="polygon5242-2"
+         points="487.054,190.059 492.597,189.338 495.346,184.47 496.788,195.557 "
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+    </g>
+    <g
+       id="g5244-7"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <line
+         id="line5246-1"
+         y2="190.177"
+         x2="553.763"
+         y1="169.015"
+         x1="571.70502"
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+      <polygon
+         id="polygon5248-5"
+         points="548.913,195.897 551.566,185.036 553.763,190.177 559.194,191.503 "
+         style="fill:#000000" />
+      <polygon
+         id="polygon5250-2"
+         points="551.566,185.036 553.763,190.177 559.194,191.503 548.913,195.897 "
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+    </g>
+    <g
+       id="g5252-2"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <line
+         id="line5254-4"
+         y2="194.895"
+         x2="603.18298"
+         y1="160.742"
+         x1="684.112"
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+      <polygon
+         id="polygon5256-9"
+         points="596.273,197.811 603.542,189.317 603.183,194.895 607.43,198.53 "
+         style="fill:#000000" />
+      <polygon
+         id="polygon5258-9"
+         points="603.542,189.317 603.183,194.895 607.43,198.53 596.273,197.811 "
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+    </g>
+    <g
+       id="g5260-2"
+       transform="translate(0,-1.4653654e-6)"
+       style="fill:#000000">
+      <line
+         id="line5262-4"
+         y2="7.1988602"
+         x2="450"
+         y1="-4.35571"
+         x1="450"
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+      <polygon
+         id="polygon5264-4"
+         points="450,14.6989 445,4.69886 450,7.19886 455,4.69886 "
+         style="fill:#000000" />
+      <polygon
+         id="polygon5266-0"
+         points="445,4.69886 450,7.19886 455,4.69886 450,14.6989 "
+         style="fill:#000000;stroke:#000000;stroke-width:1" />
+    </g>
+  </g>
+  <g
+     id="g4940"
+     transform="translate(6.8616803,5.7232489)">
+    <rect
+       style="fill:#bbddee"
+       x="380"
+       y="20"
+       width="140"
+       height="40"
+       id="rect4942" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.40000001"
+       x="380"
+       y="20"
+       width="140"
+       height="40"
+       id="rect4944" />
+    <text
+       font-size="12.8"
+       style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+       x="450"
+       y="43.900002"
+       id="text4946">
+      <tspan
+         x="450"
+         y="43.900002"
+         id="tspan4948">GCC toolchain</tspan>
+    </text>
+  </g>
+  <g
+     id="g4950"
+     transform="translate(6.8616803,5.7232489)">
+    <rect
+       style="fill:#bbddee"
+       x="610"
+       y="20"
+       width="100"
+       height="40"
+       id="rect4952" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.40000001"
+       x="610"
+       y="20"
+       width="100"
+       height="40"
+       id="rect4954" />
+    <text
+       font-size="12.8"
+       style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+       x="660"
+       y="43.900002"
+       id="text4956">
+      <tspan
+         x="660"
+         y="43.900002"
+         id="tspan4958">GNU nm</tspan>
+    </text>
+  </g>
+  <g
+     id="g4960"
+     transform="translate(6.8616803,5.7232489)">
+    <path
+       style="fill:#bbffbb"
+       d="m 462.857,300 114.286,0 c 17.143,8 22.857,12 22.857,20 0,8 -5.714,12 -22.857,20 L 462.857,340 440,320 462.857,300 z"
+       id="path4962"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.40000001"
+       d="m 462.857,300 114.286,0 c 17.143,8 22.857,12 22.857,20 0,8 -5.714,12 -22.857,20 L 462.857,340 440,320 462.857,300"
+       id="path4964"
+       inkscape:connector-curvature="0" />
+    <text
+       font-size="12.8"
+       style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+       x="520"
+       y="324"
+       id="text4966">
+      <tspan
+         x="520"
+         y="324"
+         id="tspan4968">Analysis results</tspan>
+    </text>
+  </g>
+  <g
+     id="g4970"
+     transform="translate(6.8616803,5.7232489)">
+    <line
+       style="fill:none;stroke:#000000;stroke-width:1"
+       x1="415.327"
+       y1="62.290001"
+       x2="367.59399"
+       y2="92.975304"
+       id="line4972" />
+    <polygon
+       style="fill:#000000"
+       points="366.993,87.4175 367.594,92.9753 372.401,95.8293 361.285,97.031 "
+       id="polygon4974" />
+    <polygon
+       style="fill:none;stroke:#000000;stroke-width:1"
+       points="372.401,95.8293 361.285,97.031 366.993,87.4175 367.594,92.9753 "
+       id="polygon4976" />
+  </g>
+  <g
+     id="g4978"
+     transform="translate(6.8616803,5.7232489)">
+    <line
+       style="fill:none;stroke:#000000;stroke-width:1"
+       x1="450"
+       y1="64.126999"
+       x2="450"
+       y2="87.180496"
+       id="line4980" />
+    <polygon
+       style="fill:#000000"
+       points="445,84.6805 450,87.1805 455,84.6805 450,94.6805 "
+       id="polygon4982" />
+    <polygon
+       style="fill:none;stroke:#000000;stroke-width:1"
+       points="455,84.6805 450,94.6805 445,84.6805 450,87.1805 "
+       id="polygon4984" />
+  </g>
+  <g
+     id="g4986"
+     transform="translate(6.8616803,5.7232489)">
+    <line
+       style="fill:none;stroke:#000000;stroke-width:1"
+       x1="484.673"
+       y1="62.290001"
+       x2="532.40601"
+       y2="92.975304"
+       id="line4988" />
+    <polygon
+       style="fill:#000000"
+       points="527.599,95.8293 532.406,92.9753 533.007,87.4175 538.715,97.031 "
+       id="polygon4990" />
+    <polygon
+       style="fill:none;stroke:#000000;stroke-width:1"
+       points="533.007,87.4175 538.715,97.031 527.599,95.8293 532.406,92.9753 "
+       id="polygon4992" />
+  </g>
+  <g
+     id="g4994"
+     transform="translate(6.8616803,5.7232489)">
+    <line
+       style="fill:none;stroke:#000000;stroke-width:1"
+       x1="615.94598"
+       y1="96.641197"
+       x2="636.599"
+       y2="70.086998"
+       id="line4996" />
+    <polygon
+       style="fill:#000000"
+       points="639.011,75.1301 636.599,70.087 631.117,68.9907 641.204,64.1669 "
+       id="polygon4998" />
+    <polygon
+       style="fill:none;stroke:#000000;stroke-width:1"
+       points="631.117,68.9907 641.204,64.1669 639.011,75.1301 636.599,70.087 "
+       id="polygon5000" />
+  </g>
+  <g
+     id="g5002"
+     transform="translate(6.8616803,5.7232489)">
+    <line
+       style="fill:none;stroke:#000000;stroke-width:1"
+       x1="678.21698"
+       y1="63.276901"
+       x2="699.02399"
+       y2="89.862"
+       id="line5004" />
+    <polygon
+       style="fill:#000000"
+       points="693.546,90.9748 699.024,89.862 701.421,84.8116 703.646,95.7682 "
+       id="polygon5006" />
+    <polygon
+       style="fill:none;stroke:#000000;stroke-width:1"
+       points="701.421,84.8116 703.646,95.7682 693.546,90.9748 699.024,89.862 "
+       id="polygon5008" />
+  </g>
+  <g
+     id="g5010"
+     transform="translate(6.8616803,5.7232489)">
+    <rect
+       style="fill:#bbddee"
+       x="440"
+       y="200"
+       width="160"
+       height="60"
+       id="rect5012" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.40000001"
+       x="440"
+       y="200"
+       width="160"
+       height="60"
+       id="rect5014" />
+    <text
+       font-size="12.8"
+       style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+       x="520"
+       y="225.89999"
+       id="text5016">
+      <tspan
+         x="520"
+         y="225.89999"
+         id="tspan5018">Static stack analyzer</tspan>
+      <tspan
+         x="520"
+         y="241.89999"
+         id="tspan5020">urosstan.py</tspan>
+    </text>
+  </g>
+  <g
+     id="g5022"
+     transform="translate(6.8616803,5.7232489)">
+    <path
+       style="fill:#ffcccc"
+       d="m 300,200 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 300,200 z"
+       id="path5024"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.40000001"
+       d="m 300,200 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 300,200"
+       id="path5026"
+       inkscape:connector-curvature="0" />
+    <text
+       font-size="12.8"
+       style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+       x="350"
+       y="217.429"
+       id="text5028">
+      <tspan
+         x="350"
+         y="217.429"
+         id="tspan5030">Configuration</tspan>
+      <tspan
+         x="350"
+         y="233.429"
+         id="tspan5032">file</tspan>
+    </text>
+  </g>
+  <g
+     id="g5034"
+     transform="translate(6.8616803,5.7232489)">
+    <line
+       style="fill:none;stroke:#000000;stroke-width:1"
+       x1="404.17801"
+       y1="230"
+       x2="427.186"
+       y2="230"
+       id="line5036" />
+    <polygon
+       style="fill:#000000"
+       points="424.686,235 427.186,230 424.686,225 434.686,230 "
+       id="polygon5038" />
+    <polygon
+       style="fill:none;stroke:#000000;stroke-width:1"
+       points="424.686,225 434.686,230 424.686,235 427.186,230 "
+       id="polygon5040" />
+  </g>
+  <g
+     id="g5042"
+     transform="translate(6.8616803,5.7232489)">
+    <line
+       style="fill:none;stroke:#000000;stroke-width:1"
+       x1="520"
+       y1="264.146"
+       x2="520"
+       y2="287.38199"
+       id="line5044" />
+    <polygon
+       style="fill:#000000"
+       points="515,284.882 520,287.382 525,284.882 520,294.882 "
+       id="polygon5046" />
+    <polygon
+       style="fill:none;stroke:#000000;stroke-width:1"
+       points="525,284.882 520,294.882 515,284.882 520,287.382 "
+       id="polygon5048" />
+  </g>
+  <g
+     id="g5050"
+     transform="translate(6.8616803,5.7232489)">
+    <g
+       id="g5052">
+      <g
+         id="g5054">
+        <path
+           style="fill:#ffffc0"
+           d="m 268,108 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 268,108 z"
+           id="path5056"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.40000001"
+           d="m 268,108 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 268,108"
+           id="path5058"
+           inkscape:connector-curvature="0" />
+        <text
+           font-size="12.8"
+           style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+           x="318"
+           y="133.429"
+           id="text5060">
+          <tspan
+             x="318"
+             y="133.429"
+             id="tspan5062" />
+        </text>
+      </g>
+      <g
+         id="g5064">
+        <path
+           style="fill:#ffffc0"
+           d="m 264,104 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 264,104 z"
+           id="path5066"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.40000001"
+           d="m 264,104 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 264,104"
+           id="path5068"
+           inkscape:connector-curvature="0" />
+        <text
+           font-size="12.8"
+           style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+           x="314"
+           y="129.429"
+           id="text5070">
+          <tspan
+             x="314"
+             y="129.429"
+             id="tspan5072" />
+        </text>
+      </g>
+    </g>
+    <g
+       id="g5074">
+      <path
+         style="fill:#ffffc0"
+         d="m 260,100 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 260,100 z"
+         id="path5076"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.40000001"
+         d="m 260,100 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 260,100"
+         id="path5078"
+         inkscape:connector-curvature="0" />
+      <text
+         font-size="12.8"
+         style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+         x="310"
+         y="117.429"
+         id="text5080">
+        <tspan
+           x="310"
+           y="117.429"
+           id="tspan5082">RTL dumps</tspan>
+        <tspan
+           x="310"
+           y="133.429"
+           id="tspan5084">*.gkd</tspan>
+      </text>
+    </g>
+  </g>
+  <g
+     id="g5086"
+     transform="translate(6.8616803,5.7232489)">
+    <g
+       id="g5088">
+      <g
+         id="g5090">
+        <path
+           style="fill:#ffffc0"
+           d="m 408,108 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 408,108 z"
+           id="path5092"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.40000001"
+           d="m 408,108 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 408,108"
+           id="path5094"
+           inkscape:connector-curvature="0" />
+        <text
+           font-size="12.8"
+           style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+           x="458"
+           y="133.429"
+           id="text5096">
+          <tspan
+             x="458"
+             y="133.429"
+             id="tspan5098" />
+        </text>
+      </g>
+      <g
+         id="g5100">
+        <path
+           style="fill:#ffffc0"
+           d="m 404,104 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 404,104 z"
+           id="path5102"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.40000001"
+           d="m 404,104 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 404,104"
+           id="path5104"
+           inkscape:connector-curvature="0" />
+        <text
+           font-size="12.8"
+           style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+           x="454"
+           y="129.429"
+           id="text5106">
+          <tspan
+             x="454"
+             y="129.429"
+             id="tspan5108" />
+        </text>
+      </g>
+    </g>
+    <g
+       id="g5110">
+      <path
+         style="fill:#ffffc0"
+         d="m 400,100 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 400,100 z"
+         id="path5112"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.40000001"
+         d="m 400,100 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 400,100"
+         id="path5114"
+         inkscape:connector-curvature="0" />
+      <text
+         font-size="12.8"
+         style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+         x="450"
+         y="117.429"
+         id="text5116">
+        <tspan
+           x="450"
+           y="117.429"
+           id="tspan5118">Stack reports</tspan>
+        <tspan
+           x="450"
+           y="133.429"
+           id="tspan5120">*.su</tspan>
+      </text>
+    </g>
+  </g>
+  <g
+     id="g5122"
+     transform="translate(6.8616803,5.7232489)">
+    <g
+       id="g5124">
+      <g
+         id="g5126">
+        <path
+           style="fill:#ffffc0"
+           d="m 548,108 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 548,108 z"
+           id="path5128"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.40000001"
+           d="m 548,108 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 548,108"
+           id="path5130"
+           inkscape:connector-curvature="0" />
+        <text
+           font-size="12.8"
+           style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+           x="598"
+           y="133.429"
+           id="text5132">
+          <tspan
+             x="598"
+             y="133.429"
+             id="tspan5134" />
+        </text>
+      </g>
+      <g
+         id="g5136">
+        <path
+           style="fill:#ffffc0"
+           d="m 544,104 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 544,104 z"
+           id="path5138"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.40000001"
+           d="m 544,104 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 544,104"
+           id="path5140"
+           inkscape:connector-curvature="0" />
+        <text
+           font-size="12.8"
+           style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+           x="594"
+           y="129.429"
+           id="text5142">
+          <tspan
+             x="594"
+             y="129.429"
+             id="tspan5144" />
+        </text>
+      </g>
+    </g>
+    <g
+       id="g5146">
+      <path
+         style="fill:#ffffc0"
+         d="m 540,100 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 540,100 z"
+         id="path5148"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.40000001"
+         d="m 540,100 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 540,100"
+         id="path5150"
+         inkscape:connector-curvature="0" />
+      <text
+         font-size="12.8"
+         style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+         x="590"
+         y="117.429"
+         id="text5152">
+        <tspan
+           x="590"
+           y="117.429"
+           id="tspan5154">Object files</tspan>
+        <tspan
+           x="590"
+           y="133.429"
+           id="tspan5156">*.o</tspan>
+      </text>
+    </g>
+  </g>
+  <g
+     id="g5158"
+     transform="translate(6.8616803,5.7232489)">
+    <g
+       id="g5160">
+      <g
+         id="g5162">
+        <path
+           style="fill:#ffffc0"
+           d="m 688,108 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 688,108 z"
+           id="path5164"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.40000001"
+           d="m 688,108 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 688,108"
+           id="path5166"
+           inkscape:connector-curvature="0" />
+        <text
+           font-size="12.8"
+           style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+           x="738"
+           y="133.429"
+           id="text5168">
+          <tspan
+             x="738"
+             y="133.429"
+             id="tspan5170" />
+        </text>
+      </g>
+      <g
+         id="g5172">
+        <path
+           style="fill:#ffffc0"
+           d="m 684,104 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 684,104 z"
+           id="path5174"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.40000001"
+           d="m 684,104 100,0 0,51.429 c -20,-8.572 -30,-8.572 -50,0 -20,8.571 -30,8.571 -50,0 L 684,104"
+           id="path5176"
+           inkscape:connector-curvature="0" />
+        <text
+           font-size="12.8"
+           style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+           x="734"
+           y="129.429"
+           id="text5178">
+          <tspan
+             x="734"
+             y="129.429"
+             id="tspan5180" />
+        </text>
+      </g>
+    </g>
+    <g
+       id="g5182">
+      <path
+         style="fill:#ffffc0"
+         d="m 680,100 100.875,0 0,51.429 c -20.175,-8.572 -30.263,-8.572 -50.438,0 C 710.262,160 700.175,160 680,151.429 L 680,100 z"
+         id="path5184"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.40000001"
+         d="m 680,100 100.875,0 0,51.429 c -20.175,-8.572 -30.263,-8.572 -50.438,0 C 710.262,160 700.175,160 680,151.429 L 680,100"
+         id="path5186"
+         inkscape:connector-curvature="0" />
+      <text
+         font-size="12.8"
+         style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+         x="730.43701"
+         y="117.429"
+         id="text5188">
+        <tspan
+           x="730.43701"
+           y="117.429"
+           id="tspan5190">Symbol lists</tspan>
+        <tspan
+           x="730.43701"
+           y="133.429"
+           id="tspan5192">*.nm</tspan>
+      </text>
+    </g>
+  </g>
+  <g
+     id="g5194"
+     transform="translate(6.8616803,5.7232489)">
+    <g
+       id="g5196">
+      <path
+         style="fill:#ffcccc"
+         d="m 400,-60 100,0 0,51.42857 c -20,-8.57147 -30,-8.57147 -50,0 C 430,0 420,0 400,-8.57143 L 400,-60 z"
+         id="path5198"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.40000001"
+         d="m 400,-60 100,0 0,51.42857 c -20,-8.57147 -30,-8.57147 -50,0 C 430,0 420,0 400,-8.57143 L 400,-60"
+         id="path5200"
+         inkscape:connector-curvature="0" />
+      <text
+         font-size="12.8"
+         style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+         x="450"
+         y="-34.5714"
+         id="text5202">
+        <tspan
+           x="450"
+           y="-34.5714"
+           id="tspan5204" />
+      </text>
+    </g>
+    <g
+       id="g5206">
+      <path
+         style="fill:#ffcccc"
+         d="m 396,-64 100,0 0,51.4286 c -20,-8.5715 -30,-8.5715 -50,0 -20,8.5714 -30,8.5714 -50,0 L 396,-64 z"
+         id="path5208"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.40000001"
+         d="m 396,-64 100,0 0,51.4286 c -20,-8.5715 -30,-8.5715 -50,0 -20,8.5714 -30,8.5714 -50,0 L 396,-64"
+         id="path5210"
+         inkscape:connector-curvature="0" />
+      <text
+         font-size="12.8"
+         style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+         x="446"
+         y="-38.5714"
+         id="text5212">
+        <tspan
+           x="446"
+           y="-38.5714"
+           id="tspan5214" />
+      </text>
+    </g>
+    <g
+       id="g5216">
+      <path
+         style="fill:#ffcccc"
+         d="m 392,-68 100,0 0,51.4286 c -20,-8.5715 -30,-8.5715 -50,0 -20,8.5714 -30,8.5714 -50,0 L 392,-68 z"
+         id="path5218"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.40000001"
+         d="m 392,-68 100,0 0,51.4286 c -20,-8.5715 -30,-8.5715 -50,0 -20,8.5714 -30,8.5714 -50,0 L 392,-68"
+         id="path5220"
+         inkscape:connector-curvature="0" />
+      <text
+         font-size="12.8"
+         style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:middle;fill:#000000;font-family:sans-serif"
+         x="442"
+         y="-50.5714"
+         id="text5222">
+        <tspan
+           x="442"
+           y="-50.5714"
+           id="tspan5224">Source code</tspan>
+        <tspan
+           x="442"
+           y="-34.5714"
+           id="tspan5226">*.c *.cpp</tspan>
+      </text>
+    </g>
+  </g>
+  <g
+     id="g5228"
+     transform="translate(6.8616803,5.7232489)">
+    <line
+       style="fill:none;stroke:#000000;stroke-width:1"
+       x1="359.367"
+       y1="156.841"
+       x2="442.211"
+       y2="194.571"
+       id="line5230" />
+    <polygon
+       style="fill:#000000"
+       points="437.863,198.085 442.211,194.571 442.008,188.985 449.036,197.68 "
+       id="polygon5232" />
+    <polygon
+       style="fill:none;stroke:#000000;stroke-width:1"
+       points="442.008,188.985 449.036,197.68 437.863,198.085 442.211,194.571 "
+       id="polygon5234" />
+  </g>
+  <g
+     id="g5236"
+     transform="translate(6.8616803,5.7232489)">
+    <line
+       style="fill:none;stroke:#000000;stroke-width:1"
+       x1="471.89099"
+       y1="158.612"
+       x2="492.59698"
+       y2="189.338"
+       id="line5238" />
+    <polygon
+       style="fill:#000000"
+       points="487.054,190.059 492.597,189.338 495.346,184.47 496.788,195.557 "
+       id="polygon5240" />
+    <polygon
+       style="fill:none;stroke:#000000;stroke-width:1"
+       points="495.346,184.47 496.788,195.557 487.054,190.059 492.597,189.338 "
+       id="polygon5242" />
+  </g>
+  <g
+     id="g5244"
+     transform="translate(6.8616803,5.7232489)">
+    <line
+       style="fill:none;stroke:#000000;stroke-width:1"
+       x1="571.70502"
+       y1="169.015"
+       x2="553.763"
+       y2="190.177"
+       id="line5246" />
+    <polygon
+       style="fill:#000000"
+       points="551.566,185.036 553.763,190.177 559.194,191.503 548.913,195.897 "
+       id="polygon5248" />
+    <polygon
+       style="fill:none;stroke:#000000;stroke-width:1"
+       points="559.194,191.503 548.913,195.897 551.566,185.036 553.763,190.177 "
+       id="polygon5250" />
+  </g>
+  <g
+     id="g5252"
+     transform="translate(6.8616803,5.7232489)">
+    <line
+       style="fill:none;stroke:#000000;stroke-width:1"
+       x1="684.112"
+       y1="160.742"
+       x2="603.18298"
+       y2="194.895"
+       id="line5254" />
+    <polygon
+       style="fill:#000000"
+       points="603.542,189.317 603.183,194.895 607.43,198.53 596.273,197.811 "
+       id="polygon5256" />
+    <polygon
+       style="fill:none;stroke:#000000;stroke-width:1"
+       points="607.43,198.53 596.273,197.811 603.542,189.317 603.183,194.895 "
+       id="polygon5258" />
+  </g>
+  <g
+     id="g5260"
+     transform="translate(6.8616803,5.7232489)">
+    <line
+       style="fill:none;stroke:#000000;stroke-width:1"
+       x1="450"
+       y1="-4.35571"
+       x2="450"
+       y2="7.1988602"
+       id="line5262" />
+    <polygon
+       style="fill:#000000"
+       points="445,4.69886 450,7.19886 455,4.69886 450,14.6989 "
+       id="polygon5264" />
+    <polygon
+       style="fill:none;stroke:#000000;stroke-width:1"
+       points="455,4.69886 450,14.6989 445,4.69886 450,7.19886 "
+       id="polygon5266" />
+  </g>
+</svg>
