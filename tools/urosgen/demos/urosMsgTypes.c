@@ -1047,7 +1047,7 @@ uros_err_t recv_msg__dynamic_reconfigure__Config(
 
   urosTcpRosArrayObjectInit((UrosTcpRosArray *)&objp->bools);
   urosTcpRosRecvRaw(tcpstp, objp->bools.length); _CHKOK
-  objp->bools.entriesp = urosArrayNew(objp->bools.length,
+  objp->bools.entriesp = urosArrayNew(NULL, objp->bools.length,
                                       struct msg__dynamic_reconfigure__BoolParameter);
   if (objp->bools.entriesp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _error; }
   for (i = 0; i < objp->bools.length; ++i) {
@@ -1055,7 +1055,7 @@ uros_err_t recv_msg__dynamic_reconfigure__Config(
   }
   urosTcpRosArrayObjectInit((UrosTcpRosArray *)&objp->ints);
   urosTcpRosRecvRaw(tcpstp, objp->ints.length); _CHKOK
-  objp->ints.entriesp = urosArrayNew(objp->ints.length,
+  objp->ints.entriesp = urosArrayNew(NULL, objp->ints.length,
                                      struct msg__dynamic_reconfigure__IntParameter);
   if (objp->ints.entriesp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _error; }
   for (i = 0; i < objp->ints.length; ++i) {
@@ -1063,7 +1063,7 @@ uros_err_t recv_msg__dynamic_reconfigure__Config(
   }
   urosTcpRosArrayObjectInit((UrosTcpRosArray *)&objp->strs);
   urosTcpRosRecvRaw(tcpstp, objp->strs.length); _CHKOK
-  objp->strs.entriesp = urosArrayNew(objp->strs.length,
+  objp->strs.entriesp = urosArrayNew(NULL, objp->strs.length,
                                      struct msg__dynamic_reconfigure__StrParameter);
   if (objp->strs.entriesp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _error; }
   for (i = 0; i < objp->strs.length; ++i) {
@@ -1071,7 +1071,7 @@ uros_err_t recv_msg__dynamic_reconfigure__Config(
   }
   urosTcpRosArrayObjectInit((UrosTcpRosArray *)&objp->doubles);
   urosTcpRosRecvRaw(tcpstp, objp->doubles.length); _CHKOK
-  objp->doubles.entriesp = urosArrayNew(objp->doubles.length,
+  objp->doubles.entriesp = urosArrayNew(NULL, objp->doubles.length,
                                         struct msg__dynamic_reconfigure__DoubleParameter);
   if (objp->doubles.entriesp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _error; }
   for (i = 0; i < objp->doubles.length; ++i) {
@@ -1079,7 +1079,7 @@ uros_err_t recv_msg__dynamic_reconfigure__Config(
   }
   urosTcpRosArrayObjectInit((UrosTcpRosArray *)&objp->groups);
   urosTcpRosRecvRaw(tcpstp, objp->groups.length); _CHKOK
-  objp->groups.entriesp = urosArrayNew(objp->groups.length,
+  objp->groups.entriesp = urosArrayNew(NULL, objp->groups.length,
                                        struct msg__dynamic_reconfigure__GroupState);
   if (objp->groups.entriesp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _error; }
   for (i = 0; i < objp->groups.length; ++i) {
@@ -1260,7 +1260,7 @@ uros_err_t recv_msg__rosgraph_msgs__Log(
   urosTcpRosRecvRaw(tcpstp, objp->line); _CHKOK
   urosTcpRosArrayObjectInit((UrosTcpRosArray *)&objp->topics);
   urosTcpRosRecvRaw(tcpstp, objp->topics.length); _CHKOK
-  objp->topics.entriesp = urosArrayNew(objp->topics.length,
+  objp->topics.entriesp = urosArrayNew(NULL, objp->topics.length,
                                        UrosString);
   if (objp->topics.entriesp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _error; }
   for (i = 0; i < objp->topics.length; ++i) {
@@ -1408,7 +1408,7 @@ uros_err_t recv_msg__sensor_msgs__Image(
   urosTcpRosRecvRaw(tcpstp, objp->step); _CHKOK
   urosTcpRosArrayObjectInit((UrosTcpRosArray *)&objp->data);
   urosTcpRosRecvRaw(tcpstp, objp->data.length); _CHKOK
-  objp->data.entriesp = urosArrayNew(objp->data.length,
+  objp->data.entriesp = urosArrayNew(NULL, objp->data.length,
                                      uint8_t);
   if (objp->data.entriesp == NULL) { tcpstp->err = UROS_ERR_NOMEM; goto _error; }
   urosTcpRosRecv(tcpstp, objp->data.entriesp,

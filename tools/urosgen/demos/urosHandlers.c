@@ -219,6 +219,45 @@ _finally:
 
 /** @} */
 
+/*~~~ SUBSCRIBED TOPIC: /rosin ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+/** @name Topic <tt>/rosin</tt> subscriber */
+/** @{ */
+
+/**
+ * @brief   TCPROS <tt>/rosin</tt> subscribed topic handler.
+ *
+ * @param[in,out] tcpstp
+ *          Pointer to a working @p UrosTcpRosStatus object.
+ * @return
+ *          Error code.
+ */
+uros_err_t sub_tpc__rosin(UrosTcpRosStatus *tcpstp) {
+
+  /* Message allocation and initialization.*/
+  UROS_TPC_INIT_H(msg__rosgraph_msgs__Log);
+
+  /* Subscribed messages loop.*/
+  while (!urosTcpRosStatusCheckExit(tcpstp)) {
+    /* Receive the next message.*/
+    UROS_MSG_RECV_LENGTH();
+    UROS_MSG_RECV_BODY(msgp, msg__rosgraph_msgs__Log);
+
+    /* TODO: Process the received message.*/
+
+    /* Dispose the contents of the message.*/
+    clean_msg__rosgraph_msgs__Log(msgp);
+  }
+  tcpstp->err = UROS_OK;
+
+_finally:
+  /* Message deinitialization and deallocation.*/
+  UROS_TPC_UNINIT_H(msg__rosgraph_msgs__Log);
+  return tcpstp->err;
+}
+
+/** @} */
+
 /** @} */
 
 /*============================================================================*/
@@ -408,6 +447,14 @@ void urosHandlersSubscribeTopics(void) {
     (uros_proc_f)sub_tpc__input,
     uros_nulltopicflags
   );
+
+  /* /rosin */
+  urosNodeSubscribeTopicSZ(
+    "/rosin",
+    "rosgraph_msgs/Log",
+    (uros_proc_f)sub_tpc__rosin,
+    uros_nulltopicflags
+  );
 }
 
 /**
@@ -424,6 +471,11 @@ void urosHandlersUnsubscribeTopics(void) {
   /* /input */
   urosNodeUnsubscribeTopicSZ(
     "/input"
+  );
+
+  /* /rosin */
+  urosNodeUnsubscribeTopicSZ(
+    "/rosin"
   );
 }
 

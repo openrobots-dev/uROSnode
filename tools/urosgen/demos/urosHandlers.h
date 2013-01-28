@@ -72,6 +72,10 @@ uros_err_t sub_tpc__constants(UrosTcpRosStatus *tcpstp);
 
 uros_err_t sub_tpc__input(UrosTcpRosStatus *tcpstp);
 
+/*~~~ SUBSCRIBED TOPIC: /rosin ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+uros_err_t sub_tpc__rosin(UrosTcpRosStatus *tcpstp);
+
 /*============================================================================*/
 /* PUBLISHED SERVICE PROTOTYPES                                               */
 /*============================================================================*/
