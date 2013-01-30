@@ -242,7 +242,7 @@ ifneq ($(USE_VERBOSE_COMPILE),yes)
 	@echo === CC command example ===
 	@echo $(CC) -c $(CFLAGS) $(IINCDIR) main.c -o main.o
 	@echo
-	@echo === CPP command example ===
+	@echo === CPPC command example ===
 	@echo $(CPPC) -c $(CPPFLAGS) $(IINCDIR) main.cpp -o main.o
 	@echo
 endif

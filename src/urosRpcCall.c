@@ -1505,12 +1505,11 @@ uros_err_t urosRpcCallSearchParam(
  *          Node API URI of subscriber for @p urosUserParamUpdate() callbacks.
  * @param[in] key
  *          Parameter name. Non-empty string pointer.
- *          Non-empty string pointer.
  * @param[out] resp
  *          Pointer to the @p UrosRpcResponse response object. Format:
  *          @verbatim [ int code, str statusMessage, any parameterValue ]@endverbatim
  *
- *          If @p code is not 1, parameterValue should be ignored.
+ *          If @p code is not 1, @p parameterValue should be ignored.
  *          @p parameterValue is an empty dictionary if the parameter has not
  *          been set yet.
  * @return
@@ -1576,7 +1575,7 @@ _finally:
  *          @verbatim [ int code, str statusMessage, int numUnsubscribed ]@endverbatim
  *
  *          If <tt>numUnsubscribed</tt> is zero, it means that the caller was
- *          not subscribed to the parameter
+ *          not subscribed to the parameter.
  * @return
  *          Error code.
  */

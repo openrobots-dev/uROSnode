@@ -172,7 +172,7 @@ const char *urosErrorText(uros_err_t err) {
  */
 void *urosAlloc(UrosMemHeap *heapp, size_t size) {
 
-#if UROS_BASE_C_USE_ERROR_MSG
+#if UROS_USE_ERROR_MSG && UROS_BASE_C_USE_ERROR_MSG
   void *chunk = uros_lld_alloc(heapp, size);
   urosError(chunk == NULL, return NULL,
             ("Not enough free heap memory to allocate %u bytes\n",
