@@ -817,9 +817,6 @@ uros_err_t uros_rpcslave_method_requesttopic(UrosRpcStreamer *sp,
   /* Check if the topic is actually published.*/
   urosMutexLock(&stp->pubTopicListLock);
   topicnodep = urosTopicListFindByName(&stp->pubTopicList, &topic->value.string);
-  if (topicnodep != NULL) {
-    urosTopicRefInc((UrosTopic*)topicnodep->datap);
-  }
   urosMutexUnlock(&stp->pubTopicListLock);
   urosError(topicnodep == NULL, return UROS_ERR_BADPARAM,
             ("Topic [%.*s] not found\n", UROS_STRARG(&topic->value.string)));

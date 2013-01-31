@@ -75,6 +75,7 @@ static const UrosString persistentfield = { 10, "persistent" };
 static const UrosString latchingfield   = {  8, "latching" };
 static const UrosString tcpnodelayfield = { 11, "tcp_nodelay" };
 static const UrosString errfield        = {  5, "error" };
+static const UrosString asteriskstr     = {  1, "*" };
 
 static const UrosMsgType dummytype = {
   { 0, NULL },
@@ -113,19 +114,28 @@ uros_err_t uros_tcpserver_processtopicheader(UrosTcpRosStatus *tcpstp) {
   /* Check if the topic is actually published.*/
   topicnodep = urosTopicListFindByName(&stp->pubTopicList,
                                        &topicp->name);
+  if (topicnodep != NULL) {
+    urosTopicRefInc((UrosTopic*)topicnodep->datap);
+  }
+
   urosError(topicnodep == NULL,
             { tcpstp->err = UROS_ERR_BADPARAM; goto _finally; },
             ("Topic [%.*s] not found\n", UROS_STRARG(&topicp->name)));
   reftypep = ((const UrosTopic *)topicnodep->datap)->typep;
-  urosError(0 != urosStringCmp(&topicp->typep->name, &reftypep->name),
-            { tcpstp->err = UROS_ERR_BADPARAM; goto _finally; },
-            ("Found type [%.*s], expected [%.*s]\n",
-             UROS_STRARG(&topicp->typep->name), UROS_STRARG(&reftypep->name)));
-  urosError(0 != urosStringCmp(&topicp->typep->md5str, &reftypep->md5str),
-            { tcpstp->err = UROS_ERR_BADPARAM; goto _finally; },
-            ("Found MD5 [%.*s], expected [%.*s]\n",
-             UROS_STRARG(&topicp->typep->md5str),
-             UROS_STRARG(&reftypep->md5str)));
+
+  /* Check whether the client is probing the type.*/
+  if (0 != urosStringCmp(&topicp->typep->name, &asteriskstr)) {
+    urosError(0 != urosStringCmp(&topicp->typep->name, &reftypep->name),
+              { tcpstp->err = UROS_ERR_BADPARAM; goto _finally; },
+              ("Found type [%.*s], expected [%.*s]\n",
+               UROS_STRARG(&topicp->typep->name),
+               UROS_STRARG(&reftypep->name)));
+    urosError(0 != urosStringCmp(&topicp->typep->md5str, &reftypep->md5str),
+              { tcpstp->err = UROS_ERR_BADPARAM; goto _finally; },
+              ("Found MD5 [%.*s], expected [%.*s]\n",
+               UROS_STRARG(&topicp->typep->md5str),
+               UROS_STRARG(&reftypep->md5str)));
+  }
   tcpstp->topicp = (UrosTopic*)topicnodep->datap;
 
   /* Add this connection to the active publisher connections list.*/
