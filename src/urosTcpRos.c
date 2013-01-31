@@ -149,6 +149,9 @@ uros_err_t uros_tcpserver_processtopicheader(UrosTcpRosStatus *tcpstp) {
 
   tcpstp->err = UROS_OK;
 _finally:
+  if (tcpstp->err != UROS_OK && topicnodep != NULL) {
+    urosTopicRefDec((UrosTopic*)topicnodep->datap);
+  }
   urosMsgTypeDelete((UrosMsgType*)topicp->typep);
   urosTopicDelete(topicp);
   return tcpstp->err;
