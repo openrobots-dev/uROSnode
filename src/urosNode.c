@@ -472,7 +472,7 @@ void urosNodeConfigLoadDefaults(UrosNodeConfig *cfgp) {
   urosStringClean(&cfgp->masterUri);
 
   /* Load default values.*/
-  cfgp->nodeName = urosStringCloneZ("/turtlesim");
+  cfgp->nodeName = urosStringCloneZ(UROS_NODE_NAME);
   cfgp->xmlrpcAddr.ip.dword = UROS_XMLRPC_LISTENER_IP;
   cfgp->xmlrpcAddr.port = UROS_XMLRPC_LISTENER_PORT;
   cfgp->xmlrpcUri = urosStringCloneZ(

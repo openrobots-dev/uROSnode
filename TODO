@@ -7,6 +7,7 @@ LEGEND:
 
 JOB QUEUE:
 ?!  Client service calls
+*   Project paths
 +   Support for regex in urosstan.py entry point names
 +   Support for named dependencies in urosstan.py entry point size
 +   Advanced logger for ChibiOS (side project)
