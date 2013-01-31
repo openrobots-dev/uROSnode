@@ -121,9 +121,6 @@ void urosInit(void) {
   urosListObjectInit(&urosMsgTypeList);
   urosListObjectInit(&urosSrvTypeList);
   urosUserRegisterStaticTypes();
-
-  /* Create the node thread.*/
-  urosNodeCreateThread();
 }
 
 /**

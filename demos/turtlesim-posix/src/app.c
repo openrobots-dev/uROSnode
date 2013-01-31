@@ -209,6 +209,9 @@ void app_initialize(void) {
     turtle_init(&turtles[i], i);
   }
 
+  /* Create the Node thread.*/
+  urosNodeCreateThread();
+
   /* Spawn the first turtle.*/
   turtle_spawn(&turtle1, 0.5f * SANDBOX_WIDTH, 0.5f * SANDBOX_HEIGHT, 0.0f);
 }

@@ -1653,10 +1653,13 @@ uros_err_t urosNodeSubscribeParam(const UrosString *namep) {
             { err = UROS_ERR_BADPARAM; goto _finally; },
             ("Response HTTP code %d, expected 200\n", res.httpcode));
 
-  /* Add to the subscribed topics list.*/
+  /* Add to the subscribed parameter list.*/
   urosListNodeObjectInit(nodep);
   nodep->datap = (void*)clonednamep;
   urosListAdd(&np->status.subParamList, nodep);
+
+  /* Update to the current value.*/
+  urosUserParamUpdate(namep, res.valuep);
 
   err = UROS_OK;
 _finally:
@@ -1752,7 +1755,7 @@ uros_err_t urosNodeUnsubscribeParam(const UrosString *namep) {
             ("Response HTTP code %ld, expected 200\n",
              (long int)res.httpcode));
 
-  /* Remove from the subscribed topics list and delete.*/
+  /* Remove from the subscribed parameter list and delete.*/
   nodep = urosListRemove(&np->status.subParamList, nodep);
   urosAssert(nodep != NULL);
   urosListNodeDelete(nodep, (uros_delete_f)urosStringDelete);

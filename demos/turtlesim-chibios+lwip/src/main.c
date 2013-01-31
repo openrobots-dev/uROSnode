@@ -190,7 +190,7 @@ int main(void) {
   /*
    * Starts the uROSnode application.
    */
-  app_initialize();
+  /*app_initialize();*/
 
   /*
    * Normal main() thread activity, in this demo it processes shell commands.
