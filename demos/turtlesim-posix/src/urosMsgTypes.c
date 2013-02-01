@@ -35,15 +35,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * @brief   TCPROS message and service descriptor functions.
  */
 
-/*============================================================================*/
-/* HEADER FILES                                                               */
-/*============================================================================*/
+/*===========================================================================*/
+/* HEADER FILES                                                              */
+/*===========================================================================*/
 
 #include "urosMsgTypes.h"
 
-/*============================================================================*/
-/* MESSAGE CONSTANTS                                                          */
-/*============================================================================*/
+/*===========================================================================*/
+/* MESSAGE CONSTANTS                                                         */
+/*===========================================================================*/
 
 /** @addtogroup tcpros_msg_consts */
 /** @{ */
@@ -52,9 +52,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /** @} */
 
-/*============================================================================*/
-/* SERVICE CONSTANTS                                                          */
-/*============================================================================*/
+/*===========================================================================*/
+/* SERVICE CONSTANTS                                                         */
+/*===========================================================================*/
 
 /** @addtogroup tcpros_srv_consts */
 /** @{ */
@@ -63,14 +63,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /** @} */
 
-/*============================================================================*/
-/* MESSAGE FUNCTIONS                                                          */
-/*============================================================================*/
+/*===========================================================================*/
+/* MESSAGE FUNCTIONS                                                         */
+/*===========================================================================*/
 
 /** @addtogroup tcpros_msg_funcs */
 /** @{ */
 
-/*~~~ MESSAGE: std_msgs/Header ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: std_msgs/Header ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Message <tt>std_msgs/Header</tt> */
 /** @{ */
@@ -188,7 +188,7 @@ uros_err_t send_msg__std_msgs__Header(
 
 /** @} */
 
-/*~~~ MESSAGE: rosgraph_msgs/Log ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: rosgraph_msgs/Log ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Message <tt>rosgraph_msgs/Log</tt> */
 /** @{ */
@@ -360,7 +360,7 @@ uros_err_t send_msg__rosgraph_msgs__Log(
 
 /** @} */
 
-/*~~~ MESSAGE: turtlesim/Pose ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: turtlesim/Pose ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Message <tt>turtlesim/Pose</tt> */
 /** @{ */
@@ -485,7 +485,7 @@ uros_err_t send_msg__turtlesim__Pose(
 
 /** @} */
 
-/*~~~ MESSAGE: turtlesim/Color ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: turtlesim/Color ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Message <tt>turtlesim/Color</tt> */
 /** @{ */
@@ -604,7 +604,7 @@ uros_err_t send_msg__turtlesim__Color(
 
 /** @} */
 
-/*~~~ MESSAGE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Message <tt>turtlesim/Velocity</tt> */
 /** @{ */
@@ -722,14 +722,14 @@ uros_err_t send_msg__turtlesim__Velocity(
 
 /** @} */
 
-/*============================================================================*/
-/* SERVICE FUNCTIONS                                                          */
-/*============================================================================*/
+/*===========================================================================*/
+/* SERVICE FUNCTIONS                                                         */
+/*===========================================================================*/
 
 /** @addtogroup tcpros_srv_funcs */
 /** @{ */
 
-/*~~~ SERVICE: turtlesim/SetPen ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: turtlesim/SetPen ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Service <tt>turtlesim/SetPen</tt> */
 /** @{ */
@@ -904,7 +904,7 @@ uros_err_t send_out_srv__turtlesim__SetPen(
 
 /** @} */
 
-/*~~~ SERVICE: turtlesim/Spawn ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: turtlesim/Spawn ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Service <tt>turtlesim/Spawn</tt> */
 /** @{ */
@@ -1074,7 +1074,7 @@ uros_err_t send_out_srv__turtlesim__Spawn(
 
 /** @} */
 
-/*~~~ SERVICE: turtlesim/Kill ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: turtlesim/Kill ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Service <tt>turtlesim/Kill</tt> */
 /** @{ */
@@ -1239,7 +1239,7 @@ uros_err_t send_out_srv__turtlesim__Kill(
 
 /** @} */
 
-/*~~~ SERVICE: turtlesim/TeleportAbsolute ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: turtlesim/TeleportAbsolute ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Service <tt>turtlesim/TeleportAbsolute</tt> */
 /** @{ */
@@ -1410,7 +1410,7 @@ uros_err_t send_out_srv__turtlesim__TeleportAbsolute(
 
 /** @} */
 
-/*~~~ SERVICE: std_srvs/Empty ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: std_srvs/Empty ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Service <tt>std_srvs/Empty</tt> */
 /** @{ */
@@ -1571,7 +1571,7 @@ uros_err_t send_out_srv__std_srvs__Empty(
 
 /** @} */
 
-/*~~~ SERVICE: turtlesim/TeleportRelative ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: turtlesim/TeleportRelative ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Service <tt>turtlesim/TeleportRelative</tt> */
 /** @{ */
@@ -1742,9 +1742,9 @@ uros_err_t send_out_srv__turtlesim__TeleportRelative(
 
 /** @} */
 
-/*============================================================================*/
-/* GLOBAL FUNCTIONS                                                           */
-/*============================================================================*/
+/*===========================================================================*/
+/* GLOBAL FUNCTIONS                                                          */
+/*===========================================================================*/
 
 /** @addtogroup tcpros_funcs */
 /** @{ */

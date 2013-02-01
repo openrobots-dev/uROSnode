@@ -38,9 +38,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _UROSHANDLERS_H_
 #define _UROSHANDLERS_H_
 
-/*============================================================================*/
-/* HEADER FILES                                                               */
-/*============================================================================*/
+/*===========================================================================*/
+/* HEADER FILES                                                              */
+/*===========================================================================*/
 
 #include "urosMsgTypes.h"
 
@@ -48,67 +48,67 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 extern "C" {
 #endif
 
-/*============================================================================*/
-/* PUBLISHED TOPIC PROTOTYPES                                                 */
-/*============================================================================*/
+/*===========================================================================*/
+/* PUBLISHED TOPIC PROTOTYPES                                                */
+/*===========================================================================*/
 
-/*~~~ PUBLISHED TOPIC: /rosout ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED TOPIC: /rosout ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 uros_err_t pub_tpc__rosout(UrosTcpRosStatus *tcpstp);
 
-/*~~~ PUBLISHED TOPIC: /turtleX/color_sensor ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED TOPIC: /turtleX/color_sensor ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 uros_err_t pub_tpc__turtleX__color_sensor(UrosTcpRosStatus *tcpstp);
 
-/*~~~ PUBLISHED TOPIC: /turtleX/pose ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED TOPIC: /turtleX/pose ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 uros_err_t pub_tpc__turtleX__pose(UrosTcpRosStatus *tcpstp);
 
-/*============================================================================*/
-/* SUBSCRIBED TOPIC PROTOTYPES                                                */
-/*============================================================================*/
+/*===========================================================================*/
+/* SUBSCRIBED TOPIC PROTOTYPES                                               */
+/*===========================================================================*/
 
-/*~~~ SUBSCRIBED TOPIC: /turtleX/command_velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SUBSCRIBED TOPIC: /turtleX/command_velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 uros_err_t sub_tpc__turtleX__command_velocity(UrosTcpRosStatus *tcpstp);
 
-/*============================================================================*/
-/* PUBLISHED SERVICE PROTOTYPES                                               */
-/*============================================================================*/
+/*===========================================================================*/
+/* PUBLISHED SERVICE PROTOTYPES                                              */
+/*===========================================================================*/
 
-/*~~~ PUBLISHED SERVICE: /clear ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED SERVICE: /clear ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 uros_err_t pub_srv__clear(UrosTcpRosStatus *tcpstp);
 
-/*~~~ PUBLISHED SERVICE: /kill ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED SERVICE: /kill ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 uros_err_t pub_srv__kill(UrosTcpRosStatus *tcpstp);
 
-/*~~~ PUBLISHED SERVICE: /spawn ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED SERVICE: /spawn ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 uros_err_t pub_srv__spawn(UrosTcpRosStatus *tcpstp);
 
-/*~~~ PUBLISHED SERVICE: /turtleX/set_pen ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED SERVICE: /turtleX/set_pen ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 uros_err_t pub_srv__turtleX__set_pen(UrosTcpRosStatus *tcpstp);
 
-/*~~~ PUBLISHED SERVICE: /turtleX/teleport_absolute ~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED SERVICE: /turtleX/teleport_absolute ~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 uros_err_t pub_srv__turtleX__teleport_absolute(UrosTcpRosStatus *tcpstp);
 
-/*~~~ PUBLISHED SERVICE: /turtleX/teleport_relative ~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED SERVICE: /turtleX/teleport_relative ~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 uros_err_t pub_srv__turtleX__teleport_relative(UrosTcpRosStatus *tcpstp);
 
-/*============================================================================*/
-/* CALLED SERVICE PROTOTYPES                                                  */
-/*============================================================================*/
+/*===========================================================================*/
+/* CALLED SERVICE PROTOTYPES                                                 */
+/*===========================================================================*/
 
 /* There are no called services.*/
 
-/*============================================================================*/
-/* GLOBAL PROTOTYPES                                                          */
-/*============================================================================*/
+/*===========================================================================*/
+/* GLOBAL PROTOTYPES                                                         */
+/*===========================================================================*/
 
 void urosHandlersPublishTopics(void);
 void urosHandlersUnpublishTopics(void);

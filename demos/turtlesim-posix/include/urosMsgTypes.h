@@ -38,20 +38,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _UROSMSGTYPES_H_
 #define _UROSMSGTYPES_H_
 
-/*============================================================================*/
-/* HEADER FILES                                                               */
-/*============================================================================*/
+/*===========================================================================*/
+/* HEADER FILES                                                              */
+/*===========================================================================*/
 
 #include <urosTcpRos.h>
 
-/*============================================================================*/
-/*  MESSAGE TYPES                                                             */
-/*============================================================================*/
+/*===========================================================================*/
+/*  MESSAGE TYPES                                                            */
+/*===========================================================================*/
 
 /** @addtogroup tcpros_msg_types */
 /** @{ */
 
-/*~~~ MESSAGE: std_msgs/Header ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: std_msgs/Header ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
  * @brief   TCPROS <tt>std_msgs/Header</tt> message descriptor.
@@ -63,7 +63,7 @@ struct msg__std_msgs__Header {
   UrosString    frame_id;
 };
 
-/*~~~ MESSAGE: rosgraph_msgs/Log ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: rosgraph_msgs/Log ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
  * @brief   TCPROS <tt>rosgraph_msgs/Log</tt> message descriptor.
@@ -80,7 +80,7 @@ struct msg__rosgraph_msgs__Log {
   UROS_VARARR(UrosString)       topics;
 };
 
-/*~~~ MESSAGE: turtlesim/Pose ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: turtlesim/Pose ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
  * @brief   TCPROS <tt>turtlesim/Pose</tt> message descriptor.
@@ -94,7 +94,7 @@ struct msg__turtlesim__Pose {
   float angular_velocity;
 };
 
-/*~~~ MESSAGE: turtlesim/Color ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: turtlesim/Color ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
  * @brief   TCPROS <tt>turtlesim/Color</tt> message descriptor.
@@ -106,7 +106,7 @@ struct msg__turtlesim__Color {
   uint8_t   b;
 };
 
-/*~~~ MESSAGE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
  * @brief   TCPROS <tt>turtlesim/Velocity</tt> message descriptor.
@@ -119,14 +119,14 @@ struct msg__turtlesim__Velocity {
 
 /** @} */
 
-/*============================================================================*/
-/* SERVICE TYPES                                                              */
-/*============================================================================*/
+/*===========================================================================*/
+/* SERVICE TYPES                                                             */
+/*===========================================================================*/
 
 /** @addtogroup tcpros_srv_types */
 /** @{ */
 
-/*~~~ SERVICE: turtlesim/SetPen ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: turtlesim/SetPen ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
  * @brief   TCPROS <tt>turtlesim/SetPen</tt> service request descriptor.
@@ -147,7 +147,7 @@ struct out_srv__turtlesim__SetPen {
   uint8_t _dummy;
 };
 
-/*~~~ SERVICE: turtlesim/Spawn ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: turtlesim/Spawn ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
  * @brief   TCPROS <tt>turtlesim/Spawn</tt> service request descriptor.
@@ -166,7 +166,7 @@ struct out_srv__turtlesim__Spawn {
   UrosString    name;
 };
 
-/*~~~ SERVICE: turtlesim/Kill ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: turtlesim/Kill ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
  * @brief   TCPROS <tt>turtlesim/Kill</tt> service request descriptor.
@@ -183,7 +183,7 @@ struct out_srv__turtlesim__Kill {
   uint8_t _dummy;
 };
 
-/*~~~ SERVICE: turtlesim/TeleportAbsolute ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: turtlesim/TeleportAbsolute ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
  * @brief   TCPROS <tt>turtlesim/TeleportAbsolute</tt> service request descriptor.
@@ -202,7 +202,7 @@ struct out_srv__turtlesim__TeleportAbsolute {
   uint8_t _dummy;
 };
 
-/*~~~ SERVICE: std_srvs/Empty ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: std_srvs/Empty ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
  * @brief   TCPROS <tt>std_srvs/Empty</tt> service request descriptor.
@@ -220,7 +220,7 @@ struct out_srv__std_srvs__Empty {
   uint8_t _dummy;
 };
 
-/*~~~ SERVICE: turtlesim/TeleportRelative ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: turtlesim/TeleportRelative ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /**
  * @brief   TCPROS <tt>turtlesim/TeleportRelative</tt> service request descriptor.
@@ -240,14 +240,14 @@ struct out_srv__turtlesim__TeleportRelative {
 
 /** @} */
 
-/*============================================================================*/
-/* MESSAGE CONSTANTS                                                          */
-/*============================================================================*/
+/*===========================================================================*/
+/* MESSAGE CONSTANTS                                                         */
+/*===========================================================================*/
 
 /** @addtogroup tcpros_msg_consts */
 /** @{ */
 
-/*~~~ MESSAGE: rosgraph_msgs/Log ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: rosgraph_msgs/Log ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Message <tt>rosgraph_msgs/Log</tt> */
 /** @{ */
@@ -262,9 +262,9 @@ struct out_srv__turtlesim__TeleportRelative {
 
 /** @} */
 
-/*============================================================================*/
-/* SERVICE CONSTANTS                                                          */
-/*============================================================================*/
+/*===========================================================================*/
+/* SERVICE CONSTANTS                                                         */
+/*===========================================================================*/
 
 /** @addtogroup tcpros_srv_consts */
 /** @{ */
@@ -277,11 +277,11 @@ struct out_srv__turtlesim__TeleportRelative {
 extern "C" {
 #endif
 
-/*============================================================================*/
-/* MESSAGE PROTOTYPES                                                         */
-/*============================================================================*/
+/*===========================================================================*/
+/* MESSAGE PROTOTYPES                                                        */
+/*===========================================================================*/
 
-/*~~~ MESSAGE: std_msgs/Header ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: std_msgs/Header ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 size_t length_msg__std_msgs__Header(
   struct msg__std_msgs__Header *objp
@@ -301,7 +301,7 @@ uros_err_t send_msg__std_msgs__Header(
   struct msg__std_msgs__Header *objp
 );
 
-/*~~~ MESSAGE: rosgraph_msgs/Log ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: rosgraph_msgs/Log ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 size_t length_msg__rosgraph_msgs__Log(
   struct msg__rosgraph_msgs__Log *objp
@@ -321,7 +321,7 @@ uros_err_t send_msg__rosgraph_msgs__Log(
   struct msg__rosgraph_msgs__Log *objp
 );
 
-/*~~~ MESSAGE: turtlesim/Pose ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: turtlesim/Pose ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 size_t length_msg__turtlesim__Pose(
   struct msg__turtlesim__Pose *objp
@@ -341,7 +341,7 @@ uros_err_t send_msg__turtlesim__Pose(
   struct msg__turtlesim__Pose *objp
 );
 
-/*~~~ MESSAGE: turtlesim/Color ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: turtlesim/Color ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 size_t length_msg__turtlesim__Color(
   struct msg__turtlesim__Color *objp
@@ -361,7 +361,7 @@ uros_err_t send_msg__turtlesim__Color(
   struct msg__turtlesim__Color *objp
 );
 
-/*~~~ MESSAGE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ MESSAGE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 size_t length_msg__turtlesim__Velocity(
   struct msg__turtlesim__Velocity *objp
@@ -381,11 +381,11 @@ uros_err_t send_msg__turtlesim__Velocity(
   struct msg__turtlesim__Velocity *objp
 );
 
-/*============================================================================*/
-/* SERVICE PROTOTYPES                                                         */
-/*============================================================================*/
+/*===========================================================================*/
+/* SERVICE PROTOTYPES                                                        */
+/*===========================================================================*/
 
-/*~~~ SERVICE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 size_t length_in_srv__turtlesim__SetPen(
   struct in_srv__turtlesim__SetPen *objp
@@ -414,7 +414,7 @@ uros_err_t send_out_srv__turtlesim__SetPen(
   struct out_srv__turtlesim__SetPen *objp
 );
 
-/*~~~ SERVICE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 size_t length_in_srv__turtlesim__Spawn(
   struct in_srv__turtlesim__Spawn *objp
@@ -443,7 +443,7 @@ uros_err_t send_out_srv__turtlesim__Spawn(
   struct out_srv__turtlesim__Spawn *objp
 );
 
-/*~~~ SERVICE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 size_t length_in_srv__turtlesim__Kill(
   struct in_srv__turtlesim__Kill *objp
@@ -472,7 +472,7 @@ uros_err_t send_out_srv__turtlesim__Kill(
   struct out_srv__turtlesim__Kill *objp
 );
 
-/*~~~ SERVICE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 size_t length_in_srv__turtlesim__TeleportAbsolute(
   struct in_srv__turtlesim__TeleportAbsolute *objp
@@ -501,7 +501,7 @@ uros_err_t send_out_srv__turtlesim__TeleportAbsolute(
   struct out_srv__turtlesim__TeleportAbsolute *objp
 );
 
-/*~~~ SERVICE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 size_t length_in_srv__std_srvs__Empty(
   struct in_srv__std_srvs__Empty *objp
@@ -530,7 +530,7 @@ uros_err_t send_out_srv__std_srvs__Empty(
   struct out_srv__std_srvs__Empty *objp
 );
 
-/*~~~ SERVICE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SERVICE: turtlesim/Velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 size_t length_in_srv__turtlesim__TeleportRelative(
   struct in_srv__turtlesim__TeleportRelative *objp
@@ -559,9 +559,9 @@ uros_err_t send_out_srv__turtlesim__TeleportRelative(
   struct out_srv__turtlesim__TeleportRelative *objp
 );
 
-/*============================================================================*/
-/* GLOBAL PROTOTYPES                                                          */
-/*============================================================================*/
+/*===========================================================================*/
+/* GLOBAL PROTOTYPES                                                         */
+/*===========================================================================*/
 
 void urosMsgTypesRegStaticTypes(void);
 

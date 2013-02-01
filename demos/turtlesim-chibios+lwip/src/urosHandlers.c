@@ -35,9 +35,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * @brief   TCPROS topic and service handlers.
  */
 
-/*============================================================================*/
-/* HEADER FILES                                                               */
-/*============================================================================*/
+/*===========================================================================*/
+/* HEADER FILES                                                              */
+/*===========================================================================*/
 
 #include "urosHandlers.h"
 #include "app.h"
@@ -47,21 +47,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <urosUser.h>
 #include <math.h>
 
-/*============================================================================*/
-/* TYPES & MACROS                                                             */
-/*============================================================================*/
+/*===========================================================================*/
+/* TYPES & MACROS                                                            */
+/*===========================================================================*/
 
 #define min(a, b)   (((a) <= (b)) ? (a) : (b))
 #define max(a, b)   (((a) >= (b)) ? (a) : (b))
 
-/*============================================================================*/
-/* PUBLISHED TOPIC FUNCTIONS                                                  */
-/*============================================================================*/
+/*===========================================================================*/
+/* PUBLISHED TOPIC FUNCTIONS                                                 */
+/*===========================================================================*/
 
 /** @addtogroup tcpros_pubtopic_funcs */
 /** @{ */
 
-/*~~~ PUBLISHED TOPIC: /rosout ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED TOPIC: /rosout ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Topic <tt>/rosout</tt> publisher */
 /** @{ */
@@ -110,7 +110,7 @@ _finally:
 
 /** @} */
 
-/*~~~ PUBLISHED TOPIC: /turtleX/color_sensor ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED TOPIC: /turtleX/color_sensor ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Topic <tt>/turtleX/color_sensor</tt> publisher */
 /** @{ */
@@ -155,7 +155,7 @@ _finally:
 
 /** @} */
 
-/*~~~ PUBLISHED TOPIC: /turtleX/pose ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED TOPIC: /turtleX/pose ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Topic <tt>/turtleX/pose</tt> publisher */
 /** @{ */
@@ -170,7 +170,7 @@ _finally:
  */
 uros_err_t pub_tpc__turtleX__pose(UrosTcpRosStatus *tcpstp) {
 
-  turtle_t *turtlep;
+  turtle_t *turtlep = NULL;
 
   /* Message allocation and initialization.*/
   UROS_TPC_INIT_H(msg__turtlesim__Pose);
@@ -217,14 +217,14 @@ _finally:
 
 /** @} */
 
-/*============================================================================*/
-/* SUBSCRIBED TOPIC FUNCTIONS                                                 */
-/*============================================================================*/
+/*===========================================================================*/
+/* SUBSCRIBED TOPIC FUNCTIONS                                                */
+/*===========================================================================*/
 
 /** @addtogroup tcpros_subtopic_funcs */
 /** @{ */
 
-/*~~~ SUBSCRIBED TOPIC: /turtleX/command_velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ SUBSCRIBED TOPIC: /turtleX/command_velocity ~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Topic <tt>/turtleX/command_velocity</tt> subscriber */
 /** @{ */
@@ -286,14 +286,14 @@ _finally:
 
 /** @} */
 
-/*============================================================================*/
-/* PUBLISHED SERVICE FUNCTIONS                                                */
-/*============================================================================*/
+/*===========================================================================*/
+/* PUBLISHED SERVICE FUNCTIONS                                               */
+/*===========================================================================*/
 
 /** @addtogroup tcpros_pubservice_funcs */
 /** @{ */
 
-/*~~~ PUBLISHED SERVICE: /clear ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED SERVICE: /clear ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Service <tt>/clear</tt> publisher */
 /** @{ */
@@ -333,7 +333,8 @@ uros_err_t pub_srv__clear(UrosTcpRosStatus *tcpstp) {
 
     /* Dispose the contents of the response message.*/
     clean_out_srv__std_srvs__Empty(outmsgp);
-  } while (tcpstp->topicp->flags.persistent && !urosTcpRosStatusCheckExit(tcpstp));
+  } while (tcpstp->topicp->flags.persistent &&
+           !urosTcpRosStatusCheckExit(tcpstp));
   tcpstp->err = UROS_OK;
 
 _finally:
@@ -345,7 +346,7 @@ _finally:
 
 /** @} */
 
-/*~~~ PUBLISHED SERVICE: /kill ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED SERVICE: /kill ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Service <tt>/kill</tt> publisher */
 /** @{ */
@@ -360,7 +361,7 @@ _finally:
  */
 uros_err_t pub_srv__kill(UrosTcpRosStatus *tcpstp) {
 
-  turtle_t *turtlep;
+  turtle_t *turtlep = NULL;
 
   /* Service messages allocation and initialization.*/
   UROS_SRV_INIT_HIHO(in_srv__turtlesim__Kill,
@@ -402,7 +403,7 @@ _finally:
 
 /** @} */
 
-/*~~~ PUBLISHED SERVICE: /spawn ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED SERVICE: /spawn ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Service <tt>/spawn</tt> publisher */
 /** @{ */
@@ -417,7 +418,7 @@ _finally:
  */
 uros_err_t pub_srv__spawn(UrosTcpRosStatus *tcpstp) {
 
-  turtle_t *turtlep;
+  turtle_t *turtlep = NULL;
   UrosString name;
 
   /* Service messages allocation and initialization.*/
@@ -457,7 +458,8 @@ uros_err_t pub_srv__spawn(UrosTcpRosStatus *tcpstp) {
 
     /* Dispose the contents of the response message.*/
     clean_out_srv__turtlesim__Spawn(outmsgp);
-  } while (tcpstp->topicp->flags.persistent && !urosTcpRosStatusCheckExit(tcpstp));
+  } while (tcpstp->topicp->flags.persistent &&
+           !urosTcpRosStatusCheckExit(tcpstp));
   tcpstp->err = UROS_OK;
 
 _finally:
@@ -469,7 +471,7 @@ _finally:
 
 /** @} */
 
-/*~~~ PUBLISHED SERVICE: /turtleX/set_pen ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED SERVICE: /turtleX/set_pen ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Service <tt>/turtleX/set_pen</tt> publisher */
 /** @{ */
@@ -523,7 +525,8 @@ uros_err_t pub_srv__turtleX__set_pen(UrosTcpRosStatus *tcpstp) {
 
     /* Dispose the contents of the response message.*/
     clean_out_srv__turtlesim__SetPen(outmsgp);
-  } while (tcpstp->topicp->flags.persistent && !urosTcpRosStatusCheckExit(tcpstp));
+  } while (tcpstp->topicp->flags.persistent &&
+           !urosTcpRosStatusCheckExit(tcpstp));
   tcpstp->err = UROS_OK;
 
 _finally:
@@ -538,7 +541,7 @@ _finally:
 
 /** @} */
 
-/*~~~ PUBLISHED SERVICE: /turtleX/teleport_absolute ~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED SERVICE: /turtleX/teleport_absolute ~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Service <tt>/turtleX/teleport_absolute</tt> publisher */
 /** @{ */
@@ -585,7 +588,8 @@ uros_err_t pub_srv__turtleX__teleport_absolute(UrosTcpRosStatus *tcpstp) {
     posep->angular_velocity = 0;
     if (posep->x < 0 || posep->x > SANDBOX_WIDTH ||
         posep->y < 0 || posep->y > SANDBOX_WIDTH) {
-      UrosString msg = urosStringAssignZ("Turtle outside the sandbox, repositioned");
+      UrosString msg =
+        urosStringAssignZ("Turtle outside the sandbox, repositioned");
       rosout_warn(&msg, UROS_TRUE);
     }
     posep->x = min(max(0, posep->x), SANDBOX_WIDTH);
@@ -604,7 +608,8 @@ uros_err_t pub_srv__turtleX__teleport_absolute(UrosTcpRosStatus *tcpstp) {
 
     /* Dispose the contents of the response message.*/
     clean_out_srv__turtlesim__TeleportAbsolute(outmsgp);
-  } while (tcpstp->topicp->flags.persistent && !urosTcpRosStatusCheckExit(tcpstp));
+  } while (tcpstp->topicp->flags.persistent &&
+           !urosTcpRosStatusCheckExit(tcpstp));
   tcpstp->err = UROS_OK;
 
 _finally:
@@ -619,7 +624,7 @@ _finally:
 
 /** @} */
 
-/*~~~ PUBLISHED SERVICE: /turtleX/teleport_relative ~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~ PUBLISHED SERVICE: /turtleX/teleport_relative ~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 /** @name Service <tt>/turtleX/teleport_relative</tt> publisher */
 /** @{ */
@@ -685,7 +690,8 @@ uros_err_t pub_srv__turtleX__teleport_relative(UrosTcpRosStatus *tcpstp) {
 
     /* Dispose the contents of the response message.*/
     clean_out_srv__turtlesim__TeleportRelative(outmsgp);
-  } while (tcpstp->topicp->flags.persistent && !urosTcpRosStatusCheckExit(tcpstp));
+  } while (tcpstp->topicp->flags.persistent &&
+           !urosTcpRosStatusCheckExit(tcpstp));
   tcpstp->err = UROS_OK;
 
 _finally:
@@ -702,9 +708,9 @@ _finally:
 
 /** @} */
 
-/*============================================================================*/
-/* CALLED SERVICE FUNCTIONS                                                   */
-/*============================================================================*/
+/*===========================================================================*/
+/* CALLED SERVICE FUNCTIONS                                                  */
+/*===========================================================================*/
 
 /** @addtogroup tcpros_callservice_funcs */
 /** @{ */
@@ -713,9 +719,9 @@ _finally:
 
 /** @} */
 
-/*============================================================================*/
-/* GLOBAL FUNCTIONS                                                           */
-/*============================================================================*/
+/*===========================================================================*/
+/* GLOBAL FUNCTIONS                                                          */
+/*===========================================================================*/
 
 /** @addtogroup tcpros_funcs */
 /** @{ */

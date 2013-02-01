@@ -104,10 +104,10 @@ def addslashes(text):
 
 def banner_big(title):
     text = ""
-    if len(title) <= 74:
-        text += '/*=' + ('=' * 74) + '=*/\n'
-        text += '/* ' + title + (' ' * (74 - len(title))) + ' */\n'
-        text += '/*=' + ('=' * 74) + '=*/'
+    if len(title) <= 73:
+        text += '/*=' + ('=' * 73) + '=*/\n'
+        text += '/* ' + title + (' ' * (73 - len(title))) + ' */\n'
+        text += '/*=' + ('=' * 73) + '=*/'
     else:
         text += '/*=' + ('=' * len(title)) + '=*/\n'
         text += '/* ' + title + ' */\n'
@@ -115,8 +115,8 @@ def banner_big(title):
     return text
     
 def banner_small(title):
-    if len(title) <= 68:
-        return '/*~~~ ' + title + ' ' + ('~' * (68 - len(title))) + '~~~*/'
+    if len(title) <= 67:
+        return '/*~~~ ' + title + ' ' + ('~' * (67 - len(title))) + '~~~*/'
     else:
         return '/*~~~ %s ~~~*/' % title
 
@@ -1729,7 +1729,8 @@ class CodeGen:
         text += tab*2 + 'UROS_MSG_SEND_BODY(%s, %s);\n\n' % (outref, srvtype.outtype.cname)
         text += tab*2 + '/* Dispose the contents of the response message.*/\n'
         text += tab*2 + 'clean_%s(%s);\n' % (srvtype.outtype.cname, outref)
-        text += tab + '} while (tcpstp->topicp->flags.persistent && !urosTcpRosStatusCheckExit(tcpstp));\n'
+        text += tab + '} while (tcpstp->topicp->flags.persistent &&\n'
+        text += tab + '         !urosTcpRosStatusCheckExit(tcpstp));\n'
         text += tab + 'tcpstp->err = UROS_OK;\n\n'
         text += '_finally:\n'
         text += tab + '/* Service messages deinitialization and deallocation.*/\n'
