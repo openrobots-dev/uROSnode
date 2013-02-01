@@ -965,19 +965,19 @@ uros_err_t urosRpcSlaveConnectToPublishers(const UrosString *namep,
   /* Connect to each publisher.*/
   for (nodep = addrlstp->headp; nodep != NULL; nodep = nodep->nextp) {
     uros_err_t err;
-    uros_tcpcliargs_t *parp;
+    uros_tcpcliargs_t *argsp;
 
-    parp = urosNew(NULL, uros_tcpcliargs_t);
-    if (parp == NULL) { return UROS_ERR_NOMEM; }
-    parp->topicName = urosStringClone(namep);
-    parp->topicFlags = flags;
-    parp->remoteAddr = *(const UrosAddr *)nodep->datap;
+    argsp = urosNew(NULL, uros_tcpcliargs_t);
+    if (argsp == NULL) { return UROS_ERR_NOMEM; }
+    argsp->topicName = urosStringClone(namep);
+    argsp->topicFlags = flags;
+    argsp->remoteAddr = *(const UrosAddr *)nodep->datap;
 
     /* Start the TCPROS Client thread.*/
-    err = urosThreadPoolStartWorker(&stp->tcpcliThdPool, (void*)parp);
+    err = urosThreadPoolStartWorker(&stp->tcpcliThdPool, (void*)argsp);
 
     /* Check if anything went wrong.*/
-    urosError(err != UROS_OK, urosTopicSubParamsDelete(parp),
+    urosError(err != UROS_OK, urosTopicSubParamsDelete(argsp),
               ("Error %s while connecting to publisher of topic [%.*s]",
                urosErrorText(err), UROS_STRARG(namep)));
   }

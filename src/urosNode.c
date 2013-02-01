@@ -350,6 +350,9 @@ void urosNodeObjectInit(UrosNode *np) {
  */
 uros_err_t urosNodeCreateThread(void) {
 
+  urosAssert(urosNode.status.exitFlag == UROS_FALSE);
+
+  urosNode.status.exitFlag = UROS_FALSE;
   return urosThreadCreateStatic(
     &urosNode.status.nodeThreadId, "urosNode",
     UROS_NODE_THREAD_PRIO,
@@ -444,7 +447,6 @@ uros_err_t urosNodeThread(void *argp) {
 
   /* The node has shut down.*/
   urosMutexLock(&stp->stateLock);
-  stp->exitFlag = UROS_FALSE;
   stp->state = UROS_NODE_IDLE;
   urosMutexUnlock(&stp->stateLock);
   return UROS_OK;

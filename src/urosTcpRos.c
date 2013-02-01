@@ -691,11 +691,13 @@ uros_err_t urosTcpRosRecvString(UrosTcpRosStatus *tcpstp,
   if (tcpstp->err != UROS_OK) { return tcpstp->err; }
 
   /* Read the string data.*/
-  strp->length = (size_t)length;
-  strp->datap = (char*)urosAlloc(NULL, strp->length);
-  if (strp->datap == NULL) {
-    strp->length = 0;
-    return tcpstp->err = UROS_ERR_NOMEM;
+  if (length > 0) {
+    strp->length = (size_t)length;
+    strp->datap = (char*)urosAlloc(NULL, strp->length);
+    if (strp->datap == NULL) {
+      strp->length = 0;
+      return tcpstp->err = UROS_ERR_NOMEM;
+    }
   }
   urosTcpRosRecv(tcpstp, strp->datap, strp->length);
   if (tcpstp->err != UROS_OK) {
@@ -1538,9 +1540,7 @@ uros_err_t urosTcpRosClientThread(uros_tcpcliargs_t *argsp) {
 
   /* Start a new TCPROS topic subscripion.*/
   err = uros_tcpcli_topicsubscription(&argsp->topicName, &pubaddr);
-  if (err != UROS_OK) { goto _finally; }
 
-  err = UROS_OK;
 _finally:
   urosTopicSubParamsDelete(argsp);
   return err;
