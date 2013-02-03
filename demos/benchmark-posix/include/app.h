@@ -70,6 +70,7 @@ typedef struct benchmark_t {
   UrosThreadId  printerThread;  /**< @brief Stats printer thread.*/
 } benchmark_t;
 
+/** @brief Stack size of the printer thread.*/
 #define PRINTER_STKLEN      (PTHREAD_STACK_MIN << 1)
 
 /*===========================================================================*/
