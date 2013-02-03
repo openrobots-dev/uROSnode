@@ -7,6 +7,7 @@ LEGEND:
 
 JOB QUEUE:
 *!  Error switches in LLD sources
+?!  PC and FP accumulation in stack analysis
 ?!  Client service calls
 *   Project paths
 +   Topic/service flags management (latching, nodelay, ...)
