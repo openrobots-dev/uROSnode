@@ -32,8 +32,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ros/ros.h>
 #include <std_msgs/String.h>
 
-static const std::string ratename = "/benchmark/rate";
-static const std::string sizename = "/benchmark/size";
+static const std::string ratename = "/benchmark_rate";
+static const std::string sizename = "/benchmark_size";
 
 struct status_t {
   boost::signals2::mutex    lock;
