@@ -5,7 +5,7 @@
 
 # Compiler options here.
 ifeq ($(USE_OPT),)
-  USE_OPT = -O2 -ggdb
+  USE_OPT = -O3 -ggdb
 endif
 
 # C specific options here (added to USE_OPT).
@@ -134,7 +134,7 @@ UINCDIR =
 ULIBDIR =
 
 # List all user libraries here
-ULIBS = -lpthread -lm
+ULIBS = -lpthread -lm -lrt
 
 #
 # User definitions

@@ -49,6 +49,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*===========================================================================*/
 
 /**
+ * @brief   Stream counters.
+ */
+typedef struct streamcnt_t {
+  unsigned long numMsgs;        /**< @brief Total number of exchanged messages.*/
+  size_t        numBytes;       /**< @brief Total exchanged size.*/
+  unsigned long deltaMsgs;      /**< @brief Incremental number of exchanged messages.*/
+  size_t        deltaBytes;     /**< @brief Incremental exchanged size.*/
+} streamcnt_t;
+
+/**
+ * @brief   CPU usage counters (jiffies).
+ */
+typedef struct cpucnt_t {
+  unsigned long user;           /**< @brief User-level CPU count.*/
+  unsigned long nice;           /**< @brief Niced user-level CPU count.*/
+  unsigned long system;         /**< @brief System-level CPU count.*/
+  unsigned long idle;           /**< @brief Idle CPU count.*/
+} cpucnt_t;
+
+/**
  * @brief   Benchmark status.
  */
 typedef struct benchmark_t {
@@ -64,14 +84,19 @@ typedef struct benchmark_t {
   uros_bool_t   hasOutSub;      /**< @brief Creates the subscriber of
                                  *          <tt>/benchmark/output</tt>.*/
 
-  /* Rate meter.*/
-  uint32_t      numPackets;     /**< @brief Number of received packets.*/
-  size_t        numBytes;       /**< @brief Number of received bytes.*/
-  UrosThreadId  printerThread;  /**< @brief Stats printer thread.*/
+  /* Meters.*/
+  cpucnt_t      curCpu;         /**< @brief Current CPU usages.*/
+  cpucnt_t      oldCpu;         /**< @brief Previous CPU usages.*/
+  streamcnt_t   inCount;        /**< @brief Incoming stream counters.*/
+  streamcnt_t   outCount;       /**< @brief Outgoing stream counters.*/
+  UrosThreadId  printerId;      /**< @brief Stats printer thread.*/
 } benchmark_t;
 
 /** @brief Stack size of the printer thread.*/
 #define PRINTER_STKLEN      (PTHREAD_STACK_MIN << 1)
+
+/** @brief Skips incoming data in handlers.*/
+#define HANDLERS_INPUT_SKIP 1
 
 /*===========================================================================*/
 /* GLOBAL VARIABLES                                                          */

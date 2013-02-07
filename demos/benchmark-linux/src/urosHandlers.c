@@ -85,9 +85,16 @@ uros_err_t pub_tpc__benchmark__output(UrosTcpRosStatus *tcpstp) {
     UROS_MSG_SEND_LENGTH(msgp, msg__std_msgs__String);
     UROS_MSG_SEND_BODY(msgp, msg__std_msgs__String);
 
+    urosMutexLock(&benchmark.lock);
+    ++benchmark.outCount.numMsgs;
+    benchmark.outCount.numBytes += 2 * sizeof(uint32_t) + msgp->data.length;
+    ++benchmark.outCount.deltaMsgs;
+    benchmark.outCount.deltaBytes += 2 * sizeof(uint32_t) + msgp->data.length;
+    urosMutexUnlock(&benchmark.lock);
+
     /* No delay, to achieve the maximum throughput.*/
     if (rate > 0) {
-      urosThreadSleepUsec(1000000 / rate);
+      urosThreadSleepUsec(1000000ul / rate);
     }
   }
   tcpstp->err = UROS_OK;
@@ -131,11 +138,18 @@ uros_err_t sub_tpc__benchmark__input(UrosTcpRosStatus *tcpstp) {
   while (!urosTcpRosStatusCheckExit(tcpstp)) {
     /* Receive the next message.*/
     UROS_MSG_RECV_LENGTH();
+#if HANDLERS_INPUT_SKIP
+    msgp->data.length = msglen - sizeof(uint32_t);
+    if (urosTcpRosSkip(tcpstp, msglen) != UROS_OK) { goto _finally; }
+#else
     UROS_MSG_RECV_BODY(msgp, msg__std_msgs__String);
+#endif
 
     urosMutexLock(&benchmark.lock);
-    ++benchmark.numPackets;
-    benchmark.numBytes += 4 + length_msg__std_msgs__String(msgp);
+    ++benchmark.inCount.numMsgs;
+    benchmark.inCount.numBytes += 2 * sizeof(uint32_t) + msgp->data.length;
+    ++benchmark.inCount.deltaMsgs;
+    benchmark.inCount.deltaBytes += 2 * sizeof(uint32_t) + msgp->data.length;
     urosMutexUnlock(&benchmark.lock);
 
     /* Dispose the contents of the message.*/
@@ -174,11 +188,6 @@ uros_err_t sub_tpc__benchmark__output(UrosTcpRosStatus *tcpstp) {
     /* Receive the next message.*/
     UROS_MSG_RECV_LENGTH();
     UROS_MSG_RECV_BODY(msgp, msg__std_msgs__String);
-
-    urosMutexLock(&benchmark.lock);
-    ++benchmark.numPackets;
-    benchmark.numBytes += 4 + length_msg__std_msgs__String(msgp);
-    urosMutexUnlock(&benchmark.lock);
 
     /* Dispose the contents of the message.*/
     clean_msg__std_msgs__String(msgp);

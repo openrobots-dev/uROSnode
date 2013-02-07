@@ -42,9 +42,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* HEADER FILES                                                              */
 /*===========================================================================*/
 
-/* Use the updated socket interface.*/
+/** @brief Use the updated socket interface.*/
 #ifndef _XOPEN_SOURCE
-#  define _XOPEN_SOURCE 600
+#define _XOPEN_SOURCE   600
+#endif
+
+/* @brief Using GNU extensions.*/
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE     1
 #endif
 
 #include <stdint.h>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>benchmark-posix</name>
+	<name>benchmark-linux</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -47,52 +47,52 @@
 		<link>
 			<name>uros/include/urosBase.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/include/urosBase.h</locationURI>
+			<locationURI>copy_PARENT/include/urosBase.h</locationURI>
 		</link>
 		<link>
 			<name>uros/include/urosConn.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/include/urosConn.h</locationURI>
+			<locationURI>copy_PARENT/include/urosConn.h</locationURI>
 		</link>
 		<link>
 			<name>uros/include/urosNode.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/include/urosNode.h</locationURI>
+			<locationURI>copy_PARENT/include/urosNode.h</locationURI>
 		</link>
 		<link>
 			<name>uros/include/urosRpcCall.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/include/urosRpcCall.h</locationURI>
+			<locationURI>copy_PARENT/include/urosRpcCall.h</locationURI>
 		</link>
 		<link>
 			<name>uros/include/urosRpcParser.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/include/urosRpcParser.h</locationURI>
+			<locationURI>copy_PARENT/include/urosRpcParser.h</locationURI>
 		</link>
 		<link>
 			<name>uros/include/urosRpcSlave.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/include/urosRpcSlave.h</locationURI>
+			<locationURI>copy_PARENT/include/urosRpcSlave.h</locationURI>
 		</link>
 		<link>
 			<name>uros/include/urosRpcStreamer.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/include/urosRpcStreamer.h</locationURI>
+			<locationURI>copy_PARENT/include/urosRpcStreamer.h</locationURI>
 		</link>
 		<link>
 			<name>uros/include/urosTcpRos.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/include/urosTcpRos.h</locationURI>
+			<locationURI>copy_PARENT/include/urosTcpRos.h</locationURI>
 		</link>
 		<link>
 			<name>uros/include/urosThreading.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/include/urosThreading.h</locationURI>
+			<locationURI>copy_PARENT/include/urosThreading.h</locationURI>
 		</link>
 		<link>
 			<name>uros/include/urosUser.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/include/urosUser.h</locationURI>
+			<locationURI>copy_PARENT/include/urosUser.h</locationURI>
 		</link>
 		<link>
 			<name>uros/src/lld</name>
@@ -102,62 +102,62 @@
 		<link>
 			<name>uros/src/urosBase.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/urosBase.c</locationURI>
+			<locationURI>copy_PARENT/src/urosBase.c</locationURI>
 		</link>
 		<link>
 			<name>uros/src/urosConn.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/urosConn.c</locationURI>
+			<locationURI>copy_PARENT/src/urosConn.c</locationURI>
 		</link>
 		<link>
 			<name>uros/src/urosNode.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/urosNode.c</locationURI>
+			<locationURI>copy_PARENT/src/urosNode.c</locationURI>
 		</link>
 		<link>
 			<name>uros/src/urosRpcCall.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/urosRpcCall.c</locationURI>
+			<locationURI>copy_PARENT/src/urosRpcCall.c</locationURI>
 		</link>
 		<link>
 			<name>uros/src/urosRpcParser.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/urosRpcParser.c</locationURI>
+			<locationURI>copy_PARENT/src/urosRpcParser.c</locationURI>
 		</link>
 		<link>
 			<name>uros/src/urosRpcSlave.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/urosRpcSlave.c</locationURI>
+			<locationURI>copy_PARENT/src/urosRpcSlave.c</locationURI>
 		</link>
 		<link>
 			<name>uros/src/urosRpcStreamer.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/urosRpcStreamer.c</locationURI>
+			<locationURI>copy_PARENT/src/urosRpcStreamer.c</locationURI>
 		</link>
 		<link>
 			<name>uros/src/urosTcpRos.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/urosTcpRos.c</locationURI>
+			<locationURI>copy_PARENT/src/urosTcpRos.c</locationURI>
 		</link>
 		<link>
 			<name>uros/src/urosThreading.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/urosThreading.c</locationURI>
+			<locationURI>copy_PARENT/src/urosThreading.c</locationURI>
 		</link>
 		<link>
 			<name>uros/include/lld/uros_lld_base.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/include/lld/uros_lld_base.h</locationURI>
+			<locationURI>copy_PARENT/include/lld/uros_lld_base.h</locationURI>
 		</link>
 		<link>
 			<name>uros/include/lld/uros_lld_conn.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/include/lld/uros_lld_conn.h</locationURI>
+			<locationURI>copy_PARENT/include/lld/uros_lld_conn.h</locationURI>
 		</link>
 		<link>
 			<name>uros/include/lld/uros_lld_threading.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/include/lld/uros_lld_threading.h</locationURI>
+			<locationURI>copy_PARENT/include/lld/uros_lld_threading.h</locationURI>
 		</link>
 		<link>
 			<name>uros/src/lld/posix</name>
@@ -167,17 +167,23 @@
 		<link>
 			<name>uros/src/lld/posix/uros_lld_base.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/lld/posix/uros_lld_base.c</locationURI>
+			<locationURI>copy_PARENT/src/lld/posix/uros_lld_base.c</locationURI>
 		</link>
 		<link>
 			<name>uros/src/lld/posix/uros_lld_conn.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/lld/posix/uros_lld_conn.c</locationURI>
+			<locationURI>copy_PARENT/src/lld/posix/uros_lld_conn.c</locationURI>
 		</link>
 		<link>
 			<name>uros/src/lld/posix/uros_lld_threading.c</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/src/lld/posix/uros_lld_threading.c</locationURI>
+			<locationURI>copy_PARENT/src/lld/posix/uros_lld_threading.c</locationURI>
 		</link>
 	</linkedResources>
+	<variableList>
+		<variable>
+			<name>copy_PARENT</name>
+			<value>$%7BPARENT-1-ECLIPSE_HOME%7D/chibios/ext/uros</value>
+		</variable>
+	</variableList>
 </projectDescription>
