@@ -6,6 +6,8 @@ LEGEND:
     ! High priority
 
 JOB QUEUE:
++!  Get usec timestamps
++!  urosThreadSleepUntil??()
 *!  Error switches in LLD sources
 ?!  PC and FP accumulation in stack analysis
 ?!  Client service calls

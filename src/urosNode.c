@@ -119,7 +119,7 @@ void uros_node_createthreads(void) {
 
   /* Spawn the XMLRPC Slave listener threads.*/
   err = urosThreadCreateStatic(&stp->xmlrpcListenerId,
-                               "RpcSlaveListener",
+                               "RpcSlaveLis",
                                UROS_XMLRPC_LISTENER_PRIO,
                                (uros_proc_f)urosRpcSlaveListenerThread, NULL,
                                xmlrpcListenerStack,
@@ -128,7 +128,7 @@ void uros_node_createthreads(void) {
 
   /* Spawn the TCPROS listener thread.*/
   err = urosThreadCreateStatic(&stp->tcprosListenerId,
-                               "TcpRosListener",
+                               "TcpRosLis",
                                UROS_TCPROS_LISTENER_PRIO,
                                (uros_proc_f)urosTcpRosListenerThread, NULL,
                                tcprosListenerStack,
@@ -322,17 +322,17 @@ void urosNodeObjectInit(UrosNode *np) {
   /* Initialize thread pools.*/
   urosThreadPoolObjectInit(&stp->tcpcliThdPool, &stp->tcpcliMemPool,
                            (uros_proc_f)urosTcpRosClientThread,
-                           "TcpRosClient",
+                           "TcpRosCli",
                            UROS_TCPROS_CLIENT_PRIO);
 
   urosThreadPoolObjectInit(&stp->tcpsvrThdPool, &stp->tcpsvrMemPool,
                            (uros_proc_f)urosTcpRosServerThread,
-                           "TcpRosServer",
+                           "TcpRosSvr",
                            UROS_TCPROS_SERVER_PRIO);
 
   urosThreadPoolObjectInit(&stp->slaveThdPool, &stp->slaveMemPool,
                            (uros_proc_f)urosRpcSlaveServerThread,
-                           "RpcSlaveServer",
+                           "RpcSlaveSvr",
                            UROS_XMLRPC_SLAVE_PRIO);
 
   /* The node is initialized and stopped.*/
@@ -417,11 +417,12 @@ uros_err_t urosNodeThread(void *argp) {
     exitFlag = stp->exitFlag;
     urosMutexUnlock(&stp->stateLock);
     while (!exitFlag) {
+#if UROS_NODE_POLL_MASTER
       urosError(uros_node_pollmaster() != UROS_OK, break,
                 ("Master node "UROS_IPFMT" lost\n",
                  UROS_IPARG(&urosNode.config.masterAddr.ip)));
-
-      urosThreadSleepSec(3);
+#endif
+      urosThreadSleepMsec(UROS_NODE_POLL_PERIOD);
       urosMutexLock(&stp->stateLock);
       exitFlag = stp->exitFlag;
       urosMutexUnlock(&stp->stateLock);

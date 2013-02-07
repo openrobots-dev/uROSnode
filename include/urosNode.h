@@ -51,6 +51,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* TYPES & MACROS                                                            */
 /*===========================================================================*/
 
+/** @addtogroup node_macros */
+/** @{ */
+
+/** @brief Enables a periodic check of the Master node reachability.*/
+#if !defined(UROS_NODE_POLL_MASTER) || defined(__DOXYGEN__)
+#define UROS_NODE_POLL_MASTER       UROS_FALSE
+#endif
+
+/** @brief Exit condition polling period, in milliseconds.*/
+#if !defined(UROS_NODE_POLL_PERIOD) || defined(__DOXYGEN__)
+#define UROS_NODE_POLL_PERIOD       2000
+#endif
+
+/** @} */
+
 /** @addtogroup node_types */
 /** @{ */
 

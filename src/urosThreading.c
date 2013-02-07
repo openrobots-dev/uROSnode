@@ -330,6 +330,8 @@ uros_err_t urosThreadPoolObjectInit(UrosThreadPool *poolp,
                                     const char *namep,
                                     uros_prio_t priority) {
 
+  uros_cnt_t i;
+
   urosAssert(poolp != NULL);
   urosAssert(stackpoolp != NULL);
   urosAssert(routine != NULL);
@@ -341,10 +343,8 @@ uros_err_t urosThreadPoolObjectInit(UrosThreadPool *poolp,
   poolp->routine = routine;
   poolp->namep = namep;
   poolp->priority = priority;
-  poolp->threadsp = (UrosThreadId*)urosArrayAlloc(NULL, poolp->size,
-                                                  sizeof(UrosThreadId));
+  poolp->threadsp = urosArrayNew(NULL, poolp->size, UrosThreadId);
   if (poolp->threadsp != NULL) {
-    unsigned i;
     for (i = 0; i < poolp->size; ++i) {
       poolp->threadsp[i] = UROS_NULL_THREADID;
     }
