@@ -92,7 +92,7 @@ uros_err_t pub_tpc__benchmark__output(UrosTcpRosStatus *tcpstp) {
     benchmark.outCount.deltaBytes += 2 * sizeof(uint32_t) + msgp->data.length;
     urosMutexUnlock(&benchmark.lock);
 
-    /* No delay, to achieve the maximum throughput.*/
+    /* No delay, to achieve the maximum throughput (beware: it may hang up).*/
     if (rate > 0) {
       urosThreadSleepUsec(1000000ul / rate);
     }

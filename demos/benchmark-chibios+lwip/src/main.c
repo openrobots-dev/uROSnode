@@ -45,17 +45,16 @@ static void log_thread_info(void) {
 
   Thread *tp;
   unsigned i, infosize;
-  uint32_t numPackets, deltaPackets;
-  size_t numBytes, deltaBytes;
+  streamcnt_t inCount, outCount;
 
   /* Capture the state with the lowest jitter possible.*/
   urosMutexLock(&benchmark.lock);
-  deltaPackets = benchmark.deltaPackets;
-  deltaBytes = benchmark.deltaBytes;
-  numPackets = benchmark.numPackets += deltaPackets;
-  numBytes = benchmark.numBytes += deltaBytes;
-  benchmark.deltaPackets = 0;
-  benchmark.deltaBytes = 0;
+  inCount = benchmark.inCount;
+  outCount = benchmark.outCount;
+  benchmark.inCount.deltaMsgs = 0;
+  benchmark.inCount.deltaBytes = 0;
+  benchmark.outCount.deltaMsgs = 0;
+  benchmark.outCount.deltaBytes = 0;
   urosMutexUnlock(&benchmark.lock);
   for (i = 0, tp = chRegFirstThread();
        tp != NULL && i < MAX_THREADS;
@@ -69,12 +68,12 @@ static void log_thread_info(void) {
 
   /* Log the captured info.*/
   chprintf(SS1, "@ %U\n", (uint32_t)chTimeNow());
-  chprintf(SS1, "%U pkt / %U B\n",
-           (uint32_t)numPackets,
-           (uint32_t)numBytes);
-  chprintf(SS1, "%U pkt/s at %U B/s\n",
-           (uint32_t)deltaPackets,
-           (uint32_t)deltaBytes);
+  chprintf(SS1, "IN: %U msg %U B %U msg/s %U B/s\n",
+           inCount.numMsgs, inCount.numBytes,
+           inCount.deltaMsgs, inCount.deltaBytes);
+  chprintf(SS1, "OUT: %U msg %U B %U msg/s %U B/s\n",
+           outCount.numMsgs, outCount.numBytes,
+           outCount.deltaMsgs, outCount.deltaBytes);
   for (i = 0; i < infosize; ++i) {
     thread_info_t *const ip = &infos[i];
     chprintf(SS1, "%X %U %s\n",

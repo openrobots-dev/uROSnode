@@ -55,6 +55,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*===========================================================================*/
 
 /**
+ * @brief   Stream counters.
+ */
+typedef struct streamcnt_t {
+  unsigned long numMsgs;        /**< @brief Total number of exchanged messages.*/
+  size_t        numBytes;       /**< @brief Total exchanged size.*/
+  unsigned long deltaMsgs;      /**< @brief Incremental number of exchanged messages.*/
+  size_t        deltaBytes;     /**< @brief Incremental exchanged size.*/
+} streamcnt_t;
+
+/**
  * @brief   Benchmark status.
  */
 typedef struct benchmark_t {
@@ -70,12 +80,9 @@ typedef struct benchmark_t {
   uros_bool_t   hasOutSub;      /**< @brief Creates the subscriber of
                                  *          <tt>/benchmark/output</tt>.*/
 
-  /* Rate meter.*/
-  uint32_t      deltaPackets;   /**< @brief Number of received packets (delta).*/
-  size_t        deltaBytes;     /**< @brief Number of received bytes (delta).*/
-  uint32_t      numPackets;     /**< @brief Number of received packets (total).*/
-  size_t        numBytes;       /**< @brief Number of received bytes (total).*/
-  UrosThreadId  printerThread;  /**< @brief Stats printer thread.*/
+  /* Meters.*/
+  streamcnt_t   inCount;        /**< @brief Incoming stream counters.*/
+  streamcnt_t   outCount;       /**< @brief Outgoing stream counters.*/
 } benchmark_t;
 
 /** @brief Sequential stream on UART1 (SD1).*/
@@ -100,7 +107,6 @@ extern "C" {
 #endif
 
 void app_initialize(void);
-void app_wait_exit(void);
 
 #ifdef __cplusplus
 }
