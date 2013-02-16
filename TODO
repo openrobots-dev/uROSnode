@@ -11,6 +11,8 @@ JOB QUEUE:
 *!  Error switches in LLD sources
 ?!  PC and FP accumulation in stack analysis
 ?!  Client service calls
+*   Move LLD definitions from urosconf.h to specific uros_lld_*.h
++   UROS_LIKELY() / UROS_UNLIKELY() for better branch prediction (needed?)
 *   Project paths
 +   Topic/service flags management (latching, nodelay, ...)
 +   Regex in urosstan.py entry point names

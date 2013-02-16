@@ -60,29 +60,39 @@ void app_print_cpu_state(void) {
 
   FILE *statfp = NULL;
   cpucnt_t curCpu, oldCpu;
-  double mult;
+  unsigned long temp;
   int n; (void)n;
 
   statfp =  fopen("/proc/stat", "rt");
   urosAssert(statfp != NULL);
-  n = fscanf(statfp, "%*s %lu %lu %lu %lu ",
-             &curCpu.user, &curCpu.nice, &curCpu.system, &curCpu.idle);
-  urosAssert(n == 4);
+  n = fscanf(statfp, "%*s %lu %lu %lu %lu %lu %lu %lu ",
+             &curCpu.user, &curCpu.nice, &curCpu.system, &curCpu.idle,
+             &curCpu.iowait, &curCpu.irq, &curCpu.softirq);
+  urosAssert(n == 7);
+  do {
+    n = fscanf(statfp, "%lu ", &temp);
+    if (n == 1) {
+      curCpu.misc += temp;
+    }
+  } while (n == 1);
   fclose(statfp);
   urosMutexLock(&benchmark.lock);
   oldCpu = benchmark.oldCpu = benchmark.curCpu;
   benchmark.curCpu = curCpu;
   urosMutexUnlock(&benchmark.lock);
 
-  mult = 100.0 /
-         ((curCpu.user + curCpu.nice + curCpu.system + curCpu.idle) -
-          (oldCpu.user + oldCpu.nice + oldCpu.system + oldCpu.idle));
-
-  printf("CPU%%: user: %.3f nice: %.3f sys: %.3f idle: %.3f\n",
-         (curCpu.user - oldCpu.user) * mult,
-         (curCpu.nice - oldCpu.nice) * mult,
-         (curCpu.system - oldCpu.system) * mult,
-         (curCpu.idle - oldCpu.idle) * mult);
+  printf(
+    "CPU: user: %lu nice: %lu sys: %lu idle: %lu "
+    "iow: %lu irq: %lu swirq: %lu misc: %lu\n",
+    curCpu.user    - oldCpu.user,
+    curCpu.nice    - oldCpu.nice,
+    curCpu.system  - oldCpu.system,
+    curCpu.idle    - oldCpu.idle,
+    curCpu.iowait  - oldCpu.iowait,
+    curCpu.irq     - oldCpu.irq,
+    curCpu.softirq - oldCpu.softirq,
+    curCpu.misc    - oldCpu.misc
+  );
 }
 
 void app_print_cpu_usage(void) {
@@ -114,9 +124,15 @@ void app_print_thread_state(pthread_t threadId) {
   urosAssert(err == 0);
   err = clock_gettime(clockId, &time);
   urosAssert(err == 0);
+  memset(namebuf, 0, sizeof(namebuf));
   err = pthread_getname_np(threadId, namebuf, 31);
   urosAssert(err == 0);
   namebuf[31] = 0;
+#if PTHREAD_GETNAME_NP_NEWLINE
+  if (strlen(namebuf) >= 2) {
+    namebuf[strlen(namebuf) - 2] = 0;
+  }
+#endif
 
   printf("%lu %lu.%9.9lu %s\n",
          (unsigned long)threadId,
@@ -128,7 +144,7 @@ uros_err_t app_printer_thread(void* argp) {
 
   static UrosNodeStatus *const stp = &urosNode.status;
 
-  uint32_t oldTime, curTime, winTime;
+  unsigned long oldTime, curTime, winTime, logentry = 0;
   streamcnt_t inCount, outCount;
   uros_cnt_t i;
   int err; (void)err;
@@ -165,17 +181,21 @@ uros_err_t app_printer_thread(void* argp) {
     curTime = urosGetTimestampMsec();
     winTime = curTime - oldTime;
 
-    printf("@ %lu\n", (unsigned long)curTime);
-    printf("IN: %lu msg %lu B %lu msg/s %lu B/s\n",
-           (unsigned long)((1000 * inCount.numMsgs + 499) / winTime),
-           (unsigned long)((1000 * inCount.numBytes + 499) / winTime),
-           (unsigned long)((1000 * inCount.deltaMsgs + 499) / winTime),
-           (unsigned long)((1000 * inCount.deltaBytes + 499) / winTime));
-    printf("OUT: %lu msg %lu B %lu msg/s %lu B/s\n",
-           (unsigned long)((1000 * outCount.numMsgs + 499) / winTime),
-           (unsigned long)((1000 * outCount.numBytes + 499) / winTime),
-           (unsigned long)((1000 * outCount.deltaMsgs + 499) / winTime),
-           (unsigned long)((1000 * outCount.deltaBytes + 499) / winTime));
+    printf("@ %lu %lu\n", (curTime - oldTime), logentry++);
+    printf(
+      "IN: %lu msg %lu B %lu msg/s %lu B/s\n",
+      (unsigned long)((1000 * (uint64_t)inCount.numMsgs + 499) / winTime),
+      (unsigned long)((1000 * (uint64_t)inCount.numBytes + 499) / winTime),
+      (unsigned long)((1000 * (uint64_t)inCount.deltaMsgs + 499) / winTime),
+      (unsigned long)((1000 * (uint64_t)inCount.deltaBytes + 499) / winTime)
+    );
+    printf(
+      "OUT: %lu msg %lu B %lu msg/s %lu B/s\n",
+      (unsigned long)((1000 * (uint64_t)outCount.numMsgs + 499) / winTime),
+      (unsigned long)((1000 * (uint64_t)outCount.numBytes + 499) / winTime),
+      (unsigned long)((1000 * (uint64_t)outCount.deltaMsgs + 499) / winTime),
+      (unsigned long)((1000 * (uint64_t)outCount.deltaBytes + 499) / winTime)
+    );
 
     /* Global CPU usage.*/
     app_print_cpu_state();
@@ -220,6 +240,20 @@ uros_err_t app_printer_thread(void* argp) {
 
     urosMutexUnlock(&stp->stateLock);
     printf("\n");
+
+    /* Automatic shutdown.*/
+    if (logentry > 120) {
+      UrosRpcResponse res;
+      const UrosString msgstr = { 3, "end" };
+      urosRpcResponseObjectInit(&res);
+      urosRpcCallShutdown(
+        &urosNode.config.xmlrpcAddr,
+        &urosNode.config.nodeName,
+        &msgstr,
+        &res
+      );
+      urosRpcResponseClean(&res);
+    }
 
     /* Sleep until the next second.*/
     urosThreadSleepMsec(urosGetTimestampMsec() - curTime + 1000);
@@ -278,10 +312,10 @@ void app_initialize(void) {
   urosMutexObjectInit(&benchmark.lock);
   benchmark.rate = 1;
   urosStringObjectInit(&benchmark.payload);
-  benchmark.inCount.deltaMsgs = 0;
-  benchmark.inCount.deltaBytes = 0;
-  benchmark.outCount.deltaMsgs = 0;
-  benchmark.outCount.deltaBytes = 0;
+  memset(&benchmark.inCount, 0, sizeof(streamcnt_t));
+  memset(&benchmark.outCount, 0, sizeof(streamcnt_t));
+  memset(&benchmark.curCpu, 0, sizeof(cpucnt_t));
+  memset(&benchmark.oldCpu, 0, sizeof(cpucnt_t));
 
   urosInit();
   urosNodeCreateThread();

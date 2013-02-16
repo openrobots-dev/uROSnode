@@ -59,13 +59,17 @@ typedef struct streamcnt_t {
 } streamcnt_t;
 
 /**
- * @brief   CPU usage counters (jiffies).
+ * @brief   CPU usage time counters (jiffies).
  */
 typedef struct cpucnt_t {
-  unsigned long user;           /**< @brief User-level CPU count.*/
-  unsigned long nice;           /**< @brief Niced user-level CPU count.*/
-  unsigned long system;         /**< @brief System-level CPU count.*/
-  unsigned long idle;           /**< @brief Idle CPU count.*/
+  unsigned long user;           /**< @brief User-level CPU time.*/
+  unsigned long nice;           /**< @brief Niced user-level CPU time.*/
+  unsigned long system;         /**< @brief System-level CPU time.*/
+  unsigned long idle;           /**< @brief Idle CPU time.*/
+  unsigned long iowait;         /**< @brief I/O wait time.*/
+  unsigned long irq;            /**< @brief Interrupt service time.*/
+  unsigned long softirq;        /**< @brief Software interrupt service time.*/
+  unsigned long misc;           /**< @brief Remaining counters, aggregated.*/
 } cpucnt_t;
 
 /**
@@ -97,6 +101,9 @@ typedef struct benchmark_t {
 
 /** @brief Skips incoming data in handlers.*/
 #define HANDLERS_INPUT_SKIP 1
+
+/** @brief Tells whether @p pthread_getname_np() adds a trailing newline.*/
+#define PTHREAD_GETNAME_NP_NEWLINE  0
 
 /*===========================================================================*/
 /* GLOBAL VARIABLES                                                          */

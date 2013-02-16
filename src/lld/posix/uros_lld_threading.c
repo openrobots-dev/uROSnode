@@ -44,6 +44,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <pthread.h>
 #include <sys/time.h>
+#include <errno.h>
 
 /*===========================================================================*/
 /* LOCAL TYPES & MACROS                                                      */
@@ -595,7 +596,18 @@ uros_err_t uros_lld_thread_join(UrosThreadId id) {
  */
 void uros_lld_thread_sleepsec(uint32_t sec) {
 
-  sleep(sec);
+  struct timespec to1, to2 = { 0, 0 };
+  struct timespec *to1p = &to1, *to2p = &to2, *tmp;
+
+  to1.tv_sec = sec;
+  to1.tv_nsec = 0;
+
+  while (nanosleep(to1p, to2p) == -1) {
+    if (errno != EINTR) { return; }
+    tmp = to1p;
+    to1p = to2p;
+    to2p = tmp;
+  }
 }
 
 /**
@@ -607,7 +619,18 @@ void uros_lld_thread_sleepsec(uint32_t sec) {
  */
 void uros_lld_thread_sleepmsec(uint32_t msec) {
 
-  usleep(msec * 1000);
+  struct timespec to1, to2 = { 0, 0 };
+  struct timespec *to1p = &to1, *to2p = &to2, *tmp;
+
+  to1.tv_sec = msec / 1000;
+  to1.tv_nsec = (msec % 1000) * 1000000;
+
+  while (nanosleep(to1p, to2p) == -1) {
+    if (errno != EINTR) { return; }
+    tmp = to1p;
+    to1p = to2p;
+    to2p = tmp;
+  }
 }
 
 /**
@@ -619,7 +642,18 @@ void uros_lld_thread_sleepmsec(uint32_t msec) {
  */
 void uros_lld_thread_sleepusec(uint32_t usec) {
 
-  usleep(usec);
+  struct timespec to1, to2 = { 0, 0 };
+  struct timespec *to1p = &to1, *to2p = &to2, *tmp;
+
+  to1.tv_sec = usec / 1000000;
+  to1.tv_nsec = (usec % 1000000) * 1000;
+
+  while (nanosleep(to1p, to2p) == -1) {
+    if (errno != EINTR) { return; }
+    tmp = to1p;
+    to1p = to2p;
+    to2p = tmp;
+  }
 }
 
 /**
