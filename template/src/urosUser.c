@@ -126,73 +126,97 @@ void urosUserRegisterStaticMsgTypes(void) {
 /**
  * @brief   Registers all the published topics to the Master node.
  * @note    Should be called at node initialization.
+ *
+ * @return  Error code.
  */
-void urosUserPublishTopics(void) {
+uros_err_t urosUserPublishTopics(void) {
 
   /* TODO: Publish topics.*/
+  return UROS_OK;
 }
 
 /**
  * @brief   Unregisters all the published topics to the Master node.
  * @note    Should be called at node shutdown.
+ *
+ * @return  Error code.
  */
-void urosUserUnpublishTopics(void) {
+uros_err_t urosUserUnpublishTopics(void) {
 
   /* TODO: Unpublish topics.*/
+  return UROS_OK;
 }
 
 /**
  * @brief   Registers all the subscribed topics to the Master node.
  * @note    Should be called at node initialization.
+ *
+ * @return  Error code.
  */
-void urosUserSubscribeTopics(void) {
+uros_err_t urosUserSubscribeTopics(void) {
 
   /* TODO: Subscribe to topics.*/
+  return UROS_OK;
 }
 
 /**
  * @brief   Unregisters all the subscribed topics to the Master node.
  * @note    Should be called at node shutdown.
+ *
+ * @return  Error code.
  */
-void urosUserUnsubscribeTopics(void) {
+uros_err_t urosUserUnsubscribeTopics(void) {
 
   /* TODO: Unsubscribe from topics.*/
+  return UROS_OK;
 }
 
 /**
  * @brief   Registers all the published services to the Master node.
  * @note    Should be called at node initialization.
+ *
+ * @return  Error code.
  */
-void urosUserPublishServices(void) {
+uros_err_t urosUserPublishServices(void) {
 
   /* TODO: Publish services.*/
+  return UROS_OK;
 }
 
 /**
  * @brief   Unregisters all the published services to the Master node.
  * @note    Should be called at node shutdown.
+ *
+ * @return  Error code.
  */
-void urosUserUnpublishServices(void) {
+uros_err_t urosUserUnpublishServices(void) {
 
   /* TODO: Unpublish services.*/
+  return UROS_OK;
 }
 
 /**
  * @brief   Registers all the subscribed parameters to the Master node.
  * @note    Should be called at node initialization.
+ *
+ * @return  Error code.
  */
-void urosUserSubscribeParams(void) {
+uros_err_t urosUserSubscribeParams(void) {
 
   /* TODO: Subscribe to parameters.*/
+  return UROS_OK;
 }
 
 /**
  * @brief   Unregisters all the subscribed parameters to the Master node.
  * @note    Should be called at node shutdown.
+ *
+ * @return  Error code.
  */
-void urosUserUnsubscribeParams(void) {
+uros_err_t urosUserUnsubscribeParams(void) {
 
   /* TODO: Unsubscribe from parameters.*/
+  return UROS_OK;
 }
 
 /**

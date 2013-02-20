@@ -340,7 +340,7 @@ class StaticAnalysis:
         for func in self.funcs:
             for unresname in func.unresolved:
                 if not toresolve.has_key(unresname):
-                    toresolve[unresname] = [func]
+                    toresolve[unresname] = [ func ]
                 else:
                     toresolve[unresname].append(func)
         for func in [f for f in self.funcs if func.name in toresolve]:
@@ -356,7 +356,7 @@ class StaticAnalysis:
             print '  ' + name
         print ''
         
-        # Compute the maximum usage for each starting function
+        # Compute the maximum usage for each entry point
         totals = {}
         for entry in entryfuncs:
             print '### Entry point function: %s ###' % entry.name
@@ -424,7 +424,7 @@ def main():
         print_usage()
         exit()
     
-    cfgPath = sys.argv[1]
+    cfgPath = os.path.abspath(sys.argv[1])
     sa = StaticAnalysis(cfgPath)
     sa.elaborate()
 

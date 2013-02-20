@@ -111,6 +111,7 @@ uros_err_t urosUserShutdown(const UrosString *msgp) {
   static UrosNodeStatus *const stp = &urosNode.status;
 
   (void)msgp;
+  (void)stp;
 
 #if UROS_USE_ASSERT
   urosAssert(msgp != NULL);
