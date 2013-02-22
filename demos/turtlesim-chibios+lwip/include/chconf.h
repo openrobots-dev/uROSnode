@@ -372,7 +372,7 @@
  * @note    The default is @p FALSE.
  */
 #if !defined(CH_DBG_ENABLE_CHECKS) || defined(__DOXYGEN__)
-#define CH_DBG_ENABLE_CHECKS            1/*TRUE*/
+#define CH_DBG_ENABLE_CHECKS            0/*TRUE*/
 #endif
 
 /**
@@ -384,7 +384,7 @@
  * @note    The default is @p FALSE.
  */
 #if !defined(CH_DBG_ENABLE_ASSERTS) || defined(__DOXYGEN__)
-#define CH_DBG_ENABLE_ASSERTS           1/*TRUE*/
+#define CH_DBG_ENABLE_ASSERTS           0/*TRUE*/
 #endif
 
 /**
@@ -395,7 +395,7 @@
  * @note    The default is @p FALSE.
  */
 #if !defined(CH_DBG_ENABLE_TRACE) || defined(__DOXYGEN__)
-#define CH_DBG_ENABLE_TRACE             1/*TRUE*/
+#define CH_DBG_ENABLE_TRACE             0/*TRUE*/
 #endif
 
 /**
@@ -409,7 +409,7 @@
  *          @p panic_msg variable set to @p NULL.
  */
 #if !defined(CH_DBG_ENABLE_STACK_CHECK) || defined(__DOXYGEN__)
-#define CH_DBG_ENABLE_STACK_CHECK       1/*TRUE*/
+#define CH_DBG_ENABLE_STACK_CHECK       0/*TRUE*/
 #endif
 
 /**

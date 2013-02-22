@@ -607,7 +607,7 @@ class MsgType:
                     text += 'tcpstp->err = UROS_ERR_NOMEM; goto _error; }\n'
                 else:
                     lenstr = str(f.arraylen)
-                    enpstr = f.name
+                    enpstr = 'objp->' + f.name
                 
                 if f.rostype == 'string':
                     text += tab + 'for (i = 0; i < %s; ++i) {\n' % lenstr
@@ -683,7 +683,7 @@ class MsgType:
                     text += tab + 'urosTcpRosSendRaw(tcpstp, %s); _CHKOK\n' % lenstr
                 else:
                     lenstr = str(f.arraylen)
-                    enpstr = f.name
+                    enpstr = 'objp->' + f.name
                 
                 if f.rostype == 'string':
                     text += tab + 'for (i = 0; i < %s; ++i) {\n' % lenstr

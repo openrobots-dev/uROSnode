@@ -295,7 +295,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define UROS_USE_BUILTIN_MEMPOOL            0
 
 /** @brief Enables assertion evaluations.*/
-#define UROS_USE_ASSERT                     0
+#define UROS_USE_ASSERT                     1
 
 /** @brief Enables error messages.*/
 #define UROS_USE_ERROR_MSG                  0
