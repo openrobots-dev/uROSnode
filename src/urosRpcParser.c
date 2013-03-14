@@ -98,7 +98,7 @@ uros_err_t uros_rpcparser_parambytag_partial(UrosRpcParser *pp,
   urosRpcParserParamValueString(pp, paramp); _CHKOK
   strp = paramp->value.string.datap;
 
-  /* Check if it is another class instead.*/
+  /* Check if it is another pclass instead.*/
   urosRpcParserXmlTagBeginNoName(pp); _CHKOK
   if (_GOT("i", 1)) {
     if (_GOT("nt>", 3)) {
@@ -1517,7 +1517,7 @@ uros_err_t urosRpcParserParamValueInt(UrosRpcParser *pp,
   urosAssert(paramp != NULL);
 #define _CHKOK   { if (pp->err != UROS_OK) { return pp->err; } }
 
-  paramp->class = UROS_RPCP_INT;
+  paramp->pclass = UROS_RPCP_INT;
   urosRpcParserInt32(pp, &paramp->value.int32); _CHKOK
   return pp->err = UROS_OK;
 
@@ -1542,7 +1542,7 @@ uros_err_t urosRpcParserParamValueBoolean(UrosRpcParser *pp,
   urosAssert(paramp != NULL);
 #define _CHKOK   { if (pp->err != UROS_OK) { return pp->err; } }
 
-  paramp->class = UROS_RPCP_BOOLEAN;
+  paramp->pclass = UROS_RPCP_BOOLEAN;
   urosRpcParserInt32(pp, &paramp->value.int32); _CHKOK
   if (paramp->value.int32 == 0) {
     paramp->value.boolean = UROS_FALSE;
@@ -1581,7 +1581,7 @@ uros_err_t urosRpcParserParamValueString(UrosRpcParser *pp,
   urosAssert(pp != NULL);
   urosAssert(paramp != NULL);
 
-  paramp->class = UROS_RPCP_STRING;
+  paramp->pclass = UROS_RPCP_STRING;
 
   /* Do not mess with the memory if a tag (a comment too!) is already there.*/
   if (urosRpcParserLookAheadQuiet(pp, '<') == UROS_ERR_PARSE) {
@@ -1638,7 +1638,7 @@ uros_err_t urosRpcParserParamValueDouble(UrosRpcParser *pp,
   urosAssert(paramp != NULL);
 #define _CHKOK   { if (pp->err != UROS_OK) { return pp->err; } }
 
-  paramp->class = UROS_RPCP_DOUBLE;
+  paramp->pclass = UROS_RPCP_DOUBLE;
   urosRpcParserDouble(pp, &paramp->value.real); _CHKOK
   return pp->err = UROS_OK;
 
@@ -1663,7 +1663,7 @@ uros_err_t urosRpcParserParamValueBase64(UrosRpcParser *pp,
   urosAssert(paramp != NULL);
 #define _CHKOK   { if (pp->err != UROS_OK) { return pp->err; } }
 
-  paramp->class = UROS_RPCP_BASE64;
+  paramp->pclass = UROS_RPCP_BASE64;
 
   /* TODO: Parse the base64 stream and convert it into a binary form.*/
   urosRpcParserSkipUntil(pp, '<'); _CHKOK
@@ -1693,7 +1693,7 @@ uros_err_t urosRpcParserParamValueStruct(UrosRpcParser *pp,
   urosAssert(paramp != NULL);
 #define _CHKOK   { if (pp->err != UROS_OK) { return pp->err; } }
 
-  paramp->class = UROS_RPCP_STRUCT;
+  paramp->pclass = UROS_RPCP_STRUCT;
 
   /* FIXME: Parse the XMLRPC struct and map it.*/
 
@@ -1722,7 +1722,7 @@ uros_err_t urosRpcParserParamValueArray(UrosRpcParser *pp,
   urosAssert(paramp != NULL);
 #define _CHKOK   { if (pp->err != UROS_OK) { goto _error; } }
 
-  paramp->class = UROS_RPCP_ARRAY;
+  paramp->pclass = UROS_RPCP_ARRAY;
   paramp->value.listp = urosNew(NULL, UrosRpcParamList);
   if (paramp->value.listp == NULL) { return pp->err = UROS_ERR_NOMEM; }
   urosRpcParamListObjectInit(paramp->value.listp);
@@ -1767,7 +1767,7 @@ _error:
 
 /**
  * @brief   Parses a XMLRPC parameter value by its element tags.
- * @details The XMLRPC parameter class is decoded by reading its opening XML
+ * @details The XMLRPC parameter pclass is decoded by reading its opening XML
  *          tag.
  * @note    The parameter value is expected to be enclosed within a
  *          @p value XML element.
@@ -1792,7 +1792,7 @@ uros_err_t urosRpcParserParamByTag(UrosRpcParser *pp,
 
 /**
  * @brief   Parses a XMLRPC parameter value by its element tags.
- * @details The XMLRPC parameter class is decoded by reading its opening XML
+ * @details The XMLRPC parameter pclass is decoded by reading its opening XML
  *          tag. Does not print any parsing error messages.
  * @note    The parameter value is expected to be enclosed within a
  *          @p value XML element.
@@ -1816,8 +1816,8 @@ uros_err_t urosRpcParserParamByTagQuiet(UrosRpcParser *pp,
 }
 
 /**
- * @brief   Parses a XMLRPC parameter value by its class.
- * @details The XMLRPC parameter class is already written inside the alloacted
+ * @brief   Parses a XMLRPC parameter value by its pclass.
+ * @details The XMLRPC parameter pclass is already written inside the alloacted
  *          result value.
  * @note    The parameter value is expected to be enclosed within a
  *          @p value XML element.
@@ -1835,7 +1835,7 @@ uros_err_t urosRpcParserParamByClass(UrosRpcParser *pp,
   urosAssert(pp != NULL);
   urosAssert(paramp != NULL);
 
-  return urosRpcParserParam(pp, paramp, paramp->class);
+  return urosRpcParserParam(pp, paramp, paramp->pclass);
 }
 
 /**
@@ -1848,7 +1848,7 @@ uros_err_t urosRpcParserParamByClass(UrosRpcParser *pp,
  * @param[out] paramp
  *          Pointer to the allocated @p UrosRpcParam result.
  * @param[in] paramclass
- *          Expected parameter class.
+ *          Expected parameter pclass.
  * @return
  *          Error code.
  */
@@ -1944,7 +1944,7 @@ uros_err_t urosRpcParserParam(UrosRpcParser *pp,
   }
   default: {
     urosError(UROS_ERR_BADPARAM, UROS_NOP,
-              ("Unknown parameter class id %d\n, remote "UROS_ADDRFMT"\n",
+              ("Unknown parameter pclass id %d\n, remote "UROS_ADDRFMT"\n",
                (int)paramclass, UROS_ADDRARG(&pp->csp->remaddr)));
     return pp->err = UROS_ERR_BADPARAM;
   }

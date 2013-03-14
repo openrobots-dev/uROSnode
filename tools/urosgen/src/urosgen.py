@@ -1392,6 +1392,9 @@ class CodeGen:
         text += '#ifndef %s\n#define %s\n\n' % (fileupr, fileupr)
         text += banner_big('HEADER FILES') + '\n\n'
         text += '#include <urosTcpRos.h>\n\n'
+        text += '#ifdef __cplusplus\n'
+        text += 'extern "C" {\n'
+        text += '#endif\n\n'
         text += banner_big(' MESSAGE TYPES') + '\n\n'
         text += '/** @addtogroup tcpros_msg_types */\n/** @{ */\n\n'
         
@@ -1450,9 +1453,6 @@ class CodeGen:
             text += '/* There are no service costants.*/\n\n'
         
         text += '/** @} */\n\n'
-        text += '#ifdef __cplusplus\n'
-        text += 'extern "C" {\n'
-        text += '#endif\n\n'
         text += banner_big('MESSAGE PROTOTYPES') + '\n\n'
         
         for name in self.sortedMsgTypeNames:

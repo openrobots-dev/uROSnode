@@ -210,7 +210,7 @@ uros_err_t uros_rpcslave_process_publisherupdate(const UrosString *topic,
 
   urosAssert(urosStringNotEmpty(topic));
   urosAssert(publishers != NULL);
-  urosAssert(publishers->class == UROS_RPCP_ARRAY);
+  urosAssert(publishers->pclass == UROS_RPCP_ARRAY);
   urosAssert(publishers->value.listp != NULL);
 
   /* Check if the topic is actually subscribed.*/
@@ -655,20 +655,20 @@ uros_err_t uros_rpcslave_method_paramupdate(UrosRpcStreamer *sp,
   urosError(paramnodep == NULL, return sp->err = UROS_ERR_BADPARAM,
             ("Expecting a further parameter\n"));
   caller_id = &paramnodep->param;
-  urosError(caller_id->class != UROS_RPCP_STRING,
+  urosError(caller_id->pclass != UROS_RPCP_STRING,
             return sp->err = UROS_ERR_BADPARAM,
             ("Class id of [caller_id] is %d, expected %d (UROS_RPCP_STRING)\n",
-             (int)caller_id->class, (int)UROS_RPCP_STRING));
+             (int)caller_id->pclass, (int)UROS_RPCP_STRING));
 
   paramnodep = paramnodep->nextp;
   urosError(paramnodep == NULL, return sp->err = UROS_ERR_BADPARAM,
             ("Expecting a further parameter\n"));
   parameter_key = (UrosRpcParam*)&paramnodep->param;
-  urosError(parameter_key->class != UROS_RPCP_STRING,
+  urosError(parameter_key->pclass != UROS_RPCP_STRING,
             return sp->err = UROS_ERR_BADPARAM,
             ("Class id of [parameter_key] is %d, expected %d "
              "(UROS_RPCP_STRING)\n",
-             (int)parameter_key->class, (int)UROS_RPCP_STRING));
+             (int)parameter_key->pclass, (int)UROS_RPCP_STRING));
 
   paramnodep = paramnodep->nextp;
   urosError(paramnodep == NULL, return sp->err = UROS_ERR_BADPARAM,
@@ -721,29 +721,29 @@ uros_err_t uros_rpcslave_method_publisherupdate(UrosRpcStreamer *sp,
   urosError(paramnodep == NULL, return sp->err = UROS_ERR_BADPARAM,
             ("Expecting a further parameter\n"));
   caller_id = &paramnodep->param;
-  urosError(caller_id->class != UROS_RPCP_STRING,
+  urosError(caller_id->pclass != UROS_RPCP_STRING,
             return sp->err = UROS_ERR_BADPARAM,
             ("Class id of [caller_id] is %d, expected %d (UROS_RPCP_STRING)\n",
-             (int)caller_id->class, (int)UROS_RPCP_STRING));
+             (int)caller_id->pclass, (int)UROS_RPCP_STRING));
 
   paramnodep = paramnodep->nextp;
   urosError(paramnodep == NULL, return sp->err = UROS_ERR_BADPARAM,
             ("Expecting a further parameter\n"));
   topic = &paramnodep->param;
-  urosError(topic->class != UROS_RPCP_STRING,
+  urosError(topic->pclass != UROS_RPCP_STRING,
             return sp->err = UROS_ERR_BADPARAM,
             ("Class id of [topic] is %d, expected %d (UROS_RPCP_STRING)\n",
-             (int)topic->class, (int)UROS_RPCP_STRING));
+             (int)topic->pclass, (int)UROS_RPCP_STRING));
   topicstrp = &topic->value.string;
 
   paramnodep = paramnodep->nextp;
   urosError(paramnodep == NULL, return sp->err = UROS_ERR_BADPARAM,
             ("Expecting a further parameter\n"));
   publishers = &paramnodep->param;
-  urosError(publishers->class != UROS_RPCP_ARRAY,
+  urosError(publishers->pclass != UROS_RPCP_ARRAY,
             return sp->err = UROS_ERR_BADPARAM,
             ("Class id of [publishers] is %d, expected %d (UROS_RPCP_ARRAY)\n",
-             (int)publishers->class, (int)UROS_RPCP_ARRAY));
+             (int)publishers->pclass, (int)UROS_RPCP_ARRAY));
 
   /* Process new publishers and dispose the old ones.*/
   err = uros_rpcslave_process_publisherupdate(topicstrp, publishers);
@@ -792,25 +792,25 @@ uros_err_t uros_rpcslave_method_requesttopic(UrosRpcStreamer *sp,
   urosError(paramnodep == NULL, return sp->err = UROS_ERR_BADPARAM,
             ("Expecting a further parameter\n"));
   caller_id = &paramnodep->param;
-  urosError(caller_id->class != UROS_RPCP_STRING,
+  urosError(caller_id->pclass != UROS_RPCP_STRING,
             return sp->err = UROS_ERR_BADPARAM,
             ("Class id of [caller_id] is %d, expected %d (UROS_RPCP_STRING)\n",
-             (int)caller_id->class, (int)UROS_RPCP_STRING));
+             (int)caller_id->pclass, (int)UROS_RPCP_STRING));
 
   paramnodep = paramnodep->nextp;
   urosError(paramnodep == NULL, return sp->err = UROS_ERR_BADPARAM,
             ("Expecting a further parameter\n"));
   topic = &paramnodep->param;
-  urosError(topic->class != UROS_RPCP_STRING,
+  urosError(topic->pclass != UROS_RPCP_STRING,
             return sp->err = UROS_ERR_BADPARAM,
             ("Class id of [topic] is %d, expected %d (UROS_RPCP_STRING)\n",
-             (int)topic->class, (int)UROS_RPCP_STRING));
+             (int)topic->pclass, (int)UROS_RPCP_STRING));
 
   paramnodep = paramnodep->nextp;
   urosError(paramnodep == NULL, return sp->err = UROS_ERR_BADPARAM,
             ("Expecting a further parameter\n"));
   protocols = &paramnodep->param;
-  if (protocols->class != UROS_RPCP_ARRAY) {
+  if (protocols->pclass != UROS_RPCP_ARRAY) {
     return sp->err = UROS_ERR_BADPARAM;
   }
 
@@ -830,19 +830,19 @@ uros_err_t uros_rpcslave_method_requesttopic(UrosRpcStreamer *sp,
     const UrosRpcParam *nameparamp;
     const UrosString *namestrp;
 
-    urosError(paramnodep->param.class != UROS_RPCP_ARRAY,
+    urosError(paramnodep->param.pclass != UROS_RPCP_ARRAY,
               return sp->err = UROS_ERR_BADPARAM,
               ("Class id of parameter is %d, expected %d (UROS_RPCP_ARRAY)\n",
-               (int)paramnodep->param.class, (int)UROS_RPCP_ARRAY));
+               (int)paramnodep->param.pclass, (int)UROS_RPCP_ARRAY));
     childlistp = paramnodep->param.value.listp;
     urosAssert(childlistp != NULL);
     urosError(childlistp->length == 0, return sp->err = UROS_ERR_BADPARAM,
               ("Expecting a non-empty array\n"));
     nameparamp = &childlistp->headp->param;
-    urosError(nameparamp->class != UROS_RPCP_STRING,
+    urosError(nameparamp->pclass != UROS_RPCP_STRING,
               return sp->err = UROS_ERR_BADPARAM,
               ("Class id of array value is %d, expected %d (UROS_RPCP_STRING)\n",
-               (int)nameparamp->class, (int)UROS_RPCP_STRING));
+               (int)nameparamp->pclass, (int)UROS_RPCP_STRING));
     namestrp = &nameparamp->value.string;
     if (0 == urosStringCmp(namestrp, &tcprosstr)) {
       /* "TCPROS" found.*/
@@ -896,10 +896,10 @@ uros_err_t uros_rpcslave_method_shutdown(UrosRpcStreamer *sp,
             ("Expecting 2 parameters, got %d\n", (int)parlistp->length));
   urosAssert(parlistp->headp != NULL);
   msgparamp = &parlistp->headp->nextp->param;
-  urosError(msgparamp->class != UROS_RPCP_STRING,
+  urosError(msgparamp->pclass != UROS_RPCP_STRING,
             return sp->err = UROS_ERR_BADPARAM,
             ("Class id of [msg] is %d, expected %d (UROS_RPCP_STRING)\n",
-             (int)msgparamp->class, (int)UROS_RPCP_STRING));
+             (int)msgparamp->pclass, (int)UROS_RPCP_STRING));
 
   /* Set the shudtown flag, handled by the Node thread.*/
   urosMutexLock(&stp->stateLock);

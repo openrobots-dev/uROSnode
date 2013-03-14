@@ -503,7 +503,7 @@ void urosNodeConfigLoadDefaults(UrosNodeConfig *cfgp) {
  *          publish/unpublish any topics.
  *
  * @pre     The topic is not published.
- * @pre     The TPCORS @p service flag must be clear.
+ * @pre     The TCPROS @p service flag must be clear.
  *
  * @param[in] namep
  *          Pointer to the topic name string.
@@ -570,7 +570,7 @@ uros_err_t urosNodePublishTopic(const UrosString *namep,
  *          publish/unpublish any topics.
  *
  * @pre     The topic is not published.
- * @pre     The TPCORS @p service flag must be clear.
+ * @pre     The TPCROS @p service flag must be clear.
  *
  * @param[in] namep
  *          Pointer to the topic name null-terminated string.
@@ -617,7 +617,7 @@ uros_err_t urosNodePublishTopicSZ(const char *namep,
  *            registry, and is no longer modifiable by the caller function.
  *          - If unsuccessful, the topic descriptor can be deallocated by the
  *            caller function.
- * @pre     The TPCORS @p service flag must be clear.
+ * @pre     The TCPROS @p service flag must be clear.
  *
  * @param[in] topicp
  *          Pointer to the topic descriptor to be published and registered.
@@ -808,7 +808,7 @@ uros_err_t urosNodeUnpublishTopicSZ(const char *namep) {
  *
  * @pre     The topic is not subscribed.
  * @post    Connects to known publishers listed by a successful response.
- * @pre     The TPCORS @p service flag must be clear.
+ * @pre     The TCPROS @p service flag must be clear.
  *
  * @param[in] namep
  *          Pointer to the topic name string.
@@ -879,7 +879,7 @@ uros_err_t urosNodeSubscribeTopic(const UrosString *namep,
  *
  * @pre     The topic is not subscribed.
  * @post    Connects to known publishers listed by a successful response.
- * @pre     The TPCORS @p service flag must be clear.
+ * @pre     The TCPROS @p service flag must be clear.
  *
  * @param[in] namep
  *          Pointer to the topic name null-terminated string.
@@ -930,7 +930,7 @@ uros_err_t urosNodeSubscribeTopicSZ(const char *namep,
  *          - If unsuccessful, the topic descriptor can be deallocated by the
  *            caller function.
  * @post    Connects to known publishers listed by a successful response.
- * @pre     The TPCORS @p service flag must be clear.
+ * @pre     The TCPROS @p service flag must be clear.
  *
  * @param[in] topicp
  *          Pointer to the topic descriptor to be subscribed to and registered.
@@ -1128,7 +1128,7 @@ uros_err_t urosNodeUnsubscribeTopicSZ(const char *namep) {
  * @note    Only a @e single call will be executed. Persistent TCPROS service
  *          connections need custom handlers.
  *
- * @pre     The TPCORS @p service flag must be set, @p persistent clear.
+ * @pre     The TCPROS @p service flag must be set, @p persistent clear.
  *
  * @param[in] namep
  *          Pointer to the service name string.
@@ -1188,7 +1188,7 @@ uros_err_t urosNodeCallService(const UrosString *namep,
  * @note    Only a @e single call will be executed. Persistent TCPROS service
  *          connections need custom handlers.
  *
- * @pre     The TPCORS @p service flag must be set, @p persistent clear.
+ * @pre     The TCPROS @p service flag must be set, @p persistent clear.
  *
  * @param[in] namep
  *          Pointer to the service name null-terminated string.
@@ -1251,7 +1251,7 @@ uros_err_t urosNodeCallServiceSZ(const char *namep,
  *          connections need custom handlers.
  *
  * @pre     @p servicep->procf must address a @p uros_tcpsrvcall_t function.
- * @pre     The TPCORS @p service flag must be set, @p persistent clear.
+ * @pre     The TCPROS @p service flag must be set, @p persistent clear.
  *
  * @param[in] servicep
  *          Pointer to the service descriptor.
@@ -1294,7 +1294,7 @@ uros_err_t urosNodeCallServiceByDesc(const UrosTopic *servicep,
  * @see     urosRpcCallRegisterService()
  *
  * @pre     The service is not published.
- * @pre     The TPCORS @p service flag must be set.
+ * @pre     The TCPROS @p service flag must be set.
  *
  * @param[in] namep
  *          Pointer to the service name string.
@@ -1362,7 +1362,7 @@ uros_err_t urosNodePublishService(const UrosString *namep,
  * @see     urosRpcCallRegisterService()
  *
  * @pre     The service is not published.
- * @pre     The TPCORS @p service flag must be set.
+ * @pre     The TCPROS @p service flag must be set.
  *
  * @param[in] namep
  *          Pointer to the service name null-terminated string.
@@ -1401,7 +1401,7 @@ uros_err_t urosNodePublishServiceSZ(const char *namep,
  *          to publish/unpublish any services.
  * @see     urosRpcCallRegisterService()
  *
- * @pre     The TPCORS @p service flag must be set.
+ * @pre     The TCPROS @p service flag must be set.
  *
  * @pre     The service is not published.
  * @pre     The service descriptor must have the @p service flag set to @p 1.
@@ -1809,7 +1809,7 @@ uros_err_t urosNodeUnsubscribeParamSZ(const char *namep) {
  * @param[in] namep
  *          Pointer to a non-empty string which names the targeted topic.
  * @param[in] publishersp
- *          Pointer to an @p UrosRpcParam with @p UROS_RPCP_ARRAY class.
+ *          Pointer to an @p UrosRpcParam with @p UROS_RPCP_ARRAY pclass.
  *          It contains the list of current publishers, received for example
  *          through a XMLRPC call to @p subscribeTopic(). Each publisher is
  *          addressed by its URI.
@@ -1835,7 +1835,7 @@ uros_err_t urosNodeFindNewTopicPublishers(const UrosString *namep,
 
   urosAssert(urosStringNotEmpty(namep));
   urosAssert(publishersp != NULL);
-  urosAssert(publishersp->class == UROS_RPCP_ARRAY);
+  urosAssert(publishersp->pclass == UROS_RPCP_ARRAY);
   urosAssert(publishersp->value.listp != NULL);
   urosAssert(urosListIsValid(newpubsp));
   urosAssert(newpubsp->length == 0);
@@ -1950,9 +1950,9 @@ uros_err_t urosNodeResolveTopicPublisher(const UrosAddr *apiaddrp,
             ("The HTTP response code is %lu, expected 200\n",
              (long unsigned int)res.httpcode));
   if (res.code != UROS_RPCC_SUCCESS) { _ERR }
-  urosError(res.valuep->class != UROS_RPCP_ARRAY, _ERR,
-            ("Response value class is %d, expected %d (UROS_RPCP_ARRAY)\n",
-             (int)res.valuep->class, (int)UROS_RPCP_ARRAY));
+  urosError(res.valuep->pclass != UROS_RPCP_ARRAY, _ERR,
+            ("Response value pclass is %d, expected %d (UROS_RPCP_ARRAY)\n",
+             (int)res.valuep->pclass, (int)UROS_RPCP_ARRAY));
   urosAssert(res.valuep->value.listp != NULL);
   urosError(res.valuep->value.listp->length != 3, _ERR,
             ("Response value array length %lu, expected 3",
@@ -1961,9 +1961,9 @@ uros_err_t urosNodeResolveTopicPublisher(const UrosAddr *apiaddrp,
 
   /* Check the protocol string.*/
   paramp = &nodep->param; nodep = nodep->nextp;
-  urosError(paramp->class != UROS_RPCP_STRING, _ERR,
-            ("Response value class is %d, expected %d (UROS_RPCP_STRING)\n",
-             (int)paramp->class, (int)UROS_RPCP_STRING));
+  urosError(paramp->pclass != UROS_RPCP_STRING, _ERR,
+            ("Response value pclass is %d, expected %d (UROS_RPCP_STRING)\n",
+             (int)paramp->pclass, (int)UROS_RPCP_STRING));
   urosError(0 != urosStringCmp(&tcprosnode.param.value.string,
                                &paramp->value.string), _ERR,
             ("Response protocol is [%.*s], expected [TCPROS]\n",
@@ -1971,9 +1971,9 @@ uros_err_t urosNodeResolveTopicPublisher(const UrosAddr *apiaddrp,
 
   /* Check the node hostname string.*/
   paramp = &nodep->param; nodep = nodep->nextp;
-  urosError(paramp->class != UROS_RPCP_STRING, _ERR,
-            ("Response value class is %d, expected %d (UROS_RPCP_STRING)\n",
-             (int)paramp->class, (int)UROS_RPCP_STRING));
+  urosError(paramp->pclass != UROS_RPCP_STRING, _ERR,
+            ("Response value pclass is %d, expected %d (UROS_RPCP_STRING)\n",
+             (int)paramp->pclass, (int)UROS_RPCP_STRING));
   err = urosHostnameToIp(&paramp->value.string, &tcprosaddrp->ip);
   urosError(err != UROS_OK, goto _finally,
             ("Cannot resolve hostname [%.*s]",
@@ -1981,9 +1981,9 @@ uros_err_t urosNodeResolveTopicPublisher(const UrosAddr *apiaddrp,
 
   /* Check the node port number.*/
   paramp = &nodep->param;
-  urosError(paramp->class != UROS_RPCP_INT, _ERR,
-            ("Response value class is %d, expected %d (UROS_RPCP_INT)\n",
-             (int)paramp->class, (int)UROS_RPCP_INT));
+  urosError(paramp->pclass != UROS_RPCP_INT, _ERR,
+            ("Response value pclass is %d, expected %d (UROS_RPCP_INT)\n",
+             (int)paramp->pclass, (int)UROS_RPCP_INT));
   urosError(paramp->value.int32 < 0 || paramp->value.int32 > 65535, _ERR,
             ("Port number %ld outside range\n",
              (long int)paramp->value.int32));
@@ -2038,9 +2038,9 @@ uros_err_t urosNodeResolveServicePublisher(const UrosString *namep,
   urosError(res.code != UROS_RPCC_SUCCESS, _ERR,
             ("Cannot find a provider for service [%.*s]\n",
              UROS_STRARG(namep)));
-  urosError(res.valuep->class != UROS_RPCP_STRING, _ERR,
-            ("Response value class is %d, expected %d (UROS_RPCP_STRING)\n",
-             (int)res.valuep->class, (int)UROS_RPCP_STRING));
+  urosError(res.valuep->pclass != UROS_RPCP_STRING, _ERR,
+            ("Response value pclass is %d, expected %d (UROS_RPCP_STRING)\n",
+             (int)res.valuep->pclass, (int)UROS_RPCP_STRING));
   uristrp = &res.valuep->value.string;
   res.valuep->value.string = urosStringAssignZ(NULL);
   urosRpcResponseClean(&res);

@@ -263,7 +263,7 @@ uros_err_t uros_rpccall_param_value_array(UrosRpcStreamer *sp,
   urosAssert(lstp != NULL);
 #define _CHKOK  { if (sp->err != UROS_OK) { return sp->err; } }
 
-  wrapper.class = UROS_RPCP_ARRAY;
+  wrapper.pclass = UROS_RPCP_ARRAY;
   wrapper.value.listp = (UrosRpcParamList*)lstp;
 
   urosRpcStreamerXmlTagOpen(sp, "param", 5); _CHKOK
@@ -354,8 +354,8 @@ uros_err_t uros_rpccall_registercall(
   /* Receive the response message.*/
   uros_rpccall_waitresponsestart(ctxp); _CHKOKE
   uros_rpccall_methodresponse(&ctxp->x.parser, resp); _CHKOKE
-  if (resp->valuep->class == UROS_RPCP_ARRAY ||
-      resp->valuep->class == UROS_RPCP_INT) {
+  if (resp->valuep->pclass == UROS_RPCP_ARRAY ||
+      resp->valuep->pclass == UROS_RPCP_INT) {
     ctxp->x.err = UROS_OK;
   } else {
     ctxp->x.err = UROS_ERR_BADPARAM;
@@ -405,7 +405,7 @@ uros_err_t uros_rpccall_unregistercall(
   /* Receive the response message.*/
   uros_rpccall_waitresponsestart(ctxp); _CHKOKE
   uros_rpccall_methodresponse(&ctxp->x.parser, resp); _CHKOKE
-  if (resp->valuep->class != UROS_RPCP_INT) {
+  if (resp->valuep->pclass != UROS_RPCP_INT) {
     ctxp->x.err = UROS_ERR_BADPARAM;
   } else { ctxp->x.err = UROS_OK; }
 
@@ -448,7 +448,7 @@ uros_err_t uros_rpccall_simplecall(
   /* Receive the response message.*/
   uros_rpccall_waitresponsestart(ctxp); _CHKOKE
   uros_rpccall_methodresponse(&ctxp->x.parser, resp); _CHKOKE
-  if (resclass != UROS_RPCP__LENGTH && resp->valuep->class != resclass) {
+  if (resclass != UROS_RPCP__LENGTH && resp->valuep->pclass != resclass) {
       ctxp->x.err = UROS_ERR_BADPARAM;
   } else { ctxp->x.err = UROS_OK; }
 
@@ -493,7 +493,7 @@ uros_err_t uros_rpccall_stringcall(
   /* Receive the response message.*/
   uros_rpccall_waitresponsestart(ctxp); _CHKOKE
   uros_rpccall_methodresponse(&ctxp->x.parser, resp); _CHKOKE
-  if (resclass != UROS_RPCP__LENGTH && resp->valuep->class != resclass) {
+  if (resclass != UROS_RPCP__LENGTH && resp->valuep->pclass != resclass) {
       ctxp->x.err = UROS_ERR_BADPARAM;
   } else { ctxp->x.err = UROS_OK; }
 
@@ -522,7 +522,7 @@ _finally:
  * @pre     The parameter is initialized.
  * @pre     The parameter data must have been allocated with @p urosAlloc().
  * @post    @p paramp points to an invalidated @p UrosRpcParam object.
- * @post    The parameter class is unchanged.
+ * @post    The parameter pclass is unchanged.
  * @post    If desidred so, private members are deallocated. They must have
  *          been allocated with @p urosAlloc().
  *
@@ -535,7 +535,7 @@ void urosRpcParamClean(UrosRpcParam *paramp, uros_bool_t deep) {
 
   urosAssert(paramp != NULL);
 
-  switch (paramp->class) {
+  switch (paramp->pclass) {
   case UROS_RPCP_INT:
   case UROS_RPCP_BOOLEAN:
   case UROS_RPCP_DOUBLE:
@@ -601,21 +601,21 @@ void urosRpcParamDelete(UrosRpcParam *paramp, uros_bool_t deep) {
 
 /**
  * @brief   Initializes a XMLRPC parameter object.
- * @details Initializes the object to the desired class, with invalidated safe
+ * @details Initializes the object to the desired pclass, with invalidated safe
  *          values.
  *
  * @param[in,out] paramp
  *          Pointer to an allocated @p UrosRpcParam object.
- * @param[in] class
- *          Parameter class.
+ * @param[in] pclass
+ *          Parameter pclass.
  */
 void urosRpcParamObjectInit(UrosRpcParam *paramp,
-                            uros_rpcparamclass_t class) {
+                            uros_rpcparamclass_t pclass) {
 
   urosAssert(paramp != NULL);
 
-  paramp->class = class;
-  switch (paramp->class) {
+  paramp->pclass = pclass;
+  switch (paramp->pclass) {
     case UROS_RPCP_INT:
     case UROS_RPCP_BOOLEAN:
     case UROS_RPCP_DOUBLE:
@@ -661,7 +661,7 @@ void urosRpcParamObjectInit(UrosRpcParam *paramp,
  * @pre     The parameter node is initialized.
  * @pre     The parameter data must have been allocated with @p urosAlloc().
  * @post    @p nodep points to an invalidated @p UrosRpcParam object.
- * @post    The parameter class is unchanged.
+ * @post    The parameter pclass is unchanged.
  * @post    If desidred so, private members are deallocated. They must have
  *          been allocated with @p urosAlloc().
  *
@@ -704,20 +704,20 @@ void urosRpcParamNodeDelete(UrosRpcParamNode *nodep, uros_bool_t deep) {
 
 /**
  * @brief   Initializes a XMLRPC parameter list node object.
- * @details Initializes the parameter to the desired class, with invalidated
+ * @details Initializes the parameter to the desired pclass, with invalidated
  *          safe values.
  *
  * @param[in,out] nodep
  *          Pointer to an allocated @p UrosRpcParamNode object.
- * @param[in] class
- *          Parameter class.
+ * @param[in] pclass
+ *          Parameter pclass.
  */
 void urosRpcParamNodeObjectInit(UrosRpcParamNode *nodep,
-                                uros_rpcparamclass_t class) {
+                                uros_rpcparamclass_t pclass) {
 
   urosAssert(nodep != NULL);
 
-  urosRpcParamObjectInit(&nodep->param, class);
+  urosRpcParamObjectInit(&nodep->param, pclass);
   nodep->nextp = NULL;
 }
 
@@ -1403,7 +1403,7 @@ uros_err_t urosRpcCallSetParam(
   /* Receive the response message.*/
   uros_rpccall_waitresponsestart(ctxp); _CHKOKE
   uros_rpccall_methodresponse(&ctxp->x.parser, resp); _CHKOKE
-  if (resp->valuep->class != value->class) {
+  if (resp->valuep->pclass != value->pclass) {
     ctxp->x.err = UROS_ERR_BADPARAM;
   } else { ctxp->x.err = UROS_OK; }
 
@@ -2036,7 +2036,7 @@ uros_err_t urosRpcCallRequestTopic(
   /* Receive the response message.*/
   uros_rpccall_waitresponsestart(ctxp); _CHKOKE
   uros_rpccall_methodresponse(&ctxp->x.parser, resp); _CHKOKE
-  if (resp->valuep->class != UROS_RPCP_ARRAY) {
+  if (resp->valuep->pclass != UROS_RPCP_ARRAY) {
     ctxp->x.err = UROS_ERR_BADPARAM;
   } else { ctxp->x.err = UROS_OK; }
 

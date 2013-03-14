@@ -62,7 +62,7 @@ enum uros_rpccode_t {
 };
 
 /**
- * @brief   XMLRPC parameter class id.
+ * @brief   XMLRPC parameter pclass id.
  */
 typedef enum uros_rpcparamclass_t {
 
@@ -83,7 +83,7 @@ struct uros_rpcparamlist_t;
  * @details
  */
 typedef struct UrosRpcParam {
-  uros_rpcparamclass_t      class;      /**< @brief Parameter class.*/
+  uros_rpcparamclass_t      pclass;      /**< @brief Parameter pclass.*/
   union {
     UrosString              string;     /**< @brief XMLRPC string.*/
     int32_t                 int32;      /**< @brief XMLRPC int/i4.*/
@@ -135,12 +135,12 @@ extern "C" {
 void urosRpcParamClean(UrosRpcParam *paramp, uros_bool_t deep);
 void urosRpcParamDelete(UrosRpcParam *paramp, uros_bool_t deep);
 void urosRpcParamObjectInit(UrosRpcParam *paramp,
-                            uros_rpcparamclass_t class);
+                            uros_rpcparamclass_t pclass);
 
 void urosRpcParamNodeClean(UrosRpcParamNode *nodep, uros_bool_t deep);
 void urosRpcParamNodeDelete(UrosRpcParamNode *nodep, uros_bool_t deep);
 void urosRpcParamNodeObjectInit(UrosRpcParamNode *nodep,
-                                uros_rpcparamclass_t class);
+                                uros_rpcparamclass_t pclass);
 
 void urosRpcParamListClean(UrosRpcParamList *listp, uros_bool_t deep);
 void urosRpcParamListDelete(UrosRpcParamList *listp, uros_bool_t deep);

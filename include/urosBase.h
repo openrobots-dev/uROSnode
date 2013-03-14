@@ -431,7 +431,7 @@ typedef struct uros_duration_t {
 /**
  * @brief   Error codes enumerator.
  */
-enum uros_err_t {
+enum {
   UROS_OK               =    0, /**< @brief No errors.*/
   UROS_ERR_TIMEOUT      = -100, /**< @brief Timeout lost.*/
   UROS_ERR_NOMEM        = -101, /**< @brief Not enough free memory.*/

@@ -707,7 +707,7 @@ uros_err_t urosRpcStreamerParamValueInt(UrosRpcStreamer *sp,
                                         const UrosRpcParam *paramp) {
 
   urosAssert(sp != NULL);
-  urosAssert(paramp->class == UROS_RPCP_INT);
+  urosAssert(paramp->pclass == UROS_RPCP_INT);
 
   return urosRpcStreamerInt32(sp, paramp->value.int32);
 }
@@ -727,7 +727,7 @@ uros_err_t urosRpcStreamerParamValueBoolean(UrosRpcStreamer *sp,
                                             const UrosRpcParam *paramp) {
 
   urosAssert(sp != NULL);
-  urosAssert(paramp->class == UROS_RPCP_BOOLEAN);
+  urosAssert(paramp->pclass == UROS_RPCP_BOOLEAN);
 
   return urosRpcStreamerUint32(sp, (uint32_t)paramp->value.boolean);
 }
@@ -749,7 +749,7 @@ uros_err_t urosRpcStreamerParamValueString(UrosRpcStreamer *sp,
   const UrosString *strp;
 
   urosAssert(sp != NULL);
-  urosAssert(paramp->class == UROS_RPCP_STRING);
+  urosAssert(paramp->pclass == UROS_RPCP_STRING);
 
   strp = &paramp->value.string;
   return urosRpcStreamerWrite(sp, strp->datap, strp->length);
@@ -773,7 +773,7 @@ uros_err_t urosRpcStreamerParamValueDouble(UrosRpcStreamer *sp,
   uint32_t integral;
 
   urosAssert(sp != NULL);
-  urosAssert(paramp->class == UROS_RPCP_DOUBLE);
+  urosAssert(paramp->pclass == UROS_RPCP_DOUBLE);
 #define _CHKOK   { if (sp->err != UROS_OK) { return sp->err; } }
 
   /* FIXME: This works well only for near-integer numbers.*/
@@ -812,7 +812,7 @@ uros_err_t urosRpcStreamerParamValueBase64(UrosRpcStreamer *sp,
   (void)paramp;
 
   urosAssert(sp != NULL);
-  urosAssert(paramp->class == UROS_RPCP_BASE64);
+  urosAssert(paramp->pclass == UROS_RPCP_BASE64);
 #define _CHKOK   { if (sp->err != UROS_OK) { return sp->err; } }
 
   /* TODO: Stream a binary chunk into base64 text.*/
@@ -840,7 +840,7 @@ uros_err_t urosRpcStreamerParamValueStruct(UrosRpcStreamer *sp,
   (void)paramp;
 
   urosAssert(sp != NULL);
-  urosAssert(paramp->class == UROS_RPCP_STRUCT);
+  urosAssert(paramp->pclass == UROS_RPCP_STRUCT);
 #define _CHKOK   { if (sp->err != UROS_OK) { return sp->err; } }
 
   /* TODO: Stream the mapped struct.*/
@@ -867,7 +867,7 @@ uros_err_t urosRpcStreamerParamValueArray(UrosRpcStreamer *sp,
   const UrosRpcParamNode *nodep;
 
   urosAssert(sp != NULL);
-  urosAssert(paramp->class == UROS_RPCP_ARRAY);
+  urosAssert(paramp->pclass == UROS_RPCP_ARRAY);
   urosAssert(paramp->value.listp != NULL);
   urosAssert((paramp->value.listp->headp == NULL) ==
          (paramp->value.listp->length == 0));
@@ -903,7 +903,7 @@ uros_err_t urosRpcStreamerParam(UrosRpcStreamer *sp,
 
   urosRpcStreamerXmlTagOpen(sp, "value", 5); _CHKOK
 
-  switch (paramp->class) {
+  switch (paramp->pclass) {
   case UROS_RPCP_INT: {
     urosRpcStreamerXmlTagOpen(sp, "int", 3); _CHKOK
     urosRpcStreamerParamValueInt(sp, paramp); _CHKOK
@@ -952,7 +952,7 @@ uros_err_t urosRpcStreamerParam(UrosRpcStreamer *sp,
   }
   default: {
     urosError(UROS_ERR_BADPARAM, UROS_NOP,
-              ("Unknown param class id %d\n", (int)paramp->class));
+              ("Unknown param pclass id %d\n", (int)paramp->pclass));
     return sp->err = UROS_ERR_BADPARAM;
   }
   }
