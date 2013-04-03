@@ -9,7 +9,6 @@ JOB QUEUE:
 +!  Get usec timestamps
 +!  urosThreadSleepUntil??()
 *!  Error switches in LLD sources
-?!  PC and FP accumulation in stack analysis
 ?!  Client service calls
 *   Move LLD definitions from urosconf.h to specific uros_lld_*.h
 +   UROS_LIKELY() / UROS_UNLIKELY() for better branch prediction (needed?)

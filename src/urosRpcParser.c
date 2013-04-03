@@ -84,9 +84,7 @@ static int uros_strnicmp(const char *s1, const char *s2, size_t n) {
 uros_err_t uros_rpcparser_parambytag_partial(UrosRpcParser *pp,
                                              UrosRpcParam *paramp) {
 
-  const char *tagp = NULL;
   char *strp = NULL;
-  size_t taglen = 0;
 
   urosAssert(pp != NULL);
   urosAssert(paramp != NULL);
@@ -102,42 +100,42 @@ uros_err_t uros_rpcparser_parambytag_partial(UrosRpcParser *pp,
   urosRpcParserXmlTagBeginNoName(pp); _CHKOK
   if (_GOT("i", 1)) {
     if (_GOT("nt>", 3)) {
-      tagp = "int"; taglen = 3;
       urosFree(strp); strp = NULL;
       urosRpcParserParamValueInt(pp, paramp); _CHKOK
+      urosRpcParserXmlTagClose(pp, "int", 3); _CHKOK
     } else if (_GOT("4>", 2)) {
-      tagp = "i4"; taglen = 2;
       urosFree(strp); strp = NULL;
       urosRpcParserParamValueInt(pp, paramp); _CHKOK
+      urosRpcParserXmlTagClose(pp, "i4", 2); _CHKOK
     }
   } else if (_GOT("b", 1)) {
     if (_GOT("oolean>", 7)) {
-      tagp = "boolean"; taglen = 7;
       urosFree(strp); strp = NULL;
       urosRpcParserParamValueBoolean(pp, paramp); _CHKOK
+      urosRpcParserXmlTagClose(pp, "boolean", 7); _CHKOK
     } else if (_GOT("ase64>", 6)) {
-      tagp = "base64"; taglen = 6;
       urosFree(strp); strp = NULL;
       urosRpcParserParamValueBase64(pp, paramp); _CHKOK
+      urosRpcParserXmlTagClose(pp, "base64", 6); _CHKOK
     }
   } else if (_GOT("double>", 7)) {
-    tagp = "double"; taglen = 6;
     urosFree(strp); strp = NULL;
     urosRpcParserParamValueDouble(pp, paramp); _CHKOK
+    urosRpcParserXmlTagClose(pp, "double", 7); _CHKOK
   } else if (_GOT("str", 3)) {
     if (_GOT("ing>", 4)) {
-      tagp = "string"; taglen = 6;
       urosFree(strp); strp = NULL;
       urosRpcParserParamValueString(pp, paramp); _CHKOK
+      urosRpcParserXmlTagClose(pp, "string", 6); _CHKOK
     } else if (_GOT("uct>", 4)) {
-      tagp = "struct"; taglen = 6;
       urosFree(strp); strp = NULL;
       urosRpcParserParamValueStruct(pp, paramp); _CHKOK
+      urosRpcParserXmlTagClose(pp, "struct", 6); _CHKOK
     }
   } else if (_GOT("array>", 6)) {
-    tagp = "array"; taglen = 5;
     urosFree(strp); strp = NULL;
     urosRpcParserParamValueArray(pp, paramp); _CHKOK
+    urosRpcParserXmlTagClose(pp, "array", 5); _CHKOK
   } else if (_GOT("/value>", 7)) {
     /* It was a string.*/
     return pp->err = UROS_OK;
@@ -145,7 +143,6 @@ uros_err_t uros_rpcparser_parambytag_partial(UrosRpcParser *pp,
   _CHKOK
 
   /* Close tags.*/
-  urosRpcParserXmlTagClose(pp, tagp, taglen);
   urosRpcParserSkipWs(pp); _CHKOK
   urosRpcParserXmlTagClose(pp, "value", 5); _CHKOK
   return pp->err = UROS_OK;
