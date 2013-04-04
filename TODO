@@ -1,7 +1,7 @@
 LEGEND:
     + Add
     - Remove
-    * Fix
+    * Fix or change
     ? Check
     ! High priority
 
@@ -13,10 +13,15 @@ JOB QUEUE:
 *   Move LLD definitions from urosconf.h to specific uros_lld_*.h
 +   UROS_LIKELY() / UROS_UNLIKELY() for better branch prediction (needed?)
 *   Project paths
+*   TCPROS streaming by message descriptors instead of nested functions
 +   Topic/service flags management (latching, nodelay, ...)
+-   Redundant XMLRPC function calls, use constant strings instead
 +   Regex in urosstan.py entry point names
+-   Infinite recursion (might happen in too weird XMLRPC calls)
 +   Named dependencies in urosstan.py entry point size
 +   Advanced logger for ChibiOS (side project)
 +   BASE64 encoding for XMLRPC parameters
 +   struct/map for XMLRPC parameters
 +   Gather bus stats/info
+*   Better urosgen.py and urosstan.py code
+
