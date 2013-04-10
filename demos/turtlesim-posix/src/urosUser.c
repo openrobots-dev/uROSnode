@@ -470,9 +470,9 @@ uros_err_t urosUserParamUpdate(const UrosString *keyp,
 
   /* Check if [<node>/background_r].*/
   if (0 == urosStringCmp(keyp, &backcolparnameR)) {
-    urosError(paramp->class != UROS_RPCP_INT, return UROS_ERR_BADPARAM,
+    urosError(paramp->pclass != UROS_RPCP_INT, return UROS_ERR_BADPARAM,
               ("Parameter [%.*s] class id %d, expected %d (UROS_RPCP_INT)\n",
-               UROS_STRARG(keyp), (int)paramp->class, (int)UROS_RPCP_INT));
+               UROS_STRARG(keyp), (int)paramp->pclass, (int)UROS_RPCP_INT));
     urosError(paramp->value.int32 < 0 || paramp->value.int32 > 255,
               return UROS_ERR_BADPARAM,
               ("Parameter [%.*s] value %d outside [0..255]\n",
@@ -485,9 +485,9 @@ uros_err_t urosUserParamUpdate(const UrosString *keyp,
 
   /* Check if [<node>/background_g].*/
   if (0 == urosStringCmp(keyp, &backcolparnameG)) {
-    urosError(paramp->class != UROS_RPCP_INT, return UROS_ERR_BADPARAM,
+    urosError(paramp->pclass != UROS_RPCP_INT, return UROS_ERR_BADPARAM,
               ("Parameter [%.*s] class id %d, expected %d (UROS_RPCP_INT)\n",
-               UROS_STRARG(keyp), (int)paramp->class, (int)UROS_RPCP_INT));
+               UROS_STRARG(keyp), (int)paramp->pclass, (int)UROS_RPCP_INT));
     urosError(paramp->value.int32 < 0 || paramp->value.int32 > 255,
               return UROS_ERR_BADPARAM,
               ("Parameter [%.*s] value %d outside [0..255]\n",
@@ -500,9 +500,9 @@ uros_err_t urosUserParamUpdate(const UrosString *keyp,
 
   /* Check if [<node>/background_b].*/
   if (0 == urosStringCmp(keyp, &backcolparnameB)) {
-    urosError(paramp->class != UROS_RPCP_INT, return UROS_ERR_BADPARAM,
+    urosError(paramp->pclass != UROS_RPCP_INT, return UROS_ERR_BADPARAM,
               ("Parameter [%.*s] class id %d, expected %d (UROS_RPCP_INT)\n",
-               UROS_STRARG(keyp), (int)paramp->class, (int)UROS_RPCP_INT));
+               UROS_STRARG(keyp), (int)paramp->pclass, (int)UROS_RPCP_INT));
     urosError(paramp->value.int32 < 0 || paramp->value.int32 > 255,
               return UROS_ERR_BADPARAM,
               ("Parameter [%.*s] value %d outside [0..255]\n",
