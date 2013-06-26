@@ -115,6 +115,7 @@ uros_err_t uros_rpcpcall_buildctx(uros_rpcpcallctx_t *ctxp,
   urosAssert(ctxp != NULL);
   urosAssert(addrp != NULL);
 
+  memset(ctxp, 0, sizeof(uros_rpcpcallctx_t));
   ctxp->addrp = addrp;
   ctxp->parsing = UROS_FALSE;
 
