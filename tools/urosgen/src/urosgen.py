@@ -1643,11 +1643,11 @@ class CodeGen:
 
     def gen_subtopic_cb_sig(self, name):
         msgtype = self.msgTypes[self.subTopics[name]]
-        return 'void sub_cb%s(%s &msg)' % (mangled_name(name), msgtype.cname)
+        return 'void sub_cb%s(struct %s *msg)' % (mangled_name(name), msgtype.cname)
 
     def gen_subtopic_cb(self, name):
         msgtype = self.msgTypes[self.subTopics[name]]
-        return 'sub_cb%s(%s msg)' % (mangled_name(name), msgtype.cname)
+        return 'sub_cb%s(&msg)' % mangled_name(name)
     
     def gen_subtopic_handler(self, name):
         msgtype = self.msgTypes[self.subTopics[name]]
