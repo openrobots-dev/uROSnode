@@ -1640,6 +1640,14 @@ class CodeGen:
     
     def gen_subtopic_sig(self, name):
         return 'uros_err_t sub_tpc%s(UrosTcpRosStatus *tcpstp)' % mangled_name(name)
+
+    def gen_subtopic_cb_sig(self, name):
+        msgtype = self.msgTypes[self.subTopics[name]]
+        return 'void sub_cb%s(%s &msg)' % (mangled_name(name), msgtype.cname)
+
+    def gen_subtopic_cb(self, name):
+        msgtype = self.msgTypes[self.subTopics[name]]
+        return 'sub_cb%s(%s msg)' % (mangled_name(name), msgtype.cname)
     
     def gen_subtopic_handler(self, name):
         msgtype = self.msgTypes[self.subTopics[name]]
@@ -1667,7 +1675,8 @@ class CodeGen:
         text += tab*2 + '/* Receive the next message.*/\n'
         text += tab*2 + 'UROS_MSG_RECV_LENGTH();\n'
         text += tab*2 + 'UROS_MSG_RECV_BODY(%s, %s);\n\n' % (msgref, msgtype.cname)
-        text += tab*2 + '/* TODO: Process the received message.*/\n\n'
+        text += tab*2 + '/* Call callback function.*/\n'
+        text += tab*2 + self.gen_subtopic_cb(name) + ';\n\n'
         text += tab*2 + '/* Dispose the contents of the message.*/\n'
         text += tab*2 + 'clean_%s(%s);\n' % (msgtype.cname, msgref)
         text += tab + '}\n'
@@ -1965,6 +1974,7 @@ class CodeGen:
         for name in sorted(self.subTopics):
             text += banner_small('SUBSCRIBED TOPIC: ' + name) + '\n\n'
             text += self.gen_subtopic_sig(name) + ';\n\n'
+            text += self.gen_subtopic_cb_sig(name) + ';\n\n'
         if len(self.subTopics) == 0:
             text += '/* There are no subscribed topics.*/\n\n'
         
